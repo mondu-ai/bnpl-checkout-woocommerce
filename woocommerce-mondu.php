@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name: Mondu WooCommerce plugin
- * Plugin URI: https://www.billie.io/
+ * Plugin URI: https://mondu.com/
  * Description: Mondu payment gateway for woocommerce plugin
  * Version: 1.0.0
  * Author: Mondu
