@@ -3,6 +3,7 @@
 namespace Mondu;
 
 use Mondu\Admin\Settings;
+use Mondu\Mondu\Gateway;
 
 class Plugin {
     public function __construct()
@@ -23,6 +24,6 @@ class Plugin {
             // $order->init();
 		}
 
-        
+        add_filter( 'woocommerce_payment_gateways', [ Gateway::class, 'add' ] );
     }
 }

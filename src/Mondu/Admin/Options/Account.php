@@ -21,20 +21,15 @@ class Account {
 			[ $this, 'field_sandbox_or_production' ],
 			'mondu-settings-account',
 			'mondu_account_settings_general' );
-		add_settings_field( 'client_id',
-			__( 'Client ID', 'mondu' ),
-			[ $this, 'field_client_id' ],
-			'mondu-settings-account',
-			'mondu_account_settings_general' );
 		add_settings_field( 'client_secret',
-			__( 'Client Secret', 'mondu' ),
+			__( 'Mondu api token', 'mondu' ),
 			[ $this, 'field_client_secret' ],
 			'mondu-settings-account',
 			'mondu_account_settings_general' );
     }
 
     public function account_info() {
-		_e( 'plugin.settings.info', 'mondu' );
+		_e( 'Configure plugin', 'mondu' );
 	}
     
     public function field_client_id() {
@@ -56,8 +51,7 @@ class Account {
         if(!current_user_can('manage_options')) {
             wp_die(__( 'You do not have sufficient permissions to access this page.'));
         }
-        $credentialsValidated = get_option( 'credentials_validated' );
-        $oauthPossible = ( $this->options !== null ) && is_array( $this->options ) && isset( $this->options['client_id'], $this->options['client_secret'] );
+
         include MONDU_VIEW_PATH.'/admin/options.php';
     }
 

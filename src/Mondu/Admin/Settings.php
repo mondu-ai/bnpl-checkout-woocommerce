@@ -29,10 +29,6 @@ class Settings {
     }
 
     public function render_account_options() {
-        if ( ( count( $_POST ) > 0 ) && check_admin_referer( 'validate-credentials' ) ) {
-            update_option( 'credentials_validated', time() );
-		}
-
         $validationError = null;
         $this->accountOptions->render($validationError);
     }
