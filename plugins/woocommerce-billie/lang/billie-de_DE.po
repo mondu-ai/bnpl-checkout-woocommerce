@@ -1,0 +1,264 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Billie WooCommerce\n"
+"POT-Creation-Date: 2021-04-22 18:00+0200\n"
+"PO-Revision-Date: 2021-04-22 18:00+0200\n"
+"Last-Translator: Dominik Schwind <dschwind@lostfocus.de>\n"
+"Language-Team: \n"
+"Language: de_DE\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 2.4.2\n"
+"X-Poedit-Basepath: ..\n"
+"X-Poedit-Flags-xgettext: --add-comments=translators:\n"
+"X-Poedit-WPHeader: woocommerce-billie.php\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;"
+"esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;_n_noop:1,2;"
+"_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPathExcluded-0: *.js\n"
+
+#: src/Billie/Admin/Option/Account.php:22
+msgid "Settings"
+msgstr "Billie-Einstellungen"
+
+#: src/Billie/Admin/Option/Account.php:26
+msgid "Sandbox or production"
+msgstr "Sandbox oder Produktion"
+
+#: src/Billie/Admin/Option/Account.php:31
+msgid "Client ID"
+msgstr "Client ID"
+
+#: src/Billie/Admin/Option/Account.php:36
+msgid "Client Secret"
+msgstr "Client Secret"
+
+#: src/Billie/Admin/Option/Account.php:43
+msgid "plugin.settings.info"
+msgstr "Die Zugangsdaten finden Sie in Ihrem Billie-Dashboard"
+
+#: src/Billie/Admin/Option/Account.php:56
+msgid "Sandbox"
+msgstr "Sandbox-Einstellungen"
+
+#: src/Billie/Admin/Option/Account.php:57
+msgid "Production"
+msgstr "Produktion"
+
+#: src/Billie/Admin/Option/Account.php:63
+msgid "You do not have sufficient permissions to access this page."
+msgstr ""
+"Du hast nicht die erforderlichen Rechte, um auf diese Seite zuzugreifen."
+
+#: src/Billie/Admin/Order.php:29
+msgid "Payment info"
+msgstr "Rechnungsdaten"
+
+#: src/Billie/Admin/Order.php:46
+msgid "Invoice"
+msgstr "Rechnung"
+
+#: src/Billie/Admin/Settings.php:27 views/admin/options.php:2
+msgid "Billie Settings"
+msgstr "Billie-Einstellungen"
+
+#: src/Billie/Admin/Settings.php:28 src/Billie/Billie/Gateway.php:40
+msgid "Billie"
+msgstr "Billie"
+
+#: src/Billie/Billie/Api.php:36
+msgid "Missing Credentials"
+msgstr "Fehlende Anmeldeinformationen"
+
+#: src/Billie/Billie/Api.php:46
+msgid "Unexpected validation format"
+msgstr "Unerwartetes Validierungsformat"
+
+#: src/Billie/Billie/Api.php:50
+msgid "Unexpected validation client id"
+msgstr "Unerwartete Validierungsclient-ID"
+
+#: src/Billie/Billie/Gateway.php:39
+msgid "Pay After Delivery"
+msgstr "Rechnungskauf"
+
+#: src/Billie/Billie/Gateway.php:41
+msgid "Billie Description"
+msgstr "Billie Beschreibung"
+
+#: src/Billie/Billie/Gateway.php:63
+msgid "Enable/Disable"
+msgstr "Aktivieren/Deaktivieren"
+
+#: src/Billie/Billie/Gateway.php:65
+msgid "Enable this payment method"
+msgstr "Aktivieren dieser Zahlungsmethode"
+
+#: src/Billie/Billie/Gateway.php:69
+msgid "Title"
+msgstr "Titel"
+
+#: src/Billie/Billie/Gateway.php:71
+msgid "This controls the title which the user sees during checkout."
+msgstr "Dies steuert den Titel, den der Kunde während des Zahlvorgangs sieht."
+
+#: src/Billie/Billie/Gateway.php:72
+msgid "Billie Rechnungskauf"
+msgstr "Billie-Einstellungen"
+
+#: src/Billie/Billie/Gateway.php:76
+msgid "Payment Term"
+msgstr "Zahlungsfrist"
+
+#: src/Billie/Billie/Gateway.php:78
+msgid ""
+"Based upon your Billie contract, your customers will have between 7 and 120 "
+"days (payment term) to pay your invoices."
+msgstr ""
+"Basierend auf Ihrem Billie-Vertrag haben Ihre Kunden zwischen 7 und 120 "
+"Tagen (Zahlungsfrist), um Ihre Rechnungen zu bezahlen."
+
+#: src/Billie/Billie/Gateway.php:83
+msgid "Hide Logo"
+msgstr "Logo ausblenden"
+
+#: src/Billie/Billie/Gateway.php:85
+msgid "Hide Billie Logo"
+msgstr "Billie Logo ausblenden"
+
+#: src/Billie/Billie/Gateway.php:88
+msgid "Customer Message"
+msgstr "Kundenmitteilung"
+
+#: src/Billie/Billie/Gateway.php:291
+msgid "Processing"
+msgstr "In Bearbeitung"
+
+#: src/Billie/Billie/PaymentInfo.php:92
+#, php-format
+msgid ""
+"Bitte überweisen Sie den Rechnungsbetrag bis zum %s unter Angabe der "
+"Rechnungsnummer auf folgendes Konto:"
+msgstr ""
+"Bitte überweisen Sie den Rechnungsbetrag bis zum %s unter Angabe der "
+"Rechnungsnummer auf folgendes Konto:"
+
+#: src/Billie/Billie/PaymentInfo.php:98
+#, php-format
+msgid "Kontoinhaber: %s"
+msgstr "Kontoinhaber: %s"
+
+#: src/Billie/Billie/PaymentInfo.php:102
+#, php-format
+msgid "IBAN: %s"
+msgstr "IBAN: %s"
+
+#: src/Billie/Billie/PaymentInfo.php:106
+#, php-format
+msgid "BIC: %s"
+msgstr "BIC: %s"
+
+#: src/Billie/Billie/PaymentInfo.php:110
+#, php-format
+msgid "Bank: %s"
+msgstr "Bankinstitut: %s"
+
+#: src/Billie/Billie/PaymentInfo.php:115
+#, php-format
+msgid "Fälligkeitsdatum: %s"
+msgstr "Fälligkeitsdatum: %s"
+
+#: src/Billie/Billie/PaymentInfo.php:117
+msgid "Bestellung noch nicht versendet"
+msgstr "Bestellung noch nicht versendet"
+
+#: src/Billie/Billie/PaymentInfo.php:123
+#, php-format
+msgid "Verwendungszweck: %s"
+msgstr "Verwendungszweck: %s"
+
+#: src/Billie/Plugin.php:34
+msgid "error_confirmation"
+msgstr ""
+
+#: src/Billie/Plugin.php:109
+msgid ""
+"Since this order will be paid via Billie you won't be able to change the "
+"addresses."
+msgstr ""
+"Da diese Bestellung über Billie bezahlt wird, können Sie die Adressen nicht "
+"ändern."
+
+#: views/admin/options.php:12 views/admin/options.php:24
+msgid "Validate Credentials"
+msgstr "Überprüfen von Anmeldeinformationen"
+
+#: views/admin/options.php:17
+msgid "Credentials validated:"
+msgstr "Anmeldeinformationen validiert:"
+
+#: views/admin/order-invoice.php:2
+msgid "Invoice-ID"
+msgstr "Rechnungsnummer"
+
+#: views/checkout/payment-form.php:374
+msgid "This payment option is only available for company customers."
+msgstr "Diese Zahlungsoption ist nur für Firmenkunden verfügbar."
+
+#: views/checkout/payment-form.php:379
+msgid "Salutation"
+msgstr "Anrede"
+
+#: views/checkout/payment-form.php:382
+msgid "Female"
+msgstr "Frau"
+
+#: views/checkout/payment-form.php:386
+msgid "Male"
+msgstr "Herr"
+
+#. Plugin Name of the plugin/theme
+msgid "Billie Rechnungskauf für WooCommerce"
+msgstr "Billie Rechnungskauf für WooCommerce"
+
+#. Plugin URI of the plugin/theme
+msgid "https://www.billie.io/"
+msgstr "https://www.billie.io/"
+
+#. Description of the plugin/theme
+msgid ""
+"Jetzt durchstarten mit der beliebtesten Zahlungsart für B2B-Shops: Billie "
+"Rechnungskauf"
+msgstr ""
+"Jetzt durchstarten mit der beliebtesten Zahlungsart für B2B-Shops: Billie "
+"Rechnungskauf"
+
+#. Author of the plugin/theme
+msgid "pooliestudios"
+msgstr "pooliestudios"
+
+#. Author URI of the plugin/theme
+msgid "https://pooliestudios.com"
+msgstr "https://pooliestudios.com"
+
+#~ msgid "Billie WooCommerce"
+#~ msgstr "Billie Rechnungskauf für WooCommerce"
+
+#~ msgid "Billie Payment for WooCommerce 3 and 4"
+#~ msgstr ""
+#~ "Jetzt durchstarten mit der beliebtesten Zahlungsart für B2B-Shops: Billie "
+#~ "Rechnungskauf"
+
+#~ msgid "Sandbox Settings"
+#~ msgstr "Sandbox-Einstellungen"
+
+#~ msgid "plugin.settings.sandbox.info"
+#~ msgstr ""
+#~ "Zugangsdaten für Ihre Billie Sandbox finden sie in Ihrem Billie-Dashboard."
+
+#~ msgid "Awaiting cheque payment"
+#~ msgstr "Warten auf Zahlung mittels Scheck"
