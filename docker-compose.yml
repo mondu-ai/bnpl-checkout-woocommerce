@@ -2,22 +2,30 @@ version: '3'
 services:
   webserver:
     container_name: woocommerce
-    image: shipbeat/woocommerce
+    build: .
+    volumes:
+      - ./tmp/wordpress:/var/www/html
+      - ./woocommerce-billie:/var/www/html/wp-content/plugins/woocommerce-billie
     links:
       - dbserver:mysql
     ports:
       - 8080:80
     environment:
-      - WORDPRESS_WP_DEBUG="false"
-      - WORDPRESS_DB_HOST=dbserver
-      - WORDPRESS_DB_USER=root
-      - WORDPRESS_DB_PASSWORD=example
-      - WORDPRESS_DB_PORT=3306
+      WORDPRESS_WP_DEBUG: true
+      WORDPRESS_DB_HOST: dbserver
+      WORDPRESS_DB_USER: wordpress
+      WORDPRESS_DB_PASSWORD: wordpress
+      WORDPRESS_DB_NAME: wordpress
 
   dbserver:
     container_name: woo_mariadb
     image: mariadb
+    volumes:
+      - ./tmp/db:/var/lib/mysql
     environment:
       MYSQL_ROOT_PASSWORD: example
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: wordpress
+      MYSQL_PASSWORD: wordpress
     ports:
       - 3306:3306
