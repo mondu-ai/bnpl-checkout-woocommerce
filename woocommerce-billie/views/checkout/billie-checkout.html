@@ -1,8 +1,13 @@
-<script>
-var bcwSrc = 'https://static.billie.io/checkout/billie-checkout.js';
-(function(w,d,s,o,f,js,fjs){
-  w['BillieCheckoutWidget']=o;w[o]=w[o]||function(){(w[o].q=w[o].q||[]).push(arguments)};
-  w.billieSrc=f;js=d.createElement(s);fjs=d.getElementsByTagName(s)[0];js.id=o;
-  js.src=f;js.charset='utf-8';js.async=1;fjs.parentNode.insertBefore(js,fjs);bcw('init');
-}(window,document,'script','bcw', bcwSrc));
-</script>
+<script src="http://localhost:3002/dist/widget.js"></script>
+
+<style>
+  #mondu-checkout-widget>div {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+  }
+</style>
+
+<div id="mondu-checkout-widget"></div>

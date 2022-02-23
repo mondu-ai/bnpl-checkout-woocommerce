@@ -7,6 +7,7 @@ use Billie\Admin\Option\Account;
 use Billie\Admin\Settings;
 use Billie\Billie\Gateway;
 use Billie\Billie\PaymentInfo;
+use Billie\Billie\Api\MonduController;
 use DateInterval;
 use Exception;
 use WC_DateTime;
@@ -65,6 +66,11 @@ class Plugin {
     add_action( 'woocommerce_order_status_changed', [ new Gateway(), 'order_status_changed' ], 10, 3 );
 
     add_action( 'woocommerce_order_refunded', [ new Gateway(), 'order_refunded' ], 10, 2 );
+
+    add_action( 'rest_api_init', function () {
+      $controller = new MonduController();
+      $controller->register_routes();
+    });
 
     /*
      * This one adds the payment information to a Germanized Pro Invoice
@@ -275,7 +281,6 @@ class Plugin {
     return isset( $_GET['type'] ) && $_GET['type'] === 'ajax-billie-success';
   }
 
-
   /**
    * @return bool
    */
@@ -287,10 +292,6 @@ class Plugin {
     $gateway = new Gateway();
 
     return $gateway->process_success( $_POST );
-  }
-
-  private function get_bank( $bic ) {
-    return PaymentInfo::get_bank( $bic );
   }
 
   private function process_billie_error() {

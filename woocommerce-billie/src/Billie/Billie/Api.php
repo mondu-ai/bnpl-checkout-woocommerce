@@ -38,7 +38,7 @@ class Api {
 
     $oauthToken = $this->requestOAuthToken( $this->options['client_id'], $this->options['client_secret'], $this->isSandbox() );
 
-    $result = $this->get( '/oauth/authorization', null, $oauthToken, $this->isSandbox() );
+    $result = $this->post( '/oauth/authorization', null, $oauthToken, $this->isSandbox() );
 
     $validationResult = json_decode( $result['body'], true );
 
@@ -79,41 +79,20 @@ class Api {
   }
 
   /**
-   * @param $wooCommerceSessionId
+   * @param $params
    *
    * @return string
    * @throws BillieException
    * @throws ResponseException
    */
-  public function getBillieSessionId( $wooCommerceSessionId ) {
-    $body = [
-      'merchant_customer_id' => $wooCommerceSessionId,
-    ];
-
+  public function createOrder( $params ) {
     $oauthToken = $this->requestOAuthToken( $this->options['client_id'], $this->options['client_secret'], $this->isSandbox() );
 
-    $result        = $this->post( '/checkout-session', $body, $oauthToken, $this->isSandbox(), true );
-    $sessionResult = json_decode( $result['body'], true );
+    $result = $this->post( '/orders', $params, $oauthToken, $this->isSandbox(), true );
 
-    if ( ! is_array( $sessionResult ) || ! isset( $sessionResult['id'] ) ) {
-      throw new BillieException( 'Unexpected Session format' );
-    }
+    $response = json_decode( $result['body'], true );
 
-    return $sessionResult['id'];
-  }
-
-  /**
-   * @param string $billie_session_id
-   * @param array $billie_order_data
-   *
-   * @return array
-   * @throws BillieException
-   * @throws ResponseException
-   */
-  public function checkoutSessionConfirm( $billie_session_id, array $billie_order_data ) {
-    $oauthToken = $this->requestOAuthToken( $this->options['client_id'], $this->options['client_secret'], $this->isSandbox() );
-
-    $result = $this->put( sprintf( '/checkout-session/%s/confirm', $billie_session_id ), $billie_order_data, $oauthToken, $this->isSandbox(), true );
+    WC()->session->set( 'mondu_order_id', $response['order']['uuid'] );
 
     return json_decode( $result['body'], true );
   }
@@ -325,7 +304,8 @@ class Api {
     $args = [
       'body'    => $body,
       'headers' => $headers,
-      'method'  => $method
+      'method'  => $method,
+      'timeout' => 30,
     ];
 
     if ( $json_request ) {

@@ -43,19 +43,19 @@ class Account extends Helper {
     _e( 'plugin.settings.info', 'billie' );
   }
 
+  public function field_sandbox_or_production() {
+    $this->selectField( self::OPTION_NAME, 'field_sandbox_or_production', [
+      'sandbox'    => __( 'Sandbox', 'billie' ),
+      'production' => __( 'Production', 'billie' ),
+    ], 'single' );
+  }
+
   public function field_client_id() {
     $this->textField( self::OPTION_NAME, 'client_id' );
   }
 
   public function field_client_secret() {
     $this->textField( self::OPTION_NAME, 'client_secret' );
-  }
-
-  public function field_sandbox_or_production() {
-    $this->selectField( self::OPTION_NAME, 'field_sandbox_or_production', [
-      'sandbox'    => __( 'Sandbox', 'billie' ),
-      'production' => __( 'Production', 'billie' ),
-    ], 'single' );
   }
 
   public function render( $validationError = null ) {

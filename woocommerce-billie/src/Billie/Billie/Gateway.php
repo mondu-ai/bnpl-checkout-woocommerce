@@ -31,6 +31,9 @@ class Gateway extends WC_Payment_Gateway {
   private $api;
 
   public function __construct() {
+    $this->logger = wc_get_logger();
+
+    // echo 'fooooooooi';
     $this->global_settings = get_option( Account::OPTION_NAME );
 
     $this->id                 = 'billie';
@@ -55,7 +58,6 @@ class Gateway extends WC_Payment_Gateway {
 
     $this->logger = wc_get_logger();
   }
-
 
   public function init_form_fields() {
     $this->form_fields = [
@@ -116,12 +118,6 @@ class Gateway extends WC_Payment_Gateway {
    * @throws ResponseException
    */
   public function payment_fields() {
-
-    $billie_session    = $this->getBillieSessionId( WC()->session->get_customer_id() );
-    $options           = $this->global_settings;
-    $billie_order_data = $this->createBillieOrderData();
-    $company           = WC()->customer->get_billing_company();
-
     include BILLIE_VIEW_PATH . '/checkout/payment-form.php';
   }
 
@@ -134,16 +130,18 @@ class Gateway extends WC_Payment_Gateway {
    * @throws WC_Data_Exception
    */
   public function process_payment( $order_id ) {
+    echo 'processing payment';
+
     $order = new WC_Order( $order_id );
 
     $duration = ( is_array( $this->settings ) && isset( $this->settings['payment_term'] ) && is_numeric( $this->settings['payment_term'] ) ) ? $this->settings['payment_term'] : 7;
 
     update_post_meta( $order->get_id(), Plugin::DURATION_KEY, $duration );
 
-    $billie_session_id = $this->getBillieSessionId( WC()->session->get_customer_id() );
+    // $billie_session_id = $this->getBillieSessionId( WC()->session->get_customer_id() );
     update_post_meta( $order->get_id(), Plugin::SESSION_ID_KEY, $billie_session_id );
 
-    $billie_order_data = $this->api->checkoutSessionConfirm( $billie_session_id, WC()->session->get( 'billie_order_data' ) );
+    // $billie_order_data = $this->api->checkoutSessionConfirm( $billie_session_id, WC()->session->get( 'billie_order_data' ) );
 
     $this->logger->debug( 'billie_order_data', $billie_order_data );
 
@@ -158,7 +156,6 @@ class Gateway extends WC_Payment_Gateway {
     $use_shipping_address = ( $order->get_formatted_billing_address() !== $order->get_formatted_shipping_address() );
 
     $billing_company = null;
-
 
     if ( isset( $billie_order_data['debtor_company']['name'] ) ) {
       $billing_company = sanitize_text_field( $billie_order_data['debtor_company']['name'] );
@@ -319,30 +316,6 @@ class Gateway extends WC_Payment_Gateway {
   }
 
   /**
-   * @param $wooCommerceSessionId
-   *
-   * @return string|null
-   * @throws BillieException
-   * @throws ResponseException
-   */
-  private function getBillieSessionId( $wooCommerceSessionId ) {
-    $billieSessionId = WC()->session->get( 'billieSession' );
-
-    $needsNewSessionId = false;
-
-    if ( $billieSessionId === null ) {
-      $needsNewSessionId = true;
-    }
-
-    if ( $needsNewSessionId ) {
-      $billieSessionId = $this->api->getBillieSessionId( $wooCommerceSessionId );
-      WC()->session->set( 'billieSession', $billieSessionId );
-    }
-
-    return $billieSessionId;
-  }
-
-  /**
    * @return array[]
    */
   private function createBillieOrderData() {
@@ -454,6 +427,23 @@ class Gateway extends WC_Payment_Gateway {
     ];
 
     $this->api->updateOrder( $billieOrderId, [ 'amount' => $new_amount ] );
+  }
+
+  /**
+   * @throws BillieException
+   * @throws ResponseException
+   */
+  public function create_order() {
+    $payment_method = WC()->session->get( 'chosen_payment_method' );
+    if ($payment_method !== 'billie') {
+      return;
+    }
+
+    $params = OrderData::createOrderData();
+
+    $response = $this->api->createOrder( $params );
+
+    WC()->session->set( 'mondu_order_id', $response['order']['uuid'] );
   }
 
   /**

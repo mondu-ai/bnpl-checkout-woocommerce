@@ -20,8 +20,8 @@ define( 'BILLIE_PLUGIN_PATH', __DIR__ );
 define( 'BILLIE_VIEW_PATH', BILLIE_PLUGIN_PATH . '/views' );
 define( 'BILLIE_RESSOURCES_PATH', BILLIE_PLUGIN_PATH . '/ressources' );
 
-define( 'BILLIE_SANDBOX_URL', 'https://paella-sandbox.billie.io/api/v1' );
-define( 'BILLIE_PRODUCTION_URL', 'https://paella.billie.io/api/v1' );
+define( 'BILLIE_SANDBOX_URL', 'http://host.docker.internal:3000/api/v1' );
+define( 'BILLIE_PRODUCTION_URL', 'http://host.docker.internal:3000/api/v1' );
 
 require_once 'src/autoload.php';
 
