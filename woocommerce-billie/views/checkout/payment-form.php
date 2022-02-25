@@ -1,5 +1,7 @@
 <script>
   var checkBillieMount = false;
+  var result = '';
+  var url = '<?php echo get_site_url( null, '/index.php' ); ?>';
 
   function billieBlock() {
     jQuery('.woocommerce-checkout-payment, .woocommerce-checkout-review-order-table').block({
@@ -28,9 +30,8 @@
 
     jQuery.ajax({
       type: 'POST',
-      url: 'http://localhost:8080/index.php?rest_route=/mondu/v1/create_order',
+      url: `${url}?rest_route=/mondu/v1/create_order`,
       success: function(res) {
-        console.log('Token: ' + res['token']);
         renderWidget(res['token']);
         return true;
       },
@@ -45,30 +46,49 @@
       token: token,
       onClose: () => {
         checkBillieMount = false;
-        <?php WC()->session->set( 'mondu_order_id', null ); ?>
+        billieUnblock();
+        checkoutCallback();
+        result = '';
       },
       onSuccess: () => {
-        // jQuery.post('<?php echo \Billie\Plugin::get_callback_url( 'ajax-billie-success' ); ?>', ao, function () {
-        //   jQuery('form.woocommerce-checkout').off('checkout_place_order');
-        //   if (jQuery('#confirm-order-flag').length !== 0) {
-        //     jQuery('#confirm-order-flag').val('');
-        //   }
-
-          jQuery('#place_order').parents('form').submit();
-        // });
-        // billieBlock()
+        console.log('Success');
+        result = 'success';
       },
-      onError: () => {
-      //   jQuery.post('<?php echo \Billie\Plugin::get_callback_url( 'ajax-billie-error' ); ?>', err, function () {
-      //     jQuery(document.body).trigger('wc_update_cart');
-      //     jQuery(document.body).trigger('update_checkout');
-      //   });
-      //   console.log('Error occurred', err);
-      //   billieUnblock();
-
-      //   location.reload();
+      onError: (err) => {
+        console.log('Error occurred', err);
+        result = 'error';
       },
     });
+  }
+
+  function checkoutCallback() {
+    if (result == 'success') {
+      jQuery.ajax({
+        type: 'POST',
+        url: `${url}?rest_route=/mondu/v1/checkout_callback`,
+        data: { type: 'success' },
+        success: function(res) {
+          jQuery('form.woocommerce-checkout').off('checkout_place_order');
+          if (jQuery('#confirm-order-flag').length !== 0) {
+            jQuery('#confirm-order-flag').val('');
+          }
+
+          jQuery('#place_order').parents('form').submit();
+        }
+      });
+    } else {
+      jQuery.ajax({
+        type: 'POST',
+        url: `${url}?rest_route=/mondu/v1/checkout_callback`,
+        data: { type: 'error' },
+        success: function(res) {
+          jQuery(document.body).trigger('wc_update_cart');
+          jQuery(document.body).trigger('update_checkout');
+        }
+      });
+
+      // location.reload();
+    }
   }
 
   jQuery(document).ready(function () {

@@ -138,11 +138,11 @@ class PaymentInfo {
       return $bank;
     }
 
-    if ( ! file_exists( BILLIE_RESSOURCES_PATH . '/bic-de.csv' ) ) {
+    if ( ! file_exists( MONDU_RESOURCES_PATH . '/bic-de.csv' ) ) {
       return $bic;
     }
 
-    $bic_csv = fopen( BILLIE_RESSOURCES_PATH . '/bic-de.csv', 'rb' );
+    $bic_csv = fopen( MONDU_RESOURCES_PATH . '/bic-de.csv', 'rb' );
 
     $bank = null;
 

@@ -118,7 +118,7 @@ class Gateway extends WC_Payment_Gateway {
    * @throws ResponseException
    */
   public function payment_fields() {
-    include BILLIE_VIEW_PATH . '/checkout/payment-form.php';
+    include MONDU_VIEW_PATH . '/checkout/payment-form.php';
   }
 
   /**
@@ -130,160 +130,15 @@ class Gateway extends WC_Payment_Gateway {
    * @throws WC_Data_Exception
    */
   public function process_payment( $order_id ) {
-    echo 'processing payment';
-
     $order = new WC_Order( $order_id );
 
     $duration = ( is_array( $this->settings ) && isset( $this->settings['payment_term'] ) && is_numeric( $this->settings['payment_term'] ) ) ? $this->settings['payment_term'] : 7;
 
     update_post_meta( $order->get_id(), Plugin::DURATION_KEY, $duration );
 
-    // $billie_session_id = $this->getBillieSessionId( WC()->session->get_customer_id() );
-    update_post_meta( $order->get_id(), Plugin::SESSION_ID_KEY, $billie_session_id );
+    // update_post_meta( $order->get_id(), Plugin::ORDER_DATA_KEY, $billie_order_data );
 
-    // $billie_order_data = $this->api->checkoutSessionConfirm( $billie_session_id, WC()->session->get( 'billie_order_data' ) );
-
-    $this->logger->debug( 'billie_order_data', $billie_order_data );
-
-    update_post_meta( $order->get_id(), Plugin::ORDER_DATA_KEY, $billie_order_data );
-
-    update_post_meta( $order->get_id(), Plugin::ORDER_ID_KEY, $billie_order_data['uuid'] );
-
-    $this->api->updateOrder( $billie_order_data['uuid'], [
-      'order_id' => $order->get_order_number(),
-    ] );
-
-    $use_shipping_address = ( $order->get_formatted_billing_address() !== $order->get_formatted_shipping_address() );
-
-    $billing_company = null;
-
-    if ( isset( $billie_order_data['debtor_company']['name'] ) ) {
-      $billing_company = sanitize_text_field( $billie_order_data['debtor_company']['name'] );
-    }
-
-    if ( $billing_company !== null ) {
-      $order->set_billing_company( $billing_company );
-      $this->logger->debug( 'setting billing company', [ 'company' => $billing_company ] );
-    }
-
-    /*
-     * Rechnungsadresse übernehmen
-     */
-    $billing_address_1 = null;
-    $billing_postcode  = null;
-    $billing_city      = null;
-    $billing_country   = null;
-
-    if ( isset( $billie_order_data['billing_address']['street'], $billie_order_data['billing_address']['house_number'] ) ) {
-      $billing_address_1 = implode( ' ', [
-        sanitize_text_field( $billie_order_data['billing_address']['street'] ),
-        sanitize_text_field( $billie_order_data['billing_address']['house_number'] ),
-      ] );
-    }
-
-    if ( isset( $billie_order_data['billing_address']['postal_code'] ) ) {
-      $billing_postcode = sanitize_text_field( $billie_order_data['billing_address']['postal_code'] );
-    }
-
-    if ( isset( $billie_order_data['billing_address']['city'] ) ) {
-      $billing_city = sanitize_text_field( $billie_order_data['billing_address']['city'] );
-    }
-    if ( isset( $billie_order_data['billing_address']['country'] ) ) {
-      $billing_country = sanitize_text_field( $billie_order_data['billing_address']['country'] );
-    }
-
-    if ( $billing_address_1 !== null ) {
-      $order->set_billing_address_1( $billing_address_1 );
-      $this->logger->debug( 'setting billing address 1', [ 'address_1' => $billing_address_1 ] );
-    }
-
-    if ( $billing_postcode !== null ) {
-      $order->set_billing_postcode( $billing_postcode );
-      $this->logger->debug( 'setting billing postcode', [ 'postcode' => $billing_postcode ] );
-    }
-
-    if ( $billing_city !== null ) {
-      $order->set_billing_city( $billing_city );
-      $this->logger->debug( 'setting billing city', [ 'city' => $billing_city ] );
-    }
-
-    if ( $billing_country !== null ) {
-      $order->set_billing_country( $billing_country );
-      $this->logger->debug( 'setting billing country', [ 'country' => $billing_country ] );
-    }
-
-
-    if ( ! $use_shipping_address ) {
-      if ( $billing_company !== null ) {
-        $order->set_shipping_company( $billing_company );
-      }
-
-      if ( $billing_address_1 !== null ) {
-        $order->set_shipping_address_1( $billing_address_1 );
-        $this->logger->debug( 'setting shipping address 1 to billing address 1', [ 'address_1' => $billing_address_1 ] );
-      }
-
-      if ( $billing_postcode !== null ) {
-        $order->set_shipping_postcode( $billing_postcode );
-        $this->logger->debug( 'setting shipping postcode to billing postcode', [ 'postcode' => $billing_postcode ] );
-      }
-
-      if ( $billing_city !== null ) {
-        $order->set_shipping_city( $billing_city );
-        $this->logger->debug( 'setting shipping city to billing city', [ 'city' => $billing_city ] );
-      }
-
-      if ( $billing_country !== null ) {
-        $order->set_shipping_country( $billing_country );
-        $this->logger->debug( 'setting shipping country to billing country', [ 'country' => $billing_country ] );
-      }
-    } else {
-      /*
-             * Lieferadresse übernehmen
-             */
-      $shipping_address_1 = null;
-      $shipping_postcode  = null;
-      $shipping_city      = null;
-      $shipping_country   = null;
-
-      if ( isset( $billie_order_data['delivery_address']['street'], $billie_order_data['delivery_address']['house_number'] ) ) {
-        $shipping_address_1 = implode( ' ', [
-          sanitize_text_field( $billie_order_data['delivery_address']['street'] ),
-          sanitize_text_field( $billie_order_data['delivery_address']['house_number'] ),
-        ] );
-      }
-
-      if ( isset( $billie_order_data['delivery_address']['postal_code'] ) ) {
-        $shipping_postcode = sanitize_text_field( $billie_order_data['delivery_address']['postal_code'] );
-      }
-
-      if ( isset( $billie_order_data['delivery_address']['city'] ) ) {
-        $shipping_city = sanitize_text_field( $billie_order_data['delivery_address']['city'] );
-      }
-      if ( isset( $billie_order_data['delivery_address']['country'] ) ) {
-        $shipping_country = sanitize_text_field( $billie_order_data['delivery_address']['country'] );
-      }
-
-      if ( $shipping_address_1 !== null ) {
-        $order->set_shipping_address_1( $shipping_address_1 );
-        $this->logger->debug( 'setting shipping address 1', [ 'address_1' => $shipping_address_1 ] );
-      }
-
-      if ( $shipping_postcode !== null ) {
-        $order->set_shipping_postcode( $shipping_postcode );
-        $this->logger->debug( 'setting shipping postcode', [ 'postcode' => $shipping_postcode ] );
-      }
-
-      if ( $shipping_city !== null ) {
-        $order->set_shipping_city( $shipping_city );
-        $this->logger->debug( 'setting shipping city', [ 'city' => $shipping_city ] );
-      }
-
-      if ( $shipping_country !== null ) {
-        $order->set_shipping_country( $shipping_country );
-        $this->logger->debug( 'setting shipping country', [ 'country' => $shipping_country ] );
-      }
-    }
+    // update_post_meta( $order->get_id(), Plugin::ORDER_ID_KEY, $billie_order_data['uuid'] );
 
     $order->update_status( 'wc-processing', __( 'Processing', 'woocommerce' ) );
 
@@ -293,7 +148,7 @@ class Gateway extends WC_Payment_Gateway {
      * otherwise we might try to use the same session id for the next order, which will trigger an
      * authorization error
      */
-    WC()->session->set( 'billieSession', null );
+    WC()->session->set( 'mondu_order_id', null );
 
     return array(
       'result'   => 'success',
@@ -316,49 +171,10 @@ class Gateway extends WC_Payment_Gateway {
   }
 
   /**
-   * @return array[]
-   */
-  private function createBillieOrderData() {
-
-    $cart        = WC()->session->get( 'cart' );
-    $cart_totals = WC()->session->get( 'cart_totals' );
-
-    $duration = ( is_array( $this->settings ) && isset( $this->settings['payment_term'] ) && is_numeric( $this->settings['payment_term'] ) ) ? $this->settings['payment_term'] : 7;
-
-    $billieOrderData = [
-      'duration'   => $duration,
-      'amount'     => [
-        'net'   => round( (float) $cart_totals['cart_contents_total'] + (float) $cart_totals['shipping_total'], 2 ),
-        'gross' => round( (float) $cart_totals['total'], 2 ),
-        'tax'   => round( $cart_totals['total_tax'], 2 ),
-      ],
-      'line_items' => []
-    ];
-
-    foreach ( $cart as $key => $cartItem ) {
-      /** @var WC_Product $product */
-      $product                         = WC()->product_factory->get_product( $cartItem['product_id'] );
-      $lineItem                        = [
-        'external_id' => isset( $cartItem['product_id'] ) ? $cartItem['product_id'] : null,
-        'title'       => $product->get_title(),
-        'quantity'    => isset( $cartItem['quantity'] ) ? $cartItem['quantity'] : null,
-        'amount'      => [
-          'net'   => round( (float) $cartItem['line_total'], 2 ),
-          'gross' => round( (float) $cartItem['line_total'] + (float) $cartItem['line_tax'], 2 ),
-          'tax'   => round( (float) $cartItem['line_tax'], 2 ),
-        ]
-      ];
-      $billieOrderData['line_items'][] = $lineItem;
-    }
-
-    return $billieOrderData;
-  }
-
-  /**
    * @param array $post
    */
   public function process_success( array $post ) {
-    WC()->session->set( 'billie_order_data', $post );
+    // WC()->session->set( 'billie_order_data', $post );
 
     echo json_encode( [ 'process' => 'success' ] );
     exit;

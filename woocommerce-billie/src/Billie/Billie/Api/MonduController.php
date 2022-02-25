@@ -20,6 +20,12 @@ class MonduController extends WP_REST_Controller {
         'callback' => array( $this, 'create_order' ),
       ),
     ) );
+    register_rest_route( $this->namespace, '/checkout_callback', array(
+      array(
+        'methods'  => 'POST',
+        'callback' => array( $this, 'checkout_callback' ),
+      ),
+    ) );
   }
 
   public function create_order( $request ) {
@@ -37,5 +43,21 @@ class MonduController extends WP_REST_Controller {
     // }
 
     // return rest_ensure_response( $data );
+  }
+
+  public function checkout_callback( $request ) {
+    $type = $request['type'];
+    $gateway = new Gateway();
+
+    if ( $type == 'success' ) {
+      return $gateway->process_success( $_POST );
+    }
+    if ( $type == 'error' ) {
+      return $gateway->process_error( $_POST );
+    }
+
+    return array(
+      'test' => $type
+    );
   }
 }

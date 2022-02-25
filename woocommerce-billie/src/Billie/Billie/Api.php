@@ -277,7 +277,7 @@ class Api {
    * @throws ResponseException
    */
   private function request( $path, $body, $json_request = false, Token $token = null, $method = 'PUT', $sandbox = false ) {
-    $url = $sandbox ? BILLIE_SANDBOX_URL : BILLIE_PRODUCTION_URL;
+    $url = $sandbox ? MONDU_SANDBOX_URL : MONDU_PRODUCTION_URL;
     $url .= $path;
 
     $this->logger->debug( 'request', [

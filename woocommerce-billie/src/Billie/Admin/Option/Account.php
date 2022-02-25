@@ -67,6 +67,6 @@ class Account extends Helper {
 
     $oauthPossible = ( $this->options !== null ) && is_array( $this->options ) && isset( $this->options['client_id'], $this->options['client_secret'] );
 
-    include BILLIE_VIEW_PATH . '/admin/options.php';
+    include MONDU_VIEW_PATH . '/admin/options.php';
   }
 }

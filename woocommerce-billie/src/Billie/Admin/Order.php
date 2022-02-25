@@ -47,7 +47,7 @@ class Order {
       static function () use ( $order ) {
         $invoice_id = PaymentInfo::get_invoice_id( $order );
         $invoice_status = $order->get_status();
-        include BILLIE_VIEW_PATH . '/admin/order-invoice.php';
+        include MONDU_VIEW_PATH . '/admin/order-invoice.php';
       },
       'shop_order',
       'normal'

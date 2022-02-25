@@ -19,7 +19,6 @@ class Plugin {
   const ORDER_DATA_KEY = '_billieOrderData';
   const DURATION_KEY = '_billieDuration';
   const ORDER_ID_KEY = '_billieOrderId';
-  const SESSION_ID_KEY = '_billieSessionId';
   const SHIP_ORDER_REQUEST_RESPONSE = '_billieShipOrderRequestResponse';
 
   /**
@@ -52,13 +51,12 @@ class Plugin {
      * (And remove it again if we're not in Germany)
      */
     add_filter( 'woocommerce_payment_gateways', [ Gateway::class, 'add' ] );
-    add_filter( 'woocommerce_available_payment_gateways', [ $this, 'remove_billie_outside_germany' ] );
-    add_filter( 'woocommerce_available_payment_gateways', [ $this, 'remove_billie_if_declined' ] );
+    add_filter( 'woocommerce_available_payment_gateways', [ $this, 'remove_mondu_outside_germany' ] );
 
     /*
-     * Adds the billie javascript to the list of WordPress javascripts
+     * Adds the mondu javascript to the list of WordPress javascripts
      */
-    add_action( 'wp_head', [ $this, 'add_billie_js' ] );
+    add_action( 'wp_head', [ $this, 'add_mondu_js' ] );
 
     $plugin_rel_path = dirname( plugin_basename( __FILE__ ) ) . '/../../lang/';
     load_plugin_textdomain( 'billie', false, $plugin_rel_path );
@@ -115,12 +113,12 @@ class Plugin {
     echo '<p>' . __( 'Since this order will be paid via Billie you won\'t be able to change the addresses.', 'billie' ) . '</p>';
   }
 
-  public function add_billie_js() {
+  public function add_mondu_js() {
     if ( is_checkout() ) {
       if ( $this->is_sandbox() ) {
-        require_once( BILLIE_VIEW_PATH . '/checkout/billie-checkout-sandbox.html' );
+        require_once( MONDU_VIEW_PATH . '/checkout/mondu-checkout-sandbox.html' );
       } else {
-        require_once( BILLIE_VIEW_PATH . '/checkout/billie-checkout.html' );
+        require_once( MONDU_VIEW_PATH . '/checkout/mondu-checkout.html' );
       }
     }
   }
@@ -141,7 +139,7 @@ class Plugin {
     return $isSandbox;
   }
 
-  public function remove_billie_outside_germany( $available_gateways ) {
+  public function remove_mondu_outside_germany( $available_gateways ) {
     if ( is_admin() ) {
       return $available_gateways;
     }
@@ -150,68 +148,6 @@ class Plugin {
     }
 
     return $available_gateways;
-  }
-
-  public function remove_billie_if_declined( $available_gateways ) {
-    if ( is_admin() ) {
-      return $available_gateways;
-    }
-
-    if ( ! isset( $available_gateways['billie'] ) ) {
-      return $available_gateways;
-    }
-
-    $declined_reason = trim( (string) WC()->session->get( 'billie_decline_reason' ) );
-
-    if ( $declined_reason === '' ) {
-      return $available_gateways;
-    }
-
-    $reasons_to_remove = [
-      'risk_policy',
-      'debtor_limit_exceeded'
-    ];
-
-    if ( in_array( $declined_reason, $reasons_to_remove ) ) {
-      unset( $available_gateways['billie'] );
-    }
-
-    return $available_gateways;
-  }
-
-  public static function get_callback_url( $type = 'transaction' ) {
-    $url = get_site_url( null, '/' );
-    $url = add_query_arg( self::CALLBACK_SLUG, 'true', $url );
-    if ( $type !== 'transaction' ) {
-      $url = add_query_arg( 'type', $type, $url );
-    }
-
-    return $url;
-  }
-
-  public function add_callback_url() {
-    add_rewrite_rule( '^' . self::CALLBACK_SLUG . '/?$', 'index.php?' . self::CALLBACK_SLUG . '=true', 'top' );
-    add_filter( 'query_vars', [ $this, 'add_rewrite_var' ] );
-    add_action( 'template_redirect', [ $this, 'catch_billie_callback' ] );
-  }
-
-  public function add_rewrite_var( $vars ) {
-    $vars[] = self::CALLBACK_SLUG;
-
-    return $vars;
-  }
-
-  public function catch_billie_callback() {
-    if ( get_query_var( self::CALLBACK_SLUG ) ) {
-      if ( $this->is_callback_billie_success() ) {
-        return $this->process_billie_success();
-      }
-      if ( $this->is_callback_billie_error() ) {
-        return $this->process_billie_error();
-      }
-    }
-
-    return null;
   }
 
   /**
@@ -272,31 +208,5 @@ class Plugin {
   public function add_billie_payment_info( $order_id ) {
 
     echo $this->get_billie_payment_html( $order_id );
-  }
-
-  /**
-   * @return bool
-   */
-  private function is_callback_billie_success() {
-    return isset( $_GET['type'] ) && $_GET['type'] === 'ajax-billie-success';
-  }
-
-  /**
-   * @return bool
-   */
-  private function is_callback_billie_error() {
-    return isset( $_GET['type'] ) && $_GET['type'] === 'ajax-billie-error';
-  }
-
-  private function process_billie_success() {
-    $gateway = new Gateway();
-
-    return $gateway->process_success( $_POST );
-  }
-
-  private function process_billie_error() {
-    $gateway = new Gateway();
-
-    return $gateway->process_error( $_POST );
   }
 }
