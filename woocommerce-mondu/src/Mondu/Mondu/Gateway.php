@@ -203,18 +203,6 @@ class Gateway extends WC_Payment_Gateway {
       return;
     }
 
-    if ( $to_status === 'cancelled' ) {
-      $this->cancelOrder( $order );
-    }
-
-    if ( $to_status === 'refunded' ) {
-      $this->cancelOrder( $order );
-    }
-
-    if ( $to_status === 'completed' ) {
-      $this->completeOrder( $order );
-    }
-
   }
 
   /**
@@ -224,23 +212,7 @@ class Gateway extends WC_Payment_Gateway {
    * @throws MonduException
    * @throws ResponseException
    */
-  public function order_refunded( $order_id, $refund_id ) {
-    $order         = new WC_Order( $order_id );
-    $refund        = new WC_Order_Refund( $refund_id );
-    $monduOrderId = get_post_meta( $order->get_id(), Plugin::ORDER_ID_KEY, true );
-
-    $order_total      = $order->get_total();
-    $order_total_tax  = $order->get_total_tax();
-    $refund_total     = $refund->get_total();
-    $refund_total_tax = $refund->get_total_tax();
-    $new_amount       = [
-      'net'   => ( $order_total - $order_total_tax ) + ( $refund_total - $refund_total_tax ),
-      'gross' => ( $order_total ) + ( $refund_total ),
-      'tax'   => ( $order_total_tax ) + ( $refund_total_tax ),
-    ];
-
-    $this->api->updateOrder( $monduOrderId, [ 'amount' => $new_amount ] );
-  }
+  
 
   /**
    * @throws MonduException
@@ -268,11 +240,6 @@ class Gateway extends WC_Payment_Gateway {
    * @throws MonduException
    * @throws ResponseException
    */
-  private function cancelOrder( WC_Order $order ) {
-    $monduOrderId = get_post_meta( $order->get_id(), Plugin::ORDER_ID_KEY, true );
-
-    $this->api->cancelOrder( $monduOrderId );
-  }
 
   /**
    * @param WC_Order $order
@@ -287,9 +254,7 @@ class Gateway extends WC_Payment_Gateway {
       'invoice_number' => PaymentInfo::get_invoice_id( $order ),
       'invoice_url'    => $this->get_return_url( $order )
     ];
-
-    $response = $this->api->shipOrder( $monduOrderId, $mondu_order_data );
-
+    
     update_post_meta( $order->get_id(), Plugin::SHIP_ORDER_REQUEST_RESPONSE, $response );
   }
 }

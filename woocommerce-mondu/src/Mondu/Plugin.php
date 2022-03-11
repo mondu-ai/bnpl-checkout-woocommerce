@@ -63,7 +63,6 @@ class Plugin {
 
     add_action( 'woocommerce_order_status_changed', [ new Gateway(), 'order_status_changed' ], 10, 3 );
 
-    add_action( 'woocommerce_order_refunded', [ new Gateway(), 'order_refunded' ], 10, 2 );
 
     add_action( 'rest_api_init', function () {
       $controller = new MonduController();

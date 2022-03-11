@@ -27,19 +27,17 @@
     if (checkMonduMount) {
       return;
     }
-    console.log(3)
+    
     checkMonduMount = true;
 
     jQuery.ajax({
       type: 'POST',
       url: `${url}?rest_route=/mondu/v1/create_order`,
       success: function(res) {
-        console.log(1)
         renderWidget(res['token']);
         return true;
       },
       fail: function(err) {
-        console.log(2)
         return false;
       }
     });

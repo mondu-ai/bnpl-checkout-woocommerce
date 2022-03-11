@@ -110,12 +110,7 @@ class Api {
    * @throws MonduException
    * @throws ResponseException
    */
-  public function updateOrder( $mondu_uuid, array $mondu_order_data ) {
-
-    $oauthToken = $this->requestOAuthToken( $this->options['client_id'], $this->options['client_secret'], $this->isSandbox() );
-
-    $this->patch( sprintf( '/order/%s', $mondu_uuid ), $mondu_order_data, $oauthToken, $this->isSandbox(), true );
-  }
+ 
 
   /**
    * @param $mondu_uuid
@@ -123,11 +118,7 @@ class Api {
    * @throws MonduException
    * @throws ResponseException
    */
-  public function cancelOrder( $mondu_uuid ) {
-    $oauthToken = $this->requestOAuthToken( $this->options['client_id'], $this->options['client_secret'], $this->isSandbox() );
 
-    $this->post( sprintf( '/order/%s/cancel', $mondu_uuid ), [], $oauthToken, $this->isSandbox(), true );
-  }
 
   /**
    * @param $mondu_uuid
@@ -137,13 +128,7 @@ class Api {
    * @throws MonduException
    * @throws ResponseException
    */
-  public function shipOrder( $mondu_uuid, array $mondu_order_data ) {
-    $oauthToken = $this->requestOAuthToken( $this->options['client_id'], $this->options['client_secret'], $this->isSandbox() );
-
-    $result = $this->post( sprintf( '/order/%s/ship', $mondu_uuid ), $mondu_order_data, $oauthToken, $this->isSandbox(), true );
-
-    return json_decode( $result['body'], true );
-  }
+  
 
   /**
    * @param $path

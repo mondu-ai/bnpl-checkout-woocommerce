@@ -226,8 +226,8 @@ msgid "Mondu"
 msgstr "Mondu"
 
 #. Plugin URI of the plugin/theme
-msgid "https://www.Mondu.io/"
-msgstr "https://www.Mondu.io/"
+msgid "https://www.mondu.ai/"
+msgstr "https://www.mondu.ai/"
 
 #. Description of the plugin/theme
 msgid ""
