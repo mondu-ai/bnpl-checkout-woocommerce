@@ -238,12 +238,12 @@ msgstr ""
 "Rechnungskauf"
 
 #. Author of the plugin/theme
-msgid "pooliestudios"
-msgstr "pooliestudios"
+msgid "mondu"
+msgstr "mondu"
 
 #. Author URI of the plugin/theme
-msgid "https://pooliestudios.com"
-msgstr "https://pooliestudios.com"
+msgid "https://mondu.ai"
+msgstr "https://mondu.ai"
 
 #~ msgid "Mondu WooCommerce"
 #~ msgstr "Mondu"
