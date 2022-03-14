@@ -25,7 +25,7 @@ define( 'MONDU_VIEW_PATH', MONDU_PLUGIN_PATH . '/views' );
 define( 'MONDU_RESSOURCES_PATH', MONDU_PLUGIN_PATH . '/resources' );
 
 define( 'MONDU_SANDBOX_URL', 'http://host.docker.internal:3000/api/v1' );
-define( 'MONDU_PRODUCTION_URL', 'http://host.docker.internal:3000/api/v1' );
+define( 'MONDU_PRODUCTION_URL', '' );
 
 require_once 'src/autoload.php';
 
