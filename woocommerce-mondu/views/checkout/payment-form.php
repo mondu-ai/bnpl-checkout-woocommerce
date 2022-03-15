@@ -75,7 +75,6 @@
           if (jQuery('#confirm-order-flag').length !== 0) {
             jQuery('#confirm-order-flag').val('');
           }
-
           jQuery('#place_order').parents('form').submit();
         }
       });
@@ -104,7 +103,6 @@
           jQuery(this).addClass('error');
           if (error_text.includes('error_confirmation')) {
             if (error_count === 1) {
-
               if (isGatewayMondu(jQuery('input[name=payment_method]:checked').val())) {
                 jQuery('html, body').stop();
               }

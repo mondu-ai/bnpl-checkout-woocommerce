@@ -87,15 +87,11 @@ class Api {
    */
   public function createOrder( $params ) {
     
-   
-    
     $oauthToken = $this->requestOAuthToken( $this->options['client_id'], $this->options['client_secret'], $this->isSandbox() );
-
 
     $result = $this->post( '/orders', $params, $oauthToken, $this->isSandbox(), true );
     
    
-    // print_r($this->options);
     $response = json_decode( $result['body'], true );
     
     WC()->session->set( 'mondu_order_id', $response['order']['uuid'] );

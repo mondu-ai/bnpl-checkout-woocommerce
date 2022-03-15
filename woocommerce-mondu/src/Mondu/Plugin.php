@@ -31,7 +31,7 @@ class Plugin {
 
     add_action('woocommerce_after_checkout_validation', function () {
       if ($_POST['confirm-order-flag'] === "1") {
-        wc_add_notice(__('Validation checkout error!', 'mondu'), 'error');
+        // wc_add_notice(__('Validation checkout error!', 'mondu'), 'error');
       }
     });
   }
