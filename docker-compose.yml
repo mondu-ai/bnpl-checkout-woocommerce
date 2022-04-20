@@ -4,7 +4,7 @@ services:
     container_name: woocommerce
     build: .
     volumes:
-      - ./tmp/wordpress:/var/www/html
+      - wordpress_data:/var/www/html
       - .:/var/www/html/wp-content/plugins/woocommerce-mondu
     links:
       - dbserver:mysql
@@ -21,7 +21,7 @@ services:
     container_name: woo_mariadb
     image: mariadb
     volumes:
-      - ./tmp/db:/var/lib/mysql
+      - mariadb_data:/var/lib/mysql
     environment:
       MYSQL_ROOT_PASSWORD: example
       MYSQL_DATABASE: wordpress
@@ -29,3 +29,9 @@ services:
       MYSQL_PASSWORD: wordpress
     ports:
       - 3306:3306
+
+volumes:
+  wordpress_data:
+    driver: local
+  mariadb_data:
+    driver: local
