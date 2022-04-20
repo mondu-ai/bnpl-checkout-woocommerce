@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Mondu\Mondu;
-
 
 use Mondu\Mondu\Api\Token;
 use Mondu\Exceptions\MonduException;
@@ -86,14 +84,14 @@ class Api {
    * @throws ResponseException
    */
   public function createOrder( $params ) {
-    
+
     $oauthToken = $this->requestOAuthToken( $this->options['client_id'], $this->options['client_secret'], $this->isSandbox() );
 
     $result = $this->post( '/orders', $params, $oauthToken, $this->isSandbox(), true );
-    
-   
+
+
     $response = json_decode( $result['body'], true );
-    
+
     WC()->session->set( 'mondu_order_id', $response['order']['uuid'] );
 
     return json_decode( $result['body'], true );
@@ -106,7 +104,7 @@ class Api {
    * @throws MonduException
    * @throws ResponseException
    */
- 
+
 
   /**
    * @param $mondu_uuid
@@ -124,7 +122,7 @@ class Api {
    * @throws MonduException
    * @throws ResponseException
    */
-  
+
 
   /**
    * @param $path
@@ -140,7 +138,7 @@ class Api {
    */
   private function post( $path, array $body = null, $token = null, $sandbox = false, $json_request = true ) {
     $method = 'POST';
-    
+
     return $this->request( $path, $body, $json_request, $token, $method, $sandbox );
   }
 
@@ -213,8 +211,8 @@ class Api {
       'result' => $result,
     ] );
 
-    
-    
+
+
 
     if ( $result instanceof \WP_Error ) {
       throw new MonduException( __( $result->get_error_message(), $result->get_error_code() ) );
@@ -232,7 +230,7 @@ class Api {
       }
 
       throw new ResponseException( $message, $result['response']['code'], json_decode( $result['body'], true ) );
-      
+
     }
 
     return $result;

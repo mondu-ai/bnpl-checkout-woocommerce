@@ -5,7 +5,6 @@
  */
 
 spl_autoload_register( static function ( $class ) {
-
   // project-specific namespace prefix
   $prefix = 'Mondu';
 

@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Mondu\Admin;
 
 use Mondu\Admin\Option\Account;
@@ -29,7 +28,6 @@ class Settings {
       'manage_options',
       'mondu-settings-account',
       [ $this, 'render_account_options' ] );
-
   }
 
   public function register_options() {
@@ -38,7 +36,6 @@ class Settings {
 
     $this->api = new Api();
   }
-
 
   public function render_account_options() {
     $validationError = null;

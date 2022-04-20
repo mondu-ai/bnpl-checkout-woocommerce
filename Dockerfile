@@ -1,5 +1,5 @@
-FROM wordpress:latest
-ENV WOOCOMMERCE_VERSION 6.2.0
+FROM wordpress:5.9.3
+ENV WOOCOMMERCE_VERSION 6.4.1
 
 RUN apt update
 RUN apt -y install wget

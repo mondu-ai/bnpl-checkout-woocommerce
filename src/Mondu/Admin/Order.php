@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Mondu\Admin;
-
 
 use Mondu\Mondu\PaymentInfo;
 use WC_Order;
