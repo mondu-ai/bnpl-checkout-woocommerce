@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Mondu\Mondu\Api;
 
 use Mondu\Mondu\Gateway;
@@ -39,13 +38,13 @@ class MonduController extends WP_REST_Controller {
         _doing_it_wrong( 'register_rest_route', __( 'Route must be specified.' ), '4.4.0' );
         return false;
     }
- 
+
     $clean_namespace = trim( $namespace, '/' );
- 
+
     if ( $clean_namespace !== $namespace ) {
         _doing_it_wrong( __FUNCTION__, __( 'Namespace must not start or end with a slash.' ), '5.4.2' );
     }
- 
+
     if ( ! did_action( 'rest_api_init' ) ) {
         _doing_it_wrong(
             'register_rest_route',
@@ -57,32 +56,32 @@ class MonduController extends WP_REST_Controller {
             '5.1.0'
         );
     }
- 
+
     if ( isset( $args['args'] ) ) {
         $common_args = $args['args'];
         unset( $args['args'] );
     } else {
         $common_args = array();
     }
- 
+
     if ( isset( $args['callback'] ) ) {
         $args = array( $args );
     }
- 
+
     $defaults = array(
         'methods'  => 'GET',
         'callback' => null,
         'args'     => array(),
     );
- 
+
     foreach ( $args as $key => &$arg_group ) {
         if ( ! is_numeric( $key ) ) {
             continue;
         }
- 
+
         $arg_group         = array_merge( $defaults, $arg_group );
         $arg_group['args'] = array_merge( $common_args, $arg_group['args'] );
- 
+
         if ( ! isset( $arg_group['permission_callback'] ) ) {
             _doing_it_wrong(
                 __FUNCTION__,
@@ -96,21 +95,21 @@ class MonduController extends WP_REST_Controller {
             );
         }
     }
- 
+
     $full_route = '/' . $clean_namespace . '/' . trim( $route, '/' );
     rest_get_server()->register_route( $clean_namespace, $full_route, $args, $override );
     return true;
   }
 
   public function create_order( $request ) {
-  
+
     $gateway = new Gateway();
     $gateway->create_order();
-   
+
     return array(
       'token' => WC()->session->get( 'mondu_order_id' )
     );
-    
+
     // $data = array();
 
     // if ( empty( $args ) ) {

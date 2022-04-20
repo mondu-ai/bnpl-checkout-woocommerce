@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Mondu\Mondu;
-
 
 use WC_Tax;
 
@@ -71,7 +69,7 @@ class OrderData {
     }
 
     $orderData['lines'][] = $line;
-    
+
     return $orderData;
   }
 

@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Mondu\Mondu\Api;
-
 
 class Token {
   /** @var int */

@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Mondu\Mondu;
-
 
 use Mondu\Plugin;
 use DateInterval;

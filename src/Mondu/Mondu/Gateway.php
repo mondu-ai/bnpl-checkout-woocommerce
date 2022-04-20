@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Mondu\Mondu;
-
 
 use Mondu\Admin\Option\Account;
 use Mondu\Exceptions\MonduException;
@@ -33,7 +31,7 @@ class Gateway extends WC_Payment_Gateway {
   public function __construct() {
     $this->logger = wc_get_logger();
 
-   
+
     $this->global_settings = get_option( Account::OPTION_NAME );
 
     $this->id                 = 'mondu';
@@ -212,7 +210,7 @@ class Gateway extends WC_Payment_Gateway {
    * @throws MonduException
    * @throws ResponseException
    */
-  
+
 
   /**
    * @throws MonduException
@@ -224,9 +222,9 @@ class Gateway extends WC_Payment_Gateway {
       return;
     }
 
-    
+
     $params = OrderData::createOrderData();
-    
+
     // print_r($this->api->createOrder());
     $response = $this->api->createOrder( $params );
     // $response = [];
@@ -254,7 +252,7 @@ class Gateway extends WC_Payment_Gateway {
       'invoice_number' => PaymentInfo::get_invoice_id( $order ),
       'invoice_url'    => $this->get_return_url( $order )
     ];
-    
+
     update_post_meta( $order->get_id(), Plugin::SHIP_ORDER_REQUEST_RESPONSE, $response );
   }
 }

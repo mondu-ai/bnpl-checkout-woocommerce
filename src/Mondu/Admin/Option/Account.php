@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Mondu\Admin\Option;
 
 defined( 'ABSPATH' ) or die( 'Direct access not allowed' );
@@ -20,7 +19,7 @@ class Account extends Helper {
      */
     add_settings_section( 'mondu_account_settings_general',
       __( 'Settings', 'mondu' ),
-      [ $this, 'account_info' ],
+      [ ],
       'mondu-settings-account' );
     add_settings_field( 'sandbox_or_production',
       __( 'Sandbox or production', 'mondu' ),
@@ -37,10 +36,6 @@ class Account extends Helper {
       [ $this, 'field_client_secret' ],
       'mondu-settings-account',
       'mondu_account_settings_general' );
-  }
-
-  public function account_info() {
-    _e( 'plugin.settings.info', 'mondu' );
   }
 
   public function field_sandbox_or_production() {
