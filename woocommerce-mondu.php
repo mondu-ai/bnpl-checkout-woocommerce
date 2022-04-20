@@ -1,31 +1,27 @@
 <?php
 /**
  * Plugin Name: Mondu
- * Plugin URI: https://www.mondu.ai/
+ * Plugin URI: https://mondu.ai/
  * Description: Increase your revenue with Mondu’s solution, without the operational burden.
- * Version: 1.2.6
+ * Version: 1.0.0
  * Author: mondu
  * Author URI: https://mondu.ai
  * License: MIT
  * Text Domain: Mondu
  * Domain Path: lang
- * WC requires at least: 3.0.0
- * WC tested up to: 4.4.1
+ * WC requires at least: 4.6
+ * WC tested up to: 5.9.3
  */
 
 defined( 'ABSPATH' ) or die( 'Direct access not allowed' );
 
-
-
-
-
-define( 'MONDU_PLUGIN_VERSION', '1.2.6' );
+define( 'MONDU_PLUGIN_VERSION', '1.0.0' );
 define( 'MONDU_PLUGIN_PATH', __DIR__ );
 define( 'MONDU_VIEW_PATH', MONDU_PLUGIN_PATH . '/views' );
 define( 'MONDU_RESSOURCES_PATH', MONDU_PLUGIN_PATH . '/resources' );
 
-define( 'MONDU_SANDBOX_URL', 'http://host.docker.internal:3000/api/v1' );
-define( 'MONDU_PRODUCTION_URL', '' );
+define( 'MONDU_SANDBOX_URL', 'https://api.demo.mondu.ai/api/v1' );
+define( 'MONDU_PRODUCTION_URL', 'https://api.mondu.ai/api/v1' );
 
 require_once 'src/autoload.php';
 
