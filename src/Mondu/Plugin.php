@@ -29,15 +29,15 @@ class Plugin {
   public function __construct() {
     $this->global_settings = get_option( Account::OPTION_NAME );
 
+    # This is for trigger the open checkout plugin
     add_action('woocommerce_after_checkout_validation', function () {
       if ($_POST['confirm-order-flag'] === "1") {
-        // wc_add_notice(__('Validation checkout error!', 'mondu'), 'error');
+        wc_add_notice(__('Validation checkout error!', 'mondu'), 'error');
       }
     });
   }
 
   public function init() {
-
     if ( is_admin() ) {
       $settings = new Settings();
       $settings->init();
@@ -63,11 +63,14 @@ class Plugin {
 
     add_action( 'woocommerce_order_status_changed', [ new Gateway(), 'order_status_changed' ], 10, 3 );
 
-
     add_action( 'rest_api_init', function () {
       $controller = new MonduController();
       $controller->register_routes();
     });
+
+    add_action( 'woocommerce_checkout_order_processed', function($order_id) {
+      WC()->session->set( 'woocommerce_order_id', $order_id );
+    }, 10, 3);
 
     /*
      * This one adds the payment information to a Germanized Pro Invoice
@@ -97,7 +100,6 @@ class Plugin {
     }, 0, 2 );
 
     add_action( 'woocommerce_admin_order_data_after_billing_address', [ $this, 'change_address_warning' ], 10, 1 );
-
   }
 
   public function change_address_warning( WC_Order $order ) {

@@ -31,7 +31,6 @@ class Gateway extends WC_Payment_Gateway {
   public function __construct() {
     $this->logger = wc_get_logger();
 
-
     $this->global_settings = get_option( Account::OPTION_NAME );
 
     $this->id                 = 'mondu';
@@ -134,7 +133,6 @@ class Gateway extends WC_Payment_Gateway {
 
     update_post_meta( $order->get_id(), Plugin::DURATION_KEY, $duration );
 
-
     $order->update_status( 'wc-processing', __( 'Processing', 'woocommerce' ) );
 
     WC()->cart->empty_cart();
@@ -150,7 +148,6 @@ class Gateway extends WC_Payment_Gateway {
       'redirect' => $this->get_return_url( $order )
     );
   }
-
 
   /**
    * @param array $methods
@@ -204,15 +201,6 @@ class Gateway extends WC_Payment_Gateway {
   }
 
   /**
-   * @param $order_id
-   * @param $refund_id
-   *
-   * @throws MonduException
-   * @throws ResponseException
-   */
-
-
-  /**
    * @throws MonduException
    * @throws ResponseException
    */
@@ -222,22 +210,11 @@ class Gateway extends WC_Payment_Gateway {
       return;
     }
 
-
     $params = OrderData::createOrderData();
-
-    // print_r($this->api->createOrder());
     $response = $this->api->createOrder( $params );
-    // $response = [];
-    // die();
+
     WC()->session->set( 'mondu_order_id', $response['order']['uuid'] );
   }
-
-  /**
-   * @param WC_Order $order
-   *
-   * @throws MonduException
-   * @throws ResponseException
-   */
 
   /**
    * @param WC_Order $order

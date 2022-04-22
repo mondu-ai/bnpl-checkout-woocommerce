@@ -23,11 +23,10 @@
   }
 
   function payWithMondu() {
-    
     if (checkMonduMount) {
-      return;
+      return false;
     }
-    
+
     checkMonduMount = true;
 
     jQuery.ajax({
@@ -64,7 +63,6 @@
   }
 
   function checkoutCallback() {
-    return;
     if (result == 'success') {
       jQuery.ajax({
         type: 'POST',
@@ -94,33 +92,31 @@
   }
 
   jQuery(document).ready(function () {
-    
-      jQuery(document.body).on('checkout_error', function () {
-        let error_count = jQuery('.woocommerce-error li').length;
-        
-          jQuery('.woocommerce-error li').each(function () {
-          let error_text = jQuery(this).text();
-          jQuery(this).addClass('error');
-          if (error_text.includes('error_confirmation')) {
-            if (error_count === 1) {
-              if (isGatewayMondu(jQuery('input[name=payment_method]:checked').val())) {
-                jQuery('html, body').stop();
-              }
+    jQuery(document.body).on('checkout_error', function () {
+      let error_count = jQuery('.woocommerce-error li').length;
+
+      jQuery('.woocommerce-error li').each(function () {
+        let error_text = jQuery(this).text();
+        jQuery(this).addClass('error');
+        if (error_text.includes('error_confirmation')) {
+          if (error_count === 1) {
+            if (isGatewayMondu(jQuery('input[name=payment_method]:checked').val())) {
+              jQuery('html, body').stop();
             }
           }
-        });
-
-        if (error_count === 1 || error_count === 0) {
-          let result = true;
-          if (isGatewayMondu(jQuery('input[name=payment_method]:checked').val())) {
-            monduBlock();
-            result = payWithMondu();
-            jQuery('html, body').stop();
-          }
-
-          if (result === true) monduUnblock();
         }
-      
+      });
+
+      if (error_count === 1 || error_count === 0) {
+        let result = true;
+        if (isGatewayMondu(jQuery('input[name=payment_method]:checked').val())) {
+          monduBlock();
+          result = payWithMondu();
+          jQuery('html, body').stop();
+        }
+
+        if (result === true) monduUnblock();
+      }
     });
 
     jQuery('form.woocommerce-checkout').on('checkout_place_order', function () {
@@ -136,6 +132,7 @@
     });
   });
 </script>
+
 <style>
   #checkout_mondu_logo {
     max-height: 1em;
@@ -144,6 +141,7 @@
     color:#dc3545;
   }
 </style>
+
 <p>
   <?php if ( ! isset( $this->settings['hide_logo'] ) || $this->settings['hide_logo'] === 'no' ): ?>
     <img id="checkout_mondu_logo" src="<?php echo plugin_dir_url( __DIR__ ); ?>/mondu.svg" alt="Mondu">

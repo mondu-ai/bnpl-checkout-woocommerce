@@ -2,8 +2,6 @@
 
 namespace Mondu\Mondu;
 
-use WC_Tax;
-
 class OrderData {
   /**
    * @return array[]
@@ -12,9 +10,11 @@ class OrderData {
     $cart = WC()->session->get( 'cart' );
     $cart_totals = WC()->session->get( 'cart_totals' );
     $customer = WC()->session->get( 'customer' );
+    $order_id = WC()->session->get( 'woocommerce_order_id' );
 
     $orderData = [
       'currency' => get_woocommerce_currency(),
+      'external_reference_id' => strval($order_id),
       'buyer' => [
         'first_name' => isset( $customer['first_name'] ) ? $customer['first_name'] : null,
         'last_name' => isset( $customer['last_name'] ) ? $customer['last_name'] : null,
@@ -63,21 +63,11 @@ class OrderData {
         'item_type' => $product->is_virtual() ? 'VIRTUAL' : 'PHYSICAL',
       ];
 
-      // print_r($cartItem);
-
       $line['line_items'][] = $lineItem;
     }
 
     $orderData['lines'][] = $line;
 
     return $orderData;
-  }
-
-  private static function formatCents( float $value ) {
-    if ( !isset( $value ) || $value == 0 ) {
-      return null;
-    }
-
-    return round( $value * 100, 2 );
   }
 }

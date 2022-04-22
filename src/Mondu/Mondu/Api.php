@@ -66,7 +66,6 @@ class Api {
     ];
 
     $result = $this->post( '/oauth/token', $body, null, $sandbox, false );
-    // print_r($result);
     $tokenResult = json_decode( $result['body'], true );
 
     if ( ! isset( $tokenResult['expires_in'], $tokenResult['access_token'] ) ) {
@@ -84,11 +83,9 @@ class Api {
    * @throws ResponseException
    */
   public function createOrder( $params ) {
-
     $oauthToken = $this->requestOAuthToken( $this->options['client_id'], $this->options['client_secret'], $this->isSandbox() );
 
     $result = $this->post( '/orders', $params, $oauthToken, $this->isSandbox(), true );
-
 
     $response = json_decode( $result['body'], true );
 
@@ -96,33 +93,6 @@ class Api {
 
     return json_decode( $result['body'], true );
   }
-
-  /**
-   * @param $mondu_uuid
-   * @param array $mondu_order_data
-   *
-   * @throws MonduException
-   * @throws ResponseException
-   */
-
-
-  /**
-   * @param $mondu_uuid
-   *
-   * @throws MonduException
-   * @throws ResponseException
-   */
-
-
-  /**
-   * @param $mondu_uuid
-   * @param array $mondu_order_data
-   *
-   * @return array
-   * @throws MonduException
-   * @throws ResponseException
-   */
-
 
   /**
    * @param $path
@@ -177,7 +147,6 @@ class Api {
     return $this->request( $path, $body, $json_request, $token, $method, $sandbox );
   }
 
-
   /**
    * @param $path
    * @param array|null $parameters
@@ -198,7 +167,6 @@ class Api {
     return $this->request( $path, null, false, $token, $method, $sandbox );
   }
 
-
   /**
    * @param $result
    *
@@ -210,9 +178,6 @@ class Api {
     $this->logger->debug( 'validating', [
       'result' => $result,
     ] );
-
-
-
 
     if ( $result instanceof \WP_Error ) {
       throw new MonduException( __( $result->get_error_message(), $result->get_error_code() ) );
@@ -230,7 +195,6 @@ class Api {
       }
 
       throw new ResponseException( $message, $result['response']['code'], json_decode( $result['body'], true ) );
-
     }
 
     return $result;
@@ -302,5 +266,4 @@ class Api {
 
     return $this->validateRemoteResult( wp_remote_request( $url, $args ) );
   }
-
 }

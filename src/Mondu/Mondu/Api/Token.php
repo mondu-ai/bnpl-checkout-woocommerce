@@ -54,6 +54,4 @@ class Token {
 
     return $this;
   }
-
-
 }
