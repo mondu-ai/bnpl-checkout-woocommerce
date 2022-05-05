@@ -6,6 +6,7 @@ use Automattic\WooCommerce\Admin\Overrides\Order;
 use Mondu\Admin\Option\Account;
 use Mondu\Admin\Settings;
 use Mondu\Mondu\Gateway;
+use Mondu\Mondu\OrderData;
 use Mondu\Mondu\PaymentInfo;
 use Mondu\Mondu\Api\MonduController;
 use DateInterval;
@@ -14,12 +15,11 @@ use WC_DateTime;
 use WC_Order;
 
 class Plugin {
-  const CALLBACK_SLUG = 'mondu-callback';
-
-  const ORDER_DATA_KEY = '_monduOrderData';
-  const DURATION_KEY = '_monduDuration';
-  const ORDER_ID_KEY = '_monduOrderId';
-  const SHIP_ORDER_REQUEST_RESPONSE = '_monduShipOrderRequestResponse';
+  const ADJUST_ORDER_TRIGGERED_KEY = '_mondu_adjust_order_triggered';
+  const ORDER_DATA_KEY = '_mondu_order_data';
+  const DURATION_KEY = '_mondu_duration';
+  const ORDER_ID_KEY = '_mondu_order_id';
+  const SHIP_ORDER_REQUEST_RESPONSE = '_mondu_ship_order_request_response';
 
   /**
    * @var array|bool|mixed|void
@@ -63,30 +63,19 @@ class Plugin {
 
     add_action( 'woocommerce_order_status_changed', [ new Gateway(), 'order_status_changed' ], 10, 3 );
 
+    add_action( 'woocommerce_before_order_object_save', [ new Gateway(), 'update_order_if_changed_some_fields' ], 10, 2 );
+
     add_action( 'rest_api_init', function () {
       $controller = new MonduController();
       $controller->register_routes();
     });
 
     add_action( 'woocommerce_checkout_order_processed', function($order_id) {
+      $mondu_order_id = WC()->session->get( 'mondu_order_id' );
+
       WC()->session->set( 'woocommerce_order_id', $order_id );
+      update_post_meta( $order_id, Plugin::ORDER_ID_KEY, $mondu_order_id );
     }, 10, 3);
-
-    /*
-     * This one adds the payment information to a Germanized Pro Invoice
-     */
-    add_filter( 'woocommerce_gzdp_pdf_static_content', [
-      $this,
-      'add_mondu_payment_info_to_germanized_pdf'
-    ], 10, 3 );
-
-    /*
-     * This one adds the payment information to a WCPDF Invoice
-     */
-    add_action( 'wpo_wcpdf_after_order_details', [
-      $this,
-      'add_mondu_payment_info_to_wcpdf_pdf'
-    ], 10, 2 );
 
     /*
      * This one adds the context to the normal woocommerce log files
@@ -114,6 +103,7 @@ class Plugin {
     echo '<p>' . __( 'Since this order will be paid via Mondu you won\'t be able to change the addresses.', 'mondu' ) . '</p>';
   }
 
+  // This method needs to be public
   public function add_mondu_js() {
     if ( is_checkout() ) {
       if ( $this->is_sandbox() ) {
@@ -140,6 +130,10 @@ class Plugin {
     return $isSandbox;
   }
 
+  /**
+   * @return bool
+   */
+  // This method needs to be public
   public function remove_mondu_outside_germany( $available_gateways ) {
     if ( is_admin() ) {
       return $available_gateways;
@@ -149,65 +143,5 @@ class Plugin {
     }
 
     return $available_gateways;
-  }
-
-  /**
-   * @param string $html
-   * @param $invoice
-   * @param string $where
-   *
-   * @return string
-   * @throws Exception
-   */
-  public function add_mondu_payment_info_to_germanized_pdf( $html, $invoice, $where ) {
-    if ( $where !== 'after_table' ) {
-      return $html;
-    }
-
-    if ( ! is_object( $invoice ) ) {
-      return $html;
-    }
-
-    if ( ! isset( $invoice->post ) || ! $invoice->post instanceof \WP_Post ) {
-      return $html;
-    }
-
-    $html = sprintf( "%s\n<br>\n%s", $html, $this->get_mondu_payment_html( $invoice->get_order_number() ) );
-
-    return $html;
-  }
-
-  /**
-   * @param $type
-   * @param Order $order
-   *
-   * @throws Exception
-   */
-  public function add_mondu_payment_info_to_wcpdf_pdf( $type, Order $order ) {
-    if ( $type !== 'invoice' ) {
-      return;
-    }
-
-    $this->add_mondu_payment_info( $order->get_id() );
-  }
-
-  /**
-   * @param $order_id
-   *
-   * @return false|string
-   * @throws Exception
-   */
-  public function get_mondu_payment_html( $order_id ) {
-    return PaymentInfo::get_mondu_payment_html( $order_id );
-  }
-
-  /**
-   * @param $order_id
-   *
-   * @throws Exception
-   */
-  public function add_mondu_payment_info( $order_id ) {
-
-    echo $this->get_mondu_payment_html( $order_id );
   }
 }

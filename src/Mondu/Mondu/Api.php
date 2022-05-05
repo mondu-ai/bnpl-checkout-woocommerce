@@ -29,12 +29,12 @@ class Api {
    * @throws CredentialsNotSetException
    * @throws ResponseException
    */
-  public function validateCredentials() {
+  public function validate_credentials() {
     if ( ! isset( $this->options ) || ! is_array( $this->options ) || ! isset( $this->options['client_id'], $this->options['client_secret'] ) ) {
       throw new CredentialsNotSetException( __( 'Missing Credentials', 'mondu' ) );
     }
 
-    $oauthToken = $this->requestOAuthToken( $this->options['client_id'], $this->options['client_secret'], $this->isSandbox() );
+    $oauthToken = $this->request_oauth_token( $this->options['client_id'], $this->options['client_secret'], $this->isSandbox() );
 
     $result = $this->post( '/oauth/authorization', null, $oauthToken, $this->isSandbox() );
 
@@ -58,7 +58,7 @@ class Api {
    * @throws MonduException
    * @throws ResponseException
    */
-  private function requestOAuthToken( $client_id, $client_secret, $sandbox = false ) {
+  private function request_oauth_token( $client_id, $client_secret, $sandbox = false ) {
     $body = [
       'grant_type'    => 'client_credentials',
       'client_id'     => $client_id,
@@ -82,14 +82,44 @@ class Api {
    * @throws MonduException
    * @throws ResponseException
    */
-  public function createOrder( $params ) {
-    $oauthToken = $this->requestOAuthToken( $this->options['client_id'], $this->options['client_secret'], $this->isSandbox() );
+  public function create_order( $params ) {
+    $oauthToken = $this->request_oauth_token( $this->options['client_id'], $this->options['client_secret'], $this->isSandbox() );
 
     $result = $this->post( '/orders', $params, $oauthToken, $this->isSandbox(), true );
 
     $response = json_decode( $result['body'], true );
 
     WC()->session->set( 'mondu_order_id', $response['order']['uuid'] );
+
+    return json_decode( $result['body'], true );
+  }
+
+  /**
+   * @param $mondu_uuid
+   * @param $params
+   *
+   * @return string
+   * @throws MonduException
+   * @throws ResponseException
+   */
+  public function adjust_order( $mondu_uuid, $params ) {
+    $oauthToken = $this->request_oauth_token( $this->options['client_id'], $this->options['client_secret'], $this->isSandbox() );
+
+    $result = $this->post( sprintf( '/orders/%s/adjust', $mondu_uuid ), $params, $oauthToken, $this->isSandbox(), true );
+
+    return json_decode( $result['body'], true );
+  }
+
+  /**
+   * @param $mondu_uuid
+   *
+   * @throws MonduException
+   * @throws ResponseException
+   */
+  public function cancel_order( $mondu_uuid ) {
+    $oauthToken = $this->request_oauth_token( $this->options['client_id'], $this->options['client_secret'], $this->isSandbox() );
+
+    $result = $this->post( sprintf( '/orders/%s/cancel', $mondu_uuid ), [], $oauthToken, $this->isSandbox(), true );
 
     return json_decode( $result['body'], true );
   }

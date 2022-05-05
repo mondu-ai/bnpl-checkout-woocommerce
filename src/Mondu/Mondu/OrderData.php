@@ -2,19 +2,48 @@
 
 namespace Mondu\Mondu;
 
+use Mondu\Mondu\Helper;
+use Mondu\Plugin;
+use WC_Order;
+
 class OrderData {
   /**
    * @return array[]
    */
-  public static function createOrderData() {
+  public static function create_order_data() {
+    $except_keys = ['amount'];
+    $order_data = self::raw_order_data();
+
+    return Helper::remove_keys( $order_data, $except_keys );
+  }
+
+  /**
+   * @param $order_id
+   * @param $data_to_update
+   *
+   * @return array[]
+   */
+  public static function adjust_order_data( $order_id, $data_to_update ) {
+    $except_keys = ['buyer', 'billing_address', 'shipping_address'];
+    $order_data = get_post_meta( $order_id, Plugin::ORDER_DATA_KEY, true );
+
+    $new_order_data = array_merge( $order_data, $data_to_update );
+    update_post_meta( $order_id, Plugin::ORDER_DATA_KEY, $new_order_data );
+
+    return Helper::remove_keys( $new_order_data, $except_keys );
+  }
+
+  /**
+   * @return array[]
+   */
+  public static function raw_order_data() {
     $cart = WC()->session->get( 'cart' );
     $cart_totals = WC()->session->get( 'cart_totals' );
     $customer = WC()->session->get( 'customer' );
-    $order_id = WC()->session->get( 'woocommerce_order_id' );
 
-    $orderData = [
+    $order_data = [
       'currency' => get_woocommerce_currency(),
-      'external_reference_id' => strval($order_id),
+      'external_reference_id' => '0', // We will update this id when woocommerce order is created
       'buyer' => [
         'first_name' => isset( $customer['first_name'] ) ? $customer['first_name'] : null,
         'last_name' => isset( $customer['last_name'] ) ? $customer['last_name'] : null,
@@ -39,6 +68,7 @@ class OrderData {
         'country_code' => isset( $customer['shipping_country'] ) ? $customer['shipping_country'] : null,
       ],
       'lines' => [],
+      'amount' => [], # We have the amount here to avoid calculating it when updating external_reference_id (it is also removed when creating)
     ];
 
     $line = [
@@ -47,27 +77,93 @@ class OrderData {
       'line_items' => [],
     ];
 
-    foreach ( $cart as $key => $cartItem ) {
-      /** @var WC_Product $product */
-      $product  = WC()->product_factory->get_product( $cartItem['product_id'] );
+    $net_price_cents = 0;
+    $tax_cents = 0;
 
-      $lineItem = [
+    foreach ( $cart as $key => $cart_item ) {
+      /** @var WC_Product $product */
+      $product = WC()->product_factory->get_product( $cart_item['product_id'] );
+
+      $line_item = [
         'title' => $product->get_title(),
-        'quantity' => isset( $cartItem['quantity'] ) ? $cartItem['quantity'] : null,
-        'external_reference_id' => isset( $cartItem['product_id'] ) ? (string) $cartItem['product_id'] : null,
-        'product_id' => isset( $cartItem['product_id'] ) ? (string) $cartItem['product_id'] : null,
-        'product_sku' => isset( $cartItem['product_sku'] ) ? $cartItem['product_sku'] : null,
-        'net_price_per_item_cents' => round( (float) $cartItem['line_total'] * 100, 2 ),
-        'gross_amount_cents' => round( ( (float) $cartItem['line_total'] + (float) $cartItem['line_tax'] ) * 100, 2 ),
-        'tax_cents' => round( (float) $cartItem['line_tax'] * 100, 2 ),
+        'quantity' => isset( $cart_item['quantity'] ) ? $cart_item['quantity'] : null,
+        'external_reference_id' => isset( $cart_item['product_id'] ) ? (string) $cart_item['product_id'] : null,
+        'product_id' => isset( $cart_item['product_id'] ) ? (string) $cart_item['product_id'] : null,
+        'product_sku' => isset( $cart_item['product_sku'] ) ? $cart_item['product_sku'] : null,
+        'net_price_per_item_cents' => round( (float) $cart_item['line_total'] * 100, 2 ),
+        'gross_amount_cents' => round( ( (float) $cart_item['line_total'] + (float) $cart_item['line_tax'] ) * 100, 2 ),
+        'tax_cents' => round( (float) $cart_item['line_tax'] * 100, 2 ),
         'item_type' => $product->is_virtual() ? 'VIRTUAL' : 'PHYSICAL',
       ];
 
-      $line['line_items'][] = $lineItem;
+      $line['line_items'][] = $line_item;
+
+      $net_price_cents += (float) $cart_item['line_total'] * 100;
+      $tax_cents += (float) $cart_item['line_tax'] * 100;
     }
 
-    $orderData['lines'][] = $line;
+    $amount = [
+      'net_price_cents' => round( $net_price_cents, 2 ),
+      'tax_cents' => round( $tax_cents, 2 ),
+    ];
 
-    return $orderData;
+    $order_data['lines'][] = $line;
+    $order_data['amount'] = $amount;
+
+    return $order_data;
+  }
+
+  /**
+   * @param $order
+   *
+   * @return array[]
+   */
+  public static function order_data_from_wc_order( WC_Order $order ) {
+    $order_data = [
+      'currency' => get_woocommerce_currency(),
+      'external_reference_id' => (string) $order->get_id(),
+      'lines' => [],
+      'amount' => [],
+    ];
+
+    $line = [
+      'discount_cents' => round( $order->get_discount_total() * 100, 2 ),
+      'shipping_price_cents' => round( $order->get_shipping_total() * 100, 2 ),
+      'line_items' => [],
+    ];
+
+    $net_price_cents = 0;
+    $tax_cents = 0;
+
+    foreach( $order->get_items() as $item_id => $item ) {
+      $product = $item->get_product();
+
+      $line_item = [
+        'title' => $product->get_title(),
+        'quantity' => $item->get_quantity(),
+        'external_reference_id' => Helper::null_or_empty ( $product->get_id() ) ? null : (string) $product->get_id(),
+        'product_id' => Helper::null_or_empty ( $product->get_id() ) ? null : (string) $product->get_id(),
+        'product_sku' => Helper::null_or_empty ( $product->get_slug() ) ? null : (string) $product->get_slug(),
+        'net_price_per_item_cents' => round( ($item->get_total() - $item->get_total_tax()) * 100, 2 ),
+        'gross_amount_cents' => round( $item->get_total() * 100, 2 ),
+        'tax_cents' => round( $item->get_total_tax() * 100, 2 ),
+        'item_type' => $product->is_virtual() ? 'VIRTUAL' : 'PHYSICAL',
+      ];
+
+      $line['line_items'][] = $line_item;
+
+      $net_price_cents += (float) ($item->get_total() - $item->get_total_tax()) * $item->get_quantity() * 100;
+      $tax_cents += (float) $item->get_total_tax() * 100;
+    }
+
+    $amount = [
+      'net_price_cents' => round( $net_price_cents, 2 ),
+      'tax_cents' => round( $tax_cents, 2 ),
+    ];
+
+    $order_data['lines'][] = $line;
+    $order_data['amount'] = $amount;
+
+    return $order_data;
   }
 }

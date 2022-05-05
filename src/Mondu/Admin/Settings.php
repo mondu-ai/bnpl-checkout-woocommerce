@@ -42,7 +42,7 @@ class Settings {
 
     if ( ( count( $_POST ) > 0 ) && check_admin_referer( 'validate-credentials' ) ) {
       try {
-        $this->api->validateCredentials();
+        $this->api->validate_credentials();
         update_option( 'credentials_validated', time() );
       } catch ( MonduException $e ) {
         $validationError = $e->getMessage();
