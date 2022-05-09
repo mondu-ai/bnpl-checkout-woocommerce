@@ -72,8 +72,9 @@ class OrderData {
     ];
 
     $line = [
-      'discount_cents' => round( (float) $cart_totals['discount_total'] * 100, 2 ),
-      'shipping_price_cents' => round( (float) $cart_totals['shipping_total'] * 100, 2 ),
+      'discount_cents' => round ( (float) $cart_totals['discount_total'] * 100, 2 ),
+      'shipping_price_cents' => round ( (float) ( $cart_totals['shipping_total'] + $cart_totals['shipping_tax'] ) * 100, 2 ), # Considering that is not possible to save taxes that does not belongs to products, sums shipping taxes here
+      // 'tax_cents' => round ( (float) $cart_totals['total_tax'] * 100, 2 ),
       'line_items' => [],
     ];
 
@@ -90,9 +91,9 @@ class OrderData {
         'external_reference_id' => isset( $cart_item['product_id'] ) ? (string) $cart_item['product_id'] : null,
         'product_id' => isset( $cart_item['product_id'] ) ? (string) $cart_item['product_id'] : null,
         'product_sku' => isset( $cart_item['product_sku'] ) ? $cart_item['product_sku'] : null,
-        'net_price_per_item_cents' => round( (float) $cart_item['line_total'] * 100, 2 ),
-        'gross_amount_cents' => round( ( (float) $cart_item['line_total'] + (float) $cart_item['line_tax'] ) * 100, 2 ),
-        'tax_cents' => round( (float) $cart_item['line_tax'] * 100, 2 ),
+        'net_price_per_item_cents' => round ( (float) ( $cart_item['line_total'] / $cart_item['quantity'] ) * 100, 2 ),
+        'net_price_cents' => round ( (float) $cart_item['line_total'] * 100, 2 ),
+        'tax_cents' => round ( (float) $cart_item['line_tax'] * 100, 2 ),
         'item_type' => $product->is_virtual() ? 'VIRTUAL' : 'PHYSICAL',
       ];
 
@@ -103,8 +104,8 @@ class OrderData {
     }
 
     $amount = [
-      'net_price_cents' => round( $net_price_cents, 2 ),
-      'tax_cents' => round( $tax_cents, 2 ),
+      'net_price_cents' => round ( $net_price_cents, 2 ),
+      'tax_cents' => round ( $tax_cents, 2 ),
     ];
 
     $order_data['lines'][] = $line;
@@ -127,8 +128,8 @@ class OrderData {
     ];
 
     $line = [
-      'discount_cents' => round( $order->get_discount_total() * 100, 2 ),
-      'shipping_price_cents' => round( $order->get_shipping_total() * 100, 2 ),
+      'discount_cents' => round ( $order->get_discount_total() * 100, 2),
+      'shipping_price_cents' => round ( (float) ( $order->get_shipping_total() + $order->get_shipping_tax() ) * 100, 2), # Considering that is not possible to save taxes that does not belongs to products, sums shipping taxes here
       'line_items' => [],
     ];
 
@@ -144,26 +145,59 @@ class OrderData {
         'external_reference_id' => Helper::null_or_empty ( $product->get_id() ) ? null : (string) $product->get_id(),
         'product_id' => Helper::null_or_empty ( $product->get_id() ) ? null : (string) $product->get_id(),
         'product_sku' => Helper::null_or_empty ( $product->get_slug() ) ? null : (string) $product->get_slug(),
-        'net_price_per_item_cents' => round( ($item->get_total() - $item->get_total_tax()) * 100, 2 ),
-        'gross_amount_cents' => round( $item->get_total() * 100, 2 ),
-        'tax_cents' => round( $item->get_total_tax() * 100, 2 ),
+        'net_price_per_item_cents' => round ( (float) ( $item->get_total() / $item->get_quantity() ) * 100, 2 ),
+        'net_price_cents' => round ( (float) $item->get_total() * 100, 2 ),
+        'tax_cents' => round ( (float) $item->get_total_tax() * 100, 2 ),
         'item_type' => $product->is_virtual() ? 'VIRTUAL' : 'PHYSICAL',
       ];
 
       $line['line_items'][] = $line_item;
 
-      $net_price_cents += (float) ($item->get_total() - $item->get_total_tax()) * $item->get_quantity() * 100;
+      $net_price_cents += (float) $item->get_total() * 100;
       $tax_cents += (float) $item->get_total_tax() * 100;
     }
 
     $amount = [
-      'net_price_cents' => round( $net_price_cents, 2 ),
-      'tax_cents' => round( $tax_cents, 2 ),
+      'net_price_cents' => round ( $net_price_cents, 2 ),
+      'tax_cents' => round ( $tax_cents, 2 ),
     ];
 
     $order_data['lines'][] = $line;
     $order_data['amount'] = $amount;
 
     return $order_data;
+  }
+
+  /**
+   * @param $order
+   *
+   * @return array[]
+   */
+  public static function invoice_data_from_wc_order( WC_Order $order ) {
+    $invoice_data = [
+      'external_reference_id' => (string) $order->get_id(),
+      'invoice_url' => 'http://google.com',
+      'gross_amount_cents' => round ( (float) $order->get_total() * 100, 2 ),
+      'tax_cents' => round ( (float) ( $order->get_total_tax() - $order->get_shipping_tax() ) * 100, 2 ), # Considering that is not possible to save taxes that does not belongs to products, removes shipping taxes here
+      'discount_cents' => round ( $order->get_discount_total() * 100, 2),
+      'shipping_price_cents' => round ( (float) ( $order->get_shipping_total() + $order->get_shipping_tax() ) * 100, 2), # Considering that is not possible to save taxes that does not belongs to products, sum shipping taxes here
+      'shipping_info' => [
+        'shipping_method' => $order->get_shipping_method(),
+      ],
+      'line_items' => [],
+    ];
+
+    foreach( $order->get_items() as $item_id => $item ) {
+      $product = $item->get_product();
+
+      $line_item = [
+        'external_reference_id' => Helper::null_or_empty ( $product->get_id() ) ? null : (string) $product->get_id(),
+        'quantity' => $item->get_quantity(),
+      ];
+
+      $invoice_data['line_items'][] = $line_item;
+    }
+
+    return $invoice_data;
   }
 }

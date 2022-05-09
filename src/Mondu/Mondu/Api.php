@@ -82,7 +82,7 @@ class Api {
    * @throws MonduException
    * @throws ResponseException
    */
-  public function create_order( $params ) {
+  public function create_order( array $params ) {
     $oauthToken = $this->request_oauth_token( $this->options['client_id'], $this->options['client_secret'], $this->isSandbox() );
 
     $result = $this->post( '/orders', $params, $oauthToken, $this->isSandbox(), true );
@@ -102,7 +102,7 @@ class Api {
    * @throws MonduException
    * @throws ResponseException
    */
-  public function adjust_order( $mondu_uuid, $params ) {
+  public function adjust_order( $mondu_uuid, array $params ) {
     $oauthToken = $this->request_oauth_token( $this->options['client_id'], $this->options['client_secret'], $this->isSandbox() );
 
     $result = $this->post( sprintf( '/orders/%s/adjust', $mondu_uuid ), $params, $oauthToken, $this->isSandbox(), true );
@@ -113,6 +113,7 @@ class Api {
   /**
    * @param $mondu_uuid
    *
+   * @return string
    * @throws MonduException
    * @throws ResponseException
    */
@@ -120,6 +121,22 @@ class Api {
     $oauthToken = $this->request_oauth_token( $this->options['client_id'], $this->options['client_secret'], $this->isSandbox() );
 
     $result = $this->post( sprintf( '/orders/%s/cancel', $mondu_uuid ), [], $oauthToken, $this->isSandbox(), true );
+
+    return json_decode( $result['body'], true );
+  }
+
+  /**
+   * @param $mondu_uuid
+   * @param array $params
+   *
+   * @return string
+   * @throws MonduException
+   * @throws ResponseException
+   */
+  public function ship_order( $mondu_uuid, array $params ) {
+    $oauthToken = $this->request_oauth_token( $this->options['client_id'], $this->options['client_secret'], $this->isSandbox() );
+
+    $result = $this->post( sprintf( '/orders/%s/invoices', $mondu_uuid ), $params, $oauthToken, $this->isSandbox(), true );
 
     return json_decode( $result['body'], true );
   }
@@ -147,7 +164,6 @@ class Api {
    * @param array|string|null $body
    * @param Token|null $token
    * @param bool $sandbox
-   *
    * @param bool $json_request
    *
    * @return array

@@ -137,7 +137,7 @@ class Gateway extends WC_Payment_Gateway {
     update_post_meta( $order_id, Plugin::ORDER_DATA_KEY, $order_data );
 
     // Update Mondu order's external reference id
-    $data_to_update = ['external_reference_id' => strval( $order_id )];
+    $data_to_update = ['external_reference_id' => (string) $order_id ];
     $adjust_order_data = OrderData::adjust_order_data( $order_id, $data_to_update );
     $response = $this->adjust_order( $order_id, $adjust_order_data );
 
@@ -253,6 +253,9 @@ class Gateway extends WC_Payment_Gateway {
     if ( $to_status === 'cancelled' ) {
       $this->cancel_order( $order );
     }
+    if ( $to_status === 'completed' ) {
+      $this->complete_order( $order );
+    }
   }
 
   /**
@@ -262,8 +265,22 @@ class Gateway extends WC_Payment_Gateway {
    * @throws ResponseException
    */
   private function cancel_order( WC_Order $order ) {
-    $monduOrderId = get_post_meta( $order->get_id(), Plugin::ORDER_ID_KEY, true );
+    $mondu_order_id = get_post_meta( $order->get_id(), Plugin::ORDER_ID_KEY, true );
 
-    $this->api->cancel_order( $monduOrderId );
+    $this->api->cancel_order( $mondu_order_id );
+  }
+
+  /**
+   * @param WC_Order $order
+   *
+   * @throws MonduException
+   * @throws ResponseException
+   */
+  private function complete_order( WC_Order $order ) {
+    $mondu_order_id = get_post_meta( $order->get_id(), Plugin::ORDER_ID_KEY, true );
+
+    $params = OrderData::invoice_data_from_wc_order( $order );
+
+    $this->api->ship_order( $mondu_order_id, $params );
   }
 }
