@@ -12,7 +12,7 @@ defined( 'ABSPATH' ) or die( 'Direct access not allowed' );
 
 class Settings {
   /** @var Account */
-  private $accountOptions;
+  private $account_options;
 
   /** @var Api */
   private $api;
@@ -31,24 +31,24 @@ class Settings {
   }
 
   public function register_options() {
-    $this->accountOptions = new Account();
-    $this->accountOptions->register();
+    $this->account_options = new Account();
+    $this->account_options->register();
 
     $this->api = new Api();
   }
 
   public function render_account_options() {
-    $validationError = null;
+    $validation_error = null;
 
     if ( ( count( $_POST ) > 0 ) && check_admin_referer( 'validate-credentials' ) ) {
       try {
         $this->api->validate_credentials();
         update_option( 'credentials_validated', time() );
       } catch ( MonduException $e ) {
-        $validationError = $e->getMessage();
+        $validation_error = $e->getMessage();
       }
     }
 
-    $this->accountOptions->render( $validationError );
+    $this->account_options->render( $validation_error );
   }
 }

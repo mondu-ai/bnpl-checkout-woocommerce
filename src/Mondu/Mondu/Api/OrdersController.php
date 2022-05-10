@@ -4,6 +4,7 @@ namespace Mondu\Mondu\Api;
 
 use Mondu\Mondu\Gateway;
 use WP_REST_Controller;
+use WP_REST_Request;
 
 class OrdersController extends WP_REST_Controller {
   public function __construct() {
@@ -14,14 +15,14 @@ class OrdersController extends WP_REST_Controller {
   public function register_routes() {
     register_rest_route( $this->namespace, '/create', array(
       array(
-        'methods'  => 'POST',
+        'methods' => 'POST',
         'callback' => array( $this, 'create' ),
         'permission_callback' => '__return_true'
       ),
     ) );
   }
 
-  public function create( $request ) {
+  public function create( WP_REST_Request $request ) {
     $gateway = new Gateway();
     $gateway->create_order();
 

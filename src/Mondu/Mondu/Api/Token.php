@@ -22,7 +22,7 @@ class Token {
   /**
    * @return int
    */
-  public function getExpiresIn() {
+  public function get_expires_in() {
     return $this->expires_in;
   }
 
@@ -31,7 +31,7 @@ class Token {
    *
    * @return Token
    */
-  public function setExpiresIn( $expires_in ) {
+  public function set_expires_in( $expires_in ) {
     $this->expires_in = $expires_in;
 
     return $this;
@@ -40,7 +40,7 @@ class Token {
   /**
    * @return string
    */
-  public function getAccessToken() {
+  public function get_access_token() {
     return $this->access_token;
   }
 
@@ -49,7 +49,7 @@ class Token {
    *
    * @return Token
    */
-  public function setAccessToken( $access_token ) {
+  public function set_access_token( $access_token ) {
     $this->access_token = $access_token;
 
     return $this;

@@ -34,17 +34,17 @@ class Api {
       throw new CredentialsNotSetException( __( 'Missing Credentials', 'mondu' ) );
     }
 
-    $oauthToken = $this->request_oauth_token( $this->options['client_id'], $this->options['client_secret'], $this->isSandbox() );
+    $oauth_token = $this->request_oauth_token( $this->options['client_id'], $this->options['client_secret'], $this->is_sandbox() );
 
-    $result = $this->post( '/oauth/authorization', null, $oauthToken, $this->isSandbox() );
+    $result = $this->post( '/oauth/authorization', null, $oauth_token, $this->is_sandbox() );
 
-    $validationResult = json_decode( $result['body'], true );
+    $validation_result = json_decode( $result['body'], true );
 
-    if ( ! isset( $validationResult['client_id'] ) ) {
+    if ( ! isset( $validation_result['client_id'] ) ) {
       throw new MonduException( __( 'Unexpected validation format', 'mondu' ) );
     }
 
-    if ( $validationResult['client_id'] !== $this->options['client_id'] ) {
+    if ( $validation_result['client_id'] !== $this->options['client_id'] ) {
       throw new MonduException( __( 'Unexpected validation client id', 'mondu' ) );
     }
   }
@@ -66,26 +66,26 @@ class Api {
     ];
 
     $result = $this->post( '/oauth/token', $body, null, $sandbox, false );
-    $tokenResult = json_decode( $result['body'], true );
+    $token_result = json_decode( $result['body'], true );
 
-    if ( ! isset( $tokenResult['expires_in'], $tokenResult['access_token'] ) ) {
+    if ( ! isset( $token_result['expires_in'], $token_result['access_token'] ) ) {
       throw new MonduException( 'Unexpected Token format' );
     }
 
-    return new Token( $tokenResult['access_token'], $tokenResult['expires_in'] );
+    return new Token( $token_result['access_token'], $token_result['expires_in'] );
   }
 
   /**
-   * @param $params
+   * @param array $params
    *
    * @return string
    * @throws MonduException
    * @throws ResponseException
    */
   public function create_order( array $params ) {
-    $oauthToken = $this->request_oauth_token( $this->options['client_id'], $this->options['client_secret'], $this->isSandbox() );
+    $oauth_token = $this->request_oauth_token( $this->options['client_id'], $this->options['client_secret'], $this->is_sandbox() );
 
-    $result = $this->post( '/orders', $params, $oauthToken, $this->isSandbox(), true );
+    $result = $this->post( '/orders', $params, $oauth_token, $this->is_sandbox(), true );
 
     $response = json_decode( $result['body'], true );
 
@@ -96,16 +96,16 @@ class Api {
 
   /**
    * @param $mondu_uuid
-   * @param $params
+   * @param array $params
    *
    * @return string
    * @throws MonduException
    * @throws ResponseException
    */
   public function adjust_order( $mondu_uuid, array $params ) {
-    $oauthToken = $this->request_oauth_token( $this->options['client_id'], $this->options['client_secret'], $this->isSandbox() );
+    $oauth_token = $this->request_oauth_token( $this->options['client_id'], $this->options['client_secret'], $this->is_sandbox() );
 
-    $result = $this->post( sprintf( '/orders/%s/adjust', $mondu_uuid ), $params, $oauthToken, $this->isSandbox(), true );
+    $result = $this->post( sprintf( '/orders/%s/adjust', $mondu_uuid ), $params, $oauth_token, $this->is_sandbox(), true );
 
     return json_decode( $result['body'], true );
   }
@@ -118,9 +118,9 @@ class Api {
    * @throws ResponseException
    */
   public function cancel_order( $mondu_uuid ) {
-    $oauthToken = $this->request_oauth_token( $this->options['client_id'], $this->options['client_secret'], $this->isSandbox() );
+    $oauth_token = $this->request_oauth_token( $this->options['client_id'], $this->options['client_secret'], $this->is_sandbox() );
 
-    $result = $this->post( sprintf( '/orders/%s/cancel', $mondu_uuid ), [], $oauthToken, $this->isSandbox(), true );
+    $result = $this->post( sprintf( '/orders/%s/cancel', $mondu_uuid ), [], $oauth_token, $this->is_sandbox(), true );
 
     return json_decode( $result['body'], true );
   }
@@ -134,9 +134,9 @@ class Api {
    * @throws ResponseException
    */
   public function ship_order( $mondu_uuid, array $params ) {
-    $oauthToken = $this->request_oauth_token( $this->options['client_id'], $this->options['client_secret'], $this->isSandbox() );
+    $oauth_token = $this->request_oauth_token( $this->options['client_id'], $this->options['client_secret'], $this->is_sandbox() );
 
-    $result = $this->post( sprintf( '/orders/%s/invoices', $mondu_uuid ), $params, $oauthToken, $this->isSandbox(), true );
+    $result = $this->post( sprintf( '/orders/%s/invoices', $mondu_uuid ), $params, $oauth_token, $this->is_sandbox(), true );
 
     return json_decode( $result['body'], true );
   }
@@ -146,7 +146,6 @@ class Api {
    * @param array|string|null $body
    * @param Token|null $token
    * @param bool $sandbox
-   *
    * @param bool $json_request
    *
    * @return array
@@ -220,7 +219,7 @@ class Api {
    * @throws MonduException
    * @throws ResponseException
    */
-  private function validateRemoteResult( $result ) {
+  private function validate_remote_result( $result ) {
     $this->logger->debug( 'validating', [
       'result' => $result,
     ] );
@@ -249,17 +248,17 @@ class Api {
   /**
    * @return bool
    */
-  private function isSandbox() {
-    $isSandbox = true;
+  private function is_sandbox() {
+    $is_sandbox = true;
     if (
       is_array( $this->options ) &&
       isset( $this->options['field_sandbox_or_production'] ) &&
       $this->options['field_sandbox_or_production'] === 'production'
     ) {
-      $isSandbox = false;
+      $is_sandbox = false;
     }
 
-    return $isSandbox;
+    return $is_sandbox;
   }
 
   /**
@@ -291,7 +290,7 @@ class Api {
     $headers = [];
 
     if ( $token !== null ) {
-      $headers['Authorization'] = sprintf( 'Bearer %s', $token->getAccessToken() );
+      $headers['Authorization'] = sprintf( 'Bearer %s', $token->get_access_token() );
     }
 
     if ( $json_request ) {
@@ -310,6 +309,6 @@ class Api {
       $args['data_format'] = $body;
     }
 
-    return $this->validateRemoteResult( wp_remote_request( $url, $args ) );
+    return $this->validate_remote_result( wp_remote_request( $url, $args ) );
   }
 }

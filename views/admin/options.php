@@ -8,14 +8,14 @@
         submit_button();
       ?>
     </form>
-  <?php if ( isset( $oauthPossible ) && ( $oauthPossible === true ) ): ?>
+  <?php if ( isset( $oauth_possible ) && ( $oauth_possible === true ) ): ?>
     <h2><?php _e( 'Validate Credentials', 'mondu' ); ?></h2>
-    <?php if ( isset( $validationError ) && $validationError !== null ): ?>
-      <p><?php echo $validationError; ?></p>
+    <?php if ( isset( $validation_error ) && $validation_error !== null ): ?>
+      <p><?php echo $validation_error; ?></p>
     <?php endif; ?>
-    <?php if ( isset( $credentialsValidated ) && $credentialsValidated !== false ): ?>
+    <?php if ( isset( $credentials_validated ) && $credentials_validated !== false ): ?>
       <p> ✅ <?php _e('Credentials validated:','mondu');?>
-          <?php echo date_i18n(get_option('date_format'), $credentialsValidated); ?>
+          <?php echo date_i18n(get_option('date_format'), $credentials_validated); ?>
       </p>
     <?php endif; ?>
     <form method="post">
