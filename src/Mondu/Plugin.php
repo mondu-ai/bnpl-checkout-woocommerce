@@ -8,7 +8,7 @@ use Mondu\Admin\Settings;
 use Mondu\Mondu\Gateway;
 use Mondu\Mondu\OrderData;
 use Mondu\Mondu\PaymentInfo;
-use Mondu\Mondu\Api\MonduController;
+use Mondu\Mondu\Api\OrdersController;
 use DateInterval;
 use Exception;
 use WC_DateTime;
@@ -66,7 +66,7 @@ class Plugin {
     add_action( 'woocommerce_before_order_object_save', [ new Gateway(), 'update_order_if_changed_some_fields' ], 10, 2 );
 
     add_action( 'rest_api_init', function () {
-      $controller = new MonduController();
+      $controller = new OrdersController();
       $controller->register_routes();
     });
 

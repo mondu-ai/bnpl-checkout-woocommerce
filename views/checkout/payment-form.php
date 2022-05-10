@@ -31,7 +31,7 @@
 
     jQuery.ajax({
       type: 'POST',
-      url: `${url}?rest_route=/mondu/v1/create_order`,
+      url: `${url}?rest_route=/mondu/v1/orders/create`,
       success: function(res) {
         renderWidget(res['token']);
         return true;
@@ -64,30 +64,14 @@
 
   function checkoutCallback() {
     if (result == 'success') {
-      jQuery.ajax({
-        type: 'POST',
-        url: `${url}?rest_route=/mondu/v1/checkout_callback`,
-        data: { type: 'success' },
-        success: function(res) {
-          jQuery('form.woocommerce-checkout').off('checkout_place_order');
-          if (jQuery('#confirm-order-flag').length !== 0) {
-            jQuery('#confirm-order-flag').val('');
-          }
-          jQuery('#place_order').parents('form').submit();
-        }
-      });
+      jQuery('form.woocommerce-checkout').off('checkout_place_order');
+      if (jQuery('#confirm-order-flag').length !== 0) {
+        jQuery('#confirm-order-flag').val('');
+      }
+      jQuery('#place_order').parents('form').submit();
     } else {
-      jQuery.ajax({
-        type: 'POST',
-        url: `${url}?rest_route=/mondu/v1/checkout_callback`,
-        data: { type: 'error' },
-        success: function(res) {
-          jQuery(document.body).trigger('wc_update_cart');
-          jQuery(document.body).trigger('update_checkout');
-        }
-      });
-
-      // location.reload();
+      jQuery(document.body).trigger('wc_update_cart');
+      jQuery(document.body).trigger('update_checkout');
     }
   }
 
@@ -137,8 +121,8 @@
   #checkout_mondu_logo {
     max-height: 1em;
   }
-  .error{
-    color:#dc3545;
+  .error {
+    color: #dc3545;
   }
 </style>
 

@@ -171,27 +171,6 @@ class Gateway extends WC_Payment_Gateway {
   }
 
   /**
-   * @param array $post
-   */
-  public function process_success( array $post ) {
-    // WC()->session->set( 'mondu_order_data', $post );
-
-    echo json_encode( [ 'process' => 'success' ] );
-    exit;
-  }
-
-  /**
-   * @param array $post
-   */
-  public function process_error( array $post ) {
-    if ( isset( $post['decline_reason'] ) ) {
-      WC()->session->set( 'mondu_decline_reason', trim( $post['decline_reason'] ) );
-    }
-    echo json_encode( [ 'process' => 'error' ] );
-    exit;
-  }
-
-  /**
    * @throws MonduException
    * @throws ResponseException
    */
