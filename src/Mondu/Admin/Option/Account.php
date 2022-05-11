@@ -53,12 +53,13 @@ class Account extends Helper {
     $this->textField( self::OPTION_NAME, 'client_secret' );
   }
 
-  public function render( $validation_error = null ) {
+  public function render( $validation_error = null, $webhooks_error = null ) {
     if ( ! current_user_can( 'manage_options' ) ) {
       wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
     }
 
-    $credentials_validated = get_option( 'credentials_validated' );
+    $credentials_validated = get_option( '_mondu_credentials_validated' );
+    $webhooks_registered = get_option( '_mondu_webhooks_registered' );
 
     $oauth_possible = ( $this->options !== null ) && is_array( $this->options ) && isset( $this->options['client_id'], $this->options['client_secret'] );
 

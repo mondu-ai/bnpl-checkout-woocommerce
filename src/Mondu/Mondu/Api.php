@@ -142,6 +142,34 @@ class Api {
   }
 
   /**
+   * @return string
+   * @throws MonduException
+   * @throws ResponseException
+   */
+  public function webhook_secret() {
+    $oauth_token = $this->request_oauth_token( $this->options['client_id'], $this->options['client_secret'], $this->is_sandbox() );
+
+    $result = $this->get( '/webhooks/keys', null, $oauth_token, $this->is_sandbox() );
+
+    return json_decode( $result['body'], true );
+  }
+
+  /**
+   * @param array $params
+   *
+   * @return string
+   * @throws MonduException
+   * @throws ResponseException
+   */
+  public function register_webhook( array $params ) {
+    $oauth_token = $this->request_oauth_token( $this->options['client_id'], $this->options['client_secret'], $this->is_sandbox() );
+
+    $result = $this->post( '/webhooks', $params, $oauth_token, $this->is_sandbox(), true );
+
+    return json_decode( $result['body'], true );
+  }
+
+  /**
    * @param $path
    * @param array|string|null $body
    * @param Token|null $token

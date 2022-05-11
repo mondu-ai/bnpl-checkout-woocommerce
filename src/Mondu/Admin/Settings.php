@@ -39,16 +39,28 @@ class Settings {
 
   public function render_account_options() {
     $validation_error = null;
+    $webhooks_error = null;
 
-    if ( ( count( $_POST ) > 0 ) && check_admin_referer( 'validate-credentials' ) ) {
+    if ( isset ( $_POST['validate-credentials'] ) && check_admin_referer( 'validate-credentials', 'validate-credentials' ) ) {
       try {
         $this->api->validate_credentials();
-        update_option( 'credentials_validated', time() );
+        update_option( '_mondu_credentials_validated', time() );
       } catch ( MonduException $e ) {
         $validation_error = $e->getMessage();
       }
+    } elseif ( isset ( $_POST['register-webhooks'] ) && check_admin_referer( 'register-webhooks', 'register-webhooks' ) ) {
+      try {
+        $secret = $this->api->webhook_secret();
+        update_option( '_mondu_webhooks_secret', $secret['webhook_secret'] );
+
+        $params = array( 'address' => get_site_url() . '/?rest_route=/mondu/v1/webhooks/index' );
+        $this->api->register_webhook( array_merge( $params, array( 'topic' => 'order' ) ) );
+        update_option( '_mondu_webhooks_registered', time() );
+      } catch ( MonduException $e ) {
+        $webhooks_error = $e->getMessage();
+      }
     }
 
-    $this->account_options->render( $validation_error );
+    $this->account_options->render( $validation_error, $webhooks_error );
   }
 }
