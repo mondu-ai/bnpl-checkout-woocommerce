@@ -1,7 +1,7 @@
 <script>
   var checkMonduMount = false;
   var result = '';
-  var url = '<?php echo get_site_url( null, '/index.php' ); ?>';
+  var url = '<?php echo get_site_url(null, '/index.php'); ?>';
 
   function monduBlock() {
     jQuery('.woocommerce-checkout-payment, .woocommerce-checkout-review-order-table').block({

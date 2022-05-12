@@ -12,7 +12,7 @@ class SignatureVerifier {
    * @param string $secret
    */
   public function __construct() {
-    $this->secret = get_option( '_mondu_webhooks_registered' );
+    $this->secret = get_option('_mondu_webhooks_registered');
   }
 
   /**
@@ -27,7 +27,7 @@ class SignatureVerifier {
    *
    * @return Token
    */
-  public function set_secret( $secret ) {
+  public function set_secret($secret) {
     $this->secret = $secret;
 
     return $this;
@@ -38,8 +38,8 @@ class SignatureVerifier {
    *
    * @return bool
    */
-  public function create_hmac( $payload ) {
-    return hash_hmac('sha256', json_encode ( $payload ), $this->secret);
+  public function create_hmac($payload) {
+    return hash_hmac('sha256', json_encode ($payload), $this->secret);
   }
 
   /**
@@ -47,7 +47,7 @@ class SignatureVerifier {
    *
    * @return bool
    */
-  public function verify( $signature ) {
+  public function verify($signature) {
     return $this->secret == $signature;
   }
 }

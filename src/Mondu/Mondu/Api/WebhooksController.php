@@ -19,146 +19,146 @@ class WebhooksController extends WP_REST_Controller {
 
   // Register our routes
   public function register_routes() {
-    register_rest_route( $this->namespace, '/index', array(
+    register_rest_route($this->namespace, '/index', array(
       array(
         'methods'  => 'POST',
-        'callback' => array( $this, 'index' ),
+        'callback' => array($this, 'index'),
         'permission_callback' => '__return_true'
-      ),
-    ) );
+     ),
+   ));
   }
 
-  public function index( WP_REST_Request $request ) {
+  public function index(WP_REST_Request $request) {
     try {
       $verifier = new SignatureVerifier();
 
       $params = $request->get_json_params();
-      $signature_payload = $request->get_header( 'X-MONDU-SIGNATURE' );
-      $signature = $verifier->create_hmac( $params );
+      $signature_payload = $request->get_header('X-MONDU-SIGNATURE');
+      $signature = $verifier->create_hmac($params);
 
-      if ( ! $signature === $signature_payload ) {
-        throw new MonduException( 'Signature mismatch' );
+      if (!$signature === $signature_payload) {
+        throw new MonduException('Signature mismatch');
       }
 
-      $topic = $params[ 'topic' ];
+      $topic = $params['topic'];
       switch ($topic) {
         case 'order/confirmed':
-          [ $res_body, $res_status ] = $this->handle_confirmed( $params );
+          [$res_body, $res_status] = $this->handle_confirmed($params);
           break;
         case 'order/pending':
-          [ $res_body, $res_status ] = $this->handle_pending( $params );
+          [$res_body, $res_status] = $this->handle_pending($params);
           break;
         case 'order/canceled':
         case 'order/declined':
-          [ $res_body, $res_status ] = $this->handle_declined_or_canceled( $params );
+          [$res_body, $res_status] = $this->handle_declined_or_canceled($params);
           break;
         default:
-          throw new MonduException( 'Unregistered topic' );
+          throw new MonduException('Unregistered topic');
         }
-      } catch ( MonduException $e ) {
-        $res_body = [ 'message' => $e->getMessage() ];
+      } catch (MonduException $e) {
+        $res_body = ['message' => $e->getMessage()];
         $res_status = 400;
     }
 
-    $this->logger->debug( 'result', [
+    $this->logger->debug('result', [
       'body' => $res_body,
       'status' => $res_status,
       'params' => $params,
-    ] );
+   ]);
 
-    if ( strpos( $res_status, '2' ) === 0 ) {
-      return new WP_REST_Response( $res_body, 200 );
+    if (strpos($res_status, '2') === 0) {
+      return new WP_REST_Response($res_body, 200);
     } else {
-      return new WP_Error( $res_body, array( 'status' => $res_status ) );
+      return new WP_Error($res_body, array('status' => $res_status));
     }
   }
 
-  private function handle_pending( $params ) {
-    $woocommerce_order_id = $params[ 'external_reference_id' ];
-    $mondu_order_id = $params[ 'order_uuid' ];
+  private function handle_pending($params) {
+    $woocommerce_order_id = $params['external_reference_id'];
+    $mondu_order_id = $params['order_uuid'];
 
-    if ( ! $woocommerce_order_id || ! $mondu_order_id ) {
-      throw new MonduException( 'Required params missing' );
+    if (!$woocommerce_order_id || !$mondu_order_id) {
+      throw new MonduException('Required params missing');
     }
 
-    $order = new WC_Order( $woocommerce_order_id );
+    $order = new WC_Order($woocommerce_order_id);
 
-    if ( ! $order ) {
-      return [ [ 'message' => 'not found' ], 404 ];
+    if (!$order) {
+      return [['message' => 'not found'], 404];
     }
 
-    $this->logger->debug( 'changing status', [
+    $this->logger->debug('changing status', [
       'woocommerce_order_id' => $woocommerce_order_id,
       'mondu_order_id' => $mondu_order_id,
       'state' => $params['order_state'],
       'params' => $params,
-    ] );
+   ]);
 
-    $order->update_status( 'wc-processing', __( 'Processing', 'woocommerce' ) );
+    $order->update_status('wc-processing', __('Processing', 'woocommerce'));
 
-    return [ [ 'message' => 'ok' ], 200 ];
+    return [['message' => 'ok'], 200];
   }
 
-  public function handle_confirmed( $params ) {
-    $woocommerce_order_id = $params[ 'external_reference_id' ];
-    $mondu_order_id = $params[ 'order_uuid' ];
+  public function handle_confirmed($params) {
+    $woocommerce_order_id = $params['external_reference_id'];
+    $mondu_order_id = $params['order_uuid'];
     $bank_account = $params['bank_account'];
     $iban = $bank_account['iban'];
 
-    if ( ! $woocommerce_order_id || ! $mondu_order_id || ! $iban ) {
-      throw new MonduException( 'Required params missing' );
+    if (!$woocommerce_order_id || !$mondu_order_id || !$iban) {
+      throw new MonduException('Required params missing');
     }
 
-    $order = new WC_Order( $woocommerce_order_id );
+    $order = new WC_Order($woocommerce_order_id);
 
-    if ( ! $order ) {
-      return [ [ 'message' => 'not found' ], 404 ];
+    if (!$order) {
+      return [['message' => 'not found'], 404];
     }
 
-    $this->logger->debug( 'changing status', [
+    $this->logger->debug('changing status', [
       'woocommerce_order_id' => $woocommerce_order_id,
       'mondu_order_id' => $mondu_order_id,
       'state' => $params['order_state'],
       'params' => $params,
-    ] );
+   ]);
 
-    update_post_meta( $woocommerce_order_id, Plugin::BANK_ACCOUNT_KEY, $bank_account );
-    $order->update_status( 'wc-processing', __( 'Processing', 'woocommerce' ) );
+    update_post_meta($woocommerce_order_id, Plugin::BANK_ACCOUNT_KEY, $bank_account);
+    $order->update_status('wc-processing', __('Processing', 'woocommerce'));
 
-    return [ [ 'message' => 'ok' ], 200 ];
+    return [['message' => 'ok'], 200];
   }
 
-  public function handle_declined_or_canceled( $params ) {
-    $woocommerce_order_id = $params[ 'external_reference_id' ];
-    $mondu_order_id = $params[ 'order_uuid' ];
-    $mondu_order_state = $params[ 'order_state' ];
+  public function handle_declined_or_canceled($params) {
+    $woocommerce_order_id = $params['external_reference_id'];
+    $mondu_order_id = $params['order_uuid'];
+    $mondu_order_state = $params['order_state'];
 
-    if ( ! $woocommerce_order_id || ! $mondu_order_id || ! $mondu_order_state ) {
-      throw new MonduException( 'Required params missing' );
+    if (!$woocommerce_order_id || !$mondu_order_id || !$mondu_order_state) {
+      throw new MonduException('Required params missing');
     }
 
-    $order = new WC_Order( $woocommerce_order_id );
+    $order = new WC_Order($woocommerce_order_id);
 
-    if ( ! $order ) {
-      return [ [ 'message' => 'not found' ], 404 ];
+    if (!$order) {
+      return [['message' => 'not found'], 404];
     }
 
-    $this->logger->debug( 'changing status', [
+    $this->logger->debug('changing status', [
       'woocommerce_order_id' => $woocommerce_order_id,
       'mondu_order_id' => $mondu_order_id,
       'state' => $params['order_state'],
       'params' => $params,
-    ] );
+   ]);
 
     if ($mondu_order_state === 'canceled') {
-      $order->update_status( 'wc-cancelled', __( 'Cancelled', 'woocommerce' ) );
+      $order->update_status('wc-cancelled', __('Cancelled', 'woocommerce'));
     } elseif ($mondu_order_state === 'declined') {
-      $order->update_status( 'wc-failed', __( 'Failed', 'woocommerce' ) );
+      $order->update_status('wc-failed', __('Failed', 'woocommerce'));
 
-      $reason = $params[ 'reason' ];
-      update_post_meta( $woocommerce_order_id, Plugin::FAILURE_REASON_KEY, $reason );
+      $reason = $params['reason'];
+      update_post_meta($woocommerce_order_id, Plugin::FAILURE_REASON_KEY, $reason);
     }
 
-    return [ [ 'message' => 'ok' ], 200 ];
+    return [['message' => 'ok'], 200];
   }
 }

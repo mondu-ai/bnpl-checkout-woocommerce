@@ -13,21 +13,21 @@ class OrdersController extends WP_REST_Controller {
 
   // Register our routes
   public function register_routes() {
-    register_rest_route( $this->namespace, '/create', array(
+    register_rest_route($this->namespace, '/create', array(
       array(
         'methods' => 'POST',
-        'callback' => array( $this, 'create' ),
+        'callback' => array($this, 'create'),
         'permission_callback' => '__return_true'
-      ),
-    ) );
+     ),
+   ));
   }
 
-  public function create( WP_REST_Request $request ) {
+  public function create(WP_REST_Request $request) {
     $gateway = new Gateway();
     $gateway->create_order();
 
     return array(
-      'token' => WC()->session->get( 'mondu_order_id' )
-    );
+      'token' => WC()->session->get('mondu_order_id')
+   );
   }
 }

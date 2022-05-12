@@ -8,7 +8,7 @@ class Helper {
    *
    * @return boolean
    */
-  public static function null_or_empty( $value ) {
+  public static function null_or_empty($value) {
     return $value === NULL || $value === '';
   }
 
@@ -18,11 +18,11 @@ class Helper {
    *
    * @return array[]
    */
-  public static function remove_keys( $array, $keys ) {
+  public static function remove_keys($array, $keys) {
     return array_filter(
       $array,
       fn ($key) => !in_array($key, $keys),
       ARRAY_FILTER_USE_KEY,
-    );
+   );
   }
 }

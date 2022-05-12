@@ -8,7 +8,7 @@ use Mondu\Exceptions\MonduException;
 use Mondu\Exceptions\CredentialsNotSetException;
 use Mondu\Exceptions\ResponseException;
 
-defined( 'ABSPATH' ) or die( 'Direct access not allowed' );
+defined('ABSPATH') or die('Direct access not allowed');
 
 class Settings {
   /** @var Account */
@@ -18,16 +18,16 @@ class Settings {
   private $api;
 
   public function init() {
-    add_action( 'admin_menu', [ $this, 'plugin_menu' ] );
-    add_action( 'admin_init', [ $this, 'register_options' ] );
+    add_action('admin_menu', [$this, 'plugin_menu']);
+    add_action('admin_init', [$this, 'register_options']);
   }
 
   public function plugin_menu() {
-    add_menu_page( __( 'Mondu Settings', 'mondu' ),
-      __( 'Mondu', 'mondu' ),
+    add_menu_page(__('Mondu Settings', 'mondu'),
+      __('Mondu', 'mondu'),
       'manage_options',
       'mondu-settings-account',
-      [ $this, 'render_account_options' ] );
+      [$this, 'render_account_options']);
   }
 
   public function register_options() {
@@ -41,26 +41,26 @@ class Settings {
     $validation_error = null;
     $webhooks_error = null;
 
-    if ( isset ( $_POST['validate-credentials'] ) && check_admin_referer( 'validate-credentials', 'validate-credentials' ) ) {
+    if (isset ($_POST['validate-credentials']) && check_admin_referer('validate-credentials', 'validate-credentials')) {
       try {
         $this->api->validate_credentials();
-        update_option( '_mondu_credentials_validated', time() );
-      } catch ( MonduException $e ) {
+        update_option('_mondu_credentials_validated', time());
+      } catch (MonduException $e) {
         $validation_error = $e->getMessage();
       }
-    } elseif ( isset ( $_POST['register-webhooks'] ) && check_admin_referer( 'register-webhooks', 'register-webhooks' ) ) {
+    } elseif (isset ($_POST['register-webhooks']) && check_admin_referer('register-webhooks', 'register-webhooks')) {
       try {
         $secret = $this->api->webhook_secret();
-        update_option( '_mondu_webhooks_secret', $secret['webhook_secret'] );
+        update_option('_mondu_webhooks_secret', $secret['webhook_secret']);
 
-        $params = array( 'address' => get_site_url() . '/?rest_route=/mondu/v1/webhooks/index' );
-        $this->api->register_webhook( array_merge( $params, array( 'topic' => 'order' ) ) );
-        update_option( '_mondu_webhooks_registered', time() );
-      } catch ( MonduException $e ) {
+        $params = array('address' => get_site_url() . '/?rest_route=/mondu/v1/webhooks/index');
+        $this->api->register_webhook(array_merge($params, array('topic' => 'order')));
+        update_option('_mondu_webhooks_registered', time());
+      } catch (MonduException $e) {
         $webhooks_error = $e->getMessage();
       }
     }
 
-    $this->account_options->render( $validation_error, $webhooks_error );
+    $this->account_options->render($validation_error, $webhooks_error);
   }
 }

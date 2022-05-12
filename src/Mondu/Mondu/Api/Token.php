@@ -14,7 +14,7 @@ class Token {
    * @param string $access_token
    * @param int $expires_in
    */
-  public function __construct( $access_token, $expires_in = 0 ) {
+  public function __construct($access_token, $expires_in = 0) {
     $this->expires_in   = $expires_in;
     $this->access_token = $access_token;
   }
@@ -31,7 +31,7 @@ class Token {
    *
    * @return Token
    */
-  public function set_expires_in( $expires_in ) {
+  public function set_expires_in($expires_in) {
     $this->expires_in = $expires_in;
 
     return $this;
@@ -49,7 +49,7 @@ class Token {
    *
    * @return Token
    */
-  public function set_access_token( $access_token ) {
+  public function set_access_token($access_token) {
     $this->access_token = $access_token;
 
     return $this;
