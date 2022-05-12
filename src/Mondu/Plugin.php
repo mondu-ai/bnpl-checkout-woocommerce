@@ -9,16 +9,21 @@ use Mondu\Mondu\Gateway;
 use Mondu\Mondu\OrderData;
 use Mondu\Mondu\PaymentInfo;
 use Mondu\Mondu\Api\OrdersController;
+use Mondu\Mondu\Api\WebhooksController;
 use DateInterval;
 use Exception;
 use WC_DateTime;
 use WC_Order;
 
 class Plugin {
+  const TITLE = 'Rechnungskauf - jetzt kaufen, später bezahlen';
+  const PERSONAL_DATA_URL = 'https://mondu.ai/de/datenschutzgrundverordnung-kaeufer';
+
   const ADJUST_ORDER_TRIGGERED_KEY = '_mondu_adjust_order_triggered';
   const ORDER_DATA_KEY = '_mondu_order_data';
-  const DURATION_KEY = '_mondu_duration';
   const ORDER_ID_KEY = '_mondu_order_id';
+  const BANK_ACCOUNT_KEY = '_mondu_bank_account';
+  const FAILURE_REASON_KEY = '_mondu_failure_reason';
   const SHIP_ORDER_REQUEST_RESPONSE = '_mondu_ship_order_request_response';
 
   /**
@@ -31,7 +36,7 @@ class Plugin {
 
     # This is for trigger the open checkout plugin
     add_action('woocommerce_after_checkout_validation', function () {
-      if ($_POST['confirm-order-flag'] === "1") {
+      if ($_POST['confirm-order-flag'] === '1') {
         wc_add_notice(__('Validation checkout error!', 'mondu'), 'error');
       }
     });
@@ -66,8 +71,10 @@ class Plugin {
     add_action( 'woocommerce_before_order_object_save', [ new Gateway(), 'update_order_if_changed_some_fields' ], 10, 2 );
 
     add_action( 'rest_api_init', function () {
-      $controller = new OrdersController();
-      $controller->register_routes();
+      $orders = new OrdersController();
+      $orders->register_routes();
+      $webhooks = new WebhooksController();
+      $webhooks->register_routes();
     });
 
     add_action( 'woocommerce_checkout_order_processed', function($order_id) {

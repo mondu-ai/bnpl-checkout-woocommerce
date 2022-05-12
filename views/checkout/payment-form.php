@@ -121,14 +121,9 @@
   #checkout_mondu_logo {
     max-height: 1em;
   }
-  .error {
-    color: #dc3545;
-  }
 </style>
 
 <p>
-  <?php if ( ! isset( $this->settings['hide_logo'] ) || $this->settings['hide_logo'] === 'no' ): ?>
-    <img id="checkout_mondu_logo" src="<?php echo plugin_dir_url( __DIR__ ); ?>/mondu.svg" alt="Mondu">
-  <?php endif; ?>
-  <?php echo nl2br( $this->method_description ); ?>
+  <img id="checkout_mondu_logo" src="<?php echo $this->logo_url; ?>" alt="Mondu">
+  Hinweise zur Verarbeitung Ihrer personenbezogenen Daten durch die Mondu GmbH finden Sie <a href="<?php echo $this->personal_data_url; ?>" target="_blank">hier</a>.
 </p>

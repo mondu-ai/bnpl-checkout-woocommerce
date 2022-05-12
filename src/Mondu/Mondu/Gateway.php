@@ -35,12 +35,11 @@ class Gateway extends WC_Payment_Gateway {
 
     $this->global_settings = get_option( Account::OPTION_NAME );
 
-    $this->id                 = 'mondu';
-    $this->icon               = '';
-    $this->has_fields         = true;
-    $this->title              = __( 'Pay After Delivery', 'mondu' );
-    $this->method_title       = __( 'Mondu', 'mondu' );
-    $this->method_description = __( 'Mondu Description', 'mondu' );
+    $this->id = 'mondu';
+    $this->has_fields = true;
+    $this->title = Plugin::TITLE;
+    $this->personal_data_url = Plugin::PERSONAL_DATA_URL;
+    $this->logo_url = plugins_url('/woocommerce-mondu/views/mondu.svg');
 
     $this->init_form_fields();
     $this->init_settings();
@@ -49,8 +48,8 @@ class Gateway extends WC_Payment_Gateway {
       $this->title = $this->settings['title'];
     }
 
-    if ( isset( $this->settings['description'], $this->settings['payment_term'] ) ) {
-      $this->method_description = str_replace( '{Zahlungsziel}', $this->settings['payment_term'], $this->settings['description'] );
+    if ( isset( $this->settings['logo_url'] ) ) {
+      $this->logo_url = $this->settings['logo_url'];
     }
 
     $this->api = new Api();
@@ -70,41 +69,17 @@ class Gateway extends WC_Payment_Gateway {
         'title'       => __( 'Title', 'woocommerce' ),
         'type'        => 'text',
         'description' => __( 'This controls the title which the user sees during checkout.', 'woocommerce' ),
-        'default'     => __( 'Mondu Rechnungskauf', 'mondu' ),
+        'default'     => __( 'Rechnungskauf - jetzt kaufen, später bezahlen', 'mondu' ),
         'desc_tip'    => true,
       ],
-      'payment_term' => [
-        'title'       => __( 'Payment Term', 'mondu' ),
-        'type'        => 'integer',
-        'description' => __( 'Based upon your Mondu contract, your customers will have between 7 and 120 days (payment term) to pay your invoices.', 'mondu' ),
-        'default'     => 7,
+      'logo_url'     => [
+        'title'       => __( 'Logo url', 'woocommerce' ),
+        'type'        => 'text',
+        'description' => __( 'The logo the user will see during checkout.', 'woocommerce' ),
+        'default'     => __( 'https://mondu.ai/wp-content/uploads/2022/03/logo.svg', 'mondu' ),
         'desc_tip'    => true,
-      ],
-      'hide_logo'    => [
-        'title' => __( 'Hide Logo', 'mondu' ),
-        'type'  => 'checkbox',
-        'label' => __( 'Hide Mondu Logo', 'mondu' ),
-      ],
-      'description'  => [
-        'title'   => __( 'Customer Message', 'mondu' ),
-        'type'    => 'textarea',
-        'default' => 'Bezahlen Sie bequem und sicher auf Rechnung - innerhalb von {Zahlungsziel} Tagen nach Erhalt der Ware.'
       ],
     ];
-
-    add_filter( 'woocommerce_settings_api_sanitized_fields_' . $this->id, static function ( $settings ) {
-      if ( isset( $settings['payment_term'] ) ) {
-        if ( ! is_numeric( $settings['payment_term'] ) ) {
-          $settings['payment_term'] = 7;
-        } elseif ( $settings['payment_term'] < 7 ) {
-          $settings['payment_term'] = 7;
-        } elseif ( $settings['payment_term'] > 120 ) {
-          $settings['payment_term'] = 120;
-        }
-      }
-
-      return $settings;
-    } );
 
     add_action( 'woocommerce_update_options_payment_gateways_' . $this->id, [
       $this,
@@ -140,8 +115,6 @@ class Gateway extends WC_Payment_Gateway {
     $data_to_update = ['external_reference_id' => (string) $order_id ];
     $adjust_order_data = OrderData::adjust_order_data( $order_id, $data_to_update );
     $response = $this->adjust_order( $order_id, $adjust_order_data );
-
-    $order->update_status( 'wc-processing', __( 'Processing', 'woocommerce' ) );
 
     WC()->cart->empty_cart();
     /*

@@ -22,58 +22,27 @@ class PaymentInfo {
       return null;
     }
 
-    $mondu_order_data = get_post_meta( $order_id, Plugin::ORDER_DATA_KEY, true );
+    $bank_account = get_post_meta( $order_id, Plugin::BANK_ACCOUNT_KEY, true );
 
-    $date_completed    = null;
-    $payment_goal_date = null;
-
-    if ( function_exists( 'wc_gzdp_get_order_last_invoice' ) ) {
-
-      /** @var \WC_GZDP_Invoice|null $invoice */
-      $invoice = wc_gzdp_get_order_last_invoice( $order );
-
-      if ( $invoice !== null ) {
-        $date_completed = new \DateTime( $invoice->get_date( 'c' ) );
-      }
+    if ( $bank_account == null ) {
+      return null;
     }
-
-    if ( $date_completed === null ) {
-      $date_completed = $order->get_date_completed();
-    }
-
-    if ( $date_completed !== null ) {
-      $payment_goal_date = clone $date_completed;
-      $mondu_duration   = get_post_meta( $order_id, Plugin::DURATION_KEY, true );
-
-      if ( (int) $mondu_duration < 7 ) {
-        $mondu_duration = 7;
-      }
-
-      $duration_interval = new DateInterval( sprintf( 'P%sD', $mondu_duration ) );
-
-      $payment_goal_date->add( $duration_interval );
-    }
-
-    $mondu_bank = self::get_bank( $mondu_order_data['bank_account']['bic'] );
 
     return [
-      'paymentGoal' => ( $payment_goal_date !== null ) ? $payment_goal_date->format( 'd.m.Y' ) : null,
-      'recipient'   => get_bloginfo( 'name' ),
-      'subject'     => self::get_invoice_id( $order ),
-      'iban'        => $mondu_order_data['bank_account']['iban'],
-      'bic'         => $mondu_order_data['bank_account']['bic'],
-      'bank'        => $mondu_bank,
+      'account_holder' => $bank_account['account_holder'],
+      'bank' => $bank_account['bank'],
+      'iban' => $bank_account['iban'],
+      'bic' => $bank_account['bic'],
     ];
   }
 
   /**
-   * @param      $order_id
-   * @param bool $metabox
+   * @param $order_id
    *
    * @return string
    * @throws Exception
    */
-  public static function get_mondu_payment_html( $order_id, $metabox = false ) {
+  public static function get_mondu_payment_html( $order_id ) {
     $payment_info = self::get_mondu_payment_info( $order_id );
 
     if ( $payment_info === null ) {
@@ -83,80 +52,15 @@ class PaymentInfo {
     ob_start();
 
     ?>
-        <section class="woocommerce-order-details mondu-payment">
-            <p>
-        <?php
-        if ( ! $metabox && $payment_info['paymentGoal'] !== null ) {
-          printf( __( 'Bitte überweisen Sie den Rechnungsbetrag bis zum %s unter Angabe der Rechnungsnummer auf folgendes Konto:', 'mondu' ),
-            $payment_info['paymentGoal'] );
-        }
-        ?><br>
-
-        <?php
-        printf( __( 'Kontoinhaber: %s', 'mondu' ), $payment_info['recipient'] );
-        ?><br>
-
-        <?php
-        printf( __( 'IBAN: %s', 'mondu' ), $payment_info['iban'] );
-        ?><br>
-
-        <?php
-        printf( __( 'BIC: %s', 'mondu' ), $payment_info['bic'] );
-        ?><br>
-
-        <?php
-        printf( __( 'Bank: %s', 'mondu' ), $payment_info['bank'] );
-        ?><br>
-
-        <?php
-        if ( $payment_info['paymentGoal'] !== null ) {
-          printf( __( 'Fälligkeitsdatum: %s', 'mondu' ), $payment_info['paymentGoal'] );
-        } else {
-          echo __( 'Bestellung noch nicht versendet', 'mondu' );
-        }
-        echo "<br>";
-        ?>
-
-        <?php
-        printf( __( 'Verwendungszweck: %s', 'mondu' ), $payment_info['subject'] );
-        ?>
-            </p>
-        </section>
+      <section class="woocommerce-order-details mondu-payment">
+        <p><?php printf( __( 'Kontoinhaber: %s', 'mondu' ), $payment_info['account_holder'] ); ?></p>
+        <p><?php printf( __( 'Bank: %s', 'mondu' ), $payment_info['bank'] ); ?></p>
+        <p><?php printf( __( 'IBAN: %s', 'mondu' ), $payment_info['iban'] ); ?></p>
+        <p><?php printf( __( 'BIC: %s', 'mondu' ), $payment_info['bic'] ); ?></p>
+      </section>
     <?php
 
     return ob_get_clean();
-  }
-
-  public static function get_bank( $bic ) {
-    $bic            = strtoupper( $bic );
-    $transient_name = sprintf( 'bank_%s', $bic );
-    $bank           = get_transient( $transient_name );
-
-    if ( $bank !== false && trim( $bank ) !== '' ) {
-      return $bank;
-    }
-
-    if ( ! file_exists( MONDU_RESOURCES_PATH . '/bic-de.csv' ) ) {
-      return $bic;
-    }
-
-    $bic_csv = fopen( MONDU_RESOURCES_PATH . '/bic-de.csv', 'rb' );
-
-    $bank = null;
-
-    while ( $bank === null && $line = fgetcsv( $bic_csv ) ) {
-      if ( is_array( $line ) && count( $line ) > 1 && strtoupper( trim( $line[0] ) ) === $bic ) {
-        $bank = strtoupper( trim( $line[1] ) );
-      }
-    }
-
-    if ( $bank === null ) {
-      return $bic;
-    }
-
-    set_transient( $transient_name, $bank, 86400 );
-
-    return $bank;
   }
 
   /**
@@ -189,7 +93,6 @@ class PaymentInfo {
     if ( $invoice !== null ) {
       return $invoice->number_formatted;
     }
-
 
     return null;
   }

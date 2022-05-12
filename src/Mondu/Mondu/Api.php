@@ -260,8 +260,7 @@ class Api {
       throw new MonduException( 'Unexpected API response format' );
     }
 
-    if ( strpos( $result['response']['code'], "2" ) !== 0 ) {
-
+    if ( strpos( $result['response']['code'], '2' ) !== 0 ) {
       $message = $result['response']['message'];
       if ( isset( $result['body']['errors'], $result['body']['errors']['title'] ) ) {
         $message = $result['body']['errors']['title'];
