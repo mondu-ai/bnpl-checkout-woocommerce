@@ -63,9 +63,6 @@ class Plugin {
      */
     add_action('wp_head', [$this, 'add_mondu_js']);
 
-    $plugin_rel_path = dirname(plugin_basename(__FILE__)) . '/../../lang/';
-    load_plugin_textdomain('mondu', false, $plugin_rel_path);
-
     add_action('woocommerce_order_status_changed', [new Gateway(), 'order_status_changed'], 10, 3);
 
     add_action('woocommerce_before_order_object_save', [new Gateway(), 'update_order_if_changed_some_fields'], 10, 2);
@@ -102,12 +99,13 @@ class Plugin {
     if ($order->get_payment_method() !== 'mondu') {
       return;
     }
+
     wc_enqueue_js("
-        jQuery(document).ready(function() {
-            jQuery('a.edit_address').remove();
-        });
+      jQuery(document).ready(function() {
+        jQuery('a.edit_address').remove();
+      });
     ");
-    echo '<p>' . __('Since this order will be paid via Mondu you won\'t be able to change the addresses.', 'mondu') . '</p>';
+    echo '<p>' . __('Since this order will be paid via Mondu you will not be able to change the addresses.', 'mondu') . '</p>';
   }
 
   // This method needs to be public
@@ -125,16 +123,16 @@ class Plugin {
    * @return bool
    */
   private function is_sandbox() {
-    $isSandbox = true;
+    $sandbox_env = true;
     if (
       is_array($this->global_settings) &&
       isset($this->global_settings['field_sandbox_or_production']) &&
       $this->global_settings['field_sandbox_or_production'] === 'production'
    ) {
-      $isSandbox = false;
+      $sandbox_env = false;
     }
 
-    return $isSandbox;
+    return $sandbox_env;
   }
 
   /**
