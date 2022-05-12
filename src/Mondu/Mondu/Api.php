@@ -96,6 +96,21 @@ class Api {
 
   /**
    * @param $mondu_uuid
+   *
+   * @return string
+   * @throws MonduException
+   * @throws ResponseException
+   */
+  public function get_order($mondu_uuid) {
+    $oauth_token = $this->request_oauth_token($this->options['client_id'], $this->options['client_secret'], $this->is_sandbox());
+
+    $result = $this->get(sprintf('/orders/%s', $mondu_uuid), null, $oauth_token, $this->is_sandbox());
+
+    return json_decode($result['body'], true);
+  }
+
+  /**
+   * @param $mondu_uuid
    * @param array $params
    *
    * @return string

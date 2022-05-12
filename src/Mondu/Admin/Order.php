@@ -21,7 +21,8 @@ class Order {
     add_meta_box('mondu_payment_info',
       __('Payment info', 'mondu'),
       static function () use ($order) {
-        echo PaymentInfo::get_mondu_payment_html($order->get_id());
+        $payment_info = new PaymentInfo($order->get_id());
+        echo $payment_info->get_mondu_payment_html();
       },
       'shop_order',
       'normal'
