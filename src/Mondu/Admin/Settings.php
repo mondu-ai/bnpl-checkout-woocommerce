@@ -54,7 +54,8 @@ class Settings {
         update_option('_mondu_webhooks_secret', $secret['webhook_secret']);
 
         $params = array('address' => get_site_url() . '/?rest_route=/mondu/v1/webhooks/index');
-        $this->api->register_webhook(array_merge($params, array('topic' => 'order')));
+        $this->api->register_webhook(array_merge($params, array('topic' => 'order/pending')));
+        $this->api->register_webhook(array_merge($params, array('topic' => 'order/declined')));
         update_option('_mondu_webhooks_registered', time());
       } catch (MonduException $e) {
         $webhooks_error = $e->getMessage();

@@ -116,6 +116,8 @@ class Gateway extends WC_Payment_Gateway {
     $adjust_order_data = OrderData::adjust_order_data($order_id, $data_to_update);
     $response = $this->adjust_order($order_id, $adjust_order_data);
 
+    $order->update_status('wc-processing', __('Processing', 'woocommerce'));
+
     WC()->cart->empty_cart();
     /*
      * We remove the orders id here,
