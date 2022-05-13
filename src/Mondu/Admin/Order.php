@@ -2,7 +2,7 @@
 
 namespace Mondu\Admin;
 
-use Mondu\Mondu\PaymentInfo;
+use Mondu\Mondu\Presenters\PaymentInfo;
 use WC_Order;
 
 class Order {

@@ -1,6 +1,6 @@
 <?php
 
-namespace Mondu\Mondu\Api;
+namespace Mondu\Mondu\Controllers;
 
 use Mondu\Mondu\Gateway;
 use WP_REST_Controller;

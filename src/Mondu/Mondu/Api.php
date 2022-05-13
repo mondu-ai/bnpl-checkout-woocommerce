@@ -2,7 +2,7 @@
 
 namespace Mondu\Mondu;
 
-use Mondu\Mondu\Api\Token;
+use Mondu\Mondu\Models\Token;
 use Mondu\Exceptions\MonduException;
 use Mondu\Exceptions\CredentialsNotSetException;
 use Mondu\Exceptions\ResponseException;

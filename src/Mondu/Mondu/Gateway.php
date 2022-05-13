@@ -5,7 +5,7 @@ namespace Mondu\Mondu;
 use Mondu\Admin\Option\Account;
 use Mondu\Exceptions\MonduException;
 use Mondu\Exceptions\ResponseException;
-use Mondu\Mondu\OrderData;
+use Mondu\Mondu\Support\OrderData;
 use Mondu\Plugin;
 use WC_Checkout;
 use WC_Data_Exception;

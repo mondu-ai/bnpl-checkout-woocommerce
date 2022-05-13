@@ -1,8 +1,8 @@
 <?php
 
-namespace Mondu\Mondu;
+namespace Mondu\Mondu\Support;
 
-use Mondu\Mondu\Helper;
+use Mondu\Mondu\Support\Helper;
 use Mondu\Plugin;
 use WC_Order;
 

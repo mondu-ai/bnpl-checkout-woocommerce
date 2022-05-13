@@ -1,8 +1,8 @@
 <?php
 
-namespace Mondu\Mondu\Api;
+namespace Mondu\Mondu\Controllers;
 
-use Mondu\Mondu\Api\SignatureVerifier;
+use Mondu\Mondu\Models\SignatureVerifier;
 use Mondu\Exceptions\MonduException;
 use Mondu\Plugin;
 use WP_Error;
