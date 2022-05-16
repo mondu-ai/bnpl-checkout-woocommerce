@@ -111,6 +111,21 @@ class Api {
 
   /**
    * @param $mondu_uuid
+   *
+   * @return string
+   * @throws MonduException
+   * @throws ResponseException
+   */
+  public function update_external_info($mondu_uuid, $params) {
+    $oauth_token = $this->request_oauth_token($this->options['client_id'], $this->options['client_secret'], $this->is_sandbox());
+
+    $result = $this->post(sprintf('/orders/%s/update_external_info', $mondu_uuid), $params, $oauth_token, $this->is_sandbox(), true);
+
+    return json_decode($result['body'], true);
+  }
+
+  /**
+   * @param $mondu_uuid
    * @param array $params
    *
    * @return string

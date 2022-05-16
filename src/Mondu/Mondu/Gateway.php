@@ -5,6 +5,7 @@ namespace Mondu\Mondu;
 use Mondu\Admin\Option\Account;
 use Mondu\Exceptions\MonduException;
 use Mondu\Exceptions\ResponseException;
+use Mondu\Mondu\MonduRequestWrapper;
 use Mondu\Mondu\Support\OrderData;
 use Mondu\Plugin;
 use WC_Checkout;
@@ -31,8 +32,6 @@ class Gateway extends WC_Payment_Gateway {
   private $api;
 
   public function __construct() {
-    $this->logger = wc_get_logger();
-
     $this->global_settings = get_option(Account::OPTION_NAME);
 
     $this->id = 'mondu';
@@ -53,7 +52,7 @@ class Gateway extends WC_Payment_Gateway {
     }
 
     $this->api = new Api();
-
+    $this->mondu_request_wrapper = new MonduRequestWrapper();
     $this->logger = wc_get_logger();
   }
 
@@ -112,9 +111,7 @@ class Gateway extends WC_Payment_Gateway {
     update_post_meta($order_id, Plugin::ORDER_DATA_KEY, $order_data);
 
     // Update Mondu order's external reference id
-    $data_to_update = ['external_reference_id' => (string) $order_id];
-    $adjust_order_data = OrderData::adjust_order_data($order_id, $data_to_update);
-    $response = $this->adjust_order($order_id, $adjust_order_data);
+    $this->mondu_request_wrapper->update_external_info($order_id);
 
     $order->update_status('wc-processing', __('Processing', 'woocommerce'));
 
@@ -146,48 +143,23 @@ class Gateway extends WC_Payment_Gateway {
   }
 
   /**
-   * @throws MonduException
-   * @throws ResponseException
-   */
-  public function create_order() {
-    $payment_method = WC()->session->get('chosen_payment_method');
-    if ($payment_method !== 'mondu') {
-      return;
-    }
-
-    $order_data = OrderData::create_order_data();
-    $response = $this->api->create_order($order_data);
-
-    $mondu_order_id = $response['order']['uuid'];
-    WC()->session->set('mondu_order_id', $mondu_order_id);
-  }
-
-  /**
-   * @param $order_id
-   * @param $data_to_update
-   *
-   * @throws MonduException
-   * @throws ResponseException
-   */
-  public function adjust_order($order_id, $data_to_update = null) {
-    $mondu_order_id = get_post_meta($order_id, Plugin::ORDER_ID_KEY, true);
-    $response = $this->api->adjust_order($mondu_order_id, $data_to_update);
-  }
-
-  /**
    * @param $order
    *
    * @throws MonduException
    * @throws ResponseException
    */
   public function update_order_if_changed_some_fields($order) {
+    if ($order->get_payment_method() !== 'mondu') {
+      return;
+    }
+
     # This method should not be called before ending the payment process
     if (isset(WC()->session) && WC()->session->get('mondu_order_id'))
       return;
 
     if (array_intersect(array('total', 'discount_total', 'discount_tax', 'cart_tax', 'total_tax', 'shipping_tax', 'shipping_total'), array_keys($order->get_changes()))) {
       $data_to_update = OrderData::order_data_from_wc_order($order);
-      $response = $this->adjust_order($order->get_id(), $data_to_update);
+      $this->mondu_request_wrapper->adjust_order($order->get_id(), $data_to_update);
     }
   }
 
@@ -201,40 +173,15 @@ class Gateway extends WC_Payment_Gateway {
    */
   public function order_status_changed($order_id, $from_status, $to_status) {
     $order = new WC_Order($order_id);
-    if ($order->get_payment_method() !== $this->id) {
+    if ($order->get_payment_method() !== 'mondu') {
       return;
     }
+
     if ($to_status === 'cancelled') {
-      $this->cancel_order($order);
+      $this->mondu_request_wrapper->cancel_order($order_id);
     }
     if ($to_status === 'completed') {
-      $this->complete_order($order);
+      $this->mondu_request_wrapper->ship_order($order_id);
     }
-  }
-
-  /**
-   * @param WC_Order $order
-   *
-   * @throws MonduException
-   * @throws ResponseException
-   */
-  private function cancel_order(WC_Order $order) {
-    $mondu_order_id = get_post_meta($order->get_id(), Plugin::ORDER_ID_KEY, true);
-
-    $this->api->cancel_order($mondu_order_id);
-  }
-
-  /**
-   * @param WC_Order $order
-   *
-   * @throws MonduException
-   * @throws ResponseException
-   */
-  private function complete_order(WC_Order $order) {
-    $mondu_order_id = get_post_meta($order->get_id(), Plugin::ORDER_ID_KEY, true);
-
-    $params = OrderData::invoice_data_from_wc_order($order);
-
-    $this->api->ship_order($mondu_order_id, $params);
   }
 }

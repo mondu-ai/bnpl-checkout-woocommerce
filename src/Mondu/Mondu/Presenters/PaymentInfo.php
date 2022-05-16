@@ -2,6 +2,7 @@
 
 namespace Mondu\Mondu\Presenters;
 
+use Mondu\Mondu\MonduRequestWrapper;
 use Mondu\Plugin;
 use DateInterval;
 use Exception;
@@ -11,13 +12,15 @@ class PaymentInfo {
 
   private $order;
   private $order_data;
+  private $mondu_request_wrapper;
 
   /**
    * @param $order_id
    */
   public function __construct($order_id) {
     $this->order = new WC_Order($order_id);
-    $this->order_data = $this->get_order_data();
+    $this->mondu_request_wrapper = new MonduRequestWrapper();
+    $this->order_data = $this->get_order();
   }
 
   /**
@@ -51,12 +54,7 @@ class PaymentInfo {
     return ob_get_clean();
   }
 
-  private function get_order_data() {
-    $mondu_order_id = get_post_meta($this->order->get_id(), Plugin::ORDER_ID_KEY, true);
-
-    $api = new Api();
-    $response = $api->get_order($mondu_order_id);
-
-    return $response['order'];
+  private function get_order() {
+    return $this->mondu_request_wrapper->get_order($this->order->get_id());
   }
 }

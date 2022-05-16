@@ -2,13 +2,14 @@
 
 namespace Mondu\Mondu\Controllers;
 
-use Mondu\Mondu\Gateway;
+use Mondu\Mondu\MonduRequestWrapper;
 use WP_REST_Controller;
 use WP_REST_Request;
 
 class OrdersController extends WP_REST_Controller {
   public function __construct() {
     $this->namespace = 'mondu/v1/orders';
+    $this->mondu_request_wrapper = new MonduRequestWrapper();
   }
 
   // Register our routes
@@ -23,8 +24,7 @@ class OrdersController extends WP_REST_Controller {
   }
 
   public function create(WP_REST_Request $request) {
-    $gateway = new Gateway();
-    $gateway->create_order();
+    $this->mondu_request_wrapper->create_order();
 
     return array(
       'token' => WC()->session->get('mondu_order_id')

@@ -21,7 +21,7 @@ class Plugin {
   const ADJUST_ORDER_TRIGGERED_KEY = '_mondu_adjust_order_triggered';
   const ORDER_DATA_KEY = '_mondu_order_data';
   const ORDER_ID_KEY = '_mondu_order_id';
-  const BANK_ACCOUNT_KEY = '_mondu_bank_account';
+  const INVOICE_ID_KEY = '_mondu_invoice_id';
   const FAILURE_REASON_KEY = '_mondu_failure_reason';
   const SHIP_ORDER_REQUEST_RESPONSE = '_mondu_ship_order_request_response';
 
