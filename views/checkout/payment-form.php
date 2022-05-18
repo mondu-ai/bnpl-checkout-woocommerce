@@ -29,11 +29,18 @@
 
     checkMonduMount = true;
 
+    let monduId = jQuery('#mondu_order_id').val();
+    if (monduId != null && monduId != '') {
+      return renderWidget(monduId);
+    }
+
     jQuery.ajax({
       type: 'POST',
       url: `${url}?rest_route=/mondu/v1/orders/create`,
       success: function(res) {
-        renderWidget(res['token']);
+        let token = res['token'];
+        jQuery('#mondu_order_id').val(token);
+        renderWidget(token);
         return true;
       },
       fail: function(err) {
@@ -123,6 +130,7 @@
   }
 </style>
 
+<input id="mondu_order_id" value="<?php echo WC()->session->get('mondu_order_id'); ?>" hidden></input>
 <p>
   <img id="checkout_mondu_logo" src="<?php echo $this->logo_url; ?>" alt="Mondu">
   Hinweise zur Verarbeitung Ihrer personenbezogenen Daten durch die Mondu GmbH finden Sie <a href="<?php echo $this->personal_data_url; ?>" target="_blank">hier</a>.
