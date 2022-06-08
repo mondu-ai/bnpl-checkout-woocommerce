@@ -9,6 +9,7 @@ use Mondu\Mondu\Gateway;
 use Mondu\Mondu\Support\OrderData;
 use Mondu\Mondu\Controllers\OrdersController;
 use Mondu\Mondu\Controllers\WebhooksController;
+use Mondu\Mondu\Presenters\PaymentInfo;
 use DateInterval;
 use Exception;
 use WC_DateTime;
@@ -66,6 +67,8 @@ class Plugin {
 
     add_action('woocommerce_before_order_object_save', [new Gateway(), 'update_order_if_changed_some_fields'], 10, 2);
 
+    // add_action('woocommerce_order_refunded', [new Gateway(), 'order_refunded'], 10, 2);
+
     add_action('rest_api_init', function () {
       $orders = new OrdersController();
       $orders->register_routes();
@@ -91,7 +94,17 @@ class Plugin {
       return $entry;
     }, 0, 2);
 
+    /*
+     * This one does not allow to change address
+     */
     add_action('woocommerce_admin_order_data_after_billing_address', [$this, 'change_address_warning'], 10, 1);
+
+    /*
+     * This one adds the payment information to a WCPDF Invoice
+     */
+    add_action('wpo_wcpdf_after_order_details', [$this, 'wcpdf_add_mondu_payment_info_to_pdf'], 10, 2);
+
+    add_action('wpo_wcpdf_after_order_data', [$this, 'wcpdf_add_status_to_invoice_when_order_is_cancelled'], 10, 2 );
   }
 
   public function change_address_warning(WC_Order $order) {
@@ -147,5 +160,35 @@ class Plugin {
     }
 
     return $available_gateways;
+  }
+
+  /**
+   * @param $template_type
+   * @param $order
+   *
+   * @throws Exception
+   */
+  public function wcpdf_add_mondu_payment_info_to_pdf($template_type, $order) {
+    if ($template_type == 'invoice') {
+      $payment_info = new PaymentInfo($order->get_id());
+      return $payment_info->get_mondu_payment_html();
+    }
+  }
+
+  /**
+   * @param $template_type
+   * @param $order
+   *
+   * @throws Exception
+   */
+  public function wcpdf_add_status_to_invoice_when_order_is_cancelled($template_type, $order) {
+    if ($order->get_status() == 'cancelled' && $template_type == 'invoice') {
+      ?>
+        <tr class="order-status">
+          <th>Order status:</th>
+          <td>Cancelled</td>
+        </tr>
+      <?php
+    }
   }
 }

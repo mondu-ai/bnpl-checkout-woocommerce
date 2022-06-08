@@ -180,8 +180,36 @@ class Gateway extends WC_Payment_Gateway {
     if ($to_status === 'cancelled') {
       $this->mondu_request_wrapper->cancel_order($order_id);
     }
+    // if ($to_status === 'refunded') {
+    //   $this->mondu_request_wrapper->cancel_order($order);
+    // }
     if ($to_status === 'completed') {
       $this->mondu_request_wrapper->ship_order($order_id);
     }
   }
+
+  /**
+   * @param $order_id
+   * @param $refund_id
+   *
+   * @throws MonduException
+   * @throws ResponseException
+   */
+  // public function order_refunded($order_id, $refund_id) {
+  //   $order         = new WC_Order($order_id);
+  //   $refund        = new WC_Order_Refund($refund_id);
+  //   $mondu_order_id = get_post_meta($order->get_id(), Plugin::ORDER_ID_KEY, true);
+
+  //   $order_total      = $order->get_total();
+  //   $order_total_tax  = $order->get_total_tax();
+  //   $refund_total     = $refund->get_total();
+  //   $refund_total_tax = $refund->get_total_tax();
+  //   $new_amount       = [
+  //     'net'   => ($order_total - $order_total_tax) + ($refund_total - $refund_total_tax),
+  //     'gross' => ($order_total) + ($refund_total),
+  //     'tax'   => ($order_total_tax) + ($refund_total_tax),
+  //  ];
+
+  //   $this->api->updateOrder($mondu_order_id, ['amount' => $new_amount]);
+  // }
 }

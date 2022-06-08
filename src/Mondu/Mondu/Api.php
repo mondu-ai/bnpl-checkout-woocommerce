@@ -172,6 +172,21 @@ class Api {
   }
 
   /**
+   * @param $mondu_uuid
+   *
+   * @return string
+   * @throws MonduException
+   * @throws ResponseException
+   */
+  public function get_invoices($mondu_uuid) {
+    $oauth_token = $this->request_oauth_token($this->options['client_id'], $this->options['client_secret'], $this->is_sandbox());
+
+    $result = $this->get(sprintf('/orders/%s/invoices', $mondu_uuid), null, $oauth_token, $this->is_sandbox());
+
+    return json_decode($result['body'], true);
+  }
+
+  /**
    * @return string
    * @throws MonduException
    * @throws ResponseException
@@ -278,9 +293,9 @@ class Api {
    * @throws ResponseException
    */
   private function validate_remote_result($result) {
-    $this->logger->debug('validating', [
-      'result' => $result,
-   ]);
+  //   $this->logger->debug('validating', [
+  //     'result' => $result,
+  //  ]);
 
     if ($result instanceof \WP_Error) {
       throw new MonduException(__($result->get_error_message(), $result->get_error_code()));
@@ -334,15 +349,15 @@ class Api {
     $url = $sandbox ? MONDU_SANDBOX_URL : MONDU_PRODUCTION_URL;
     $url .= $path;
 
-    $this->logger->debug('request', [
-      'path'         => $path,
-      'url'          => $url,
-      'body'         => $body,
-      'json_request' => $json_request,
-      'token'        => $token,
-      'method'       => $method,
-      'sandbox'      => $sandbox
-   ]);
+  //   $this->logger->debug('request', [
+  //     'path'         => $path,
+  //     'url'          => $url,
+  //     'body'         => $body,
+  //     'json_request' => $json_request,
+  //     'token'        => $token,
+  //     'method'       => $method,
+  //     'sandbox'      => $sandbox
+  //  ]);
 
     $headers = [];
 

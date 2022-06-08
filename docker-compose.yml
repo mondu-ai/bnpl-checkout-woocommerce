@@ -1,34 +1,80 @@
 version: '3'
 services:
-  webserver:
+  woocommerce:
     container_name: woocommerce
+    # image: wordpress:5.9.3
     build: .
     volumes:
       - wordpress_data:/var/www/html
       - .:/var/www/html/wp-content/plugins/woocommerce-mondu
     links:
-      - dbserver:mysql
+      - mariadb
+      - mailcatcher
     ports:
       - 8080:80
     environment:
-      WORDPRESS_DEBUG: true
-      WORDPRESS_DB_HOST: dbserver
+      WORDPRESS_DEBUG: 1
+      WORDPRESS_DB_HOST: mariadb
       WORDPRESS_DB_USER: wordpress
       WORDPRESS_DB_PASSWORD: wordpress
       WORDPRESS_DB_NAME: wordpress
+      WORDPRESS_CONFIG_EXTRA: |
+        require_once(ABSPATH .'wp-includes/plugin.php');
+        // configure phpmailer with SMTP before sending emails
+        add_action('phpmailer_init', function($$mailer) {
+          $$mailer->isSMTP();
+          $$mailer->Host = "mailcatcher";
+          $$mailer->SMTPAuth = false;
+          $$mailer->Port = 1025;
+        });
+        // optional: error logging in case phpmailer fails
+        add_action('wp_mail_failed', function($$wperror) {
+          error_log(implode("; ", $$wperror->get_error_messages()));
+        });
+    # depends_on:
+    #   - composer
 
-  dbserver:
-    container_name: woo_mariadb
+  mariadb:
+    container_name: woocommerce_mariadb
     image: mariadb
     volumes:
       - mariadb_data:/var/lib/mysql
+    ports:
+      - 3307:3306
     environment:
       MYSQL_ROOT_PASSWORD: example
       MYSQL_DATABASE: wordpress
       MYSQL_USER: wordpress
       MYSQL_PASSWORD: wordpress
+
+  # composer:
+  #   container_name: woocommerce_composer
+  #   image: composer
+  #   command: update
+  #   working_dir: /var/www/html
+  #   volumes:
+  #     - wordpress_data:/var/www/html
+  #     - ./composer.json:/var/www/html/composer.json
+
+  phpmyadmin:
+    container_name: woocommerce_phpmyadmin
+    image: phpmyadmin
     ports:
-      - 3306:3306
+      - 8081:80
+    environment:
+      PMA_HOST: mariadb
+      PMA_USER: wordpress
+      PMA_PASSWORD: wordpress
+    links:
+      - mariadb
+    depends_on:
+      - mariadb
+
+  mailcatcher:
+    container_name: woocommerce_mailcatcher
+    image: schickling/mailcatcher
+    ports:
+      - 1080:1080
 
 volumes:
   wordpress_data:

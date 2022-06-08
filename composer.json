@@ -1,0 +1,10 @@
+{
+  "require": {
+    "woocommerce/woocommerce": "5.9.1"
+  },
+  "config": {
+    "allow-plugins": {
+      "composer/installers": true
+    }
+  }
+}

@@ -41,6 +41,13 @@ class OrderData {
     $cart_totals = WC()->session->get('cart_totals');
     $customer = WC()->session->get('customer');
 
+    $logger  = wc_get_logger();
+    $logger->debug('customer', [
+      'logged' => is_user_logged_in(),
+      'user' => get_current_user_id(),
+      // 'customer' => $customer,
+   ]);
+
     $order_data = [
       'currency' => get_woocommerce_currency(),
       'external_reference_id' => '0', // We will update this id when woocommerce order is created
@@ -50,6 +57,8 @@ class OrderData {
         'company_name' => isset($customer['company']) ? $customer['company'] : null,
         'email' => isset($customer['email']) ? $customer['email'] : null,
         'phone' => isset($customer['phone']) ? $customer['phone'] : null,
+        'external_reference_id' => isset($customer['id']) ? $customer['id'] : null,
+        'is_registered' => is_user_logged_in(),
      ],
       'billing_address' => [
         'address_line1' => isset($customer['address_1']) ? $customer['address_1'] : null,
@@ -176,7 +185,7 @@ class OrderData {
   public static function invoice_data_from_wc_order(WC_Order $order) {
     $invoice_data = [
       'external_reference_id' => (string) $order->get_id(),
-      'invoice_url' => 'http://google.com',
+      'invoice_url' => Helper::create_invoice_url($order->get_id()),
       'gross_amount_cents' => round ((float) $order->get_total() * 100, 2),
       'tax_cents' => round ((float) ($order->get_total_tax() - $order->get_shipping_tax()) * 100, 2), # Considering that is not possible to save taxes that does not belongs to products, removes shipping taxes here
       'discount_cents' => round ($order->get_discount_total() * 100, 2),

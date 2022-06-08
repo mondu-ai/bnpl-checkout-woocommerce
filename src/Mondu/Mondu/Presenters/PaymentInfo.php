@@ -9,7 +9,6 @@ use Exception;
 use WC_Order;
 
 class PaymentInfo {
-
   private $order;
   private $order_data;
   private $mondu_request_wrapper;
@@ -44,10 +43,22 @@ class PaymentInfo {
 
     ?>
       <section class="woocommerce-order-details mondu-payment">
-        <p><?php printf(__('Kontoinhaber: %s', 'mondu'), $bank_account['account_holder']); ?></p>
-        <p><?php printf(__('Bank: %s', 'mondu'), $bank_account['bank']); ?></p>
-        <p><?php printf(__('IBAN: %s', 'mondu'), $bank_account['iban']); ?></p>
-        <p><?php printf(__('BIC: %s', 'mondu'), $bank_account['bic']); ?></p>
+        <p>
+          <span><strong><?php printf(__('Kontoinhaber:', 'mondu')); ?></strong></span>
+          <span><?php printf($bank_account['bank']); ?></span>
+        </p>
+        <p>
+          <span><strong><?php printf(__('Bank:', 'mondu')); ?></strong></span>
+          <span><?php printf($bank_account['bank']); ?></span>
+        </p>
+        <p>
+          <span><strong><?php printf(__('IBAN:', 'mondu')); ?></strong></span>
+          <span><?php printf($bank_account['iban']); ?></span>
+        </p>
+        <p>
+          <span><strong><?php printf(__('BIC:', 'mondu')); ?></strong></span>
+          <span><?php printf($bank_account['bic']); ?></span>
+        </p>
       </section>
     <?php
 
