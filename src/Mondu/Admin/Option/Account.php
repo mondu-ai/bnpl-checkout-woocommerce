@@ -2,17 +2,17 @@
 
 namespace Mondu\Admin\Option;
 
+use Mondu\Plugin;
+
 defined('ABSPATH') or die('Direct access not allowed');
 
 class Account extends Helper {
-  const OPTION_NAME = 'mondu_account';
-
   public function __construct() {
-    $this->options = get_option(self::OPTION_NAME);
+    $this->global_settings = get_option(Plugin::OPTION_NAME);
   }
 
   public function register() {
-    register_setting('mondu', self::OPTION_NAME);
+    register_setting('mondu', Plugin::OPTION_NAME);
 
     /*
      * General Settings
@@ -34,14 +34,14 @@ class Account extends Helper {
   }
 
   public function field_sandbox_or_production() {
-    $this->selectField(self::OPTION_NAME, 'field_sandbox_or_production', [
+    $this->selectField(Plugin::OPTION_NAME, 'field_sandbox_or_production', [
       'sandbox'    => __('Sandbox', 'mondu'),
       'production' => __('Production', 'mondu'),
    ], 'single');
   }
 
   public function field_api_token() {
-    $this->textField(self::OPTION_NAME, 'api_token');
+    $this->textField(Plugin::OPTION_NAME, 'api_token');
   }
 
   public function render($validation_error = null) {

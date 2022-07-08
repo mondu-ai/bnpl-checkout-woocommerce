@@ -32,7 +32,7 @@ class Gateway extends WC_Payment_Gateway {
   private $api;
 
   public function __construct() {
-    $this->global_settings = get_option(Account::OPTION_NAME);
+    $this->global_settings = get_option(Plugin::OPTION_NAME);
 
     $this->id = 'mondu';
     $this->has_fields = true;

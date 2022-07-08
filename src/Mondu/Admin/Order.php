@@ -6,6 +6,8 @@ use Mondu\Mondu\Presenters\PaymentInfo;
 use Mondu\Mondu\Presenters\InvoiceInfo;
 use WC_Order;
 
+defined('ABSPATH') or die('Direct access not allowed');
+
 class Order {
 
   public function init() {

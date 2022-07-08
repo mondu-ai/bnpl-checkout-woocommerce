@@ -12,7 +12,7 @@ class SignatureVerifier {
    * @param string $secret
    */
   public function __construct() {
-    $this->secret = get_option('_mondu_webhooks_secret');
+    $this->secret = get_option('_mondu_webhook_secret');
   }
 
   /**

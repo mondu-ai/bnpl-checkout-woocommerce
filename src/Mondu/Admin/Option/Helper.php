@@ -5,20 +5,20 @@ namespace Mondu\Admin\Option;
 defined('ABSPATH') or die('Direct access not allowed');
 
 abstract class Helper {
-  protected $options;
+  protected $global_settings;
 
   protected function textField($optionName, $fieldName, $default = '') {
     printf(
       '<input type="text" id="' . $fieldName . '" name="' . $optionName . '[' . $fieldName . ']" value="%s" />',
-      isset($this->options[$fieldName]) ? esc_attr($this->options[$fieldName]) : $default
+      isset($this->global_settings[$fieldName]) ? esc_attr($this->global_settings[$fieldName]) : $default
    );
   }
 
   protected function selectField($optionName, $fieldName, $options, $type = 'single') {
-    $selectedValue = isset($this->options[$fieldName]) ? $this->options[$fieldName] : '';
+    $selectedValue = isset($this->global_settings[$fieldName]) ? $this->global_settings[$fieldName] : '';
 
     $multiple = '';
-    $name     = $optionName . '[' . $fieldName . ']';
+    $name = $optionName . '[' . $fieldName . ']';
     if ($type === 'multiple') {
       $multiple = ' multiple="multiple"';
       $name     .= '[]';

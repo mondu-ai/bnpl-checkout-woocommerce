@@ -2,6 +2,7 @@
 
 namespace Mondu\Mondu;
 
+use Mondu\Plugin;
 use Mondu\Mondu\Models\Token;
 use Mondu\Exceptions\MonduException;
 use Mondu\Exceptions\CredentialsNotSetException;
@@ -9,19 +10,17 @@ use Mondu\Exceptions\ResponseException;
 use WC_Logger_Interface;
 
 class Api {
-  const OPTION_NAME = 'mondu_account';
-
-  private $options;
+  private $global_settings;
 
   private $logger;
 
   public function __construct() {
-    $this->options = get_option(self::OPTION_NAME);
+    $this->global_settings = get_option(Plugin::OPTION_NAME);
     $this->logger  = wc_get_logger();
   }
 
   public function register() {
-    register_setting('mondu', self::OPTION_NAME);
+    register_setting('mondu', Plugin::OPTION_NAME);
   }
 
   /**
@@ -32,7 +31,7 @@ class Api {
    * @throws ResponseException
    */
   public function create_order(array $params) {
-    $result = $this->post('/orders', $params, );
+    $result = $this->post('/orders', $params);
 
     $response = json_decode($result['body'], true);
 
@@ -62,7 +61,7 @@ class Api {
    * @throws ResponseException
    */
   public function update_external_info($mondu_uuid, $params) {
-    $result = $this->post(sprintf('/orders/%s/update_external_info', $mondu_uuid), $params, );
+    $result = $this->post(sprintf('/orders/%s/update_external_info', $mondu_uuid), $params);
 
     return json_decode($result['body'], true);
   }
@@ -76,7 +75,7 @@ class Api {
    * @throws ResponseException
    */
   public function adjust_order($mondu_uuid, array $params) {
-    $result = $this->post(sprintf('/orders/%s/adjust', $mondu_uuid), $params, );
+    $result = $this->post(sprintf('/orders/%s/adjust', $mondu_uuid), $params);
 
     return json_decode($result['body'], true);
   }
@@ -103,7 +102,7 @@ class Api {
    * @throws ResponseException
    */
   public function ship_order($mondu_uuid, array $params) {
-    $result = $this->post(sprintf('/orders/%s/invoices', $mondu_uuid), $params, );
+    $result = $this->post(sprintf('/orders/%s/invoices', $mondu_uuid), $params);
 
     return json_decode($result['body'], true);
   }
@@ -146,15 +145,6 @@ class Api {
   }
 
   /**
-   * @throws CredentialsNotSetException
-   */
-  public function validate_credentials() {
-    if (!isset($this->options) || !is_array($this->options) || !isset($this->options['api_token'], $this->options['webhooks_secret'])) {
-      throw new CredentialsNotSetException(__('Missing Credentials', 'mondu'));
-    }
-  }
-
-  /**
    * @param $path
    * @param array|string|null $body
    *
@@ -165,7 +155,7 @@ class Api {
   private function post($path, array $body = null) {
     $method = 'POST';
 
-    return $this->request($path, $body, $method);
+    return $this->request($path, $method, $body);
   }
 
   /**
@@ -179,7 +169,7 @@ class Api {
   private function put($path, array $body = null) {
     $method = 'PUT';
 
-    return $this->request($path, $body, $method);
+    return $this->request($path, $method, $body);
   }
 
   /**
@@ -193,7 +183,7 @@ class Api {
   private function patch($path, array $body = null) {
     $method = 'PATCH';
 
-    return $this->request($path, $body, $method);
+    return $this->request($path, $method, $body);
   }
 
   /**
@@ -213,7 +203,7 @@ class Api {
 
     $method = 'GET';
 
-    return $this->request($path, null, $method);
+    return $this->request($path, $method);
   }
 
   /**
@@ -257,21 +247,25 @@ class Api {
    * @throws MonduException
    * @throws ResponseException
    */
-  private function request($path, $body, $method = 'GET') {
+  private function request($path, $method = 'GET', $body = null) {
     $url = $this->is_production() ? MONDU_PRODUCTION_URL : MONDU_SANDBOX_URL;
     $url .= $path;
 
     $headers = [
       'Content-Type' => 'application/json',
-      'Api-Token'    => $this->options['api_token'],
+      'Api-Token'    => $this->global_settings['api_token'],
     ];
 
     $args = [
-      'body'    => json_encode($body),
+      // 'body'    => json_encode($body),
       'headers' => $headers,
       'method'  => $method,
       'timeout' => 30,
    ];
+
+    if ($body !== null) {
+      $args['body'] = json_encode($body);
+    }
 
     // if ($json_request) {
     //   $args['data_format'] = $body;
@@ -286,9 +280,9 @@ class Api {
   private function is_production() {
     $is_production = false;
     if (
-      is_array($this->options) &&
-      isset($this->options['field_sandbox_or_production']) &&
-      $this->options['field_sandbox_or_production'] === 'production'
+      is_array($this->global_settings) &&
+      isset($this->global_settings['field_sandbox_or_production']) &&
+      $this->global_settings['field_sandbox_or_production'] === 'production'
    ) {
       $is_production = true;
     }

@@ -26,13 +26,15 @@ class Plugin {
   const FAILURE_REASON_KEY = '_mondu_failure_reason';
   const SHIP_ORDER_REQUEST_RESPONSE = '_mondu_ship_order_request_response';
 
+  const OPTION_NAME = 'mondu_account';
+
   /**
    * @var array|bool|mixed|void
    */
   protected $global_settings;
 
   public function __construct() {
-    $this->global_settings = get_option(Account::OPTION_NAME);
+    $this->global_settings = get_option(Plugin::OPTION_NAME);
 
     # This is for trigger the open checkout plugin
     add_action('woocommerce_after_checkout_validation', function () {
@@ -82,17 +84,6 @@ class Plugin {
       WC()->session->set('woocommerce_order_id', $order_id);
       update_post_meta($order_id, Plugin::ORDER_ID_KEY, $mondu_order_id);
     }, 10, 3);
-
-    /*
-     * This one adds the context to the normal woocommerce log files
-     */
-    add_filter('woocommerce_format_log_entry', static function ($entry, $log_data) {
-      if (is_array($log_data) && isset($log_data['context'])) {
-        $entry .= ' ' . json_encode($log_data['context']);
-      }
-
-      return $entry;
-    }, 0, 2);
 
     /*
      * This one does not allow to change address
