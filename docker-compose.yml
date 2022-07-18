@@ -1,8 +1,7 @@
-version: '3'
+version: "3"
 services:
   woocommerce:
     container_name: woocommerce
-    # image: wordpress:5.9.3
     build: .
     volumes:
       - wordpress_data:/var/www/html
@@ -31,8 +30,6 @@ services:
         add_action('wp_mail_failed', function($$wperror) {
           error_log(implode("; ", $$wperror->get_error_messages()));
         });
-    # depends_on:
-    #   - composer
 
   mariadb:
     container_name: woocommerce_mariadb
@@ -46,15 +43,6 @@ services:
       MYSQL_DATABASE: wordpress
       MYSQL_USER: wordpress
       MYSQL_PASSWORD: wordpress
-
-  # composer:
-  #   container_name: woocommerce_composer
-  #   image: composer
-  #   command: update
-  #   working_dir: /var/www/html
-  #   volumes:
-  #     - wordpress_data:/var/www/html
-  #     - ./composer.json:/var/www/html/composer.json
 
   phpmyadmin:
     container_name: woocommerce_phpmyadmin
