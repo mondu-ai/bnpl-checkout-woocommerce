@@ -35,21 +35,13 @@ class Gateway extends WC_Payment_Gateway {
     $this->global_settings = get_option(Plugin::OPTION_NAME);
 
     $this->id = 'mondu';
+    $this->title = 'Rechnungskauf - jetzt kaufen, später bezahlen';
+    $this->method_title = 'Mondu Rechnungskauf';
+    $this->method_description = 'Rechnungskauf - jetzt kaufen, später bezahlen';
     $this->has_fields = true;
-    $this->title = Plugin::TITLE;
-    $this->personal_data_url = Plugin::PERSONAL_DATA_URL;
-    $this->logo_url = plugins_url('/woocommerce-mondu/views/mondu.svg');
 
     $this->init_form_fields();
     $this->init_settings();
-
-    if (isset($this->settings['title'])) {
-      $this->title = $this->settings['title'];
-    }
-
-    if (isset($this->settings['logo_url'])) {
-      $this->logo_url = $this->settings['logo_url'];
-    }
 
     $this->api = new Api();
     $this->mondu_request_wrapper = new MonduRequestWrapper();
@@ -58,26 +50,12 @@ class Gateway extends WC_Payment_Gateway {
 
   public function init_form_fields() {
     $this->form_fields = [
-      'enabled'      => [
+      'enabled' => [
         'title'   => __('Enable/Disable', 'woocommerce'),
         'type'    => 'checkbox',
         'label'   => __('Enable this payment method', 'mondu'),
         'default' => 'no',
-     ],
-      'title'        => [
-        'title'       => __('Title', 'woocommerce'),
-        'type'        => 'text',
-        'description' => __('This controls the title which the user sees during checkout.', 'woocommerce'),
-        'default'     => __('Rechnungskauf - jetzt kaufen, später bezahlen', 'mondu'),
-        'desc_tip'    => true,
-     ],
-      'logo_url'     => [
-        'title'       => __('Logo url', 'woocommerce'),
-        'type'        => 'text',
-        'description' => __('The logo the user will see during checkout.', 'woocommerce'),
-        'default'     => __('https://mondu.ai/wp-content/uploads/2022/03/logo.svg', 'mondu'),
-        'desc_tip'    => true,
-     ],
+      ],
    ];
 
     add_action('woocommerce_update_options_payment_gateways_' . $this->id, [

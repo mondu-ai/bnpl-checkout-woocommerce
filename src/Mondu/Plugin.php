@@ -16,9 +16,6 @@ use WC_DateTime;
 use WC_Order;
 
 class Plugin {
-  const TITLE = 'Rechnungskauf - jetzt kaufen, später bezahlen';
-  const PERSONAL_DATA_URL = 'https://mondu.ai/de/datenschutzgrundverordnung-kaeufer';
-
   const ADJUST_ORDER_TRIGGERED_KEY = '_mondu_adjust_order_triggered';
   const ORDER_DATA_KEY = '_mondu_order_data';
   const ORDER_ID_KEY = '_mondu_order_id';
