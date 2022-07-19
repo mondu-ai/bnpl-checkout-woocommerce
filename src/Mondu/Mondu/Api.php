@@ -132,13 +132,29 @@ class Api {
   }
 
   /**
-   * @param array $params
+   * @return array
+   * @throws MonduException
+   * @throws ResponseException
+   */
+  public function get_webhooks() {
+    $result = $this->get('/webhooks', null);
+
+    return json_decode($result['body'], true);
+  }
+
+  /**
+   * @param string $topic
    *
    * @return string
    * @throws MonduException
    * @throws ResponseException
    */
-  public function register_webhook(array $params) {
+  public function register_webhook(string $topic) {
+    $params = [
+      'topic' => $topic,
+      'address' => get_site_url() . '/?rest_route=/mondu/v1/webhooks/index'
+    ];
+
     $result = $this->post('/webhooks', $params);
 
     return json_decode($result['body'], true);
@@ -214,10 +230,6 @@ class Api {
    * @throws ResponseException
    */
   private function validate_remote_result($result) {
-  //   $this->logger->debug('validating', [
-  //     'result' => $result,
-  //  ]);
-
     if ($result instanceof \WP_Error) {
       throw new MonduException(__($result->get_error_message(), $result->get_error_code()));
     }
@@ -257,7 +269,6 @@ class Api {
     ];
 
     $args = [
-      // 'body'    => json_encode($body),
       'headers' => $headers,
       'method'  => $method,
       'timeout' => 30,
@@ -266,10 +277,6 @@ class Api {
     if ($body !== null) {
       $args['body'] = json_encode($body);
     }
-
-    // if ($json_request) {
-    //   $args['data_format'] = $body;
-    // }
 
     return $this->validate_remote_result(wp_remote_request($url, $args));
   }

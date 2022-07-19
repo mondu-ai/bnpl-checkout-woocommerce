@@ -23,5 +23,20 @@
         submit_button(__('Validate Credentials', 'mondu'));
       ?>
     </form>
+    <h2><?php _e('Register Webhooks', 'mondu'); ?></h2>
+    <?php if (isset($webhooks_error) && $webhooks_error !== null): ?>
+      <p><?php echo $webhooks_error; ?></p>
+    <?php endif; ?>
+    <?php if (isset($webhooks_registered) && $webhooks_registered !== false): ?>
+      <p> ✅ <?php _e('Webhooks registered:','mondu');?>
+          <?php echo date_i18n(get_option('date_format'), $webhooks_registered); ?>
+      </p>
+    <?php endif; ?>
+    <form method="post">
+      <?php
+        wp_nonce_field('register-webhooks', 'register-webhooks');
+        submit_button(__('Register Webhooks', 'mondu'));
+      ?>
+    </form>
   <?php ?>
 </div>

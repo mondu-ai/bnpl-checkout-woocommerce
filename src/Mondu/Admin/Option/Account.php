@@ -44,12 +44,13 @@ class Account extends Helper {
     $this->textField(Plugin::OPTION_NAME, 'api_token');
   }
 
-  public function render($validation_error = null) {
+  public function render($validation_error = null, $webhooks_error = null) {
     if (!current_user_can('manage_options')) {
       wp_die(__('You do not have sufficient permissions to access this page.'));
     }
 
     $credentials_validated = get_option('_mondu_credentials_validated');
+    $webhooks_registered = get_option('_mondu_webhooks_registered');
 
     include MONDU_VIEW_PATH . '/admin/options.php';
   }

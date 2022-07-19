@@ -38,11 +38,14 @@ class Settings {
 
     $this->api = new Api();
 
+    $this->logger  = wc_get_logger();
+
     $this->global_settings = get_option(Plugin::OPTION_NAME);
   }
 
   public function render_account_options() {
     $validation_error = null;
+    $webhooks_error = null;
 
     try {
       if (isset($_POST['validate-credentials']) && check_admin_referer('validate-credentials', 'validate-credentials')) {
@@ -50,24 +53,28 @@ class Settings {
           throw new CredentialsNotSetException(__('Missing Credentials', 'mondu'));
         }
 
+        update_option('_mondu_credentials_validated', time());
+      } else if (isset($_POST['register-webhooks']) && check_admin_referer('register-webhooks', 'register-webhooks')) {
+
         $secret = $this->api->webhook_secret();
         update_option('_mondu_webhook_secret', $secret['webhook_secret']);
 
-        # Validate registered webhooks and only register it if it is not registered
-        $params = array('address' => get_site_url() . '/?rest_route=/mondu/v1/webhooks/index');
-        $this->api->register_webhook(array_merge($params, array('topic' => 'order')));
-        $this->api->register_webhook(array_merge($params, array('topic' => 'invoice')));
+        $this->register_webhooks_if_not_registered();
 
-        update_option('_mondu_credentials_validated', time());
+        update_option('_mondu_webhooks_registered', time());
       } else if (isset($_GET['settings-updated']) || $this->missing_credentials()) {
         delete_option('_mondu_credentials_validated');
+        delete_option('_mondu_webhooks_registered');
       }
-    } catch (MonduException | CredentialsNotSetException $e) {
+    } catch (CredentialsNotSetException $e) {
       delete_option('_mondu_credentials_validated');
       $validation_error = $e->getMessage();
+    } catch (MonduException $e) {
+      delete_option('_mondu_webhooks_registered');
+      $webhooks_error = $e->getMessage();
     }
 
-    $this->account_options->render($validation_error);
+    $this->account_options->render($validation_error, $webhooks_error);
   }
 
   private function missing_credentials() {
@@ -77,5 +84,19 @@ class Settings {
       !isset($this->global_settings['api_token']) ||
       $this->global_settings['api_token'] == ''
     );
+  }
+
+  private function register_webhooks_if_not_registered() {
+    $webhooks = $this->api->get_webhooks();
+    $registered_topics = array_map(function($webhook) {
+      return $webhook['topic'];
+    }, $webhooks['webhooks']);
+
+    $required_topics = ['order', 'invoice'];
+    foreach ($required_topics as $topic) {
+      if (!in_array($topic, $registered_topics)) {
+        $this->api->register_webhook($topic);
+      }
+    }
   }
 }
