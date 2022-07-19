@@ -7,6 +7,9 @@ RUN apt -y install wget
 RUN apt -y install unzip
 RUN apt -y install subversion
 
+# To avoid problems with another plugins
+RUN docker-php-ext-install mysqli pdo pdo_mysql
+
 RUN rm -rf /usr/src/wordpress/wp-content/plugins/woocommerce
 
 RUN wget https://downloads.wordpress.org/plugin/woocommerce.${WOOCOMMERCE_VERSION}.zip -O /tmp/woocommerce.zip \
