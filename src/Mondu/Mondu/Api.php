@@ -283,7 +283,7 @@ class Api {
       'headers' => $headers,
       'method'  => $method,
       'timeout' => 30,
-   ];
+    ];
 
     if ($body !== null) {
       $args['body'] = json_encode($body);
@@ -301,7 +301,7 @@ class Api {
       is_array($this->global_settings) &&
       isset($this->global_settings['field_sandbox_or_production']) &&
       $this->global_settings['field_sandbox_or_production'] === 'production'
-   ) {
+    ) {
       $is_production = true;
     }
 

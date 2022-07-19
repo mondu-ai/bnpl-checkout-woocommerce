@@ -88,7 +88,7 @@ class Plugin {
     add_action('woocommerce_admin_order_data_after_billing_address', [$this, 'change_address_warning'], 10, 1);
 
     /*
-     * This one adds the payment information to a WCPDF Invoice
+     * * This one adds the status to a WCPDF Invoice if the order is cancelled
      */
     add_action('wpo_wcpdf_after_order_details', [$this, 'wcpdf_add_mondu_payment_info_to_pdf'], 10, 2);
 

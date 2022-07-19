@@ -56,12 +56,12 @@ class Gateway extends WC_Payment_Gateway {
         'label'   => __('Enable this payment method', 'mondu'),
         'default' => 'no',
       ],
-   ];
+    ];
 
     add_action('woocommerce_update_options_payment_gateways_' . $this->id, [
       $this,
       'process_admin_options'
-   ]);
+    ]);
   }
 
   /**

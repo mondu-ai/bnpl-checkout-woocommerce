@@ -37,7 +37,7 @@ class Account extends Helper {
     $this->selectField(Plugin::OPTION_NAME, 'field_sandbox_or_production', [
       'sandbox'    => __('Sandbox', 'mondu'),
       'production' => __('Production', 'mondu'),
-   ], 'single');
+    ], 'single');
   }
 
   public function field_api_token() {

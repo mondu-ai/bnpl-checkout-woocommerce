@@ -56,12 +56,6 @@ class WebhooksController extends WP_REST_Controller {
         $res_status = 400;
     }
 
-    $this->logger->debug('result', [
-      'body' => $res_body,
-      'status' => $res_status,
-      'params' => $params,
-   ]);
-
     if (strpos($res_status, '2') === 0) {
       return new WP_REST_Response($res_body, 200);
     } else {
@@ -88,7 +82,7 @@ class WebhooksController extends WP_REST_Controller {
       'mondu_order_id' => $mondu_order_id,
       'state' => $params['order_state'],
       'params' => $params,
-   ]);
+    ]);
 
     $order->update_status('wc-processing', __('Processing', 'woocommerce'));
 
@@ -115,7 +109,7 @@ class WebhooksController extends WP_REST_Controller {
       'mondu_order_id' => $mondu_order_id,
       'state' => $params['order_state'],
       'params' => $params,
-   ]);
+    ]);
 
     $order->update_status('wc-failed', __('Failed', 'woocommerce'));
 
