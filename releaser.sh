@@ -23,7 +23,11 @@ then
 	exit 1
 fi
 
+echo "Removing old zip file"
+rm -f "Woocommerce-Mondu-$version.zip"
 mkdir -p Woocommerce-Mondu
-rsync -r --exclude '*.DS_Store' --exclude 'exporter.sh' --exclude 'Dockerfile' --exclude 'docker-compose.yml' --exclude '.gitignore' --exclude '.git' --exclude 'Woocommerce-Mondu' . Woocommerce-Mondu
+echo "Generating zip file"
+rsync -r --exclude "*.DS_Store" --exclude "exporter.sh" --exclude "Dockerfile" --exclude "docker-compose.yml" --exclude ".gitignore" --exclude ".git" --exclude "Woocommerce-Mondu" . Woocommerce-Mondu
 zip -r -D "Woocommerce-Mondu-$version.zip" Woocommerce-Mondu/*
 rm -r Woocommerce-Mondu
+echo "Done"
