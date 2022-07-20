@@ -5,7 +5,10 @@ namespace Mondu\Mondu;
 use Mondu\Admin\Option\Account;
 use Mondu\Exceptions\MonduException;
 use Mondu\Exceptions\ResponseException;
+use Mondu\Mondu\MonduRequestWrapper;
+use Mondu\Mondu\Support\OrderData;
 use Mondu\Plugin;
+use WC_Checkout;
 use WC_Data_Exception;
 use WC_Order;
 use WC_Order_Refund;
@@ -29,86 +32,36 @@ class Gateway extends WC_Payment_Gateway {
   private $api;
 
   public function __construct() {
-    $this->logger = wc_get_logger();
+    $this->global_settings = get_option(Plugin::OPTION_NAME);
 
-
-    $this->global_settings = get_option( Account::OPTION_NAME );
-
-    $this->id                 = 'mondu';
-    $this->icon               = '';
-    $this->has_fields         = true;
-    $this->title              = __( 'Pay After Delivery', 'mondu' );
-    $this->method_title       = __( 'Mondu', 'mondu' );
-    $this->method_description = __( 'Mondu Description', 'mondu' );
+    $this->id = 'mondu';
+    $this->title = 'Rechnungskauf - jetzt kaufen, später bezahlen';
+    $this->method_title = 'Mondu Rechnungskauf';
+    $this->method_description = 'Rechnungskauf - jetzt kaufen, später bezahlen';
+    $this->has_fields = true;
 
     $this->init_form_fields();
     $this->init_settings();
 
-    if ( isset( $this->settings['title'] ) ) {
-      $this->title = $this->settings['title'];
-    }
-
-    if ( isset( $this->settings['description'], $this->settings['payment_term'] ) ) {
-      $this->method_description = str_replace( '{Zahlungsziel}', $this->settings['payment_term'], $this->settings['description'] );
-    }
-
     $this->api = new Api();
-
+    $this->mondu_request_wrapper = new MonduRequestWrapper();
     $this->logger = wc_get_logger();
   }
 
   public function init_form_fields() {
     $this->form_fields = [
-      'enabled'      => [
-        'title'   => __( 'Enable/Disable', 'woocommerce' ),
+      'enabled' => [
+        'title'   => __('Enable/Disable', 'woocommerce'),
         'type'    => 'checkbox',
-        'label'   => __( 'Enable this payment method', 'mondu' ),
+        'label'   => __('Enable this payment method', 'mondu'),
         'default' => 'no',
       ],
-      'title'        => [
-        'title'       => __( 'Title', 'woocommerce' ),
-        'type'        => 'text',
-        'description' => __( 'This controls the title which the user sees during checkout.', 'woocommerce' ),
-        'default'     => __( 'Mondu Rechnungskauf', 'mondu' ),
-        'desc_tip'    => true,
-      ],
-      'payment_term' => [
-        'title'       => __( 'Payment Term', 'mondu' ),
-        'type'        => 'integer',
-        'description' => __( 'Based upon your Mondu contract, your customers will have between 7 and 120 days (payment term) to pay your invoices.', 'mondu' ),
-        'default'     => 7,
-        'desc_tip'    => true,
-      ],
-      'hide_logo'    => [
-        'title' => __( 'Hide Logo', 'mondu' ),
-        'type'  => 'checkbox',
-        'label' => __( 'Hide Mondu Logo', 'mondu' ),
-      ],
-      'description'  => [
-        'title'   => __( 'Customer Message', 'mondu' ),
-        'type'    => 'textarea',
-        'default' => 'Bezahlen Sie bequem und sicher auf Rechnung - innerhalb von {Zahlungsziel} Tagen nach Erhalt der Ware.'
-      ],
-    ];
+   ];
 
-    add_filter( 'woocommerce_settings_api_sanitized_fields_' . $this->id, static function ( $settings ) {
-      if ( isset( $settings['payment_term'] ) ) {
-        if ( ! is_numeric( $settings['payment_term'] ) ) {
-          $settings['payment_term'] = 7;
-        } elseif ( $settings['payment_term'] < 7 ) {
-          $settings['payment_term'] = 7;
-        } elseif ( $settings['payment_term'] > 120 ) {
-          $settings['payment_term'] = 120;
-        }
-      }
-
-      return $settings;
-    } );
-
-    add_action( 'woocommerce_update_options_payment_gateways_' . $this->id, [
+    add_action('woocommerce_update_options_payment_gateways_' . $this->id, [
       $this,
       'process_admin_options'
-    ] );
+   ]);
   }
 
   /**
@@ -127,30 +80,32 @@ class Gateway extends WC_Payment_Gateway {
    * @throws ResponseException
    * @throws WC_Data_Exception
    */
-  public function process_payment( $order_id ) {
-    $order = new WC_Order( $order_id );
+  public function process_payment($order_id) {
+    $order = new WC_Order($order_id);
 
-    $duration = ( is_array( $this->settings ) && isset( $this->settings['payment_term'] ) && is_numeric( $this->settings['payment_term'] ) ) ? $this->settings['payment_term'] : 7;
+    // This is just to have an updated data saved for future references
+    // It is not possible to do it in Mondu's order creation because we do not have an order_id
+    $order_data = OrderData::raw_order_data();
+    update_post_meta($order_id, Plugin::ORDER_DATA_KEY, $order_data);
 
-    update_post_meta( $order->get_id(), Plugin::DURATION_KEY, $duration );
+    // Update Mondu order's external reference id
+    $this->mondu_request_wrapper->update_external_info($order_id);
 
-
-    $order->update_status( 'wc-processing', __( 'Processing', 'woocommerce' ) );
+    $order->update_status('wc-processing', __('Processing', 'woocommerce'));
 
     WC()->cart->empty_cart();
     /*
-     * We remove the mondu session id here,
-     * otherwise we might try to use the same session id for the next order, which will trigger an
-     * authorization error
+     * We remove the orders id here,
+     * otherwise we might try to use the same session id for the next order
      */
-    WC()->session->set( 'mondu_order_id', null );
+    WC()->session->set('mondu_order_id', null);
+    WC()->session->set('woocommerce_order_id', null);
 
     return array(
       'result'   => 'success',
-      'redirect' => $this->get_return_url( $order )
-    );
+      'redirect' => $this->get_return_url($order)
+   );
   }
-
 
   /**
    * @param array $methods
@@ -159,33 +114,32 @@ class Gateway extends WC_Payment_Gateway {
    *
    * This adds Mondu as a payment method at the top of the method list
    */
-  public static function add( array $methods ) {
-    array_unshift( $methods, static::class );
+  public static function add(array $methods) {
+    array_unshift($methods, static::class);
 
     return $methods;
   }
 
   /**
-   * @param array $post
+   * @param $order
+   *
+   * @throws MonduException
+   * @throws ResponseException
    */
-  public function process_success( array $post ) {
-    // WC()->session->set( 'mondu_order_data', $post );
-
-    echo json_encode( [ 'process' => 'success' ] );
-    exit;
-  }
-
-  /**
-   * @param array $post
-   */
-  public function process_error( array $post ) {
-    if ( isset( $post['decline_reason'] ) ) {
-      WC()->session->set( 'mondu_decline_reason', trim( $post['decline_reason'] ) );
+  public function update_order_if_changed_some_fields($order) {
+    if ($order->get_payment_method() !== 'mondu') {
+      return;
     }
-    echo json_encode( [ 'process' => 'error' ] );
-    exit;
-  }
 
+    # This method should not be called before ending the payment process
+    if (isset(WC()->session) && WC()->session->get('mondu_order_id'))
+      return;
+
+    if (array_intersect(array('total', 'discount_total', 'discount_tax', 'cart_tax', 'total_tax', 'shipping_tax', 'shipping_total'), array_keys($order->get_changes()))) {
+      $data_to_update = OrderData::order_data_from_wc_order($order);
+      $this->mondu_request_wrapper->adjust_order($order->get_id(), $data_to_update);
+    }
+  }
 
   /**
    * @param $order_id
@@ -195,12 +149,21 @@ class Gateway extends WC_Payment_Gateway {
    * @throws MonduException
    * @throws ResponseException
    */
-  public function order_status_changed( $order_id, $from_status, $to_status ) {
-    $order = new WC_Order( $order_id );
-    if ( $order->get_payment_method() !== $this->id ) {
+  public function order_status_changed($order_id, $from_status, $to_status) {
+    $order = new WC_Order($order_id);
+    if ($order->get_payment_method() !== 'mondu') {
       return;
     }
 
+    if ($to_status === 'cancelled') {
+      $this->mondu_request_wrapper->cancel_order($order_id);
+    }
+    // if ($to_status === 'refunded') {
+    //   $this->mondu_request_wrapper->cancel_order($order);
+    // }
+    if ($to_status === 'completed') {
+      $this->mondu_request_wrapper->ship_order($order_id);
+    }
   }
 
   /**
@@ -210,49 +173,21 @@ class Gateway extends WC_Payment_Gateway {
    * @throws MonduException
    * @throws ResponseException
    */
+  // public function order_refunded($order_id, $refund_id) {
+  //   $order         = new WC_Order($order_id);
+  //   $refund        = new WC_Order_Refund($refund_id);
+  //   $mondu_order_id = get_post_meta($order->get_id(), Plugin::ORDER_ID_KEY, true);
 
+  //   $order_total      = $order->get_total();
+  //   $order_total_tax  = $order->get_total_tax();
+  //   $refund_total     = $refund->get_total();
+  //   $refund_total_tax = $refund->get_total_tax();
+  //   $new_amount       = [
+  //     'net'   => ($order_total - $order_total_tax) + ($refund_total - $refund_total_tax),
+  //     'gross' => ($order_total) + ($refund_total),
+  //     'tax'   => ($order_total_tax) + ($refund_total_tax),
+  //  ];
 
-  /**
-   * @throws MonduException
-   * @throws ResponseException
-   */
-  public function create_order() {
-    $payment_method = WC()->session->get( 'chosen_payment_method' );
-    if ($payment_method !== 'mondu') {
-      return;
-    }
-
-
-    $params = OrderData::createOrderData();
-
-    // print_r($this->api->createOrder());
-    $response = $this->api->createOrder( $params );
-    // $response = [];
-    // die();
-    WC()->session->set( 'mondu_order_id', $response['order']['uuid'] );
-  }
-
-  /**
-   * @param WC_Order $order
-   *
-   * @throws MonduException
-   * @throws ResponseException
-   */
-
-  /**
-   * @param WC_Order $order
-   *
-   * @throws MonduException
-   * @throws ResponseException
-   */
-  private function completeOrder( WC_Order $order ) {
-    $monduOrderId = get_post_meta( $order->get_id(), Plugin::ORDER_ID_KEY, true );
-
-    $mondu_order_data = [
-      'invoice_number' => PaymentInfo::get_invoice_id( $order ),
-      'invoice_url'    => $this->get_return_url( $order )
-    ];
-
-    update_post_meta( $order->get_id(), Plugin::SHIP_ORDER_REQUEST_RESPONSE, $response );
-  }
+  //   $this->api->updateOrder($mondu_order_id, ['amount' => $new_amount]);
+  // }
 }

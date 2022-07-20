@@ -7,3 +7,6 @@
 # Temp docker files
 /tmp/*
 !/tmp/.keep
+
+# Composer files
+/vendor/

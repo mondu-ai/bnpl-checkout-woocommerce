@@ -1,7 +1,7 @@
 <script>
   var checkMonduMount = false;
   var result = '';
-  var url = '<?php echo get_site_url( null, '/index.php' ); ?>';
+  var url = '<?php echo get_site_url(null, '/index.php'); ?>';
 
   function monduBlock() {
     jQuery('.woocommerce-checkout-payment, .woocommerce-checkout-review-order-table').block({
@@ -23,18 +23,24 @@
   }
 
   function payWithMondu() {
-    
     if (checkMonduMount) {
-      return;
+      return false;
     }
-    
+
     checkMonduMount = true;
+
+    let monduId = jQuery('#mondu_order_id').val();
+    if (monduId != null && monduId != '') {
+      return renderWidget(monduId);
+    }
 
     jQuery.ajax({
       type: 'POST',
-      url: `${url}?rest_route=/mondu/v1/create_order`,
+      url: `${url}?rest_route=/mondu/v1/orders/create`,
       success: function(res) {
-        renderWidget(res['token']);
+        let token = res['token'];
+        jQuery('#mondu_order_id').val(token);
+        renderWidget(token);
         return true;
       },
       fail: function(err) {
@@ -64,63 +70,44 @@
   }
 
   function checkoutCallback() {
-    return;
     if (result == 'success') {
-      jQuery.ajax({
-        type: 'POST',
-        url: `${url}?rest_route=/mondu/v1/checkout_callback`,
-        data: { type: 'success' },
-        success: function(res) {
-          jQuery('form.woocommerce-checkout').off('checkout_place_order');
-          if (jQuery('#confirm-order-flag').length !== 0) {
-            jQuery('#confirm-order-flag').val('');
-          }
-          jQuery('#place_order').parents('form').submit();
-        }
-      });
+      jQuery('form.woocommerce-checkout').off('checkout_place_order');
+      if (jQuery('#confirm-order-flag').length !== 0) {
+        jQuery('#confirm-order-flag').val('');
+      }
+      jQuery('#place_order').parents('form').submit();
     } else {
-      jQuery.ajax({
-        type: 'POST',
-        url: `${url}?rest_route=/mondu/v1/checkout_callback`,
-        data: { type: 'error' },
-        success: function(res) {
-          jQuery(document.body).trigger('wc_update_cart');
-          jQuery(document.body).trigger('update_checkout');
-        }
-      });
-
-      // location.reload();
+      jQuery(document.body).trigger('wc_update_cart');
+      jQuery(document.body).trigger('update_checkout');
     }
   }
 
   jQuery(document).ready(function () {
-    
-      jQuery(document.body).on('checkout_error', function () {
-        let error_count = jQuery('.woocommerce-error li').length;
-        
-          jQuery('.woocommerce-error li').each(function () {
-          let error_text = jQuery(this).text();
-          jQuery(this).addClass('error');
-          if (error_text.includes('error_confirmation')) {
-            if (error_count === 1) {
-              if (isGatewayMondu(jQuery('input[name=payment_method]:checked').val())) {
-                jQuery('html, body').stop();
-              }
+    jQuery(document.body).on('checkout_error', function () {
+      let error_count = jQuery('.woocommerce-error li').length;
+
+      jQuery('.woocommerce-error li').each(function () {
+        let error_text = jQuery(this).text();
+        jQuery(this).addClass('error');
+        if (error_text.includes('error_confirmation')) {
+          if (error_count === 1) {
+            if (isGatewayMondu(jQuery('input[name=payment_method]:checked').val())) {
+              jQuery('html, body').stop();
             }
           }
-        });
-
-        if (error_count === 1 || error_count === 0) {
-          let result = true;
-          if (isGatewayMondu(jQuery('input[name=payment_method]:checked').val())) {
-            monduBlock();
-            result = payWithMondu();
-            jQuery('html, body').stop();
-          }
-
-          if (result === true) monduUnblock();
         }
-      
+      });
+
+      if (error_count === 1 || error_count === 0) {
+        let result = true;
+        if (isGatewayMondu(jQuery('input[name=payment_method]:checked').val())) {
+          monduBlock();
+          result = payWithMondu();
+          jQuery('html, body').stop();
+        }
+
+        if (result === true) monduUnblock();
+      }
     });
 
     jQuery('form.woocommerce-checkout').on('checkout_place_order', function () {
@@ -136,17 +123,15 @@
     });
   });
 </script>
+
 <style>
   #checkout_mondu_logo {
     max-height: 1em;
   }
-  .error{
-    color:#dc3545;
-  }
 </style>
+
+<input id="mondu_order_id" value="<?php echo WC()->session->get('mondu_order_id'); ?>" hidden></input>
 <p>
-  <?php if ( ! isset( $this->settings['hide_logo'] ) || $this->settings['hide_logo'] === 'no' ): ?>
-    <img id="checkout_mondu_logo" src="<?php echo plugin_dir_url( __DIR__ ); ?>/mondu.svg" alt="Mondu">
-  <?php endif; ?>
-  <?php echo nl2br( $this->method_description ); ?>
+  <img id="checkout_mondu_logo" src="<?php echo plugin_dir_url( __DIR__ ); ?>/mondu.svg" alt="Mondu">
+  Hinweise zur Verarbeitung Ihrer personenbezogenen Daten durch die Mondu GmbH finden Sie <a href="https://mondu.ai/de/datenschutzgrundverordnung-kaeufer" target="_blank">hier</a>.
 </p>
