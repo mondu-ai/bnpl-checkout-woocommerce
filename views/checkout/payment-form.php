@@ -29,6 +29,11 @@
 
     checkMonduMount = true;
 
+    let monduId = jQuery('#mondu_order_id').val();
+    if (monduId != null && monduId != '') {
+      return renderWidget(monduId);
+    }
+
     jQuery.ajax({
       type: 'POST',
       url: `${url}?rest_route=/mondu/v1/orders/create`,
@@ -46,7 +51,7 @@
 
   function renderWidget(token) {
     window.monduCheckout.render({
-      token,
+      token: token,
       onClose: () => {
         checkMonduMount = false;
         monduUnblock();
@@ -74,7 +79,6 @@
     } else {
       jQuery(document.body).trigger('wc_update_cart');
       jQuery(document.body).trigger('update_checkout');
-      window.monduCheckout.destroy();
     }
   }
 
@@ -126,7 +130,7 @@
   }
 </style>
 
-<input id="mondu_order_id" value="<?php echo WC()->session->get('mondu_order_id'); ?>" hidden />
+<input id="mondu_order_id" value="<?php echo WC()->session->get('mondu_order_id'); ?>" hidden></input>
 <p>
   <img id="checkout_mondu_logo" src="<?php echo plugin_dir_url( __DIR__ ); ?>/mondu.svg" alt="Mondu">
   Hinweise zur Verarbeitung Ihrer personenbezogenen Daten durch die Mondu GmbH finden Sie <a href="https://mondu.ai/de/datenschutzgrundverordnung-kaeufer" target="_blank">hier</a>.

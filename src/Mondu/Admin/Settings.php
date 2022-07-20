@@ -38,8 +38,6 @@ class Settings {
 
     $this->api = new Api();
 
-    $this->logger  = wc_get_logger();
-
     $this->global_settings = get_option(Plugin::OPTION_NAME);
   }
 
@@ -47,31 +45,32 @@ class Settings {
     $validation_error = null;
     $webhooks_error = null;
 
-    try {
-      if (isset($_POST['validate-credentials']) && check_admin_referer('validate-credentials', 'validate-credentials')) {
+    if (isset($_POST['validate-credentials']) && check_admin_referer('validate-credentials', 'validate-credentials')) {
+      try {
         if ($this->missing_credentials()) {
           throw new CredentialsNotSetException(__('Missing Credentials', 'mondu'));
         }
 
-        update_option('_mondu_credentials_validated', time());
-      } else if (isset($_POST['register-webhooks']) && check_admin_referer('register-webhooks', 'register-webhooks')) {
-
         $secret = $this->api->webhook_secret();
         update_option('_mondu_webhook_secret', $secret['webhook_secret']);
 
+        update_option('_mondu_credentials_validated', time());
+      } catch (MonduException | CredentialsNotSetException $e) {
+        delete_option('_mondu_credentials_validated');
+        $validation_error = $e->getMessage();
+      }
+    } else if (isset($_POST['register-webhooks']) && check_admin_referer('register-webhooks', 'register-webhooks')) {
+      try {
         $this->register_webhooks_if_not_registered();
 
         update_option('_mondu_webhooks_registered', time());
-      } else if (isset($_GET['settings-updated']) || $this->missing_credentials()) {
-        delete_option('_mondu_credentials_validated');
+      } catch (MonduException | CredentialsNotSetException $e) {
         delete_option('_mondu_webhooks_registered');
+        $webhooks_error = $e->getMessage();
       }
-    } catch (CredentialsNotSetException $e) {
+    } else if (isset($_GET['settings-updated']) || $this->missing_credentials()) {
       delete_option('_mondu_credentials_validated');
-      $validation_error = $e->getMessage();
-    } catch (MonduException $e) {
       delete_option('_mondu_webhooks_registered');
-      $webhooks_error = $e->getMessage();
     }
 
     $this->account_options->render($validation_error, $webhooks_error);
