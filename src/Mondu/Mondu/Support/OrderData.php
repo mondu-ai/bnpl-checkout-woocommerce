@@ -190,11 +190,14 @@ class OrderData {
       'tax_cents' => round ((float) ($order->get_total_tax() - $order->get_shipping_tax()) * 100, 2), # Considering that is not possible to save taxes that does not belongs to products, removes shipping taxes here
       'discount_cents' => round ($order->get_discount_total() * 100, 2),
       'shipping_price_cents' => round ((float) ($order->get_shipping_total() + $order->get_shipping_tax()) * 100, 2), # Considering that is not possible to save taxes that does not belongs to products, sum shipping taxes here
-      'shipping_info' => [
-        'shipping_method' => $order->get_shipping_method(),
-     ],
       'line_items' => [],
    ];
+
+    if($order->get_shipping_method()) {
+      $invoice_data['shipping_info'] = [
+        'shipping_method' => $order->get_shipping_method()
+      ];
+    }
 
     foreach($order->get_items() as $item_id => $item) {
       $product = $item->get_product();
