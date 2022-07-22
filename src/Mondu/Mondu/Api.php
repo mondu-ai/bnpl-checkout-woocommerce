@@ -161,6 +161,18 @@ class Api {
   }
 
   /**
+   * @param $mondu_uuid
+   * @param $mondu_invoice_uuid
+   * @return string
+   * @throws MonduException
+   * @throws ResponseException
+   */
+  public function cancel_invoice($mondu_uuid, $mondu_invoice_uuid) {
+    $result = $this->post(sprintf('/orders/%s/invoices/%s/cancel', $mondu_uuid, $mondu_invoice_uuid), [], );
+    return json_decode($result['body'], true);
+  }
+
+  /**
    * @param $path
    * @param array|string|null $body
    *
@@ -237,7 +249,6 @@ class Api {
     if (!is_array($result) || !isset($result['response'], $result['body']) || !isset($result['response']['code'], $result['response']['message'])) {
       throw new MonduException('Unexpected API response format');
     }
-
     if (strpos($result['response']['code'], '2') !== 0) {
       $message = $result['response']['message'];
       if (isset($result['body']['errors'], $result['body']['errors']['title'])) {
