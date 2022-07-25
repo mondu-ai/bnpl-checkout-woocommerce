@@ -95,8 +95,9 @@ class Plugin {
     add_action('wpo_wcpdf_after_order_details', [$this, 'wcpdf_add_mondu_payment_info_to_pdf'], 10, 2);
 
     add_action('wpo_wcpdf_after_order_data', [$this, 'wcpdf_add_status_to_invoice_when_order_is_cancelled'], 10, 2 );
+    add_action('wpo_wcpdf_after_order_data', [$this, 'wcpdf_add_paid_to_invoice_when_invoice_is_paid'], 10, 2 );
     add_action('wpo_wcpdf_after_order_data', [$this, 'wcpdf_add_status_to_invoice_when_invoice_is_cancelled'], 10, 2 );
-    add_action('wpo_wcpdf_meta_box_after_document_data', [$this, 'wcpdf_add_paid_to_invoice_admin_when_invoice_is_cancelled'], 10, 2 );
+    add_action('wpo_wcpdf_meta_box_after_document_data', [$this, 'wcpdf_add_paid_to_invoice_admin_when_invoice_is_paid'], 10, 2 );
     add_action('wpo_wcpdf_meta_box_after_document_data', [$this, 'wcpdf_add_status_to_invoice_admin_when_invoice_is_cancelled'], 10, 2 );
   }
 
@@ -191,13 +192,32 @@ class Plugin {
    *
    * @throws Exception
    */
+  public function wcpdf_add_paid_to_invoice_when_invoice_is_paid($template_type, $order) {
+    $invoice_paid = get_post_meta($order->get_id(), Plugin::INVOICE_PAID_KEY, true);
+
+    if ($invoice_paid == true && $template_type == 'invoice') {
+      ?>
+        <tr class="invoice-status">
+          <th>Mondu Invoice paid:</th>
+          <td>True</td>
+        </tr>
+      <?php
+    }
+  }
+
+  /**
+   * @param $template_type
+   * @param $order
+   *
+   * @throws Exception
+   */
   public function wcpdf_add_status_to_invoice_when_invoice_is_cancelled($template_type, $order) {
     $invoice_canceled = get_post_meta($order->get_id(), Plugin::INVOICE_CANCELED_KEY, true);
 
     if ($invoice_canceled == true && $template_type == 'invoice') {
       ?>
         <tr class="invoice-status">
-          <th>Invoice status:</th>
+          <th>Mondu Invoice status:</th>
           <td>Cancelled</td>
         </tr>
       <?php
@@ -210,10 +230,10 @@ class Plugin {
    *
    * @throws Exception
    */
-  public function wcpdf_add_paid_to_invoice_admin_when_invoice_is_cancelled($template_type, $order) {
-    $invoice_canceled = get_post_meta($order->get_id(), Plugin::INVOICE_PAID_KEY, true);
+  public function wcpdf_add_paid_to_invoice_admin_when_invoice_is_paid($template_type, $order) {
+    $invoice_paid = get_post_meta($order->get_id(), Plugin::INVOICE_PAID_KEY, true);
 
-    if ($invoice_canceled == true && $template_type == 'invoice') {
+    if ($invoice_paid == true && $template_type == 'invoice') {
       ?>
         <div class="invoice-number">
           <p>
