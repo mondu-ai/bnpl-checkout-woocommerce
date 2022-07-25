@@ -40,13 +40,22 @@ class WebhooksController extends WP_REST_Controller {
         throw new MonduException('Signature mismatch');
       }
 
-      $topic = $params['topic'];
+      $topic = @$params['topic'];
       switch ($topic) {
         case 'order/pending':
           [$res_body, $res_status] = $this->handle_pending($params);
           break;
+        case 'order/confirmed':
+          [$res_body, $res_status] = $this->handle_confirmed($params);
+          break;
         case 'order/declined':
           [$res_body, $res_status] = $this->handle_declined($params);
+          break;
+        case 'invoice/payment':
+          [$res_body, $res_status] = $this->handle_invoice_payment($params);
+          break;
+        case 'invoice/canceled':
+          [$res_body, $res_status] = $this->handle_invoice_canceled($params);
           break;
         default:
           throw new MonduException('Unregistered topic');
@@ -77,7 +86,7 @@ class WebhooksController extends WP_REST_Controller {
       return [['message' => 'not found'], 404];
     }
 
-    $this->logger->debug('changing status', [
+    $this->logger->debug('changing order status', [
       'woocommerce_order_id' => $woocommerce_order_id,
       'mondu_order_id' => $mondu_order_id,
       'state' => $params['order_state'],
@@ -89,12 +98,11 @@ class WebhooksController extends WP_REST_Controller {
     return [['message' => 'ok'], 200];
   }
 
-  public function handle_declined($params) {
+  private function handle_confirmed($params) {
     $woocommerce_order_id = $params['external_reference_id'];
     $mondu_order_id = $params['order_uuid'];
-    $mondu_order_state = $params['order_state'];
 
-    if (!$woocommerce_order_id || !$mondu_order_id || !$mondu_order_state) {
+    if (!$woocommerce_order_id || !$mondu_order_id) {
       throw new MonduException('Required params missing');
     }
 
@@ -104,7 +112,33 @@ class WebhooksController extends WP_REST_Controller {
       return [['message' => 'not found'], 404];
     }
 
-    $this->logger->debug('changing status', [
+    $this->logger->debug('changing order status', [
+      'woocommerce_order_id' => $woocommerce_order_id,
+      'mondu_order_id' => $mondu_order_id,
+      'state' => $params['order_state'],
+      'params' => $params,
+    ]);
+
+    $order->update_status('wc-completed', __('Completed', 'woocommerce'));
+
+    return [['message' => 'ok'], 200];
+  }
+
+  private function handle_declined($params) {
+    $woocommerce_order_id = $params['external_reference_id'];
+    $mondu_order_id = $params['order_uuid'];
+
+    if (!$woocommerce_order_id || !$mondu_order_id) {
+      throw new MonduException('Required params missing');
+    }
+
+    $order = new WC_Order($woocommerce_order_id);
+
+    if (!$order) {
+      return [['message' => 'not found'], 404];
+    }
+
+    $this->logger->debug('changing order status', [
       'woocommerce_order_id' => $woocommerce_order_id,
       'mondu_order_id' => $mondu_order_id,
       'state' => $params['order_state'],
@@ -115,6 +149,43 @@ class WebhooksController extends WP_REST_Controller {
 
     $reason = $params['reason'];
     update_post_meta($woocommerce_order_id, Plugin::FAILURE_REASON_KEY, $reason);
+
+    return [['message' => 'ok'], 200];
+  }
+
+  private function handle_invoice_payment($params) {
+    $woocommerce_order_id = $params['external_reference_id'];
+
+    if (!$woocommerce_order_id) {
+      throw new MonduException('Required params missing');
+    }
+
+    $invoice = wcpdf_get_invoice($woocommerce_order_id);
+
+    if (!$invoice) {
+      return [['message' => 'not found'], 404];
+    }
+
+    update_post_meta($woocommerce_order_id, Plugin::INVOICE_PAID_KEY, true);
+
+    return [['message' => 'ok'], 200];
+  }
+
+  private function handle_invoice_canceled($params) {
+    $woocommerce_order_id = $params['external_reference_id'];
+
+    if (!$woocommerce_order_id) {
+      throw new MonduException('Required params missing');
+    }
+
+    $order = new WC_Order($woocommerce_order_id);
+    $invoice = wcpdf_get_invoice($order);
+
+    if (!$order || !$invoice) {
+      return [['message' => 'not found'], 404];
+    }
+
+    update_post_meta($woocommerce_order_id, Plugin::INVOICE_CANCELED_KEY, true);
 
     return [['message' => 'ok'], 200];
   }
