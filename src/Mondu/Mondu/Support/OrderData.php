@@ -46,7 +46,7 @@ class OrderData {
       'logged' => is_user_logged_in(),
       'user' => get_current_user_id(),
       // 'customer' => $customer,
-   ]);
+    ]);
 
     $order_data = [
       'currency' => get_woocommerce_currency(),
@@ -59,7 +59,7 @@ class OrderData {
         'phone' => isset($customer['phone']) ? $customer['phone'] : null,
         'external_reference_id' => isset($customer['id']) ? $customer['id'] : null,
         'is_registered' => is_user_logged_in(),
-     ],
+      ],
       'billing_address' => [
         'address_line1' => isset($customer['address_1']) ? $customer['address_1'] : null,
         'address_line2' => isset($customer['address_2']) ? $customer['address_2'] : null,
@@ -67,7 +67,7 @@ class OrderData {
         'state' => isset($customer['state']) ? $customer['state'] : null,
         'zip_code' => isset($customer['postcode']) ? $customer['postcode'] : null,
         'country_code' => isset($customer['country']) ? $customer['country'] : null,
-     ],
+      ],
       'shipping_address' => [
         'address_line1' => isset($customer['shipping_address_1']) ? $customer['shipping_address_1'] : null,
         'address_line2' => isset($customer['shipping_address_2']) ? $customer['shipping_address_2'] : null,
@@ -75,17 +75,17 @@ class OrderData {
         'state' => isset($customer['shipping_state']) ? $customer['shipping_state'] : null,
         'zip_code' => isset($customer['shipping_postcode']) ? $customer['shipping_postcode'] : null,
         'country_code' => isset($customer['shipping_country']) ? $customer['shipping_country'] : null,
-     ],
+      ],
       'lines' => [],
       'amount' => [], # We have the amount here to avoid calculating it when updating external_reference_id (it is also removed when creating)
-   ];
+    ];
 
     $line = [
       'discount_cents' => round ((float) $cart_totals['discount_total'] * 100, 2),
       'shipping_price_cents' => round ((float) ($cart_totals['shipping_total'] + $cart_totals['shipping_tax']) * 100, 2), # Considering that is not possible to save taxes that does not belongs to products, sums shipping taxes here
       // 'tax_cents' => round ((float) $cart_totals['total_tax'] * 100, 2),
       'line_items' => [],
-   ];
+    ];
 
     $net_price_cents = 0;
     $tax_cents = 0;
@@ -104,7 +104,7 @@ class OrderData {
         'net_price_cents' => round ((float) $cart_item['line_total'] * 100, 2),
         'tax_cents' => round ((float) $cart_item['line_tax'] * 100, 2),
         'item_type' => $product->is_virtual() ? 'VIRTUAL' : 'PHYSICAL',
-     ];
+      ];
 
       $line['line_items'][] = $line_item;
 
@@ -115,7 +115,7 @@ class OrderData {
     $amount = [
       'net_price_cents' => round ($net_price_cents, 2),
       'tax_cents' => round ($tax_cents, 2),
-   ];
+    ];
 
     $order_data['lines'][] = $line;
     $order_data['amount'] = $amount;
@@ -134,13 +134,13 @@ class OrderData {
       'external_reference_id' => (string) $order->get_id(),
       'lines' => [],
       'amount' => [],
-   ];
+    ];
 
     $line = [
       'discount_cents' => round ($order->get_discount_total() * 100, 2),
       'shipping_price_cents' => round ((float) ($order->get_shipping_total() + $order->get_shipping_tax()) * 100, 2), # Considering that is not possible to save taxes that does not belongs to products, sums shipping taxes here
       'line_items' => [],
-   ];
+    ];
 
     $net_price_cents = 0;
     $tax_cents = 0;
@@ -151,14 +151,14 @@ class OrderData {
       $line_item = [
         'title' => $product->get_title(),
         'quantity' => $item->get_quantity(),
-        'external_reference_id' => Helper::null_or_empty ($product->get_id()) ? null : (string) $product->get_id(),
-        'product_id' => Helper::null_or_empty ($product->get_id()) ? null : (string) $product->get_id(),
-        'product_sku' => Helper::null_or_empty ($product->get_slug()) ? null : (string) $product->get_slug(),
+        'external_reference_id' => Helper::null_or_empty($product->get_id()) ? null : (string) $product->get_id(),
+        'product_id' => Helper::null_or_empty($product->get_id()) ? null : (string) $product->get_id(),
+        'product_sku' => Helper::null_or_empty($product->get_slug()) ? null : (string) $product->get_slug(),
         'net_price_per_item_cents' => round ((float) ($item->get_total() / $item->get_quantity()) * 100, 2),
         'net_price_cents' => round ((float) $item->get_total() * 100, 2),
         'tax_cents' => round ((float) $item->get_total_tax() * 100, 2),
         'item_type' => $product->is_virtual() ? 'VIRTUAL' : 'PHYSICAL',
-     ];
+      ];
 
       $line['line_items'][] = $line_item;
 
@@ -169,7 +169,7 @@ class OrderData {
     $amount = [
       'net_price_cents' => round ($net_price_cents, 2),
       'tax_cents' => round ($tax_cents, 2),
-   ];
+    ];
 
     $order_data['lines'][] = $line;
     $order_data['amount'] = $amount;
@@ -191,7 +191,11 @@ class OrderData {
       'discount_cents' => round ($order->get_discount_total() * 100, 2),
       'shipping_price_cents' => round ((float) ($order->get_shipping_total() + $order->get_shipping_tax()) * 100, 2), # Considering that is not possible to save taxes that does not belongs to products, sum shipping taxes here
       'line_items' => [],
-   ];
+    ];
+
+    if ($order->get_shipping_method()) {
+      $invoice_data['shipping_info']['shipping_method'] = $order->get_shipping_method();
+    }
 
     if($order->get_shipping_method()) {
       $invoice_data['shipping_info'] = [
@@ -203,9 +207,9 @@ class OrderData {
       $product = $item->get_product();
 
       $line_item = [
-        'external_reference_id' => Helper::null_or_empty ($product->get_id()) ? null : (string) $product->get_id(),
+        'external_reference_id' => Helper::null_or_empty($product->get_id()) ? null : (string) $product->get_id(),
         'quantity' => $item->get_quantity(),
-     ];
+      ];
 
       $invoice_data['line_items'][] = $line_item;
     }

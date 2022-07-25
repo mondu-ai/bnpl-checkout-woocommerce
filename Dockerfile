@@ -5,7 +5,6 @@ ENV WOOCOMMERCE_PDF_INVOICES_VERSION 2.14.5
 RUN apt update
 RUN apt -y install wget
 RUN apt -y install unzip
-RUN apt -y install subversion
 
 # To avoid problems with another plugins
 RUN docker-php-ext-install mysqli pdo pdo_mysql
@@ -19,6 +18,7 @@ RUN wget https://downloads.wordpress.org/plugin/woocommerce.${WOOCOMMERCE_VERSIO
 
 RUN rm -rf /usr/src/wordpress/wp-content/plugins/woocommerce-pdf-invoices-packing-slips
 
-RUN cd /usr/src/wordpress/wp-content/plugins \
-  && svn checkout https://plugins.svn.wordpress.org/woocommerce-pdf-invoices-packing-slips/tags/${WOOCOMMERCE_PDF_INVOICES_VERSION} \
-  && mv ./${WOOCOMMERCE_PDF_INVOICES_VERSION} ./woocommerce-pdf-invoices-packing-slips
+RUN wget https://downloads.wordpress.org/plugin/woocommerce-pdf-invoices-packing-slips.${WOOCOMMERCE_PDF_INVOICES_VERSION}.zip -O /tmp/woocommerce-pdf-invoices-packing-slips.zip \
+  && cd /usr/src/wordpress/wp-content/plugins \
+  && unzip /tmp/woocommerce-pdf-invoices-packing-slips.zip \
+  && rm /tmp/woocommerce-pdf-invoices-packing-slips.zip
