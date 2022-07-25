@@ -144,4 +144,24 @@ class MonduRequestWrapper {
     $response = $this->api->get_invoices($mondu_order_id);
     return $response['invoices'];
   }
+
+    /**
+     * @param $invoice_id
+     * @return mixed | void
+     * @throws MonduException
+     * @throws ResponseException
+     */
+  public function get_invoice($order_id) {
+    $order = new WC_Order($order_id);
+    if ($order->get_payment_method() !== 'mondu') {
+      return;
+    }
+
+    $mondu_order_id = get_post_meta($order_id, Plugin::ORDER_ID_KEY, true);
+    $mondu_invoice_id = get_post_meta($order_id, Plugin::INVOICE_ID_KEY, true);
+
+    $response = $this->api->get_invoice($mondu_order_id, $mondu_invoice_id);
+
+    return @$response['invoice'];
+  }
 }

@@ -120,6 +120,18 @@ class Api {
     return json_decode($result['body'], true);
   }
 
+    /**
+     * @param $mondu_order_uuid
+     * @param $mondu_invoice_uuid
+     * @return string
+     * @throws MonduException
+     * @throws ResponseException
+     */
+  public function get_invoice($mondu_order_uuid, $mondu_invoice_uuid) {
+    $result = $this->get(sprintf('/orders/%s/invoices/%s', $mondu_order_uuid, $mondu_invoice_uuid), null);
+    return json_decode($result['body'], true);
+  }
+
   /**
    * @return string
    * @throws MonduException
@@ -170,6 +182,18 @@ class Api {
   public function cancel_invoice($mondu_uuid, $mondu_invoice_uuid) {
     $result = $this->post(sprintf('/orders/%s/invoices/%s/cancel', $mondu_uuid, $mondu_invoice_uuid), [], );
     return json_decode($result['body'], true);
+  }
+
+    /**
+     * @param $mondu_invoice_uuid
+     * @param array $credit_note
+     * @return mixed
+     * @throws MonduException
+     * @throws ResponseException
+     */
+  public function create_credit_note($mondu_invoice_uuid, array $credit_note) {
+      $result = $this->post(sprintf('/invoices/%s/credit_notes', $mondu_invoice_uuid), $credit_note);
+      return json_decode($result['body'], true);
   }
 
   /**

@@ -107,32 +107,56 @@ class PaymentInfo {
     return ob_get_clean();
   }
 
-  public function get_mondu_invoice_html($orderId = null) {
-    $invoice_data = $this->get_invoices();
+  public function get_mondu_invoice_html($mondu_order_id = null) {
+    $invoice_data = $this->get_invoice();
 
     ob_start();
 
-    foreach ($invoice_data as $key => $invoice_data) {
+      if($invoice_data) {
+          $currency = $invoice_data['order']['currency'];
       ?>
         <hr>
         <p>
-           <span><strong><?php printf(__('Invoice state:', 'mondu')); ?></strong></span>
+          <span><strong><?php printf(__('Invoice state:', 'mondu')); ?></strong></span>
           <?php printf($invoice_data['state']) ?>
         </p>
         <p>
-           <span><strong><?php printf(__('Invoice number:', 'mondu')); ?></strong></span>
+          <span><strong><?php printf(__('Invoice number:', 'mondu')); ?></strong></span>
           <?php printf($invoice_data['invoice_number']) ?>
         </p>
         <p>
-            <span><strong>Total</strong></span>
-          <?php printf($invoice_data['gross_amount_cents']/100) ?>
+          <span><strong><?php printf(__('Total:', 'mondu')); ?></strong></span>
+          <?php printf('%s %s', ($invoice_data['gross_amount_cents'] / 100), $currency) ?>
         </p>
         <p>
-           <span><strong><?php printf(__('Paid out:', 'mondu')); ?></strong></span>
+          <span><strong><?php printf(__('Paid out:', 'mondu')); ?></strong></span>
           <?php printf($invoice_data['paid_out'] ? 'Yes' : 'No') ?>
         </p>
-        <button <?php $invoice_data['state'] === 'canceled' ? printf('disabled') : ''?> data-mondu='<?php echo(json_encode(['invoice_id' => $invoice_data['uuid'], 'order_id' => $orderId])) ?>' id="mondu-cancel-invoice-button" type="submit" class="button grant_access">
-            Cancel Invoice
+        <div>
+            <?php
+                if($invoice_data['credit_notes']) {
+                    printf('<hr>');
+                }
+                foreach ($invoice_data['credit_notes'] as $note) {
+                    ?>
+                        <p>
+                            <span>
+                                <strong><?php printf(__('Credit Note number', 'mondu')); ?></strong>
+                                <?php printf($note['external_reference_id']) ?>
+                            </span>
+                        </p>
+                        <p>
+                            <span>
+                                <strong><?php printf(__('Total: ', 'mondu')); ?></strong>
+                                <?php printf('%s %s', ($note['gross_amount_cents'] / 100), $currency) ?>
+                            </span>
+                        </p>
+                    <?php
+                }
+            ?>
+        </div>
+        <button <?php $invoice_data['state'] === 'canceled' ? printf('disabled') : ''?> data-mondu='<?php echo(json_encode(['invoice_id' => $invoice_data['uuid'], 'order_id' => $mondu_order_id])) ?>' id="mondu-cancel-invoice-button" type="submit" class="button grant_access">
+            <?php printf(__('Cancel Invoice', 'mondu')); ?>
         </button>
       <?php
     }
@@ -145,6 +169,14 @@ class PaymentInfo {
     } catch (ResponseException $e) {
         return false;
     }
+  }
+
+  private function get_invoice() {
+      try {
+          return $this->mondu_request_wrapper->get_invoice($this->order->get_id());
+      } catch (ResponseException $e) {
+          return false;
+      }
   }
 
   private function get_order() {
