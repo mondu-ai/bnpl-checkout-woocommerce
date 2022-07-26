@@ -68,7 +68,7 @@ class Plugin {
 
     add_action('woocommerce_before_order_object_save', [new Gateway(), 'update_order_if_changed_some_fields'], 10, 2);
 
-    // add_action('woocommerce_order_refunded', [new Gateway(), 'order_refunded'], 10, 2);
+    add_action('woocommerce_order_refunded', [new Gateway(), 'order_refunded'], 10, 2);
 
     add_action('rest_api_init', function () {
       $orders = new OrdersController();

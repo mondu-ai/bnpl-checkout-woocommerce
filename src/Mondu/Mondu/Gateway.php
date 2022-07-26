@@ -173,21 +173,26 @@ class Gateway extends WC_Payment_Gateway {
    * @throws MonduException
    * @throws ResponseException
    */
-  // public function order_refunded($order_id, $refund_id) {
-  //   $order         = new WC_Order($order_id);
-  //   $refund        = new WC_Order_Refund($refund_id);
-  //   $mondu_order_id = get_post_meta($order->get_id(), Plugin::ORDER_ID_KEY, true);
+   public function order_refunded($order_id, $refund_id) {
+      $order = new WC_Order($order_id);
 
-  //   $order_total      = $order->get_total();
-  //   $order_total_tax  = $order->get_total_tax();
-  //   $refund_total     = $refund->get_total();
-  //   $refund_total_tax = $refund->get_total_tax();
-  //   $new_amount       = [
-  //     'net'   => ($order_total - $order_total_tax) + ($refund_total - $refund_total_tax),
-  //     'gross' => ($order_total) + ($refund_total),
-  //     'tax'   => ($order_total_tax) + ($refund_total_tax),
-  //  ];
+      if ($order->get_payment_method() !== 'mondu') {
+         return;
+      }
 
-  //   $this->api->updateOrder($mondu_order_id, ['amount' => $new_amount]);
-  // }
+      $refund = new WC_Order_Refund($refund_id);
+      $mondu_invoice_id = get_post_meta($order->get_id(), PLUGIN::INVOICE_ID_KEY, true);
+
+      if(!$mondu_invoice_id) {
+         throw new ResponseException('Mondu: Can\'t create a credit note without an invoice');
+      }
+
+      $refund_total = $refund->get_total();
+      $credit_note = [
+         'gross_amount_cents' => abs(round ((float) $refund_total * 100)),
+         'external_reference_id' => (string) $refund->get_id()
+      ];
+
+      $this->api->create_credit_note($mondu_invoice_id, $credit_note);
+   }
 }
