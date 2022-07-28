@@ -20,10 +20,8 @@ define('MONDU_PLUGIN_PATH', __DIR__);
 define('MONDU_VIEW_PATH', MONDU_PLUGIN_PATH . '/views');
 define('MONDU_RESSOURCES_PATH', MONDU_PLUGIN_PATH . '/resources');
 
-// define('MONDU_SANDBOX_URL', 'https://api.demo.mondu.ai/api/v1');
-// define('MONDU_PRODUCTION_URL', 'https://api.mondu.ai/api/v1');
-define('MONDU_SANDBOX_URL', 'http://host.docker.internal:3000/api/v1');
-define('MONDU_PRODUCTION_URL', 'http://host.docker.internal:3000/api/v1');
+define('MONDU_SANDBOX_URL', 'https://api.demo.mondu.ai/api/v1');
+define('MONDU_PRODUCTION_URL', 'https://api.mondu.ai/api/v1');
 
 require_once 'src/autoload.php';
 
