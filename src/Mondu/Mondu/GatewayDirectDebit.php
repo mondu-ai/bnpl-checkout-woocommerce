@@ -10,7 +10,7 @@ use Mondu\Plugin;
 use WC_Data_Exception;
 use WC_Payment_Gateway;
 
-class Gateway extends WC_Payment_Gateway {
+class GatewayDirectDebit extends WC_Payment_Gateway {
 
   /**
    * @var array|bool|mixed|void
@@ -24,10 +24,10 @@ class Gateway extends WC_Payment_Gateway {
   public function __construct() {
     $this->global_settings = get_option(Plugin::OPTION_NAME);
 
-    $this->id = Plugin::PAYMENT_METHODS['invoice'];
-    $this->title = 'Rechnungskauf - jetzt kaufen, später bezahlen';
-    $this->method_title = 'Mondu Rechnungskauf';
-    $this->method_description = 'Rechnungskauf - jetzt kaufen, später bezahlen';
+    $this->id = Plugin::PAYMENT_METHODS['direct_debit'];
+    $this->title = 'SEPA-Lastschrift - jetzt kaufen, später bezahlen';
+    $this->method_title = 'Mondu SEPA-Lastschrift';
+    $this->method_description = 'SEPA-Lastschrift - jetzt kaufen, später bezahlen';
     $this->has_fields = true;
 
     $this->init_form_fields();
@@ -84,7 +84,7 @@ class Gateway extends WC_Payment_Gateway {
   public function process_payment($order_id) {
     // This is just to have an updated data saved for future references
     // It is not possible to do it in Mondu's order creation because we do not have an order_id
-    $order_data = OrderData::raw_order_data('invoice');
+    $order_data = OrderData::raw_order_data('direct_debit');
     update_post_meta($order_id, Plugin::ORDER_DATA_KEY, $order_data);
 
     $order = $this->mondu_request_wrapper->process_payment($order_id);

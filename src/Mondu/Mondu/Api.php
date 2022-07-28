@@ -16,7 +16,7 @@ class Api {
 
   public function __construct() {
     $this->global_settings = get_option(Plugin::OPTION_NAME);
-    $this->logger  = wc_get_logger();
+    $this->logger = wc_get_logger();
   }
 
   public function register() {

@@ -5,7 +5,6 @@ namespace Mondu\Mondu\Presenters;
 use Mondu\Exceptions\ResponseException;
 use Mondu\Mondu\MonduRequestWrapper;
 use Mondu\Plugin;
-use DateInterval;
 use Exception;
 use WC_Order;
 
@@ -30,7 +29,7 @@ class PaymentInfo {
    * @throws Exception
    */
   public function get_mondu_payment_html() {
-    if ($this->order->get_payment_method() !== 'mondu') {
+    if (!in_array($this->order->get_payment_method(), Plugin::PAYMENT_METHODS)) {
       return null;
     }
 
@@ -71,7 +70,7 @@ class PaymentInfo {
    * @throws Exception
    */
   public function get_mondu_section_html() {
-    if ($this->order->get_payment_method() !== 'mondu') {
+    if (!in_array($this->order->get_payment_method(), Plugin::PAYMENT_METHODS)) {
       return null;
     }
 
