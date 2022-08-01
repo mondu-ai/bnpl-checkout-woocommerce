@@ -10,9 +10,9 @@ class OrderData {
   /**
    * @return array[]
    */
-  public static function create_order_data() {
+  public static function create_order_data($payment_method) {
     $except_keys = ['amount'];
-    $order_data = self::raw_order_data();
+    $order_data = self::raw_order_data($payment_method);
 
     return Helper::remove_keys($order_data, $except_keys);
   }
@@ -34,21 +34,17 @@ class OrderData {
   }
 
   /**
+   * @param string $payment_method
+   *
    * @return array[]
    */
-  public static function raw_order_data() {
+  public static function raw_order_data($payment_method = 'invoice') {
     $cart = WC()->session->get('cart');
     $cart_totals = WC()->session->get('cart_totals');
     $customer = WC()->session->get('customer');
 
-    $logger  = wc_get_logger();
-    $logger->debug('customer', [
-      'logged' => is_user_logged_in(),
-      'user' => get_current_user_id(),
-      // 'customer' => $customer,
-    ]);
-
     $order_data = [
+      'payment_method' => $payment_method,
       'currency' => get_woocommerce_currency(),
       'external_reference_id' => '0', // We will update this id when woocommerce order is created
       'buyer' => [
