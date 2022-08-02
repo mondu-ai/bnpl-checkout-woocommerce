@@ -20,6 +20,10 @@ class Gateway extends WC_Payment_Gateway {
    * @var string|void
    */
   protected $method_name;
+  /**
+   * @var MonduRequestWrapper
+   */
+  private $mondu_request_wrapper;
 
   public function __construct() {
     $this->global_settings = get_option(Plugin::OPTION_NAME);

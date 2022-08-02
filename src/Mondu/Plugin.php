@@ -10,6 +10,7 @@ use Mondu\Mondu\Controllers\OrdersController;
 use Mondu\Mondu\Controllers\WebhooksController;
 use Mondu\Mondu\Presenters\PaymentInfo;
 use Exception;
+use WC_Customer;
 use WC_Order;
 
 class Plugin {
@@ -33,9 +34,15 @@ class Plugin {
    * @var array|bool|mixed|void
    */
   protected $global_settings;
+  /**
+   * @var MonduRequestWrapper
+   */
+  private $mondu_request_wrapper;
 
   public function __construct() {
     $this->global_settings = get_option(Plugin::OPTION_NAME);
+
+    $this->mondu_request_wrapper = new MonduRequestWrapper();
 
     # This is for trigger the open checkout plugin
     add_action('woocommerce_after_checkout_validation', function () {
@@ -70,9 +77,9 @@ class Plugin {
     /*
      * These deal with order and status changes
      */
-    add_action('woocommerce_order_status_changed', [new MonduRequestWrapper(), 'order_status_changed'], 10, 3);
-    add_action('woocommerce_before_order_object_save', [new MonduRequestWrapper(), 'update_order_if_changed_some_fields'], 10, 2);
-    add_action('woocommerce_order_refunded', [new MonduRequestWrapper(), 'order_refunded'], 10, 2);
+    add_action('woocommerce_order_status_changed', [$this->mondu_request_wrapper, 'order_status_changed'], 10, 3);
+    add_action('woocommerce_before_order_object_save', [$this->mondu_request_wrapper, 'update_order_if_changed_some_fields'], 10, 1);
+    add_action('woocommerce_order_refunded', [$this->mondu_request_wrapper, 'order_refunded'], 10, 2);
 
     add_action('rest_api_init', function () {
       $orders = new OrdersController();
@@ -89,15 +96,14 @@ class Plugin {
     }, 10, 3);
 
     /*
-     * This one does not allow to change address
+     * Does not allow to change address
      */
     add_action('woocommerce_admin_order_data_after_billing_address', [$this, 'change_address_warning'], 10, 1);
 
     /*
-     * This one adds the status to a WCPDF Invoice if the order is cancelled
+     * These methods add the Mondu invoice's info to a WCPDF Invoice
      */
     add_action('wpo_wcpdf_after_order_details', [$this, 'wcpdf_add_mondu_payment_info_to_pdf'], 10, 2);
-
     add_action('wpo_wcpdf_after_order_data', [$this, 'wcpdf_add_status_to_invoice_when_order_is_cancelled'], 10, 2 );
     add_action('wpo_wcpdf_after_order_data', [$this, 'wcpdf_add_paid_to_invoice_when_invoice_is_paid'], 10, 2 );
     add_action('wpo_wcpdf_after_order_data', [$this, 'wcpdf_add_status_to_invoice_when_invoice_is_cancelled'], 10, 2 );
@@ -118,7 +124,6 @@ class Plugin {
     echo '<p>' . __('Since this order will be paid via Mondu you will not be able to change the addresses.', 'mondu') . '</p>';
   }
 
-  // This method needs to be public
   public function add_mondu_js() {
     if (is_checkout()) {
       if ($this->is_sandbox()) {
@@ -129,35 +134,18 @@ class Plugin {
     }
   }
 
-  /**
-   * @return bool
-   */
-  private function is_sandbox() {
-    $sandbox_env = true;
-    if (
-      is_array($this->global_settings) &&
-      isset($this->global_settings['field_sandbox_or_production']) &&
-      $this->global_settings['field_sandbox_or_production'] === 'production'
-   ) {
-      $sandbox_env = false;
-    }
-
-    return $sandbox_env;
-  }
-
-  /**
-   * @return bool
-   */
-  // This method needs to be public
   public function remove_mondu_outside_germany($available_gateways) {
-    if (WC()->customer->get_billing_country() == 'DE') {
-      return $available_gateways;
-    }
-    if (isset($available_gateways[Plugin::PAYMENT_METHODS['invoice']])) {
-      unset($available_gateways[Plugin::PAYMENT_METHODS['invoice']]);
-    }
-    if (isset($available_gateways[Plugin::PAYMENT_METHODS['direct_debit']])) {
-      unset($available_gateways[Plugin::PAYMENT_METHODS['direct_debit']]);
+    $mondu_payments = $this->mondu_request_wrapper->get_merchant_payment_methods();
+
+    foreach (Plugin::PAYMENT_METHODS as $payment_method => $woo_payment_method) {
+      if (
+        $this->is_outside_germany() ||
+        !in_array($payment_method, $mondu_payments)
+      ) {
+        if (isset($available_gateways[Plugin::PAYMENT_METHODS[$payment_method]])) {
+          unset($available_gateways[Plugin::PAYMENT_METHODS[$payment_method]]);
+        }
+      }
     }
 
     return $available_gateways;
@@ -271,5 +259,32 @@ class Plugin {
         </div>
       <?php
     }
+  }
+
+  /**
+   * @return bool
+   */
+  private function is_sandbox() {
+    $sandbox_env = true;
+    if (
+      is_array($this->global_settings) &&
+      isset($this->global_settings['field_sandbox_or_production']) &&
+      $this->global_settings['field_sandbox_or_production'] === 'production'
+   ) {
+      $sandbox_env = false;
+    }
+
+    return $sandbox_env;
+  }
+
+  /**
+   * @return bool
+   */
+  private function is_outside_germany() {
+    $customer = new WC_Customer(get_current_user_id());
+    if ($customer->get_billing_country() == 'DE') {
+      return false;
+    }
+    return true;
   }
 }

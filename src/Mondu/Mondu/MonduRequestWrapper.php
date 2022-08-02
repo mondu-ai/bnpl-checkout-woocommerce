@@ -11,14 +11,11 @@ use WC_Order_Refund;
 
 class MonduRequestWrapper {
 
-  private $logger;
-
   /** @var Api */
   private $api;
 
   public function __construct() {
     $this->api = new Api();
-    $this->logger = wc_get_logger();
   }
 
   /**
@@ -146,12 +143,12 @@ class MonduRequestWrapper {
     return $response['invoices'];
   }
 
-    /**
-     * @param $invoice_id
-     * @return mixed | void
-     * @throws MonduException
-     * @throws ResponseException
-     */
+  /**
+   * @param $invoice_id
+   *
+   * @throws MonduException
+   * @throws ResponseException
+   */
   public function get_invoice($order_id) {
     $order = new WC_Order($order_id);
     if (!in_array($order->get_payment_method(), Plugin::PAYMENT_METHODS)) {
@@ -167,9 +164,24 @@ class MonduRequestWrapper {
   }
 
   /**
+   * @return array
+   * @throws MonduException
+   * @throws ResponseException
+   */
+  public function get_merchant_payment_methods(): array {
+    $response = $this->api->get_payment_methods();
+
+    # return only an array with the identifier (invoice or direct_debit)
+    $merchant_payment_methods = array_map(function($payment_method) {
+      return $payment_method['identifier'];
+    }, @$response['payment_methods']);
+
+    return $merchant_payment_methods;
+  }
+
+  /**
    * @param int $order_id
    *
-   * @return array
    * @throws MonduException
    * @throws ResponseException
    * @throws WC_Data_Exception
