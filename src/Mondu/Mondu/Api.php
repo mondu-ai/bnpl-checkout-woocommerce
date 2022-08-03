@@ -7,16 +7,12 @@ use Mondu\Mondu\Models\Token;
 use Mondu\Exceptions\MonduException;
 use Mondu\Exceptions\CredentialsNotSetException;
 use Mondu\Exceptions\ResponseException;
-use WC_Logger_Interface;
 
 class Api {
   private $global_settings;
 
-  private $logger;
-
   public function __construct() {
     $this->global_settings = get_option(Plugin::OPTION_NAME);
-    $this->logger = wc_get_logger();
   }
 
   public function register() {
@@ -184,16 +180,27 @@ class Api {
     return json_decode($result['body'], true);
   }
 
-    /**
-     * @param $mondu_invoice_uuid
-     * @param array $credit_note
-     * @return mixed
-     * @throws MonduException
-     * @throws ResponseException
-     */
+  /**
+   * @param $mondu_invoice_uuid
+   * @param array $credit_note
+   * @return mixed
+   * @throws MonduException
+   * @throws ResponseException
+   */
   public function create_credit_note($mondu_invoice_uuid, array $credit_note) {
       $result = $this->post(sprintf('/invoices/%s/credit_notes', $mondu_invoice_uuid), $credit_note);
       return json_decode($result['body'], true);
+  }
+
+  /**
+   * @return string
+   * @throws MonduException
+   * @throws ResponseException
+   */
+  public function get_payment_methods() {
+    $result = $this->get(sprintf('/payment_methods'), null);
+
+    return json_decode($result['body'], true);
   }
 
   /**
