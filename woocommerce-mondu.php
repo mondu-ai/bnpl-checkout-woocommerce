@@ -8,7 +8,6 @@
  * Author URI: https://mondu.ai
  * License: MIT
  * Text Domain: Mondu
- * Domain Path: lang
  * WC requires at least: 4.6
  * WC tested up to: 5.9.3
  */

@@ -1,5 +1,6 @@
 === mondu-checkout-woocommerce ===
-Tags: mondu, woocommerce, payment
+Contributors: mondu-ai, arthurmmoreira, tikohov20
+Tags: mondu, woocommerce, payment, bnpl, b2b
 Requires at least: 4.6
 Tested up to: 5.9.3
 Stable tag: 0.0.4
@@ -9,18 +10,18 @@ Increase your revenue with Mondu’s solution, without the operational burden.
 
 == Changelog ==
 
-=== 0.0.1 ===
+=== 0.0.4 ===
 
-* First version of plugin
-
-=== 0.0.2 ===
-
-* Included webhooks, order adjusting and more features
+* Include direct debit payment
 
 === 0.0.3 ===
 
 * Bugfixes
 
-=== 0.0.4 ===
+=== 0.0.2 ===
 
-* Include direct debit payment
+* Included webhooks, order adjusting and more features
+
+=== 0.0.1 ===
+
+* First version of plugin
