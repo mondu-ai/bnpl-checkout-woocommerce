@@ -2,7 +2,7 @@
 Tags: mondu, woocommerce, payment
 Requires at least: 4.6
 Tested up to: 5.9.3
-Stable tag: 0.0.3
+Stable tag: 0.0.4
 Requires PHP: 7.4.0
 
 Increase your revenue with Mondu’s solution, without the operational burden.
@@ -20,3 +20,7 @@ Increase your revenue with Mondu’s solution, without the operational burden.
 === 0.0.3 ===
 
 * Bugfixes
+
+=== 0.0.4 ===
+
+* Include direct debit payment
