@@ -281,8 +281,8 @@ class Plugin {
    * @return bool
    */
   private function is_outside_germany() {
-    $customer = new WC_Customer(get_current_user_id());
-    if ($customer->get_billing_country() == 'DE') {
+    $customer = WC()->customer;
+    if ($customer->get_billing_country() == 'DE' || $customer->get_billing_country() == 'AT') {
       return false;
     }
     return true;
