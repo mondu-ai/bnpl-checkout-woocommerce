@@ -33,6 +33,7 @@ class Gateway extends WC_Payment_Gateway {
     $this->method_title = 'Mondu Rechnungskauf';
     $this->method_description = 'Rechnungskauf - jetzt kaufen, später bezahlen';
     $this->has_fields = true;
+    $this->icon = apply_filters( 'woocommerce_gateway_icon',  MONDU_PUBLIC_PATH . '/views/mondu.svg');
 
     $this->init_form_fields();
     $this->init_settings();
