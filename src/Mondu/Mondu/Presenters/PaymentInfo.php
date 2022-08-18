@@ -70,6 +70,7 @@ class PaymentInfo {
    * @throws Exception
    */
   public function get_mondu_section_html() {
+    $invoice_data = $this->get_invoice();
     if (!in_array($this->order->get_payment_method(), Plugin::PAYMENT_METHODS)) {
       return null;
     }
@@ -88,10 +89,19 @@ class PaymentInfo {
                 <span><strong><?php printf(__('Mondu id:', 'mondu')); ?></strong></span>
                 <span><?php printf($order_data['uuid']); ?></span>
             </p>
+            <?php
+                if(!$invoice_data) {
+                    ?>
+                        <button <?php $order_data['state'] === 'canceled' ? printf('disabled') : ''?> data-mondu='<?php echo(json_encode(['order_id' => $this->order->get_id()])) ?>' id="mondu-create-invoice-button" type="submit" class="button grant_access">
+                            <?php printf(__('Invoice order', 'mondu')); ?>
+                        </button>
+                    <?php
+                }
+            ?>
         </section>
         <hr>
         <?php printf($this->get_mondu_payment_html()) ?>
-        <?php printf($this->get_mondu_invoice_html($order_data['uuid'])) ?>
+        <?php printf($this->get_mondu_invoice_html($invoice_data, $order_data['uuid'])) ?>
       <?php
     } else {
       ?>
@@ -106,8 +116,7 @@ class PaymentInfo {
     return ob_get_clean();
   }
 
-  public function get_mondu_invoice_html($mondu_order_id = null) {
-    $invoice_data = $this->get_invoice();
+  public function get_mondu_invoice_html($invoice_data, $mondu_order_id = null) {
 
     ob_start();
 

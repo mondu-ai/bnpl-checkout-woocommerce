@@ -4,6 +4,7 @@ namespace Mondu\Admin;
 
 use Mondu\Exceptions\MonduException;
 use Mondu\Exceptions\ResponseException;
+use Mondu\Mondu\MonduRequestWrapper;
 use Mondu\Mondu\Presenters\PaymentInfo;
 use Mondu\Mondu\Api;
 use Mondu\Plugin;
@@ -21,6 +22,7 @@ class Order {
     add_action('admin_footer', [$this, 'invoice_cancel_button_js']);
 
     add_action('wp_ajax_cancel_invoice', [$this, 'cancel_invoice']);
+    add_action('wp_ajax_create_invoice', [$this, 'create_invoice']);
 
     $this->api = new Api();
   }
@@ -37,6 +39,20 @@ class Order {
         'error' => true,
         'message' => $e->getMessage()
       ]);
+    }
+  }
+
+  public function create_invoice() {
+    $orderId = $_POST['order_id'] ?? '';
+    $requestWrapper = new MonduRequestWrapper();
+
+    try {
+        $requestWrapper->ship_order($orderId);
+    } catch (ResponseException|MonduException $e) {
+        wp_send_json([
+            'error' => true,
+            'message' => $e->getMessage()
+        ]);
     }
   }
 
