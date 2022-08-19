@@ -2,6 +2,7 @@
 
 namespace Mondu\Mondu\Controllers;
 
+use Mondu\Exceptions\ResponseException;
 use Mondu\Mondu\MonduRequestWrapper;
 use WP_REST_Controller;
 use WP_REST_Request;
@@ -24,10 +25,18 @@ class OrdersController extends WP_REST_Controller {
   }
 
   public function create(WP_REST_Request $request) {
-    $this->mondu_request_wrapper->create_order();
+    try {
+      $this->mondu_request_wrapper->create_order();
 
-    return array(
-      'token' => WC()->session->get('mondu_order_id')
-   );
+      return array(
+        'token' => WC()->session->get('mondu_order_id'),
+        'error' => 0
+      );
+    } catch (ResponseException $e) {
+      return [
+        'token' => null,
+        'error' => 1
+      ];
+    }
   }
 }

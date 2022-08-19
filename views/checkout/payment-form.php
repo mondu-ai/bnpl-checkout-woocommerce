@@ -33,10 +33,18 @@
       type: 'POST',
       url: `${url}?rest_route=/mondu/v1/orders/create`,
       success: function(res) {
-        let token = res['token'];
-        jQuery('#mondu_order_id').val(token);
-        renderWidget(token);
-        return true;
+        if (!res['error']) {
+          let token = res['token'];
+          jQuery('#mondu_order_id').val(token);
+          renderWidget(token);
+          return true;
+        } else {
+          monduUnblock();
+          jQuery([document.documentElement, document.body]).animate({
+            scrollTop: jQuery('.woocommerce-error').offset().top - 100
+          }, 500);
+          return false;
+        }
       },
       fail: function(err) {
         return false;

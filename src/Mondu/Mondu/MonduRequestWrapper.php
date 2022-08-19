@@ -169,14 +169,17 @@ class MonduRequestWrapper {
    * @throws ResponseException
    */
   public function get_merchant_payment_methods(): array {
-    $response = $this->api->get_payment_methods();
+    try {
+      $response = $this->api->get_payment_methods();
 
-    # return only an array with the identifier (invoice or direct_debit)
-    $merchant_payment_methods = array_map(function($payment_method) {
-      return $payment_method['identifier'];
-    }, @$response['payment_methods']);
-
-    return $merchant_payment_methods;
+      # return only an array with the identifier (invoice or direct_debit)
+      $merchant_payment_methods = array_map(function($payment_method) {
+        return $payment_method['identifier'];
+      }, @$response['payment_methods']);
+      return $merchant_payment_methods;
+    } catch (\Exception $e) {
+      return array_keys(Plugin::PAYMENT_METHODS);
+    }
   }
 
   /**
