@@ -50,7 +50,7 @@ class MonduRequestWrapper {
 
     $mondu_order_id = get_post_meta($order_id, Plugin::ORDER_ID_KEY, true);
     $response = $this->api->get_order($mondu_order_id);
-    return $response['order'];
+    return @$response['order'];
   }
 
   /**

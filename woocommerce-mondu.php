@@ -3,7 +3,7 @@
  * Plugin Name: Mondu
  * Plugin URI: https://mondu.ai/
  * Description: Increase your revenue with Mondu’s solution, without the operational burden.
- * Version: 0.0.4
+ * Version: 0.0.5
  * Author: mondu
  * Author URI: https://mondu.ai
  * License: MIT
@@ -14,7 +14,7 @@
 
 defined('ABSPATH') or die('Direct access not allowed');
 
-define('MONDU_PLUGIN_VERSION', '0.0.4');
+define('MONDU_PLUGIN_VERSION', '0.0.5');
 define('MONDU_PLUGIN_PATH', __DIR__);
 define('MONDU_VIEW_PATH', MONDU_PLUGIN_PATH . '/views');
 define('MONDU_RESSOURCES_PATH', MONDU_PLUGIN_PATH . '/resources');
