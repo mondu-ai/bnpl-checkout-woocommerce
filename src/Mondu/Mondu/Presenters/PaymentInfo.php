@@ -90,7 +90,7 @@ class PaymentInfo {
                 <span><?php printf($order_data['uuid']); ?></span>
             </p>
             <?php
-                if(!$invoice_data) {
+                if(in_array($this->order_data['state'], ['confirmed', 'partially_shipped'])) {
                     ?>
                         <button <?php $order_data['state'] === 'canceled' ? printf('disabled') : ''?> data-mondu='<?php echo(json_encode(['order_id' => $this->order->get_id()])) ?>' id="mondu-create-invoice-button" type="submit" class="button grant_access">
                             <?php printf(__('Invoice order', 'mondu')); ?>
