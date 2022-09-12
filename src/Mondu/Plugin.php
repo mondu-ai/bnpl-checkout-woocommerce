@@ -5,6 +5,7 @@ namespace Mondu;
 use Mondu\Admin\Settings;
 use Mondu\Mondu\Gateway;
 use Mondu\Mondu\GatewayDirectDebit;
+use Mondu\Mondu\GatewayInstallment;
 use Mondu\Mondu\MonduRequestWrapper;
 use Mondu\Mondu\Controllers\OrdersController;
 use Mondu\Mondu\Controllers\WebhooksController;
@@ -28,6 +29,7 @@ class Plugin {
   const PAYMENT_METHODS = [
     'invoice' => 'mondu_invoice',
     'direct_debit' => 'mondu_direct_debit',
+    'installment' => 'mondu_installment',
   ];
 
   /**
@@ -67,6 +69,7 @@ class Plugin {
      */
     add_filter('woocommerce_payment_gateways', [Gateway::class, 'add']);
     add_filter('woocommerce_payment_gateways', [GatewayDirectDebit::class, 'add']);
+    add_filter('woocommerce_payment_gateways', [GatewayInstallment::class, 'add']);
     add_filter('woocommerce_available_payment_gateways', [$this, 'remove_mondu_outside_germany']);
 
     /*

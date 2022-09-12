@@ -172,7 +172,7 @@ class MonduRequestWrapper {
     try {
       $response = $this->api->get_payment_methods();
 
-      # return only an array with the identifier (invoice or direct_debit)
+      # return only an array with the identifier (invoice, direct_debit, installment)
       $merchant_payment_methods = array_map(function($payment_method) {
         return $payment_method['identifier'];
       }, @$response['payment_methods']);

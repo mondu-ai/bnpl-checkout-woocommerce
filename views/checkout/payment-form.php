@@ -19,7 +19,7 @@
   }
 
   function isGatewayMondu(currentGateway) {
-    return ['mondu_invoice', 'mondu_direct_debit'].includes(currentGateway);
+    return ['mondu_invoice', 'mondu_direct_debit', 'mondu_installment'].includes(currentGateway);
   }
 
   function payWithMondu() {
