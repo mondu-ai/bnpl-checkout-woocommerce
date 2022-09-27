@@ -4,9 +4,10 @@ namespace Mondu\Mondu;
 
 use Mondu\Plugin;
 use Mondu\Mondu\Models\Token;
+use Mondu\Mondu\Support\Helper;
 use Mondu\Exceptions\MonduException;
-use Mondu\Exceptions\CredentialsNotSetException;
 use Mondu\Exceptions\ResponseException;
+use WC_Logger_Interface;
 
 class Api {
   private $global_settings;
@@ -84,7 +85,7 @@ class Api {
    * @throws ResponseException
    */
   public function cancel_order($mondu_uuid) {
-    $result = $this->post(sprintf('/orders/%s/cancel', $mondu_uuid), [], );
+    $result = $this->post(sprintf('/orders/%s/cancel', $mondu_uuid));
 
     return json_decode($result['body'], true);
   }
@@ -176,7 +177,7 @@ class Api {
    * @throws ResponseException
    */
   public function cancel_invoice($mondu_uuid, $mondu_invoice_uuid) {
-    $result = $this->post(sprintf('/orders/%s/invoices/%s/cancel', $mondu_uuid, $mondu_invoice_uuid), [], );
+    $result = $this->post(sprintf('/orders/%s/invoices/%s/cancel', $mondu_uuid, $mondu_invoice_uuid));
     return json_decode($result['body'], true);
   }
 
@@ -198,7 +199,7 @@ class Api {
    * @throws ResponseException
    */
   public function get_payment_methods() {
-    $result = $this->get(sprintf('/payment_methods'), null);
+    $result = $this->get('/payment_methods', null);
 
     return json_decode($result['body'], true);
   }
@@ -272,7 +273,9 @@ class Api {
    * @throws MonduException
    * @throws ResponseException
    */
-  private function validate_remote_result($result) {
+  private function validate_remote_result($url, $result) {
+    Helper::log(array('code' => @$result['response']['code'], 'url' => $url, 'response' => @$result['body']));
+
     if ($result instanceof \WP_Error) {
       throw new MonduException(__($result->get_error_message(), $result->get_error_code()));
     }
@@ -320,7 +323,9 @@ class Api {
       $args['body'] = json_encode($body);
     }
 
-    return $this->validate_remote_result(wp_remote_request($url, $args));
+    Helper::log(['method' => $method, 'url' => $url, 'body' => @$args['body']]);
+
+    return $this->validate_remote_result($url, wp_remote_request($url, $args));
   }
 
   /**

@@ -2,6 +2,8 @@
 
 namespace Mondu\Mondu\Support;
 
+use WC_Logger_Interface;
+
 class Helper {
   /**
    * @param $value
@@ -45,5 +47,10 @@ class Helper {
         admin_url('admin-ajax.php')
       )
     );
+  }
+
+  public static function log(array $message, string $level = 'DEBUG') {
+    $logger = wc_get_logger();
+    $logger->log($level, wc_print_r($message, true), array('source' => 'mondu'));
   }
 }

@@ -14,7 +14,6 @@ use WP_REST_Response;
 class WebhooksController extends WP_REST_Controller {
   public function __construct() {
     $this->namespace = 'mondu/v1/webhooks';
-    $this->logger = wc_get_logger();
   }
 
   // Register our routes
@@ -86,12 +85,7 @@ class WebhooksController extends WP_REST_Controller {
       return [['message' => 'not found'], 404];
     }
 
-    $this->logger->debug('changing order status', [
-      'woocommerce_order_id' => $woocommerce_order_id,
-      'mondu_order_id' => $mondu_order_id,
-      'state' => $params['order_state'],
-      'params' => $params,
-    ]);
+    Helper::log(array('woocommerce_order_id' => $woocommerce_order_id, 'mondu_order_id' => $mondu_order_id, 'state' => $params['order_state'], 'params' => $params));
 
     $order->update_status('wc-processing', __('Processing', 'woocommerce'));
 
@@ -112,12 +106,7 @@ class WebhooksController extends WP_REST_Controller {
       return [['message' => 'not found'], 404];
     }
 
-    $this->logger->debug('changing order status', [
-      'woocommerce_order_id' => $woocommerce_order_id,
-      'mondu_order_id' => $mondu_order_id,
-      'state' => $params['order_state'],
-      'params' => $params,
-    ]);
+    Helper::log(array('woocommerce_order_id' => $woocommerce_order_id, 'mondu_order_id' => $mondu_order_id, 'state' => $params['order_state'], 'params' => $params));
 
     $order->update_status('wc-completed', __('Completed', 'woocommerce'));
 
@@ -138,12 +127,7 @@ class WebhooksController extends WP_REST_Controller {
       return [['message' => 'not found'], 404];
     }
 
-    $this->logger->debug('changing order status', [
-      'woocommerce_order_id' => $woocommerce_order_id,
-      'mondu_order_id' => $mondu_order_id,
-      'state' => $params['order_state'],
-      'params' => $params,
-    ]);
+    Helper::log(array('woocommerce_order_id' => $woocommerce_order_id, 'mondu_order_id' => $mondu_order_id, 'state' => $params['order_state'], 'params' => $params));
 
     $order->update_status('wc-failed', __('Failed', 'woocommerce'));
 
