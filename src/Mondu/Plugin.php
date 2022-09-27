@@ -70,6 +70,15 @@ class Plugin {
     add_filter('woocommerce_available_payment_gateways', [$this, 'remove_mondu_outside_germany']);
 
     /*
+     * Show action links on the plugin screen.
+     */
+		add_filter('plugin_action_links_' . MONDU_PLUGIN_BASENAME, [$this, 'add_action_links']);
+    /*
+     * Adds meta information about the Mondu Plugin
+     */
+		add_filter('plugin_row_meta', [$this, 'add_row_meta'], 10, 2);
+
+    /*
      * Adds the mondu javascript to the list of WordPress javascripts
      */
     add_action('wp_head', [$this, 'add_mondu_js']);
@@ -135,6 +144,10 @@ class Plugin {
   }
 
   public function remove_mondu_outside_germany($available_gateways) {
+		if (is_admin() || !is_checkout()) {
+			return $available_gateways;
+		}
+
     $mondu_payments = $this->mondu_request_wrapper->get_merchant_payment_methods();
 
     foreach (Plugin::PAYMENT_METHODS as $payment_method => $woo_payment_method) {
@@ -149,6 +162,41 @@ class Plugin {
     }
 
     return $available_gateways;
+  }
+
+	/**
+	 * Show action links on the plugin screen.
+	 *
+	 * @param mixed $links Plugin Action links.
+	 *
+	 * @return array
+	 */
+	public static function add_action_links($links) {
+		$action_links = array(
+			'settings' => '<a href="' . admin_url('admin.php?page=mondu-settings-account') . '" aria-label="' . esc_attr__('View Mondu settings', 'mondu') . '">' . esc_html__('Settings', 'mondu') . '</a>',
+		);
+
+		return array_merge($action_links, $links);
+	}
+
+	/**
+	 * Show row meta on the plugin screen.
+	 *
+	 * @param mixed $links Plugin Row Meta.
+	 * @param mixed $file  Plugin Base file.
+	 *
+	 * @return array
+	 */
+	public static function add_row_meta($links, $file) {
+    if ($file != MONDU_PLUGIN_BASENAME) {
+			return $links;
+		}
+
+    $row_meta = [
+			'docs' => '<a target="_blank" href="' . esc_url('https://docs.mondu.ai/docs/woocommerce-installation-guide') . '" aria-label="' . esc_attr__( 'View Mondu documentation', 'mondu' ) . '">' . esc_html__( 'Docs', 'mondu' ) . '</a>',
+    ];
+
+		return array_merge($links, $row_meta);
   }
 
   /**
@@ -281,7 +329,7 @@ class Plugin {
    * @return bool
    */
   private function is_outside_germany() {
-    $customer = WC()->customer;
+    $customer = isset(WC()->customer) ? WC()->customer : new WC_Customer(get_current_user_id());
     if ($customer->get_billing_country() == 'DE' || $customer->get_billing_country() == 'AT') {
       return false;
     }
