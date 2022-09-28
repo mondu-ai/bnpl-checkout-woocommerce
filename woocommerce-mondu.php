@@ -18,8 +18,8 @@ define('MONDU_PLUGIN_VERSION', '1.0.0');
 define('MONDU_PLUGIN_FILE', __FILE__);
 define('MONDU_PLUGIN_PATH', __DIR__);
 define('MONDU_PLUGIN_BASENAME', plugin_basename(MONDU_PLUGIN_FILE));
+define('MONDU_PUBLIC_PATH', plugin_dir_url(MONDU_PLUGIN_FILE));
 define('MONDU_VIEW_PATH', MONDU_PLUGIN_PATH . '/views');
-define('MONDU_PUBLIC_PATH', plugin_dir_url(__FILE__));
 
 define('MONDU_SANDBOX_URL', 'https://api.demo.mondu.ai/api/v1');
 define('MONDU_PRODUCTION_URL', 'https://api.mondu.ai/api/v1');
