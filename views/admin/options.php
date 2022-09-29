@@ -39,7 +39,7 @@
       ?>
     </form>
     <h2><?php _e('Download Logs', 'mondu'); ?></h2>
-    <form action='/wp-admin/admin-post.php?action=download_logs' method='post'>
+    <form action='<?php echo get_option('siteurl'); ?>/wp-admin/admin-post.php?action=download_logs' method='post'>
       <input type='hidden' name='action' value='download_logs'>
       <label for='date'>Log date:</label>
       <input type='date' id='date' name='date' value="<?php echo date('Y-m-d'); ?>" required>
