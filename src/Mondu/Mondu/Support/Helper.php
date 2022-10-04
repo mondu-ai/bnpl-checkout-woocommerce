@@ -10,8 +10,8 @@ class Helper {
    *
    * @return bool
    */
-  public static function null_or_empty($value) {
-    return $value === NULL || $value === '';
+  public static function not_null_or_empty($value) {
+    return $value !== NULL && $value !== '';
   }
 
   /**

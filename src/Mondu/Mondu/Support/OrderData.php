@@ -48,29 +48,29 @@ class OrderData {
       'currency' => get_woocommerce_currency(),
       'external_reference_id' => '0', // We will update this id when woocommerce order is created
       'buyer' => [
-        'first_name' => isset($customer['first_name']) ? $customer['first_name'] : null,
-        'last_name' => isset($customer['last_name']) ? $customer['last_name'] : null,
-        'company_name' => isset($customer['company']) ? $customer['company'] : null,
-        'email' => isset($customer['email']) ? $customer['email'] : null,
-        'phone' => isset($customer['phone']) ? $customer['phone'] : null,
-        'external_reference_id' => isset($customer['id']) ? $customer['id'] : null,
+        'first_name' => isset($customer['first_name']) && Helper::not_null_or_empty($customer['first_name']) ? $customer['first_name'] : null,
+        'last_name' => isset($customer['last_name']) && Helper::not_null_or_empty($customer['last_name']) ? $customer['last_name'] : null,
+        'company_name' => isset($customer['company']) && Helper::not_null_or_empty($customer['company']) ? $customer['company'] : null,
+        'email' => isset($customer['email']) && Helper::not_null_or_empty($customer['email']) ? $customer['email'] : null,
+        'phone' => isset($customer['phone']) && Helper::not_null_or_empty($customer['phone']) ? $customer['phone'] : null,
+        'external_reference_id' => isset($customer['id']) && Helper::not_null_or_empty($customer['id']) ? $customer['id'] : null,
         'is_registered' => is_user_logged_in(),
       ],
       'billing_address' => [
-        'address_line1' => isset($customer['address_1']) ? $customer['address_1'] : null,
-        'address_line2' => isset($customer['address_2']) ? $customer['address_2'] : null,
-        'city' => isset($customer['city']) ? $customer['city'] : null,
-        'state' => isset($customer['state']) ? $customer['state'] : null,
-        'zip_code' => isset($customer['postcode']) ? $customer['postcode'] : null,
-        'country_code' => isset($customer['country']) ? $customer['country'] : null,
+        'address_line1' => isset($customer['address_1']) && Helper::not_null_or_empty($customer['address_1']) ? $customer['address_1'] : null,
+        'address_line2' => isset($customer['address_2']) && Helper::not_null_or_empty($customer['address_2']) ? $customer['address_2'] : null,
+        'city' => isset($customer['city']) && Helper::not_null_or_empty($customer['city']) ? $customer['city'] : null,
+        'state' => isset($customer['state']) && Helper::not_null_or_empty($customer['state']) ? $customer['state'] : null,
+        'zip_code' => isset($customer['postcode']) && Helper::not_null_or_empty($customer['postcode']) ? $customer['postcode'] : null,
+        'country_code' => isset($customer['country']) && Helper::not_null_or_empty($customer['country']) ? $customer['country'] : null,
       ],
       'shipping_address' => [
-        'address_line1' => isset($customer['shipping_address_1']) ? $customer['shipping_address_1'] : null,
-        'address_line2' => isset($customer['shipping_address_2']) ? $customer['shipping_address_2'] : null,
-        'city' => isset($customer['shipping_city']) ? $customer['shipping_city'] : null,
-        'state' => isset($customer['shipping_state']) ? $customer['shipping_state'] : null,
-        'zip_code' => isset($customer['shipping_postcode']) ? $customer['shipping_postcode'] : null,
-        'country_code' => isset($customer['shipping_country']) ? $customer['shipping_country'] : null,
+        'address_line1' => isset($customer['shipping_address_1']) && Helper::not_null_or_empty($customer['shipping_address_1']) ? $customer['shipping_address_1'] : null,
+        'address_line2' => isset($customer['shipping_address_2']) && Helper::not_null_or_empty($customer['shipping_address_2']) ? $customer['shipping_address_2'] : null,
+        'city' => isset($customer['shipping_city']) && Helper::not_null_or_empty($customer['shipping_city']) ? $customer['shipping_city'] : null,
+        'state' => isset($customer['shipping_state']) && Helper::not_null_or_empty($customer['shipping_state']) ? $customer['shipping_state'] : null,
+        'zip_code' => isset($customer['shipping_postcode']) && Helper::not_null_or_empty($customer['shipping_postcode']) ? $customer['shipping_postcode'] : null,
+        'country_code' => isset($customer['shipping_country']) && Helper::not_null_or_empty($customer['shipping_country']) ? $customer['shipping_country'] : null,
       ],
       'lines' => [],
       'amount' => [], # We have the amount here to avoid calculating it when updating external_reference_id (it is also removed when creating)
@@ -146,9 +146,9 @@ class OrderData {
       $line_item = [
         'title' => $product->get_title(),
         'quantity' => $item->get_quantity(),
-        'external_reference_id' => Helper::null_or_empty($product->get_id()) ? null : (string) $product->get_id(),
-        'product_id' => Helper::null_or_empty($product->get_id()) ? null : (string) $product->get_id(),
-        'product_sku' => Helper::null_or_empty($product->get_slug()) ? null : (string) $product->get_slug(),
+        'external_reference_id' => Helper::not_null_or_empty($product->get_id()) ? (string) $product->get_id() : null,
+        'product_id' => Helper::not_null_or_empty($product->get_id()) ? (string) $product->get_id() : null,
+        'product_sku' => Helper::not_null_or_empty($product->get_slug()) ? (string) $product->get_slug() : null,
         'net_price_per_item_cents' => round ((float) ($item->get_subtotal() / $item->get_quantity()) * 100),
         'net_price_cents' => round ((float) $item->get_subtotal() * 100),
         'tax_cents' => round ((float) $item->get_total_tax() * 100),
@@ -202,7 +202,7 @@ class OrderData {
       $product = $item->get_product();
 
       $line_item = [
-        'external_reference_id' => Helper::null_or_empty($product->get_id()) ? null : (string) $product->get_id(),
+        'external_reference_id' => Helper::not_null_or_empty($product->get_id()) ? (string) $product->get_id() : null,
         'quantity' => $item->get_quantity(),
       ];
 
