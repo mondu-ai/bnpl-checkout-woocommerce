@@ -92,9 +92,9 @@ class OrderData {
       $line_item = [
         'title' => $product->get_title(),
         'quantity' => isset($cart_item['quantity']) ? $cart_item['quantity'] : null,
-        'external_reference_id' => isset($cart_item['product_id']) ? (string) $cart_item['product_id'] : null,
-        'product_id' => isset($cart_item['product_id']) ? (string) $cart_item['product_id'] : null,
-        'product_sku' => isset($cart_item['product_sku']) ? $cart_item['product_sku'] : null,
+        'external_reference_id' => Helper::not_null_or_empty($product->get_id()) ? (string) $product->get_id() : null,
+        'product_id' => Helper::not_null_or_empty($product->get_id()) ? (string) $product->get_id() : null,
+        'product_sku' => Helper::not_null_or_empty($product->get_slug()) ? (string) $product->get_slug() : null,
         'net_price_per_item_cents' => round ((float) ($cart_item['line_subtotal'] / $cart_item['quantity']) * 100),
         'net_price_cents' => round ((float) $cart_item['line_subtotal'] * 100),
         'tax_cents' => round ((float) $cart_item['line_tax'] * 100),
