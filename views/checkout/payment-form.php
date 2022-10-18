@@ -94,7 +94,9 @@
         let error_text = jQuery(this).text();
         jQuery(this).addClass('error');
         if (error_text.includes('error_confirmation')) {
+          jQuery(this).css('display', 'none');
           if (error_count === 1) {
+            jQuery(this).parent().css('display', 'none');
             if (isGatewayMondu(jQuery('input[name=payment_method]:checked').val())) {
               jQuery('html, body').stop();
             }
