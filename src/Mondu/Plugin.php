@@ -10,8 +10,10 @@ use Mondu\Mondu\MonduRequestWrapper;
 use Mondu\Mondu\Controllers\OrdersController;
 use Mondu\Mondu\Controllers\WebhooksController;
 use Mondu\Mondu\Presenters\PaymentInfo;
+use Mondu\Mondu\Support\Helper;
 use Exception;
 use WC_Customer;
+use WP_Error;
 use WC_Order;
 
 class Plugin {
@@ -45,13 +47,6 @@ class Plugin {
     $this->global_settings = get_option(Plugin::OPTION_NAME);
 
     $this->mondu_request_wrapper = new MonduRequestWrapper();
-
-    # This is for trigger the open checkout plugin
-    add_action('woocommerce_after_checkout_validation', function () {
-      if ($_POST['confirm-order-flag'] === '1') {
-        wc_add_notice(__('Validation checkout error!', 'mondu'), 'error');
-      }
-    });
   }
 
   public function init() {
@@ -108,6 +103,16 @@ class Plugin {
     }, 10, 3);
 
     /*
+     * Validates required fields
+     */
+    add_action('woocommerce_after_checkout_validation', [$this, 'validate_required_fields'], 10, 2);
+
+    /*
+     * Triggers the open checkout plugin
+     */
+    add_action('woocommerce_after_checkout_validation', [$this, 'validation_error_to_open_plugin']);
+
+    /*
      * Does not allow to change address
      */
     add_action('woocommerce_admin_order_data_after_billing_address', [$this, 'change_address_warning'], 10, 1);
@@ -116,11 +121,11 @@ class Plugin {
      * These methods add the Mondu invoice's info to a WCPDF Invoice
      */
     add_action('wpo_wcpdf_after_order_details', [$this, 'wcpdf_add_mondu_payment_info_to_pdf'], 10, 2);
-    add_action('wpo_wcpdf_after_order_data', [$this, 'wcpdf_add_status_to_invoice_when_order_is_cancelled'], 10, 2 );
-    add_action('wpo_wcpdf_after_order_data', [$this, 'wcpdf_add_paid_to_invoice_when_invoice_is_paid'], 10, 2 );
-    add_action('wpo_wcpdf_after_order_data', [$this, 'wcpdf_add_status_to_invoice_when_invoice_is_cancelled'], 10, 2 );
-    add_action('wpo_wcpdf_meta_box_after_document_data', [$this, 'wcpdf_add_paid_to_invoice_admin_when_invoice_is_paid'], 10, 2 );
-    add_action('wpo_wcpdf_meta_box_after_document_data', [$this, 'wcpdf_add_status_to_invoice_admin_when_invoice_is_cancelled'], 10, 2 );
+    add_action('wpo_wcpdf_after_order_data', [$this, 'wcpdf_add_status_to_invoice_when_order_is_cancelled'], 10, 2);
+    add_action('wpo_wcpdf_after_order_data', [$this, 'wcpdf_add_paid_to_invoice_when_invoice_is_paid'], 10, 2);
+    add_action('wpo_wcpdf_after_order_data', [$this, 'wcpdf_add_status_to_invoice_when_invoice_is_cancelled'], 10, 2);
+    add_action('wpo_wcpdf_meta_box_after_document_data', [$this, 'wcpdf_add_paid_to_invoice_admin_when_invoice_is_paid'], 10, 2);
+    add_action('wpo_wcpdf_meta_box_after_document_data', [$this, 'wcpdf_add_status_to_invoice_admin_when_invoice_is_cancelled'], 10, 2);
   }
 
   public function change_address_warning(WC_Order $order) {
@@ -196,10 +201,34 @@ class Plugin {
 		}
 
     $row_meta = [
-			'docs' => '<a target="_blank" href="' . esc_url('https://docs.mondu.ai/docs/woocommerce-installation-guide') . '" aria-label="' . esc_attr__( 'View Mondu documentation', 'mondu' ) . '">' . esc_html__( 'Docs', 'mondu' ) . '</a>',
+			'docs' => '<a target="_blank" href="' . esc_url('https://docs.mondu.ai/docs/woocommerce-installation-guide') . '" aria-label="' . esc_attr__('View Mondu documentation', 'mondu') . '">' . esc_html__('Docs', 'mondu') . '</a>',
     ];
 
 		return array_merge($links, $row_meta);
+  }
+
+  /**
+   * @param array $fields
+   * @param WP_Error $errors
+   */
+  public function validate_required_fields(array $fields, WP_Error $errors) {
+    if (!in_array($fields['payment_method'], Plugin::PAYMENT_METHODS)) {
+      return;
+    }
+
+    if (!Helper::not_null_or_empty($fields['billing_company'])) {
+      $errors->add('validation', __('Company is a required field for Mondu payments.', 'mondu'));
+    }
+
+    if ($fields['billing_country'] !== 'DE' && $fields['billing_country'] !== 'AT') {
+      $errors->add('validation', __('Billing country not available for Mondu Payments.', 'mondu'));
+    }
+  }
+
+  public function validation_error_to_open_plugin() {
+    if ($_POST['confirm-order-flag'] === '1') {
+      wc_add_notice(__('error_confirmation', 'mondu'), 'error');
+    }
   }
 
   /**
