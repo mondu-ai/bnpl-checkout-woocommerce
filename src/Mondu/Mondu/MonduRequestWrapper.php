@@ -268,7 +268,7 @@ class MonduRequestWrapper {
     $refund = new WC_Order_Refund($refund_id);
     $mondu_invoice_id = get_post_meta($order->get_id(), PLUGIN::INVOICE_ID_KEY, true);
 
-    if(!$mondu_invoice_id) {
+    if (!$mondu_invoice_id) {
       throw new ResponseException('Mondu: Can\'t create a credit note without an invoice');
     }
 
@@ -279,5 +279,17 @@ class MonduRequestWrapper {
     ];
 
     $this->api->create_credit_note($mondu_invoice_id, $credit_note);
-   }
+  }
+
+
+  /**
+   * @param $mondu_order_id
+   * @param $mondu_invoice_id
+   *
+   * @throws MonduException
+   * @throws ResponseException
+   */
+  public function cancel_invoice($mondu_order_id, $mondu_invoice_id) {
+    $this->api->cancel_invoice($mondu_order_id, $mondu_invoice_id);
+  }
 }

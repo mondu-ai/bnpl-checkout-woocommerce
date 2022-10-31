@@ -7,7 +7,6 @@ use Mondu\Mondu\Models\Token;
 use Mondu\Mondu\Support\Helper;
 use Mondu\Exceptions\MonduException;
 use Mondu\Exceptions\ResponseException;
-use WC_Logger_Interface;
 
 class Api {
   private $global_settings;
@@ -274,10 +273,10 @@ class Api {
    * @throws ResponseException
    */
   private function validate_remote_result($url, $result) {
-    Helper::log(array('code' => @$result['response']['code'], 'url' => $url, 'response' => @$result['body']));
-
     if ($result instanceof \WP_Error) {
-      throw new MonduException(__($result->get_error_message(), $result->get_error_code()));
+      throw new MonduException($result->getMessage(), $result->getErrorCode());
+    } else {
+      Helper::log(array('code' => @$result['response']['code'], 'url' => $url, 'response' => @$result['body']));
     }
 
     if (!is_array($result) || !isset($result['response'], $result['body']) || !isset($result['response']['code'], $result['response']['message'])) {

@@ -140,7 +140,7 @@ class OrderData {
     $net_price_cents = 0;
     $tax_cents = 0;
 
-    foreach($order->get_items() as $item_id => $item) {
+    foreach ($order->get_items() as $item_id => $item) {
       $product = $item->get_product();
 
       $line_item = [
@@ -192,13 +192,13 @@ class OrderData {
       $invoice_data['shipping_info']['shipping_method'] = $order->get_shipping_method();
     }
 
-    if($order->get_shipping_method()) {
+    if ($order->get_shipping_method()) {
       $invoice_data['shipping_info'] = [
         'shipping_method' => $order->get_shipping_method()
       ];
     }
 
-    foreach($order->get_items() as $item_id => $item) {
+    foreach ($order->get_items() as $item_id => $item) {
       $product = $item->get_product();
 
       $line_item = [
