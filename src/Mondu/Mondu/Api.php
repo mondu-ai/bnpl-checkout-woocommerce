@@ -274,7 +274,7 @@ class Api {
    */
   private function validate_remote_result($url, $result) {
     if ($result instanceof \WP_Error) {
-      throw new MonduException($result->getMessage(), $result->getErrorCode());
+      throw new MonduException($result->get_error_message(), $result->get_error_code());
     } else {
       Helper::log(array('code' => @$result['response']['code'], 'url' => $url, 'response' => @$result['body']));
     }

@@ -4,6 +4,7 @@ namespace Mondu\Mondu;
 
 use Mondu\Exceptions\MonduException;
 use Mondu\Exceptions\ResponseException;
+use Mondu\Mondu\Support\Helper;
 use Mondu\Mondu\Support\OrderData;
 use Mondu\Plugin;
 use WC_Order;
@@ -122,7 +123,7 @@ class MonduRequestWrapper {
     $invoice_data = OrderData::invoice_data_from_wc_order($order);
     $response = $this->api->ship_order($mondu_order_id, $invoice_data);
     $invoice = $response['invoice'];
-    update_post_meta($order_id, Plugin::INVOICE_ID_KEY, $invoice['uuid']);
+    add_post_meta($order_id, Plugin::INVOICE_ID_KEY, $invoice['uuid']);
     return $invoice;
   }
 
@@ -236,7 +237,6 @@ class MonduRequestWrapper {
    * @param $to_status
    *
    * @throws MonduException
-   * @throws ResponseException
    */
   public function order_status_changed($order_id, $from_status, $to_status) {
     $order = new WC_Order($order_id);
@@ -244,11 +244,17 @@ class MonduRequestWrapper {
       return;
     }
 
-    if ($to_status === 'cancelled') {
-      $this->cancel_order($order_id);
-    }
-    if ($to_status === 'completed') {
-      $this->ship_order($order_id);
+    Helper::log(array('order_id' => $order_id, 'from_status' => $from_status, 'to_status' => $to_status));
+
+    try {
+      if ($to_status === 'cancelled') {
+        $this->cancel_order($order_id);
+      }
+      if ($to_status === 'completed') {
+        $this->ship_order($order_id);
+      }
+    } catch (ResponseException $e) {
+      Helper::log(array('error' => array('code' => $e->getBody(), 'message' => $e->getCode())));
     }
   }
 
