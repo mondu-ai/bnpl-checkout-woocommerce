@@ -7,31 +7,31 @@ defined('ABSPATH') or die('Direct access not allowed');
 abstract class Helper {
   protected $global_settings;
 
-  protected function textField($optionName, $fieldName, $default = '') {
+  protected function textField($option_name, $field_name, $default = '') {
     printf(
-      '<input type="text" id="' . $fieldName . '" name="' . $optionName . '[' . $fieldName . ']" value="%s" />',
-      isset($this->global_settings[$fieldName]) ? esc_attr($this->global_settings[$fieldName]) : $default
+      '<input type="text" id="' . $field_name . '" name="' . $option_name . '[' . $field_name . ']" value="%s" />',
+      isset($this->global_settings[$field_name]) ? esc_attr($this->global_settings[$field_name]) : $default
    );
   }
 
-  protected function selectField($optionName, $fieldName, $options, $type = 'single') {
-    $selectedValue = isset($this->global_settings[$fieldName]) ? $this->global_settings[$fieldName] : '';
+  protected function selectField($option_name, $field_name, $options, $type = 'single') {
+    $selected_value = isset($this->global_settings[$field_name]) ? $this->global_settings[$field_name] : '';
 
     $multiple = '';
-    $name = $optionName . '[' . $fieldName . ']';
+    $name = $option_name . '[' . $field_name . ']';
     if ($type === 'multiple') {
       $multiple = ' multiple="multiple"';
       $name     .= '[]';
     }
 
-    echo '<select id="' . $fieldName . '" name="' . $name . '"' . $multiple . '>';
+    echo '<select id="' . $field_name . '" name="' . $name . '"' . $multiple . '>';
     foreach ($options as $value => $label) {
       $selected = false;
-      if (is_array($selectedValue) && $type === 'multiple') {
-        if (in_array($value, $selectedValue, true)) {
+      if (is_array($selected_value) && $type === 'multiple') {
+        if (in_array($value, $selected_value, true)) {
           $selected = true;
         }
-      } elseif ($selectedValue === $value) {
+      } elseif ($selected_value === $value) {
         $selected = true;
       }
 

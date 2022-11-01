@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin Name: Mondu
+ * Plugin Name: WooCommerce-Mondu
  * Plugin URI: https://github.com/mondu-ai/bnpl-checkout-woocommerce/releases
  * Description: Increase your revenue with Mondu’s solution, without the operational burden.
  * Version: 1.0.1
@@ -8,6 +8,7 @@
  * Author URI: https://mondu.ai
  * License: MIT
  * Text Domain: mondu
+ * Domain Path: /languages
  * WC requires at least: 4.6
  * WC tested up to: 5.9.3
  */

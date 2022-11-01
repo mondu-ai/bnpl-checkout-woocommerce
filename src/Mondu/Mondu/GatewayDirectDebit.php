@@ -25,9 +25,9 @@ class GatewayDirectDebit extends WC_Payment_Gateway {
     $this->global_settings = get_option(Plugin::OPTION_NAME);
 
     $this->id = Plugin::PAYMENT_METHODS['direct_debit'];
-    $this->title = 'SEPA-Lastschrift - jetzt kaufen, später bezahlen';
-    $this->method_title = 'Mondu SEPA-Lastschrift';
-    $this->method_description = 'SEPA-Lastschrift - jetzt kaufen, später bezahlen';
+    $this->title = __('SEPA-Lastschrift - jetzt kaufen, später bezahlen', 'mondu');
+    $this->method_title = __('Mondu SEPA-Lastschrift', 'mondu');
+    $this->method_description = __('SEPA-Lastschrift - jetzt kaufen, später bezahlen', 'mondu');
     $this->has_fields = true;
     $this->icon = apply_filters('woocommerce_gateway_icon', MONDU_PUBLIC_PATH . '/views/mondu.svg');
 
@@ -40,17 +40,14 @@ class GatewayDirectDebit extends WC_Payment_Gateway {
   public function init_form_fields() {
     $this->form_fields = [
       'enabled' => [
-        'title'   => __('Enable/Disable', 'woocommerce'),
-        'type'    => 'checkbox',
-        'label'   => __('Enable this payment method', 'mondu'),
+        'title' => __('Enable/Disable', 'woocommerce'),
+        'type' => 'checkbox',
+        'label' => __('Enable this payment method', 'mondu'),
         'default' => 'no',
       ],
     ];
 
-    add_action('woocommerce_update_options_payment_gateways_' . $this->id, [
-      $this,
-      'process_admin_options'
-    ]);
+    add_action('woocommerce_update_options_payment_gateways_' . $this->id, [$this, 'process_admin_options']);
   }
 
   /**
@@ -91,7 +88,7 @@ class GatewayDirectDebit extends WC_Payment_Gateway {
     $order = $this->mondu_request_wrapper->process_payment($order_id);
 
     return array(
-      'result'   => 'success',
+      'result' => 'success',
       'redirect' => $this->get_return_url($order)
     );
   }

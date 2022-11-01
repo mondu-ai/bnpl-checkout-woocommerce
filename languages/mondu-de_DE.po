@@ -1,0 +1,273 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: WooCommerce-Mondu\n"
+"Report-Msgid-Bugs-To: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2022-11-01T18:21:49+00:00\n"
+"PO-Revision-Date: 2022-11-01T18:21:49+00:00\n"
+"Language: de_DE\n"
+
+#. Plugin Name of the plugin
+msgid "WooCommerce-Mondu"
+msgstr "WooCommerce-Mondu"
+
+#. Plugin URI of the plugin
+msgid "https://github.com/mondu-ai/bnpl-checkout-woocommerce/releases"
+msgstr "https://github.com/mondu-ai/bnpl-checkout-woocommerce/releases"
+
+#. Description of the plugin
+msgid "Increase your revenue with Mondu’s solution, without the operational burden."
+msgstr "Steigern Sie Ihren Umsatz mit der Lösung von Mondu, ohne den operativen Aufwand."
+
+#. Author of the plugin
+msgid "mondu"
+msgstr "mondu"
+
+#. Author URI of the plugin
+msgid "https://mondu.ai"
+msgstr "https://mondu.ai"
+
+#: src/Mondu/Admin/Option/Account.php:21
+#: src/Mondu/Plugin.php:194
+msgid "Settings"
+msgstr "Einstellungen"
+
+#: src/Mondu/Admin/Option/Account.php:25
+msgid "Sandbox or production"
+msgstr "Sandbox oder Production"
+
+#: src/Mondu/Admin/Option/Account.php:30
+msgid "API Token"
+msgstr "API Token"
+
+#: src/Mondu/Admin/Option/Account.php:38
+msgid "Sandbox"
+msgstr "Sandbox"
+
+#: src/Mondu/Admin/Option/Account.php:39
+msgid "Production"
+msgstr "Production"
+
+#: src/Mondu/Admin/Order.php:37
+msgid "Mondu Order Information"
+msgstr "Mondu Bestellinformationen"
+
+#: src/Mondu/Admin/Settings.php:32
+#: views/admin/options.php:2
+msgid "Mondu Settings"
+msgstr "Mondu Einstellungen"
+
+#: src/Mondu/Admin/Settings.php:58
+msgid "Missing Credentials"
+msgstr "Fehlende Credentials"
+
+#: src/Mondu/Mondu/Api.php:283
+msgid "Unexpected API response format."
+msgstr "Unerwartetes API-Antwortformat."
+
+#: src/Mondu/Mondu/Controllers/WebhooksController.php:39
+msgid "Signature mismatch."
+msgstr "Signatur stimmt nicht überein."
+
+#: src/Mondu/Mondu/Controllers/WebhooksController.php:60
+msgid "Unregistered topic."
+msgstr "Unregistriertes Thema."
+
+#: src/Mondu/Mondu/Controllers/WebhooksController.php:79
+#: src/Mondu/Mondu/Controllers/WebhooksController.php:100
+#: src/Mondu/Mondu/Controllers/WebhooksController.php:121
+#: src/Mondu/Mondu/Controllers/WebhooksController.php:144
+#: src/Mondu/Mondu/Controllers/WebhooksController.php:162
+msgid "Required params missing."
+msgstr "Erforderliche Parameter fehlen."
+
+#: src/Mondu/Mondu/Controllers/WebhooksController.php:85
+#: src/Mondu/Mondu/Controllers/WebhooksController.php:106
+#: src/Mondu/Mondu/Controllers/WebhooksController.php:127
+#: src/Mondu/Mondu/Controllers/WebhooksController.php:150
+#: src/Mondu/Mondu/Controllers/WebhooksController.php:169
+msgid "Not Found"
+msgstr "Nicht gefunden"
+
+#: src/Mondu/Mondu/Gateway.php:32
+#: src/Mondu/Mondu/Gateway.php:34
+msgid "Rechnungskauf - jetzt kaufen, später bezahlen"
+msgstr "Rechnungskauf - jetzt kaufen, später bezahlen"
+
+#: src/Mondu/Mondu/Gateway.php:33
+msgid "Mondu Rechnungskauf"
+msgstr "Mondu Rechnungskauf"
+
+#: src/Mondu/Mondu/Gateway.php:49
+#: src/Mondu/Mondu/GatewayDirectDebit.php:45
+#: src/Mondu/Mondu/GatewayInstallment.php:44
+msgid "Enable this payment method"
+msgstr "Aktivieren Sie diese Zahlungsart"
+
+#: src/Mondu/Mondu/GatewayDirectDebit.php:28
+#: src/Mondu/Mondu/GatewayDirectDebit.php:30
+msgid "SEPA-Lastschrift - jetzt kaufen, später bezahlen"
+msgstr "SEPA-Lastschrift - jetzt kaufen, später bezahlen"
+
+#: src/Mondu/Mondu/GatewayDirectDebit.php:29
+msgid "Mondu SEPA-Lastschrift"
+msgstr "Mondu SEPA-Lastschrift"
+
+#: src/Mondu/Mondu/GatewayInstallment.php:28
+#: src/Mondu/Mondu/GatewayInstallment.php:30
+msgid "Ratenzahlung - Bequem in Raten per Bankeinzug zahlen"
+msgstr "Ratenzahlung - Bequem in Raten per Bankeinzug zahlen"
+
+#: src/Mondu/Mondu/GatewayInstallment.php:29
+msgid "Mondu Ratenzahlung"
+msgstr "Mondu Ratenzahlung"
+
+#: src/Mondu/Mondu/MonduRequestWrapper.php:278
+msgid "Mondu: Can not create a credit note without an invoice"
+msgstr "Mondu: Kann keine Gutschrift ohne Rechnung erstellen"
+
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:43
+#: src/Mondu/Plugin.php:267
+msgid "Order state"
+msgstr "Bestellstatus"
+
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:47
+msgid "Mondu ID"
+msgstr "Mondu-ID"
+
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:57
+msgid "Create Invoice"
+msgstr "Rechnung erstellen"
+
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:71
+msgid "Corrupt Mondu order!"
+msgstr "Fehlerhafte Mondu Bestellung!"
+
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:102
+msgid "Account holder"
+msgstr "Kontoinhaber"
+
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:106
+msgid "Bank"
+msgstr "Bankinstitut"
+
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:110
+msgid "IBAN"
+msgstr "IBAN"
+
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:114
+msgid "BIC"
+msgstr "BIC"
+
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:130
+msgid "Invoice state"
+msgstr "Rechnungsstatus"
+
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:134
+msgid "Invoice number"
+msgstr "Rechnungsnummer"
+
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:138
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:178
+msgid "Total"
+msgstr "Gesamt"
+
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:142
+msgid "Paid out"
+msgstr "Ausgezahlt"
+
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:143
+msgid "Yes"
+msgstr "Ja"
+
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:143
+msgid "No"
+msgstr "Nein"
+
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:174
+msgid "Credit Note number"
+msgstr "Gutschriftsnummer"
+
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:157
+msgid "Cancel Invoice"
+msgstr "Rechnung stornieren"
+
+#: src/Mondu/Plugin.php:151
+msgid "Since this order will be paid via Mondu you will not be able to change the addresses."
+msgstr "Da diese Bestellung über Mondu bezahlt wird, können Sie die Adressen nicht ändern."
+
+#: src/Mondu/Plugin.php:194
+msgid "View Mondu settings"
+msgstr "Mondu-Einstellungen anzeigen"
+
+#: src/Mondu/Plugin.php:214
+msgid "View Mondu documentation"
+msgstr "Mondu-Dokumentation anzeigen"
+
+#: src/Mondu/Plugin.php:214
+msgid "Docs"
+msgstr "Dokumente"
+
+#: src/Mondu/Plugin.php:230
+msgid "Company is a required field for Mondu payments."
+msgstr "Firma ist ein Pflichtfeld für Mondu-Zahlungen."
+
+#: src/Mondu/Plugin.php:234
+msgid "Billing country not available for Mondu Payments."
+msgstr "Rechnungsland für Mondu-Zahlungen nicht verfügbar."
+
+#: src/Mondu/Plugin.php:268
+#: src/Mondu/Plugin.php:306
+#: src/Mondu/Plugin.php:347
+msgid "Cancelled"
+msgstr "Storniert"
+
+#: src/Mondu/Plugin.php:286
+#: src/Mondu/Plugin.php:325
+msgid "Mondu Invoice paid"
+msgstr "Mondu-Rechnung bezahlt"
+
+#: src/Mondu/Plugin.php:287
+#: src/Mondu/Plugin.php:326
+msgid "True"
+msgstr "Wahr"
+
+#: src/Mondu/Plugin.php:305
+#: src/Mondu/Plugin.php:346
+msgid "Mondu Invoice state"
+msgstr "Mondu-Rechnungsstatus"
+
+#: views/admin/options.php:11
+#: views/admin/options.php:23
+msgid "Validate Credentials"
+msgstr "Anmeldeinformationen validieren"
+
+#: views/admin/options.php:16
+msgid "Credentials validated"
+msgstr "Credentials validiert"
+
+#: views/admin/options.php:26
+#: views/admin/options.php:38
+msgid "Register Webhooks"
+msgstr "Webhooks registrieren"
+
+#: views/admin/options.php:31
+msgid "Webhooks registered"
+msgstr "Webhooks registriert"
+
+#: views/admin/options.php:41
+#: views/admin/options.php:46
+msgid "Download Logs"
+msgstr "Protokolle herunterladen"
+
+#: views/admin/options.php:44
+msgid "Log date"
+msgstr "Log date"
+
+#: views/checkout/payment-form.php:142
+msgid "Hinweise zur Verarbeitung Ihrer personenbezogenen Daten durch die Mondu GmbH finden Sie <a href=\"https://mondu.ai/de/datenschutzgrundverordnung-kaeufer\" target=\"_blank\">hier</a>."
+msgstr "Hinweise zur Verarbeitung Ihrer personenbezogenen Daten durch die Mondu GmbH finden Sie <a href=\"https://mondu.ai/de/datenschutzgrundverordnung-kaeufer\" target=\"_blank\">hier</a>."

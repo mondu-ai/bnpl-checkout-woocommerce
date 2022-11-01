@@ -59,6 +59,11 @@ class Plugin {
     }
 
     /*
+     * Load translations
+     */
+    add_action('init', [$this, 'load_textdomain']);
+
+    /*
      * Adds the mondu gateway to the list of gateways
      * (And remove it again if we're not in Germany)
      */
@@ -70,11 +75,11 @@ class Plugin {
     /*
      * Show action links on the plugin screen.
      */
-		add_filter('plugin_action_links_' . MONDU_PLUGIN_BASENAME, [$this, 'add_action_links']);
+    add_filter('plugin_action_links_' . MONDU_PLUGIN_BASENAME, [$this, 'add_action_links']);
     /*
      * Adds meta information about the Mondu Plugin
      */
-		add_filter('plugin_row_meta', [$this, 'add_row_meta'], 10, 2);
+    add_filter('plugin_row_meta', [$this, 'add_row_meta'], 10, 2);
 
     /*
      * Adds the mondu javascript to the list of WordPress javascripts
@@ -128,6 +133,11 @@ class Plugin {
     add_action('wpo_wcpdf_meta_box_after_document_data', [$this, 'wcpdf_add_status_to_invoice_admin_when_invoice_is_cancelled'], 10, 2);
   }
 
+  public function load_textdomain() {
+    $plugin_rel_path = dirname(plugin_basename(__FILE__)) . '/../../languages/';
+    load_plugin_textdomain('mondu', false, $plugin_rel_path);
+  }
+
   public function change_address_warning(WC_Order $order) {
     if (!in_array($order->get_payment_method(), Plugin::PAYMENT_METHODS)) {
       return;
@@ -152,9 +162,9 @@ class Plugin {
   }
 
   public function remove_mondu_outside_germany($available_gateways) {
-		if (is_admin() || !is_checkout()) {
-			return $available_gateways;
-		}
+    if (is_admin() || !is_checkout()) {
+      return $available_gateways;
+    }
 
     $mondu_payments = $this->mondu_request_wrapper->get_merchant_payment_methods();
 
@@ -172,39 +182,39 @@ class Plugin {
     return $available_gateways;
   }
 
-	/**
-	 * Show action links on the plugin screen.
-	 *
-	 * @param mixed $links Plugin Action links.
-	 *
-	 * @return array
-	 */
-	public static function add_action_links($links) {
-		$action_links = array(
-			'settings' => '<a href="' . admin_url('admin.php?page=mondu-settings-account') . '" aria-label="' . esc_attr__('View Mondu settings', 'mondu') . '">' . esc_html__('Settings', 'mondu') . '</a>',
-		);
+  /**
+   * Show action links on the plugin screen.
+   *
+   * @param mixed $links Plugin Action links.
+   *
+   * @return array
+   */
+  public static function add_action_links($links) {
+    $action_links = array(
+      'settings' => '<a href="' . admin_url('admin.php?page=mondu-settings-account') . '" aria-label="' . esc_attr__('View Mondu settings', 'mondu') . '">' . esc_html__('Settings', 'mondu') . '</a>',
+    );
 
-		return array_merge($action_links, $links);
-	}
+    return array_merge($action_links, $links);
+  }
 
-	/**
-	 * Show row meta on the plugin screen.
-	 *
-	 * @param mixed $links Plugin Row Meta.
-	 * @param mixed $file  Plugin Base file.
-	 *
-	 * @return array
-	 */
-	public static function add_row_meta($links, $file) {
+  /**
+   * Show row meta on the plugin screen.
+   *
+   * @param mixed $links Plugin Row Meta.
+   * @param mixed $file  Plugin Base file.
+   *
+   * @return array
+   */
+  public static function add_row_meta($links, $file) {
     if ($file != MONDU_PLUGIN_BASENAME) {
-			return $links;
-		}
+      return $links;
+    }
 
     $row_meta = [
-			'docs' => '<a target="_blank" href="' . esc_url('https://docs.mondu.ai/docs/woocommerce-installation-guide') . '" aria-label="' . esc_attr__('View Mondu documentation', 'mondu') . '">' . esc_html__('Docs', 'mondu') . '</a>',
+      'docs' => '<a target="_blank" href="' . esc_url('https://docs.mondu.ai/docs/woocommerce-installation-guide') . '" aria-label="' . esc_attr__('View Mondu documentation', 'mondu') . '">' . esc_html__('Docs', 'mondu') . '</a>',
     ];
 
-		return array_merge($links, $row_meta);
+    return array_merge($links, $row_meta);
   }
 
   /**
@@ -227,7 +237,7 @@ class Plugin {
 
   public function validation_error_to_open_plugin() {
     if ($_POST['confirm-order-flag'] === '1') {
-      wc_add_notice(__('error_confirmation', 'mondu'), 'error');
+      wc_add_notice('error_confirmation', 'error');
     }
   }
 
@@ -254,8 +264,8 @@ class Plugin {
     if ($order->get_status() == 'cancelled' && $template_type == 'invoice') {
       ?>
         <tr class="order-status">
-          <th>Order status:</th>
-          <td>Cancelled</td>
+          <th><?php _e('Order state','mondu'); ?>:</th>
+          <td><?php _e('Cancelled','mondu'); ?></td>
         </tr>
       <?php
     }
@@ -273,8 +283,8 @@ class Plugin {
     if ($invoice_paid == true && $template_type == 'invoice') {
       ?>
         <tr class="invoice-status">
-          <th>Mondu Invoice paid:</th>
-          <td>True</td>
+          <th><?php _e('Mondu Invoice paid','mondu'); ?>:</th>
+          <td><?php _e('True','mondu'); ?></td>
         </tr>
       <?php
     }
@@ -292,8 +302,8 @@ class Plugin {
     if ($invoice_canceled == true && $template_type == 'invoice') {
       ?>
         <tr class="invoice-status">
-          <th>Mondu Invoice status:</th>
-          <td>Cancelled</td>
+          <th><?php _e('Mondu Invoice state','mondu'); ?>:</th>
+          <td><?php _e('Cancelled','mondu'); ?></td>
         </tr>
       <?php
     }
@@ -312,8 +322,8 @@ class Plugin {
       ?>
         <div class="invoice-number">
           <p>
-            <span><strong>Mondu Invoice Paid:</strong></span>
-            <span>True</span>
+            <span><strong><?php _e('Mondu Invoice paid','mondu'); ?>:</strong></span>
+            <span><?php _e('True','mondu'); ?></span>
           </p>
         </div>
       <?php
@@ -333,8 +343,8 @@ class Plugin {
       ?>
         <div class="invoice-number">
           <p>
-            <span><strong>Mondu Invoice Status:</strong></span>
-            <span>Cancelled</span>
+            <span><strong><?php _e('Mondu Invoice state','mondu'); ?>:</strong></span>
+            <span><?php _e('Cancelled','mondu'); ?></span>
           </p>
         </div>
       <?php

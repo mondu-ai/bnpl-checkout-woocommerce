@@ -40,11 +40,11 @@ class PaymentInfo {
       ?>
         <section class="woocommerce-order-details mondu-payment">
           <p>
-            <span><strong><?php _e('Order state:', 'mondu'); ?></strong></span>
+            <span><strong><?php _e('Order state', 'mondu'); ?>:</strong></span>
             <span><?php printf($order_data['state']); ?></span>
           </p>
           <p>
-            <span><strong><?php _e('Mondu ID:', 'mondu'); ?></strong></span>
+            <span><strong><?php _e('Mondu ID', 'mondu'); ?>:</strong></span>
             <span><?php printf($order_data['uuid']); ?></span>
           </p>
           <?php
@@ -68,7 +68,7 @@ class PaymentInfo {
       ?>
         <section class="woocommerce-order-details mondu-payment">
           <p>
-            <span><strong>Corrupt Mondu Order!</strong></span>
+            <span><strong><?php _e('Corrupt Mondu order!', 'mondu'); ?></strong></span>
           </p>
         </section>
       <?php
@@ -155,15 +155,15 @@ class PaymentInfo {
           <span><?php printf($bank_account['account_holder']); ?></span>
         </p>
         <p>
-          <span><strong><?php _e('Bank:', 'mondu'); ?></strong></span>
+          <span><strong><?php _e('Bank', 'mondu'); ?>:</strong></span>
           <span><?php printf($bank_account['bank']); ?></span>
         </p>
         <p>
-          <span><strong><?php _e('IBAN:', 'mondu'); ?></strong></span>
+          <span><strong><?php _e('IBAN', 'mondu'); ?>:</strong></span>
           <span><?php printf($bank_account['iban']); ?></span>
         </p>
         <p>
-          <span><strong><?php _e('BIC:', 'mondu'); ?></strong></span>
+          <span><strong><?php _e('BIC', 'mondu'); ?>:</strong></span>
           <span><?php printf($bank_account['bic']); ?></span>
         </p>
       </section>

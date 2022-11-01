@@ -280,7 +280,7 @@ class Api {
     }
 
     if (!is_array($result) || !isset($result['response'], $result['body']) || !isset($result['response']['code'], $result['response']['message'])) {
-      throw new MonduException('Unexpected API response format');
+      throw new MonduException(__('Unexpected API response format.', 'mondu'));
     }
     if (strpos($result['response']['code'], '2') !== 0) {
       $message = $result['response']['message'];
@@ -309,12 +309,12 @@ class Api {
 
     $headers = [
       'Content-Type' => 'application/json',
-      'Api-Token'    => $this->global_settings['api_token'],
+      'Api-Token' => $this->global_settings['api_token'],
     ];
 
     $args = [
       'headers' => $headers,
-      'method'  => $method,
+      'method' => $method,
       'timeout' => 30,
     ];
 

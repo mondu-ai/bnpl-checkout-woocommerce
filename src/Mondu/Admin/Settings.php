@@ -30,7 +30,7 @@ class Settings {
 
     add_menu_page(
       __('Mondu Settings', 'mondu'),
-      __('Mondu', 'mondu'),
+      'Mondu',
       'manage_options',
       'mondu-settings-account',
       [$this, 'render_account_options'],
@@ -111,14 +111,14 @@ class Settings {
 
     if ($date == null) {
       status_header(400);
-      exit('Date is required');
+      exit(__('Date is required.'));
     }
 
     $file = $this->get_file($date);
 
     if ($file == null) {
       status_header(404);
-      exit('Log not found');
+      exit(__('Log not found.'));
     }
 
     $filename = 'mondu-' . $date . '.log';

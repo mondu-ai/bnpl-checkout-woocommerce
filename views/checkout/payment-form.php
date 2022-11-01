@@ -138,5 +138,7 @@
 
 <input id='mondu_order_id' value="<?php echo WC()->session->get('mondu_order_id'); ?>" hidden />
 <p>
-  Hinweise zur Verarbeitung Ihrer personenbezogenen Daten durch die Mondu GmbH finden Sie <a href='https://mondu.ai/de/datenschutzgrundverordnung-kaeufer' target='_blank'>hier</a>.
+  <?php
+    printf(wp_kses(__('Hinweise zur Verarbeitung Ihrer personenbezogenen Daten durch die Mondu GmbH finden Sie <a href="https://mondu.ai/de/datenschutzgrundverordnung-kaeufer" target="_blank">hier</a>.', 'mondu'), array('a' => array('href' => array(), 'target' => array()))));
+  ?>
 </p>

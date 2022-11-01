@@ -275,7 +275,7 @@ class MonduRequestWrapper {
     $mondu_invoice_id = get_post_meta($order->get_id(), PLUGIN::INVOICE_ID_KEY, true);
 
     if (!$mondu_invoice_id) {
-      throw new ResponseException('Mondu: Can\'t create a credit note without an invoice');
+      throw new ResponseException(__('Mondu: Can not create a credit note without an invoice', 'mondu'));
     }
 
     $refund_total = $refund->get_total();
