@@ -9,6 +9,11 @@ RUN apt -y install unzip
 # To avoid problems with another plugins
 RUN docker-php-ext-install mysqli pdo pdo_mysql
 
+# Install WP CLI
+RUN wget https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar -O /tmp/wp-cli.phar \
+  && chmod +x /tmp/wp-cli.phar \
+  && mv /tmp/wp-cli.phar /usr/local/bin/wp
+
 RUN rm -rf /usr/src/wordpress/wp-content/plugins/woocommerce
 
 RUN wget https://downloads.wordpress.org/plugin/woocommerce.${WOOCOMMERCE_VERSION}.zip -O /tmp/woocommerce.zip \

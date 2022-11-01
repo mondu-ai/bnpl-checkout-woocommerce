@@ -280,7 +280,7 @@ class MonduRequestWrapper {
 
     $refund_total = $refund->get_total();
     $credit_note = [
-      'gross_amount_cents' => abs(round ((float) $refund_total * 100)),
+      'gross_amount_cents' => abs(round((float) $refund_total * 100)),
       'external_reference_id' => (string) $refund->get_id()
     ];
 
