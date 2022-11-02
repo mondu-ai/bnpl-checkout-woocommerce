@@ -47,6 +47,7 @@ class OrderData {
       'payment_method' => $payment_method,
       'currency' => get_woocommerce_currency(),
       'external_reference_id' => '0', // We will update this id when woocommerce order is created
+      'gross_amount_cents' => round((float) $cart_totals['total'] * 100),
       'buyer' => [
         'first_name' => isset($customer['first_name']) && Helper::not_null_or_empty($customer['first_name']) ? $customer['first_name'] : null,
         'last_name' => isset($customer['last_name']) && Helper::not_null_or_empty($customer['last_name']) ? $customer['last_name'] : null,
@@ -162,6 +163,7 @@ class OrderData {
     }
 
     $amount = [
+      'gross_amount_cents' => round((float) $order->get_total() * 100),
       'net_price_cents' => round($net_price_cents),
       'tax_cents' => round($tax_cents),
     ];
