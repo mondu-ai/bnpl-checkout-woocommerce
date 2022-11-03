@@ -52,7 +52,7 @@ msgstr "Sandbox"
 msgid "Production"
 msgstr "Productie"
 
-#: src/Mondu/Admin/Order.php:37
+#: src/Mondu/Admin/Order.php:36
 msgid "Mondu Order Information"
 msgstr "Mondu Order Informatie"
 
@@ -131,15 +131,18 @@ msgid "Mondu: Can not create a credit note without an invoice"
 msgstr "Mondu: Kan geen creditnota aanmaken zonder factuur"
 
 #: src/Mondu/Mondu/Presenters/PaymentInfo.php:43
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:97
 #: src/Mondu/Plugin.php:267
 msgid "Order state"
 msgstr "Order status"
 
 #: src/Mondu/Mondu/Presenters/PaymentInfo.php:47
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:101
 msgid "Mondu ID"
 msgstr "Mondu ID"
 
 #: src/Mondu/Mondu/Presenters/PaymentInfo.php:57
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:109
 msgid "Create Invoice"
 msgstr "Factuur aanmaken"
 
@@ -147,52 +150,52 @@ msgstr "Factuur aanmaken"
 msgid "Corrupt Mondu order!"
 msgstr "Corrupte Mondu order!"
 
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:102
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:154
 msgid "Account holder"
 msgstr "Rekeninghouder"
 
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:106
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:158
 msgid "Bank"
 msgstr "Bank"
 
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:110
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:162
 msgid "IBAN"
 msgstr "IBAN"
 
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:114
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:166
 msgid "BIC"
 msgstr "BIC"
 
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:130
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:182
 msgid "Invoice state"
 msgstr "Factuurstatus"
 
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:134
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:186
 msgid "Invoice number"
 msgstr "Factuurnummer"
 
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:138
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:178
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:190
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:230
 msgid "Total"
 msgstr "Totaal"
 
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:142
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:194
 msgid "Paid out"
 msgstr "Uitbetaald"
 
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:143
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:195
 msgid "Yes"
 msgstr "Ja"
 
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:143
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:195
 msgid "No"
 msgstr "Nee"
 
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:174
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:226
 msgid "Credit Note number"
 msgstr "Creditnota Nummer"
 
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:157
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:209
 msgid "Cancel Invoice"
 msgstr "Factuur annuleren"
 
@@ -270,4 +273,4 @@ msgstr "Log datum"
 
 #: views/checkout/payment-form.php:142
 msgid "Hinweise zur Verarbeitung Ihrer personenbezogenen Daten durch die Mondu GmbH finden Sie <a href=\"https://mondu.ai/de/datenschutzgrundverordnung-kaeufer\" target=\"_blank\">hier</a>."
-msgstr ""
+msgstr "Informatie over de verwerking van uw persoonsgegevens door Mondu GmbH vindt u <a href=\"https://mondu.ai/de/datenschutzgrundverordnung-kaeufer\" target=\"_blank\">hier</a>."

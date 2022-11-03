@@ -94,11 +94,11 @@ class PaymentInfo {
       ?>
         <section class="woocommerce-order-details mondu-payment">
           <p>
-            <span><strong><?php _e('Order state:', 'mondu'); ?></strong></span>
+            <span><strong><?php _e('Order state', 'mondu'); ?>:</strong></span>
             <span><?php printf($order_data['state']); ?></span>
           </p>
           <p>
-            <span><strong><?php _e('Mondu ID:', 'mondu'); ?></strong></span>
+            <span><strong><?php _e('Mondu ID', 'mondu'); ?>:</strong></span>
             <span><?php printf($order_data['uuid']); ?></span>
           </p>
           <?php
@@ -106,7 +106,7 @@ class PaymentInfo {
               ?>
                 <input type='hidden' name='mondu_order_id' value='<?php echo $this->order->get_id() ?>' />
                 <button <?php $order_data['state'] === 'canceled' ? printf('disabled') : ''?> type="submit" class="button grant_access">
-                  <?php _e('Invoice order', 'mondu'); ?>
+                  <?php _e('Create Invoice', 'mondu'); ?>
                 </button>
               <?php
             }

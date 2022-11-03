@@ -52,7 +52,7 @@ msgstr "Sandbox"
 msgid "Production"
 msgstr "Production"
 
-#: src/Mondu/Admin/Order.php:37
+#: src/Mondu/Admin/Order.php:36
 msgid "Mondu Order Information"
 msgstr "Mondu Bestellinformationen"
 
@@ -131,15 +131,18 @@ msgid "Mondu: Can not create a credit note without an invoice"
 msgstr "Mondu: Kann keine Gutschrift ohne Rechnung erstellen"
 
 #: src/Mondu/Mondu/Presenters/PaymentInfo.php:43
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:97
 #: src/Mondu/Plugin.php:267
 msgid "Order state"
 msgstr "Bestellstatus"
 
 #: src/Mondu/Mondu/Presenters/PaymentInfo.php:47
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:101
 msgid "Mondu ID"
 msgstr "Mondu-ID"
 
 #: src/Mondu/Mondu/Presenters/PaymentInfo.php:57
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:109
 msgid "Create Invoice"
 msgstr "Rechnung erstellen"
 
@@ -147,52 +150,52 @@ msgstr "Rechnung erstellen"
 msgid "Corrupt Mondu order!"
 msgstr "Fehlerhafte Mondu Bestellung!"
 
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:102
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:154
 msgid "Account holder"
 msgstr "Kontoinhaber"
 
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:106
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:158
 msgid "Bank"
 msgstr "Bankinstitut"
 
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:110
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:162
 msgid "IBAN"
 msgstr "IBAN"
 
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:114
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:166
 msgid "BIC"
 msgstr "BIC"
 
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:130
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:182
 msgid "Invoice state"
 msgstr "Rechnungsstatus"
 
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:134
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:186
 msgid "Invoice number"
 msgstr "Rechnungsnummer"
 
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:138
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:178
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:190
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:230
 msgid "Total"
 msgstr "Gesamt"
 
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:142
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:194
 msgid "Paid out"
 msgstr "Ausgezahlt"
 
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:143
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:195
 msgid "Yes"
 msgstr "Ja"
 
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:143
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:195
 msgid "No"
 msgstr "Nein"
 
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:174
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:226
 msgid "Credit Note number"
 msgstr "Gutschriftsnummer"
 
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:157
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:209
 msgid "Cancel Invoice"
 msgstr "Rechnung stornieren"
 
