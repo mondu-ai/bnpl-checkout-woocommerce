@@ -34,6 +34,8 @@ class Plugin {
     'installment' => 'mondu_installment',
   ];
 
+  const AVAILABLE_COUNTRIES = ['DE', 'AT', 'NL'];
+
   /**
    * @var array|bool|mixed|void
    */
@@ -169,9 +171,10 @@ class Plugin {
     $mondu_payments = $this->mondu_request_wrapper->get_merchant_payment_methods();
 
     foreach (Plugin::PAYMENT_METHODS as $payment_method => $woo_payment_method) {
+      $customer = $this->get_wc_customer();
       if (
-        $this->is_outside_germany() ||
-        !in_array($payment_method, $mondu_payments)
+        !$this->is_country_available($customer->get_billing_country()) &&
+        in_array($payment_method, $mondu_payments)
       ) {
         if (isset($available_gateways[Plugin::PAYMENT_METHODS[$payment_method]])) {
           unset($available_gateways[Plugin::PAYMENT_METHODS[$payment_method]]);
@@ -230,7 +233,7 @@ class Plugin {
       $errors->add('validation', __('Company is a required field for Mondu payments.', 'mondu'));
     }
 
-    if ($fields['billing_country'] !== 'DE' && $fields['billing_country'] !== 'AT') {
+    if (!$this->is_country_available($fields['billing_country'])) {
       $errors->add('validation', __('Billing country not available for Mondu Payments.', 'mondu'));
     }
   }
@@ -370,11 +373,15 @@ class Plugin {
   /**
    * @return bool
    */
-  private function is_outside_germany() {
+  private function is_country_available(string $country) {
+    return in_array($country, self::AVAILABLE_COUNTRIES);
+  }
+
+  /**
+   * @return WC_Customer
+   */
+  private function get_wc_customer() {
     $customer = isset(WC()->customer) ? WC()->customer : new WC_Customer(get_current_user_id());
-    if ($customer->get_billing_country() == 'DE' || $customer->get_billing_country() == 'AT') {
-      return false;
-    }
-    return true;
+    return $customer;
   }
 }
