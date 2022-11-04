@@ -9,10 +9,10 @@ use Exception;
 use WC_Order;
 
 class PaymentInfo {
-  private $order;
-  private $mondu_request_wrapper;
-  private $order_data;
-  private $invoices_data;
+  private WC_Order $order;
+  private MonduRequestWrapper $mondu_request_wrapper;
+  private array $order_data;
+  private array $invoices_data;
 
   /**
    * @param $order_id
@@ -69,58 +69,6 @@ class PaymentInfo {
         <section class="woocommerce-order-details mondu-payment">
           <p>
             <span><strong><?php _e('Corrupt Mondu order!', 'mondu'); ?></strong></span>
-          </p>
-        </section>
-      <?php
-    }
-
-    return ob_get_clean();
-  }
-
-  /**
-   * @return string
-   * @throws Exception
-   */
-  public function get_mondu_section_html() {
-    $invoice_data = $this->get_invoice();
-    if (!in_array($this->order->get_payment_method(), Plugin::PAYMENT_METHODS)) {
-      return null;
-    }
-
-    ob_start();
-
-    if ($this->order_data && isset($this->order_data['bank_account'])) {
-      $order_data = $this->order_data;
-      ?>
-        <section class="woocommerce-order-details mondu-payment">
-          <p>
-            <span><strong><?php _e('Order state', 'mondu'); ?>:</strong></span>
-            <span><?php printf($order_data['state']); ?></span>
-          </p>
-          <p>
-            <span><strong><?php _e('Mondu ID', 'mondu'); ?>:</strong></span>
-            <span><?php printf($order_data['uuid']); ?></span>
-          </p>
-          <?php
-            if (in_array($this->order_data['state'], ['confirmed', 'partially_shipped', 'canceled'])) {
-              ?>
-                <input type='hidden' name='mondu_order_id' value='<?php echo $this->order->get_id() ?>' />
-                <button <?php $order_data['state'] === 'canceled' ? printf('disabled') : ''?> type="submit" class="button grant_access">
-                  <?php _e('Create Invoice', 'mondu'); ?>
-                </button>
-              <?php
-            }
-          ?>
-        </section>
-        <hr>
-        <?php printf($this->get_mondu_payment_html()) ?>
-        <?php printf($this->get_mondu_invoice_html($invoice_data, $order_data['uuid'])) ?>
-      <?php
-    } else {
-      ?>
-        <section class="woocommerce-order-details mondu-payment">
-          <p>
-            <span><strong>Corrupt Mondu Order!</strong></span>
           </p>
         </section>
       <?php
