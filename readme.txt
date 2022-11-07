@@ -3,12 +3,23 @@ Contributors: mondu-ai, arthurmmoreira, tikohov20
 Tags: mondu, woocommerce, payment, bnpl, b2b
 Requires at least: 4.6
 Tested up to: 5.9.3
-Stable tag: 1.0.1
+Stable tag: 1.0.3
 Requires PHP: 7.4.0
 
 Increase your revenue with Mondu’s solution, without the operational burden.
 
 == Changelog ==
+
+=== 1.0.3 ===
+
+* Add gross amount cents to Order's API
+* Add DE and NL translations
+
+
+=== 1.0.2 ===
+
+* Bugfixes and improvements
+* Validates company name and country on Mondu payments
 
 === 1.0.1 ===
 
