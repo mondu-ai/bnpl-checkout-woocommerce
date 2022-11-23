@@ -102,7 +102,7 @@ class Plugin {
       $webhooks->register_routes();
     });
 
-    add_action('woocommerce_checkout_order_processed', function($order_id) {
+    add_action('woocommerce_payment_successful_result', function($order_id) {
       $mondu_order_id = WC()->session->get('mondu_order_id');
 
       WC()->session->set('woocommerce_order_id', $order_id);
