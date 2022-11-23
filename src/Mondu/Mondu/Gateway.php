@@ -38,18 +38,47 @@ class Gateway extends WC_Payment_Gateway {
     $this->init_form_fields();
     $this->init_settings();
 
+    // Define user set variables
+		$this->title        = $this->get_option( 'title' );
+		$this->description  = $this->get_option( 'description' );
+		$this->instructions = $this->get_option( 'instructions', $this->description );
+
     $this->mondu_request_wrapper = new MonduRequestWrapper();
   }
 
+  /**
+   * Initialise Gateway Settings Form Fields
+   */
   public function init_form_fields() {
-    $this->form_fields = [
-      'enabled' => [
+    $this->form_fields = array(
+      'enabled' => array(
         'title' => __('Enable/Disable', 'woocommerce'),
         'type' => 'checkbox',
         'label' => __('Enable this payment method', 'mondu'),
         'default' => 'no',
-      ],
-    ];
+      ),
+      'title' => array(
+        'title'       => __( 'Title', 'woocommerce' ),
+        'type'        => 'text',
+        'description' => __( 'This controls the title which the user sees during checkout.', 'woocommerce' ),
+        'default'     => $this->title,
+        'desc_tip'    => true,
+        ),
+      'description' => array(
+        'title'       => __( 'Description', 'woocommerce' ),
+        'type'        => 'textarea',
+        'description' => __( 'Payment method description that the customer will see on your checkout.', 'woocommerce' ),
+        'default'     => $this->method_description,
+        'desc_tip'    => true,
+      ),
+      'instructions' => array(
+        'title'       => __( 'Instructions', 'woocommerce' ),
+        'type'        => 'textarea',
+        'description' => __( 'Instructions that will be added to the thank you page and emails.', 'woocommerce' ),
+        'default'     => '',
+        'desc_tip'    => true,
+      ),
+    );
 
     add_action('woocommerce_update_options_payment_gateways_' . $this->id, [$this, 'process_admin_options']);
   }
@@ -72,6 +101,11 @@ class Gateway extends WC_Payment_Gateway {
    * @throws ResponseException
    */
   public function payment_fields() {
+    $description = $this->get_description();
+    if ( $description ) {
+            echo wpautop( wptexturize( $description ) ); // @codingStandardsIgnoreLine.
+    }
+
     include MONDU_VIEW_PATH . '/checkout/payment-form.php';
   }
 
