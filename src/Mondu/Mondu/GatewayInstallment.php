@@ -29,7 +29,7 @@ class GatewayInstallment extends WC_Payment_Gateway {
     $this->method_title = __('Mondu Ratenzahlung', 'mondu');
     $this->method_description = __('Ratenzahlung - Bequem in Raten per Bankeinzug zahlen', 'mondu');
     $this->has_fields = true;
-    $this->icon = apply_filters( 'woocommerce_gateway_icon',  MONDU_PUBLIC_PATH . '/views/mondu.svg');
+    $this->icon = apply_filters( 'woocommerce_gateway_icon',  MONDU_PUBLIC_PATH . '/views/mondu.svg', $this->id);
     $this->init_form_fields();
     $this->init_settings();
 
