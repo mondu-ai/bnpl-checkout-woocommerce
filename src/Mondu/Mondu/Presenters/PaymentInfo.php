@@ -186,7 +186,15 @@ class PaymentInfo {
 
   private function get_invoices() {
     try {
-      return $this->mondu_request_wrapper->get_invoices($this->order->get_id());
+      $mondu_uuid = $this->order->get_id();
+      $trans_key  = $mondu_uuid . 'invoices';
+      $info = get_transient($trans_key);
+      if (false === $info) {
+        $info = $this->mondu_request_wrapper->get_invoices($this->order->get_id());
+        set_transient($trans_key, $info, 1 * 86400);
+      }
+
+      return $info;
     } catch (ResponseException $e) {
       return false;
     }
@@ -194,9 +202,21 @@ class PaymentInfo {
 
   private function get_order() {
     try {
-      return $this->mondu_request_wrapper->get_order($this->order->get_id());
+      $mondu_uuid = $this->order->get_id();
+      $trans_key  = $mondu_uuid . 'order';
+      $info = get_transient($trans_key);
+      if (false === $info) {
+        $info = $this->mondu_request_wrapper->get_order($mondu_uuid);
+        set_transient($trans_key, $info, 1 * 86400);
+      }
+
+      return $info;
     } catch (ResponseException $e) {
       return false;
     }
+  }
+
+  public function get_order_data() {
+    return $this->order_data;
   }
 }

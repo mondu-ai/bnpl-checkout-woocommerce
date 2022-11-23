@@ -252,8 +252,17 @@ class Plugin {
    */
   public function wcpdf_add_mondu_payment_info_to_pdf($template_type, $order) {
     if ($template_type == 'invoice') {
+      echo '<div style="font-weight: bold;">';
+      _e('Bitte überweisen Sie Ihre Rechnung ausschließlich an folgendes Bankkonto:', 'mondu');
+      echo '</div><br>';
       $payment_info = new PaymentInfo($order->get_id());
-      return $payment_info->get_mondu_payment_html();
+      echo $payment_info->get_mondu_payment_html();
+      if (in_array($order->get_payment_method(), array('mondu_invoice', 'mondu_direct_debit'))) {
+        $order_data = $payment_info->get_order_data();
+        echo '<br><div style="font-weight: bold;">';
+        _e('Ihr Zahlungsziel beträgt ' . $order_data['authorized_net_term'] . ' Tage ab Lieferdatum.', 'mondu');
+        echo '</div>';
+      }
     }
   }
 
