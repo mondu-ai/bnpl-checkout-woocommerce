@@ -2,8 +2,6 @@
 
 namespace Mondu\Mondu\Models;
 
-use Mondu\Mondu\Gateway;
-
 class SignatureVerifier {
   /** @var string */
   private $secret;
@@ -39,7 +37,7 @@ class SignatureVerifier {
    * @return bool
    */
   public function create_hmac($payload) {
-    return hash_hmac('sha256', json_encode ($payload), $this->secret);
+    return hash_hmac('sha256', json_encode($payload), $this->secret);
   }
 
   /**

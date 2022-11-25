@@ -204,6 +204,13 @@ class Api {
   }
 
   /**
+   * @return null
+   */
+  public function log_plugin_event(array $params) {
+    $this->post('/plugin/events', $params);
+  }
+
+  /**
    * @param $path
    * @param array|string|null $body
    *
@@ -310,6 +317,8 @@ class Api {
     $headers = [
       'Content-Type' => 'application/json',
       'Api-Token' => $this->global_settings['api_token'],
+      'X-Plugin-Name' => 'WOOCOMMERCE',
+      'X-Plugin-Version' => MONDU_PLUGIN_VERSION,
     ];
 
     $args = [

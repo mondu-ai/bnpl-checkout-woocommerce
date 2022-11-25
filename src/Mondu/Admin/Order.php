@@ -64,7 +64,7 @@ class Order {
     try {
       $this->mondu_request_wrapper->cancel_invoice($mondu_order_id, $invoice_id);
       update_post_meta($order_id, Plugin::INVOICE_CANCELED_KEY, true);
-    } catch (ResponseException|MonduException $e) {
+    } catch (ResponseException | MonduException $e) {
       wp_send_json([
         'error' => true,
         'message' => $e->getMessage()
@@ -82,7 +82,7 @@ class Order {
 
     try {
       $this->mondu_request_wrapper->ship_order($order_id);
-    } catch (ResponseException|MonduException $e) {
+    } catch (ResponseException | MonduException $e) {
       wp_send_json([
         'error' => true,
         'message' => $e->getMessage()
