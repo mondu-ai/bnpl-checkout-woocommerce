@@ -65,31 +65,31 @@ msgstr "Mondu Einstellungen"
 msgid "Missing Credentials"
 msgstr "Fehlende Credentials"
 
-#: src/Mondu/Mondu/Api.php:283
+#: src/Mondu/Mondu/Api.php:290
 msgid "Unexpected API response format."
 msgstr "Unerwartetes API-Antwortformat."
 
-#: src/Mondu/Mondu/Controllers/WebhooksController.php:39
+#: src/Mondu/Mondu/Controllers/WebhooksController.php:41
 msgid "Signature mismatch."
 msgstr "Signatur stimmt nicht überein."
 
-#: src/Mondu/Mondu/Controllers/WebhooksController.php:60
+#: src/Mondu/Mondu/Controllers/WebhooksController.php:62
 msgid "Unregistered topic."
 msgstr "Unregistriertes Thema."
 
-#: src/Mondu/Mondu/Controllers/WebhooksController.php:79
-#: src/Mondu/Mondu/Controllers/WebhooksController.php:100
-#: src/Mondu/Mondu/Controllers/WebhooksController.php:121
-#: src/Mondu/Mondu/Controllers/WebhooksController.php:144
-#: src/Mondu/Mondu/Controllers/WebhooksController.php:162
+#: src/Mondu/Mondu/Controllers/WebhooksController.php:82
+#: src/Mondu/Mondu/Controllers/WebhooksController.php:103
+#: src/Mondu/Mondu/Controllers/WebhooksController.php:124
+#: src/Mondu/Mondu/Controllers/WebhooksController.php:147
+#: src/Mondu/Mondu/Controllers/WebhooksController.php:165
 msgid "Required params missing."
 msgstr "Erforderliche Parameter fehlen."
 
-#: src/Mondu/Mondu/Controllers/WebhooksController.php:85
-#: src/Mondu/Mondu/Controllers/WebhooksController.php:106
-#: src/Mondu/Mondu/Controllers/WebhooksController.php:127
-#: src/Mondu/Mondu/Controllers/WebhooksController.php:150
-#: src/Mondu/Mondu/Controllers/WebhooksController.php:169
+#: src/Mondu/Mondu/Controllers/WebhooksController.php:88
+#: src/Mondu/Mondu/Controllers/WebhooksController.php:109
+#: src/Mondu/Mondu/Controllers/WebhooksController.php:130
+#: src/Mondu/Mondu/Controllers/WebhooksController.php:153
+#: src/Mondu/Mondu/Controllers/WebhooksController.php:172
 msgid "Not Found"
 msgstr "Nicht gefunden"
 
@@ -126,7 +126,7 @@ msgstr "Ratenzahlung - Bequem in Raten per Bankeinzug zahlen"
 msgid "Mondu Ratenzahlung"
 msgstr "Mondu Ratenzahlung"
 
-#: src/Mondu/Mondu/MonduRequestWrapper.php:278
+#: src/Mondu/Mondu/MonduRequestWrapper.php:272
 msgid "Mondu: Can not create a credit note without an invoice"
 msgstr "Mondu: Kann keine Gutschrift ohne Rechnung erstellen"
 
@@ -271,3 +271,7 @@ msgstr "Log date"
 #: views/checkout/payment-form.php:142
 msgid "Hinweise zur Verarbeitung Ihrer personenbezogenen Daten durch die Mondu GmbH finden Sie <a href=\"https://mondu.ai/de/datenschutzgrundverordnung-kaeufer\" target=\"_blank\">hier</a>."
 msgstr "Hinweise zur Verarbeitung Ihrer personenbezogenen Daten durch die Mondu GmbH finden Sie <a href=\"https://mondu.ai/de/datenschutzgrundverordnung-kaeufer\" target=\"_blank\">hier</a>."
+
+#: src/Mondu/Mondu/Controllers/WebhooksController.php:70
+msgid "Something happened on our end."
+msgstr "Bei uns ist etwas passiert."

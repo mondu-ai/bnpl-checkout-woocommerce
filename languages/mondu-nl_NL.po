@@ -65,31 +65,31 @@ msgstr "Mondu-instellingen"
 msgid "Missing Credentials"
 msgstr "Ontbrekende Credentials"
 
-#: src/Mondu/Mondu/Api.php:283
+#: src/Mondu/Mondu/Api.php:290
 msgid "Unexpected API response format."
 msgstr "Onverwachte API respons format."
 
-#: src/Mondu/Mondu/Controllers/WebhooksController.php:39
+#: src/Mondu/Mondu/Controllers/WebhooksController.php:41
 msgid "Signature mismatch."
 msgstr "Signature mismatch."
 
-#: src/Mondu/Mondu/Controllers/WebhooksController.php:60
+#: src/Mondu/Mondu/Controllers/WebhooksController.php:62
 msgid "Unregistered topic."
 msgstr "Ongeregistreerd onderwerp."
 
-#: src/Mondu/Mondu/Controllers/WebhooksController.php:79
-#: src/Mondu/Mondu/Controllers/WebhooksController.php:100
-#: src/Mondu/Mondu/Controllers/WebhooksController.php:121
-#: src/Mondu/Mondu/Controllers/WebhooksController.php:144
-#: src/Mondu/Mondu/Controllers/WebhooksController.php:162
+#: src/Mondu/Mondu/Controllers/WebhooksController.php:82
+#: src/Mondu/Mondu/Controllers/WebhooksController.php:103
+#: src/Mondu/Mondu/Controllers/WebhooksController.php:124
+#: src/Mondu/Mondu/Controllers/WebhooksController.php:147
+#: src/Mondu/Mondu/Controllers/WebhooksController.php:165
 msgid "Required params missing."
 msgstr "Vereiste params ontbreken."
 
-#: src/Mondu/Mondu/Controllers/WebhooksController.php:85
-#: src/Mondu/Mondu/Controllers/WebhooksController.php:106
-#: src/Mondu/Mondu/Controllers/WebhooksController.php:127
-#: src/Mondu/Mondu/Controllers/WebhooksController.php:150
-#: src/Mondu/Mondu/Controllers/WebhooksController.php:169
+#: src/Mondu/Mondu/Controllers/WebhooksController.php:88
+#: src/Mondu/Mondu/Controllers/WebhooksController.php:109
+#: src/Mondu/Mondu/Controllers/WebhooksController.php:130
+#: src/Mondu/Mondu/Controllers/WebhooksController.php:153
+#: src/Mondu/Mondu/Controllers/WebhooksController.php:172
 msgid "Not Found"
 msgstr "Niet gevonden"
 
@@ -126,7 +126,7 @@ msgstr "Gespreid betalen, betaal gemakkelijk in termijnen via automatische incas
 msgid "Mondu Ratenzahlung"
 msgstr "Mondu gespreid betalenn"
 
-#: src/Mondu/Mondu/MonduRequestWrapper.php:278
+#: src/Mondu/Mondu/MonduRequestWrapper.php:272
 msgid "Mondu: Can not create a credit note without an invoice"
 msgstr "Mondu: Kan geen creditnota aanmaken zonder factuur"
 
@@ -270,4 +270,8 @@ msgstr "Log datum"
 
 #: views/checkout/payment-form.php:142
 msgid "Hinweise zur Verarbeitung Ihrer personenbezogenen Daten durch die Mondu GmbH finden Sie <a href=\"https://mondu.ai/de/datenschutzgrundverordnung-kaeufer\" target=\"_blank\">hier</a>."
-msgstr "Informatie over de verwerking van uw persoonsgegevens door Mondu GmbH vindt u <a href=\"https://mondu.ai/de/datenschutzgrundverordnung-kaeufer\" target=\"_blank\">hier</a>."
+msgstr "Informatie over de verwerking van uw persoonsgegevens door Mondu GmbH vindt u <a href=\"https://mondu.ai/nl/datenschutzgrundverordnung-kaeufer\" target=\"_blank\">hier</a>."
+
+#: src/Mondu/Mondu/Controllers/WebhooksController.php:70
+msgid "Something happened on our end."
+msgstr "Er is iets gebeurd aan onze kant."
