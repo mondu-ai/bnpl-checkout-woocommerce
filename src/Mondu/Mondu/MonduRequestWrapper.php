@@ -67,7 +67,7 @@ class MonduRequestWrapper {
     }
 
     $mondu_order_id = get_post_meta($order_id, Plugin::ORDER_ID_KEY, true);
-    $params = ['external_reference_id' => (string) $order_id];
+    $params = ['external_reference_id' => $order->get_order_number()];
     $response = $this->wrap_with_mondu_log_event('update_external_info', array($mondu_order_id, $params));
     return $response['order'];
   }

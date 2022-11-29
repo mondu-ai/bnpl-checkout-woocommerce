@@ -127,7 +127,7 @@ class OrderData {
   public static function order_data_from_wc_order(WC_Order $order) {
     $order_data = [
       'currency' => get_woocommerce_currency(),
-      'external_reference_id' => (string) $order->get_id(),
+      'external_reference_id' => $order->get_order_number(),
       'lines' => [],
       'amount' => [],
     ];
@@ -181,7 +181,7 @@ class OrderData {
    */
   public static function invoice_data_from_wc_order(WC_Order $order) {
     $invoice_data = [
-      'external_reference_id' => (string) $order->get_id(),
+      'external_reference_id' => $order->get_order_number(),
       'invoice_url' => Helper::create_invoice_url($order->get_id()),
       'gross_amount_cents' => round((float) $order->get_total() * 100),
       'tax_cents' => round((float) ($order->get_total_tax() - $order->get_shipping_tax()) * 100), # Considering that is not possible to save taxes that does not belongs to products, removes shipping taxes here
