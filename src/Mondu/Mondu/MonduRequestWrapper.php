@@ -335,7 +335,7 @@ class MonduRequestWrapper {
     $params = [
       'plugin' => 'WOOCOMMERCE',
       'version' => MONDU_PLUGIN_VERSION,
-      'language_version' => phpversion(),
+      'language_version' => 'PHP ' . phpversion(),
       'shop_version' => $wp_version,
       'origin_event' => strtoupper($event),
       'response_body' => $body,
