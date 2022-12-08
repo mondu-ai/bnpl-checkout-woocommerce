@@ -60,6 +60,8 @@
         monduUnblock();
         checkoutCallback();
         result = '';
+        //because the witget does .onClose().then ...
+        return new Promise((resolve) => resolve('ok'))
       },
       onSuccess: () => {
         console.log('Success');
@@ -74,10 +76,6 @@
 
   function checkoutCallback() {
     if (result == 'success') {
-      jQuery('form.woocommerce-checkout').off('checkout_place_order');
-      if (jQuery('#confirm-order-flag').length !== 0) {
-        jQuery('#confirm-order-flag').val('');
-      }
       jQuery('#place_order').parents('form').submit();
     } else {
       jQuery(document.body).trigger('wc_update_cart');
@@ -88,43 +86,15 @@
 
   jQuery(document).ready(function () {
     jQuery(document.body).on('checkout_error', function () {
-      let error_count = jQuery('.woocommerce-error li').length;
-
-      jQuery('.woocommerce-error li').each(function () {
-        let error_text = jQuery(this).text();
-        jQuery(this).addClass('error');
-        if (error_text.includes('error_confirmation')) {
-          jQuery(this).css('display', 'none');
-          if (error_count === 1) {
-            jQuery(this).parent().css('display', 'none');
-            if (isGatewayMondu(jQuery('input[name=payment_method]:checked').val())) {
-              jQuery('html, body').stop();
-            }
-          }
-        }
-      });
-
-      if (error_count === 1 || error_count === 0) {
-        let result = true;
-        if (isGatewayMondu(jQuery('input[name=payment_method]:checked').val())) {
-          monduBlock();
-          result = payWithMondu();
-          jQuery('html, body').stop();
-        }
-
-        if (result === true) monduUnblock();
-      }
+      isGatewayMondu(jQuery('input[name=payment_method]:checked').val()) && (result = 'error');
     });
-
-    jQuery('form.woocommerce-checkout').on('checkout_place_order', function () {
-      if (isGatewayMondu(jQuery('input[name=payment_method]:checked').val())) {
-        if (jQuery('#confirm-order-flag').length === 0) {
-          jQuery('form.woocommerce-checkout').append('<input type="hidden" id="confirm-order-flag" name="confirm-order-flag" value="1">');
-        }
-      } else if (jQuery('#confirm-order-flag').length === 1) {
-        jQuery('#confirm-order-flag').val(0);
+    jQuery('form.woocommerce-checkout').on('checkout_place_order', function (e) {
+      if (result !== 'success' && isGatewayMondu(jQuery('input[name=payment_method]:checked').val())) {
+        monduBlock();
+        payWithMondu();
+        // woocommerce stops checkout process if checkout_place_order returns false
+        return false;
       }
-
       return true;
     });
   });

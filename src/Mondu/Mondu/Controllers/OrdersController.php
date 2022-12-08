@@ -27,7 +27,6 @@ class OrdersController extends WP_REST_Controller {
   public function create(WP_REST_Request $request) {
     try {
       $this->mondu_request_wrapper->create_order();
-
       return array(
         'token' => WC()->session->get('mondu_order_id'),
         'error' => 0

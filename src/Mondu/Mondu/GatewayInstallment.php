@@ -85,7 +85,10 @@ class GatewayInstallment extends WC_Payment_Gateway {
     update_post_meta($order_id, Plugin::ORDER_DATA_KEY, $order_data);
 
     $order = $this->mondu_request_wrapper->process_payment($order_id);
-
+    if(!$order) {
+      wc_add_notice( __('Error placing an order', 'mondu'), 'error' );
+      return;
+    }
     return array(
       'result' => 'success',
       'redirect' => $this->get_return_url($order)

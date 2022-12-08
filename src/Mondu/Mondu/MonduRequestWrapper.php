@@ -191,6 +191,10 @@ class MonduRequestWrapper {
   public function process_payment($order_id) {
     $order = new WC_Order($order_id);
 
+    if(!$this->confirm_order_status($order_id)) {
+      WC()->session->set('mondu_order_id', null);
+      return;
+    }
     // Update Mondu order's external reference id
     $this->update_external_info($order_id);
 
@@ -205,6 +209,15 @@ class MonduRequestWrapper {
     WC()->session->set('woocommerce_order_id', null);
 
     return $order;
+  }
+
+  public function confirm_order_status($order_id) {
+    $order = $this->get_order($order_id);
+
+    if(!$order) return false;
+    if(!in_array($order['state'], ['confirmed', 'pending'])) return false;
+
+    return true;
   }
 
   /**
