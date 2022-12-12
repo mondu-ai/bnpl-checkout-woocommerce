@@ -239,7 +239,7 @@ class Plugin {
   }
 
   public function validation_error_to_open_plugin() {
-    if ($_POST['confirm-order-flag'] === '1') {
+    if ($_POST['mondu-confirm-order-flag'] === '1') {
       wc_add_notice('error_confirmation', 'error');
     }
   }
