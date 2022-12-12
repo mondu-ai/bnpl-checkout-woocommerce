@@ -127,14 +127,13 @@
     var checkout_form = jQuery('form.woocommerce-checkout');
 
     checkout_form.on('checkout_place_order', function (e) {
-      if (isMondu()) {
-        if (jQuery('#mondu-confirm-order-flag').length == 0) {
-          checkout_form.append('<input type="hidden" id="mondu-confirm-order-flag" name="mondu-confirm-order-flag" value="1">');
-        } else if (result !=='success') {
-          jQuery('#mondu-confirm-order-flag').val('1');
-        }
+      if(!isMondu()) return true;
+
+      if (jQuery('#mondu-confirm-order-flag').length == 0) {
+        checkout_form.append('<input type="hidden" id="mondu-confirm-order-flag" name="mondu-confirm-order-flag" value="1">');
+      } else if (result !=='success') {
+        jQuery('#mondu-confirm-order-flag').val('1');
       }
-      return true;
     });
   });
 </script>
