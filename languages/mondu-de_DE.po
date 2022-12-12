@@ -126,7 +126,7 @@ msgstr "Ratenzahlung - Bequem in Raten per Bankeinzug zahlen"
 msgid "Mondu Ratenzahlung"
 msgstr "Mondu Ratenzahlung"
 
-#: src/Mondu/Mondu/MonduRequestWrapper.php:272
+#: src/Mondu/Mondu/MonduRequestWrapper.php:286
 msgid "Mondu: Can not create a credit note without an invoice"
 msgstr "Mondu: Kann keine Gutschrift ohne Rechnung erstellen"
 
@@ -268,10 +268,16 @@ msgstr "Protokolle herunterladen"
 msgid "Log date"
 msgstr "Log date"
 
-#: views/checkout/payment-form.php:142
+#: views/checkout/payment-form.php:149
 msgid "Hinweise zur Verarbeitung Ihrer personenbezogenen Daten durch die Mondu GmbH finden Sie <a href=\"https://mondu.ai/de/datenschutzgrundverordnung-kaeufer\" target=\"_blank\">hier</a>."
 msgstr "Hinweise zur Verarbeitung Ihrer personenbezogenen Daten durch die Mondu GmbH finden Sie <a href=\"https://mondu.ai/de/datenschutzgrundverordnung-kaeufer\" target=\"_blank\">hier</a>."
 
 #: src/Mondu/Mondu/Controllers/WebhooksController.php:70
 msgid "Something happened on our end."
 msgstr "Bei uns ist etwas passiert."
+
+#: src/Mondu/Mondu/Gateway.php:95
+#: src/Mondu/Mondu/GatewayDirectDebit.php:90
+#: src/Mondu/Mondu/GatewayInstallment.php:89
+msgid "Error placing an order"
+msgstr "Fehler beim Aufgeben einer Bestellung. Bitte versuchen Sie es später noch einmal."

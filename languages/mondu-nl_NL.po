@@ -126,7 +126,7 @@ msgstr "Gespreid betalen, betaal gemakkelijk in termijnen via automatische incas
 msgid "Mondu Ratenzahlung"
 msgstr "Mondu gespreid betalenn"
 
-#: src/Mondu/Mondu/MonduRequestWrapper.php:272
+#: src/Mondu/Mondu/MonduRequestWrapper.php:286
 msgid "Mondu: Can not create a credit note without an invoice"
 msgstr "Mondu: Kan geen creditnota aanmaken zonder factuur"
 
@@ -268,10 +268,16 @@ msgstr "Download Logs"
 msgid "Log date"
 msgstr "Log datum"
 
-#: views/checkout/payment-form.php:142
+#: views/checkout/payment-form.php:149
 msgid "Hinweise zur Verarbeitung Ihrer personenbezogenen Daten durch die Mondu GmbH finden Sie <a href=\"https://mondu.ai/de/datenschutzgrundverordnung-kaeufer\" target=\"_blank\">hier</a>."
 msgstr "Informatie over de verwerking van uw persoonsgegevens door Mondu GmbH vindt u <a href=\"https://mondu.ai/nl/datenschutzgrundverordnung-kaeufer\" target=\"_blank\">hier</a>."
 
 #: src/Mondu/Mondu/Controllers/WebhooksController.php:70
 msgid "Something happened on our end."
 msgstr "Er is iets gebeurd aan onze kant."
+
+#: src/Mondu/Mondu/Gateway.php:95
+#: src/Mondu/Mondu/GatewayDirectDebit.php:90
+#: src/Mondu/Mondu/GatewayInstallment.php:89
+msgid "Error placing an order"
+msgstr "Fout bij het plaatsen van een bestelling"
