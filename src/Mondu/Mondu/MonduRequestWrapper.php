@@ -333,7 +333,7 @@ class MonduRequestWrapper {
   public function log_plugin_event(\Exception $exception, string $event, $body = null) {
     global $wp_version;
     $params = [
-      'plugin' => 'WOOCOMMERCE',
+      'plugin' => 'woocommerce',
       'version' => MONDU_PLUGIN_VERSION,
       'language_version' => 'PHP ' . phpversion(),
       'shop_version' => $wp_version,

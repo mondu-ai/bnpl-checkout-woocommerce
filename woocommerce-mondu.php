@@ -4,13 +4,19 @@
  * Plugin URI: https://github.com/mondu-ai/bnpl-checkout-woocommerce/releases
  * Description: Increase your revenue with Mondu’s solution, without the operational burden.
  * Version: 1.0.4
- * Author: mondu
+ * Author: Mondu
  * Author URI: https://mondu.ai
  * License: MIT
+ *
  * Text Domain: mondu
  * Domain Path: /languages
+ *
+ * Requires at least: 5.9
+ * Requires PHP: 7.4
  * WC requires at least: 4.6
  * WC tested up to: 5.9.3
+ *
+ * Copyright 2022 Mondu
  */
 
 defined('ABSPATH') or die('Direct access not allowed');

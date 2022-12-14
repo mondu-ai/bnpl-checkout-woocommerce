@@ -7,10 +7,6 @@ use Mondu\Plugin;
 defined('ABSPATH') or die('Direct access not allowed');
 
 class Account extends Helper {
-  public function __construct() {
-    $this->global_settings = get_option(Plugin::OPTION_NAME);
-  }
-
   public function register() {
     register_setting('mondu', Plugin::OPTION_NAME);
 

@@ -1,8 +1,8 @@
 === mondu-checkout-woocommerce ===
 Contributors: mondu-ai, arthurmmoreira, tikohov20
-Tags: mondu, woocommerce, payment, bnpl, b2b
-Requires at least: 4.6
-Tested up to: 5.9.3
+Tags: mondu, woocommerce, e-commerce, store, sales, sell, woo, shop, cart, checkout, payment, payments, woo commerce, bnpl, b2b
+Requires at least: 5.9.0
+Tested up to: 6.1.0
 Stable tag: 1.0.4
 Requires PHP: 7.4.0
 

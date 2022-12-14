@@ -59,7 +59,7 @@ class Plugin {
       include_once ABSPATH . '/wp-admin/includes/plugin.php';
 
       add_action('admin_notices', array($this, 'woocommerce_notice'));
-      deactivate_plugins('woocommerce-mondu/woocommerce-mondu.php', true);
+      deactivate_plugins('Woocommerce-Mondu/woocommerce-mondu.php');
       return;
     }
 
