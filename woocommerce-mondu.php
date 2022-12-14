@@ -27,6 +27,4 @@ define('MONDU_PRODUCTION_URL', 'https://api.mondu.ai/api/v1');
 
 require_once 'src/autoload.php';
 
-if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_option('active_plugins')), true)) {
-  add_action('plugins_loaded', [new \Mondu\Plugin(), 'init']);
-}
+add_action('plugins_loaded', [new \Mondu\Plugin(), 'init']);

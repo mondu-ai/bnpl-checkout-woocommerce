@@ -40,6 +40,7 @@ class Plugin {
    * @var array|bool|mixed|void
    */
   protected $global_settings;
+
   /**
    * @var MonduRequestWrapper
    */
@@ -52,6 +53,11 @@ class Plugin {
   }
 
   public function init() {
+    if(!class_exists('WooCommerce')) {
+      add_action('admin_notices', array($this, 'woocommerce_notice'));
+      return;
+    }
+
     if (is_admin()) {
       $settings = new Settings();
       $settings->init();
@@ -352,6 +358,16 @@ class Plugin {
         </div>
       <?php
     }
+  }
+
+  /**
+   * @return null
+   */
+  public function woocommerce_notice() {
+    $class = 'notice notice-error';
+    $message = __('Mondu requires WooCommerce to be activated.', 'mondu');
+
+    printf('<div class="%1$s"><p>%2$s</p></div>', esc_attr($class), esc_html($message));
   }
 
   /**
