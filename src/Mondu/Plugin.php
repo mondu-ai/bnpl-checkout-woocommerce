@@ -54,7 +54,12 @@ class Plugin {
 
   public function init() {
     if(!class_exists('WooCommerce')) {
+      # This file is required to deactivate the plugin.
+      # Wordpress is not fully loaded when we are activating the plugin.
+      include_once ABSPATH . '/wp-admin/includes/plugin.php';
+
       add_action('admin_notices', array($this, 'woocommerce_notice'));
+      deactivate_plugins('woocommerce-mondu/woocommerce-mondu.php', true);
       return;
     }
 
