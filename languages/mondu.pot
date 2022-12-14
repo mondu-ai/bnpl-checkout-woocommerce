@@ -1,15 +1,15 @@
-# Copyright (C) 2022 mondu
+# Copyright (C) 2022 Mondu
 # This file is distributed under the MIT.
 msgid ""
 msgstr ""
 "Project-Id-Version: WooCommerce-Mondu 1.0.4\n"
-"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/woocommerce-mondu\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/Woocommerce-Mondu\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2022-12-05T12:25:20+00:00\n"
+"POT-Creation-Date: 2022-12-15T02:37:10+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.7.1\n"
 "X-Domain: mondu\n"
@@ -27,31 +27,31 @@ msgid "Increase your revenue with Mondu’s solution, without the operational bu
 msgstr ""
 
 #. Author of the plugin
-msgid "mondu"
+msgid "Mondu"
 msgstr ""
 
 #. Author URI of the plugin
 msgid "https://mondu.ai"
 msgstr ""
 
-#: src/Mondu/Admin/Option/Account.php:21
-#: src/Mondu/Plugin.php:197
+#: src/Mondu/Admin/Option/Account.php:17
+#: src/Mondu/Plugin.php:212
 msgid "Settings"
 msgstr ""
 
-#: src/Mondu/Admin/Option/Account.php:25
+#: src/Mondu/Admin/Option/Account.php:21
 msgid "Sandbox or production"
 msgstr ""
 
-#: src/Mondu/Admin/Option/Account.php:30
+#: src/Mondu/Admin/Option/Account.php:26
 msgid "API Token"
 msgstr ""
 
-#: src/Mondu/Admin/Option/Account.php:38
+#: src/Mondu/Admin/Option/Account.php:34
 msgid "Sandbox"
 msgstr ""
 
-#: src/Mondu/Admin/Option/Account.php:39
+#: src/Mondu/Admin/Option/Account.php:35
 msgid "Production"
 msgstr ""
 
@@ -59,12 +59,12 @@ msgstr ""
 msgid "Mondu Order Information"
 msgstr ""
 
-#: src/Mondu/Admin/Settings.php:32
+#: src/Mondu/Admin/Settings.php:45
 #: views/admin/options.php:2
 msgid "Mondu Settings"
 msgstr ""
 
-#: src/Mondu/Admin/Settings.php:58
+#: src/Mondu/Admin/Settings.php:67
 msgid "Missing Credentials"
 msgstr ""
 
@@ -133,12 +133,12 @@ msgstr ""
 msgid "Mondu Ratenzahlung"
 msgstr ""
 
-#: src/Mondu/Mondu/MonduRequestWrapper.php:272
+#: src/Mondu/Mondu/MonduRequestWrapper.php:277
 msgid "Mondu: Can not create a credit note without an invoice"
 msgstr ""
 
 #: src/Mondu/Mondu/Presenters/PaymentInfo.php:43
-#: src/Mondu/Plugin.php:270
+#: src/Mondu/Plugin.php:285
 msgid "Order state"
 msgstr ""
 
@@ -203,49 +203,53 @@ msgstr ""
 msgid "Credit Note number"
 msgstr ""
 
-#: src/Mondu/Plugin.php:153
+#: src/Mondu/Plugin.php:168
 msgid "Since this order will be paid via Mondu you will not be able to change the addresses."
 msgstr ""
 
-#: src/Mondu/Plugin.php:197
+#: src/Mondu/Plugin.php:212
 msgid "View Mondu settings"
 msgstr ""
 
-#: src/Mondu/Plugin.php:217
+#: src/Mondu/Plugin.php:232
 msgid "View Mondu documentation"
 msgstr ""
 
-#: src/Mondu/Plugin.php:217
+#: src/Mondu/Plugin.php:232
 msgid "Docs"
 msgstr ""
 
-#: src/Mondu/Plugin.php:233
+#: src/Mondu/Plugin.php:248
 msgid "Company is a required field for Mondu payments."
 msgstr ""
 
-#: src/Mondu/Plugin.php:237
+#: src/Mondu/Plugin.php:252
 msgid "Billing country not available for Mondu Payments."
 msgstr ""
 
-#: src/Mondu/Plugin.php:271
-#: src/Mondu/Plugin.php:309
-#: src/Mondu/Plugin.php:350
+#: src/Mondu/Plugin.php:286
+#: src/Mondu/Plugin.php:324
+#: src/Mondu/Plugin.php:365
 msgid "Cancelled"
 msgstr ""
 
-#: src/Mondu/Plugin.php:289
-#: src/Mondu/Plugin.php:328
+#: src/Mondu/Plugin.php:304
+#: src/Mondu/Plugin.php:343
 msgid "Mondu Invoice paid"
 msgstr ""
 
-#: src/Mondu/Plugin.php:290
-#: src/Mondu/Plugin.php:329
+#: src/Mondu/Plugin.php:305
+#: src/Mondu/Plugin.php:344
 msgid "True"
 msgstr ""
 
-#: src/Mondu/Plugin.php:308
-#: src/Mondu/Plugin.php:349
+#: src/Mondu/Plugin.php:323
+#: src/Mondu/Plugin.php:364
 msgid "Mondu Invoice state"
+msgstr ""
+
+#: src/Mondu/Plugin.php:377
+msgid "Mondu requires WooCommerce to be activated."
 msgstr ""
 
 #: views/admin/options.php:11
