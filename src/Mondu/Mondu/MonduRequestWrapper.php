@@ -168,17 +168,22 @@ class MonduRequestWrapper {
    * @throws ResponseException
    */
   public function get_merchant_payment_methods(): array {
-    try {
-      $response = $this->wrap_with_mondu_log_event('get_payment_methods');
+    $merchant_payment_methods = get_transient('mondu_merchant_payment_methods');
+    if ($merchant_payment_methods === false) {
+      try {
+        $response = $this->wrap_with_mondu_log_event('get_payment_methods');
 
-      # return only an array with the identifier (invoice, direct_debit, installment)
-      $merchant_payment_methods = array_map(function($payment_method) {
-        return $payment_method['identifier'];
-      }, $response['payment_methods']);
-      return $merchant_payment_methods;
-    } catch (\Exception $e) {
-      return array_keys(Plugin::PAYMENT_METHODS);
+        # return only an array with the identifier (invoice, direct_debit, installment)
+        $merchant_payment_methods = array_map(function($payment_method) {
+          return $payment_method['identifier'];
+        }, $response['payment_methods']);
+        set_transient('mondu_merchant_payment_methods', $merchant_payment_methods, 1 * 60);
+        return $merchant_payment_methods;
+      } catch (\Exception $e) {
+        return array_keys(Plugin::PAYMENT_METHODS);
+      }
     }
+    return $merchant_payment_methods;
   }
 
   /**
