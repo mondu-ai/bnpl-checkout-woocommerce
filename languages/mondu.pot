@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2022-12-05T12:25:20+00:00\n"
+"POT-Creation-Date: 2022-12-15T12:51:43+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.7.1\n"
 "X-Domain: mondu\n"
@@ -47,11 +47,29 @@ msgstr ""
 msgid "API Token"
 msgstr ""
 
-#: src/Mondu/Admin/Option/Account.php:38
+#: src/Mondu/Admin/Option/Account.php:35
+msgid "Send line items"
+msgstr ""
+
+#: src/Mondu/Admin/Option/Account.php:43
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:143
+msgid "Yes"
+msgstr ""
+
+#: src/Mondu/Admin/Option/Account.php:44
+msgid "Send line items only for orders"
+msgstr ""
+
+#: src/Mondu/Admin/Option/Account.php:45
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:143
+msgid "No"
+msgstr ""
+
+#: src/Mondu/Admin/Option/Account.php:51
 msgid "Sandbox"
 msgstr ""
 
-#: src/Mondu/Admin/Option/Account.php:39
+#: src/Mondu/Admin/Option/Account.php:52
 msgid "Production"
 msgstr ""
 
@@ -185,14 +203,6 @@ msgstr ""
 
 #: src/Mondu/Mondu/Presenters/PaymentInfo.php:142
 msgid "Paid out"
-msgstr ""
-
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:143
-msgid "Yes"
-msgstr ""
-
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:143
-msgid "No"
 msgstr ""
 
 #: src/Mondu/Mondu/Presenters/PaymentInfo.php:157

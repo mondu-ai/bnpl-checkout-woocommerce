@@ -44,11 +44,11 @@ msgstr "Sandbox oder Production"
 msgid "API Token"
 msgstr "API Token"
 
-#: src/Mondu/Admin/Option/Account.php:38
+#: src/Mondu/Admin/Option/Account.php:51
 msgid "Sandbox"
 msgstr "Sandbox"
 
-#: src/Mondu/Admin/Option/Account.php:39
+#: src/Mondu/Admin/Option/Account.php:52
 msgid "Production"
 msgstr "Production"
 
@@ -180,10 +180,12 @@ msgstr "Gesamt"
 msgid "Paid out"
 msgstr "Ausgezahlt"
 
+#: src/Mondu/Admin/Option/Account.php:43
 #: src/Mondu/Mondu/Presenters/PaymentInfo.php:143
 msgid "Yes"
 msgstr "Ja"
 
+#: src/Mondu/Admin/Option/Account.php:45
 #: src/Mondu/Mondu/Presenters/PaymentInfo.php:143
 msgid "No"
 msgstr "Nein"
@@ -275,3 +277,11 @@ msgstr "Hinweise zur Verarbeitung Ihrer personenbezogenen Daten durch die Mondu 
 #: src/Mondu/Mondu/Controllers/WebhooksController.php:70
 msgid "Something happened on our end."
 msgstr "Bei uns ist etwas passiert."
+
+#: src/Mondu/Admin/Option/Account.php:35
+msgid "Send line items"
+msgstr "Sende Line-Items"
+
+#: src/Mondu/Admin/Option/Account.php:44
+msgid "Send line items only for orders"
+msgstr "Sende Bestell-Line-Items"
