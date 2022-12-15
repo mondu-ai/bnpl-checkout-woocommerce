@@ -280,8 +280,8 @@ msgstr "Er is iets gebeurd aan onze kant."
 
 #: src/Mondu/Admin/Option/Account.php:35
 msgid "Send line items"
-msgstr "Send line items"
+msgstr "Regel items verzenden"
 
 #: src/Mondu/Admin/Option/Account.php:44
 msgid "Send line items only for orders"
-msgstr "Send line items only for orders"
+msgstr "Stuur alleen regelitems voor bestellingen"

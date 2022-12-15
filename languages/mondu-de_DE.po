@@ -280,8 +280,8 @@ msgstr "Bei uns ist etwas passiert."
 
 #: src/Mondu/Admin/Option/Account.php:35
 msgid "Send line items"
-msgstr "Sende Line-Items"
+msgstr "Einzelposten senden"
 
 #: src/Mondu/Admin/Option/Account.php:44
 msgid "Send line items only for orders"
-msgstr "Sende Bestell-Line-Items"
+msgstr "Senden Sie nur Einzelposten für Bestellungen"
