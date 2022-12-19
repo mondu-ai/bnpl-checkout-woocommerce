@@ -44,11 +44,11 @@ msgstr "Sandbox oder Production"
 msgid "API Token"
 msgstr "API Token"
 
-#: src/Mondu/Admin/Option/Account.php:34
+#: src/Mondu/Admin/Option/Account.php:47
 msgid "Sandbox"
 msgstr "Sandbox"
 
-#: src/Mondu/Admin/Option/Account.php:35
+#: src/Mondu/Admin/Option/Account.php:48
 msgid "Production"
 msgstr "Production"
 
@@ -180,10 +180,12 @@ msgstr "Gesamt"
 msgid "Paid out"
 msgstr "Ausgezahlt"
 
+#: src/Mondu/Admin/Option/Account.php:39
 #: src/Mondu/Mondu/Presenters/PaymentInfo.php:143
 msgid "Yes"
 msgstr "Ja"
 
+#: src/Mondu/Admin/Option/Account.php:41
 #: src/Mondu/Mondu/Presenters/PaymentInfo.php:143
 msgid "No"
 msgstr "Nein"
@@ -275,6 +277,16 @@ msgstr "Hinweise zur Verarbeitung Ihrer personenbezogenen Daten durch die Mondu 
 #: src/Mondu/Mondu/Controllers/WebhooksController.php:70
 msgid "Something happened on our end."
 msgstr "Bei uns ist etwas passiert."
+
+#: src/Mondu/Admin/Option/Account.php:31
+msgid "Send line items"
+msgstr "Einzelposten senden"
+
+#: src/Mondu/Admin/Option/Account.php:40
+msgid "Send line items only for orders"
+msgstr ""
+"Senden Sie nur Einzelposten für Bestellungen\n"
+"main"
 
 #: src/Mondu/Plugin.php:377
 msgid "Mondu requires WooCommerce to be activated."
