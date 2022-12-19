@@ -1,10 +1,11 @@
-FROM wordpress:5.9.3
-ENV WOOCOMMERCE_VERSION 6.5.1
-ENV WOOCOMMERCE_PDF_INVOICES_VERSION 2.14.5
+FROM wordpress:6.0.2
+ENV WOOCOMMERCE_VERSION 7.1.0
+ENV WOOCOMMERCE_PDF_INVOICES_VERSION 3.2.3
 
 RUN apt update
 RUN apt -y install wget
 RUN apt -y install unzip
+RUN apt -y install nano
 
 # To avoid problems with another plugins
 RUN docker-php-ext-install mysqli pdo pdo_mysql

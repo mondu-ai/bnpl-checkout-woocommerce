@@ -40,6 +40,7 @@ class Plugin {
    * @var array|bool|mixed|void
    */
   protected $global_settings;
+
   /**
    * @var MonduRequestWrapper
    */
@@ -52,6 +53,20 @@ class Plugin {
   }
 
   public function init() {
+    if (!class_exists('WooCommerce')) {
+      # This file is required to deactivate the plugin.
+      # Wordpress is not fully loaded when we are activating the plugin.
+      include_once ABSPATH . '/wp-admin/includes/plugin.php';
+
+      if (is_multisite()) {
+        add_action('network_admin_notices', array($this, 'woocommerce_notice'));
+      } else {
+        add_action('admin_notices', array($this, 'woocommerce_notice'));
+      }
+      deactivate_plugins('Woocommerce-Mondu/woocommerce-mondu.php');
+      return;
+    }
+
     if (is_admin()) {
       $settings = new Settings();
       $settings->init();
@@ -352,6 +367,16 @@ class Plugin {
         </div>
       <?php
     }
+  }
+
+  /**
+   * @return null
+   */
+  public function woocommerce_notice() {
+    $class = 'notice notice-error';
+    $message = __('Mondu requires WooCommerce to be activated.', 'mondu');
+
+    printf('<div class="%1$s"><p>%2$s</p></div>', esc_attr($class), esc_html($message));
   }
 
   /**

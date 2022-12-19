@@ -2,10 +2,19 @@
 
 namespace Mondu\Admin\Option;
 
+use Mondu\Plugin;
+
 defined('ABSPATH') or die('Direct access not allowed');
 
 abstract class Helper {
+  /**
+   * @var array|bool|mixed|void
+   */
   protected $global_settings;
+
+  public function __construct() {
+    $this->global_settings = get_option(Plugin::OPTION_NAME);
+  }
 
   protected function textField($option_name, $field_name, $default = '') {
     printf(

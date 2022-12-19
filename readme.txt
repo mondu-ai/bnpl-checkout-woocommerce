@@ -1,14 +1,23 @@
 === mondu-checkout-woocommerce ===
 Contributors: mondu-ai, arthurmmoreira, tikohov20
-Tags: mondu, woocommerce, payment, bnpl, b2b
-Requires at least: 4.6
-Tested up to: 5.9.3
-Stable tag: 1.0.4
+Tags: mondu, woocommerce, e-commerce, store, sales, sell, woo, shop, cart, checkout, payment, payments, woo commerce, bnpl, b2b
+Requires at least: 5.9.0
+Tested up to: 6.1.0
+Stable tag: 1.0.5
 Requires PHP: 7.4.0
 
 Increase your revenue with Mondu’s solution, without the operational burden.
 
 == Changelog ==
+
+=== 1.0.5 ===
+
+* Add a configuration field to disable sending line items to Mondu
+* Verify if WooCommerce is active before activate Mondu
+* Add uninstaller to remove Mondu data
+* Add activate and deactivate functions to plugin
+* Add transient on merchant payment methods
+* Minor fixes
 
 === 1.0.4 ===
 
