@@ -126,7 +126,7 @@ msgstr "Gespreid betalen, betaal gemakkelijk in termijnen via automatische incas
 msgid "Mondu Ratenzahlung"
 msgstr "Mondu gespreid betalenn"
 
-#: src/Mondu/Mondu/MonduRequestWrapper.php:277
+#: src/Mondu/Mondu/MonduRequestWrapper.php:291
 msgid "Mondu: Can not create a credit note without an invoice"
 msgstr "Mondu: Kan geen creditnota aanmaken zonder factuur"
 
@@ -291,3 +291,9 @@ msgstr ""
 #: src/Mondu/Plugin.php:377
 msgid "Mondu requires WooCommerce to be activated."
 msgstr "Mondu vereist dat WooCommerce wordt geactiveerd."
+
+#: src/Mondu/Mondu/Gateway.php:95
+#: src/Mondu/Mondu/GatewayDirectDebit.php:90
+#: src/Mondu/Mondu/GatewayInstallment.php:89
+msgid "Error placing an order"
+msgstr "Fout bij het plaatsen van een bestelling"
