@@ -90,6 +90,8 @@ class OrderData {
     foreach ($cart as $key => $cart_item) {
       /** @var WC_Product $product */
       $product = WC()->product_factory->get_product($cart_item['product_id']);
+      if(!$cart_item['line_total']) continue;
+
       $line_item = [
         'title' => $product->get_title(),
         'quantity' => isset($cart_item['quantity']) ? $cart_item['quantity'] : null,
@@ -143,6 +145,7 @@ class OrderData {
 
     foreach ($order->get_items() as $item_id => $item) {
       $product = $item->get_product();
+      if(!$item->get_total()) continue;
 
       $line_item = [
         'title' => $product->get_title(),
@@ -203,6 +206,7 @@ class OrderData {
 
     foreach ($order->get_items() as $item_id => $item) {
       $product = $item->get_product();
+      if(!$item->get_total()) continue;
 
       $line_item = [
         'external_reference_id' => Helper::not_null_or_empty($product->get_id()) ? (string) $product->get_id() : null,
