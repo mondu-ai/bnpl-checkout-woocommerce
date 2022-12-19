@@ -12,6 +12,7 @@ Increase your revenue with Mondu’s solution, without the operational burden.
 
 === 1.0.5 ===
 
+* Add a configuration field to disable sending line items to Mondu
 * Verify if WooCommerce is active before activate Mondu
 * Add uninstaller to remove Mondu data
 * Add activate and deactivate functions to plugin
