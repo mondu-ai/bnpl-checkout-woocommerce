@@ -92,7 +92,7 @@ class Gateway extends WC_Payment_Gateway {
     $order = $this->mondu_request_wrapper->process_payment($order_id);
 
     if(!$order) {
-      wc_add_notice( __('Error placing an order', 'mondu'), 'error' );
+      wc_add_notice(__('Error placing an order. Please try again.', 'mondu'), 'error');
       return;
     }
 
