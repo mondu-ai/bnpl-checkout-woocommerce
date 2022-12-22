@@ -130,11 +130,6 @@ class Plugin {
     add_action('woocommerce_after_checkout_validation', [$this, 'validate_required_fields'], 10, 2);
 
     /*
-     * Triggers the open checkout plugin
-     */
-    add_action('woocommerce_after_checkout_validation', [$this, 'validation_error_to_open_plugin']);
-
-    /*
      * Does not allow to change address
      */
     add_action('woocommerce_admin_order_data_after_billing_address', [$this, 'change_address_warning'], 10, 1);
@@ -250,12 +245,6 @@ class Plugin {
 
     if (!$this->is_country_available($fields['billing_country'])) {
       $errors->add('validation', __('Billing country not available for Mondu Payments.', 'mondu'));
-    }
-  }
-
-  public function validation_error_to_open_plugin() {
-    if ($_POST['mondu-confirm-order-flag'] === '1') {
-      wc_add_notice('error_confirmation', 'error');
     }
   }
 
