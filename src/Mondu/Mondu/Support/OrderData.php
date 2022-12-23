@@ -48,6 +48,7 @@ class OrderData {
       'currency' => get_woocommerce_currency(),
       'external_reference_id' => substr(md5(mt_rand()), 0, 7), // We will update this id when woocommerce order is created
       'gross_amount_cents' => round((float) $cart_totals['total'] * 100),
+      'language' => substr(get_locale(), 0, 2),
       'buyer' => [
         'first_name' => isset($customer['first_name']) && Helper::not_null_or_empty($customer['first_name']) ? $customer['first_name'] : null,
         'last_name' => isset($customer['last_name']) && Helper::not_null_or_empty($customer['last_name']) ? $customer['last_name'] : null,
@@ -239,7 +240,7 @@ class OrderData {
     if(!$sendLines) {
       $keys[] = $key;
     }
-    
+
     return $keys;
   }
 }
