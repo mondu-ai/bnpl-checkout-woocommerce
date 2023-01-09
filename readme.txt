@@ -3,12 +3,18 @@ Contributors: mondu-ai, arthurmmoreira, tikohov20
 Tags: mondu, woocommerce, e-commerce, store, sales, sell, woo, shop, cart, checkout, payment, payments, woo commerce, bnpl, b2b
 Requires at least: 5.9.0
 Tested up to: 6.1.0
-Stable tag: 1.0.5
+Stable tag: 1.1.0
 Requires PHP: 7.4.0
 
 Increase your revenue with Mondu’s solution, without the operational burden.
 
 == Changelog ==
+
+=== 1.1.0 ===
+
+* Send language param when creating Mondu order
+* Remove checkout error validation message
+* Minor fixes
 
 === 1.0.5 ===
 
