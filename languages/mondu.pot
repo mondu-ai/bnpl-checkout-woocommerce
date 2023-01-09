@@ -1,4 +1,4 @@
-# Copyright (C) 2022 Mondu
+# Copyright (C) 2023 Mondu
 # This file is distributed under the MIT.
 msgid ""
 msgstr ""

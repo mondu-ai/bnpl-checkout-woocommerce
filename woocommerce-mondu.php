@@ -16,7 +16,7 @@
  * WC requires at least: 4.6
  * WC tested up to: 5.9.3
  *
- * Copyright 2022 Mondu
+ * Copyright 2023 Mondu
  */
 
 defined('ABSPATH') or die('Direct access not allowed');
