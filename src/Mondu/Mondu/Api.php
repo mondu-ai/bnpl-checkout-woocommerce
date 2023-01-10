@@ -204,6 +204,13 @@ class Api {
   }
 
   /**
+   * @return null
+   */
+  public function log_plugin_event(array $params) {
+    $this->post('/plugin/events', $params);
+  }
+
+  /**
    * @param $path
    * @param array|string|null $body
    *
@@ -310,6 +317,8 @@ class Api {
     $headers = [
       'Content-Type' => 'application/json',
       'Api-Token' => $this->global_settings['api_token'],
+      'X-Plugin-Name' => 'woocommerce',
+      'X-Plugin-Version' => MONDU_PLUGIN_VERSION,
     ];
 
     $args = [
@@ -322,7 +331,7 @@ class Api {
       $args['body'] = json_encode($body);
     }
 
-    Helper::log(['method' => $method, 'url' => $url, 'body' => @$args['body']]);
+    Helper::log(array('method' => $method, 'url' => $url, 'body' => @$args['body']));
 
     return $this->validate_remote_result($url, wp_remote_request($url, $args));
   }

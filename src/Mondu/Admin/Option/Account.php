@@ -7,10 +7,6 @@ use Mondu\Plugin;
 defined('ABSPATH') or die('Direct access not allowed');
 
 class Account extends Helper {
-  public function __construct() {
-    $this->global_settings = get_option(Plugin::OPTION_NAME);
-  }
-
   public function register() {
     register_setting('mondu', Plugin::OPTION_NAME);
 
@@ -31,6 +27,19 @@ class Account extends Helper {
       [$this, 'field_api_token'],
       'mondu-settings-account',
       'mondu_account_settings_general');
+    add_settings_field('send_line_items',
+      __('Send line items', 'mondu'),
+      [$this, 'field_send_line_items'],
+      'mondu-settings-account',
+      'mondu_account_settings_general');
+  }
+
+  public function field_send_line_items() {
+    $this->selectField(Plugin::OPTION_NAME, 'field_send_line_items', [
+      'yes' => __('Yes', 'mondu'),
+      'order' => __('Send line items only for orders', 'mondu'),
+      'no' => __('No', 'mondu'),
+    ], 'single');
   }
 
   public function field_sandbox_or_production() {

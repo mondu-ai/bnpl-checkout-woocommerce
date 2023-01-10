@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: WooCommerce-Mondu 1.0.3\n"
+"Project-Id-Version: WooCommerce-Mondu 1.1.0\n"
 "Report-Msgid-Bugs-To: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -24,31 +24,31 @@ msgid "Increase your revenue with Mondu’s solution, without the operational bu
 msgstr "Verhoog je omzet met de oplossing van Mondu, zonder de administratieve rompslomp."
 
 #. Author of the plugin
-msgid "mondu"
-msgstr "mondu"
+msgid "Mondu"
+msgstr "Mondu"
 
 #. Author URI of the plugin
 msgid "https://mondu.ai"
 msgstr "https://mondu.ai"
 
-#: src/Mondu/Admin/Option/Account.php:21
-#: src/Mondu/Plugin.php:197
+#: src/Mondu/Admin/Option/Account.php:17
+#: src/Mondu/Plugin.php:207
 msgid "Settings"
 msgstr "Instellingen"
 
-#: src/Mondu/Admin/Option/Account.php:25
+#: src/Mondu/Admin/Option/Account.php:21
 msgid "Sandbox or production"
 msgstr "Sandbox of productie"
 
-#: src/Mondu/Admin/Option/Account.php:30
+#: src/Mondu/Admin/Option/Account.php:26
 msgid "API Token"
 msgstr "API Token"
 
-#: src/Mondu/Admin/Option/Account.php:38
+#: src/Mondu/Admin/Option/Account.php:47
 msgid "Sandbox"
 msgstr "Sandbox"
 
-#: src/Mondu/Admin/Option/Account.php:39
+#: src/Mondu/Admin/Option/Account.php:48
 msgid "Production"
 msgstr "Productie"
 
@@ -56,40 +56,40 @@ msgstr "Productie"
 msgid "Mondu Order Information"
 msgstr "Mondu Order Informatie"
 
-#: src/Mondu/Admin/Settings.php:32
+#: src/Mondu/Admin/Settings.php:45
 #: views/admin/options.php:2
 msgid "Mondu Settings"
 msgstr "Mondu-instellingen"
 
-#: src/Mondu/Admin/Settings.php:58
+#: src/Mondu/Admin/Settings.php:67
 msgid "Missing Credentials"
 msgstr "Ontbrekende Credentials"
 
-#: src/Mondu/Mondu/Api.php:283
+#: src/Mondu/Mondu/Api.php:290
 msgid "Unexpected API response format."
 msgstr "Onverwachte API respons format."
 
-#: src/Mondu/Mondu/Controllers/WebhooksController.php:39
+#: src/Mondu/Mondu/Controllers/WebhooksController.php:41
 msgid "Signature mismatch."
 msgstr "Signature mismatch."
 
-#: src/Mondu/Mondu/Controllers/WebhooksController.php:60
+#: src/Mondu/Mondu/Controllers/WebhooksController.php:62
 msgid "Unregistered topic."
 msgstr "Ongeregistreerd onderwerp."
 
-#: src/Mondu/Mondu/Controllers/WebhooksController.php:79
-#: src/Mondu/Mondu/Controllers/WebhooksController.php:100
-#: src/Mondu/Mondu/Controllers/WebhooksController.php:121
-#: src/Mondu/Mondu/Controllers/WebhooksController.php:144
-#: src/Mondu/Mondu/Controllers/WebhooksController.php:162
+#: src/Mondu/Mondu/Controllers/WebhooksController.php:82
+#: src/Mondu/Mondu/Controllers/WebhooksController.php:103
+#: src/Mondu/Mondu/Controllers/WebhooksController.php:124
+#: src/Mondu/Mondu/Controllers/WebhooksController.php:147
+#: src/Mondu/Mondu/Controllers/WebhooksController.php:165
 msgid "Required params missing."
 msgstr "Vereiste params ontbreken."
 
-#: src/Mondu/Mondu/Controllers/WebhooksController.php:85
-#: src/Mondu/Mondu/Controllers/WebhooksController.php:106
-#: src/Mondu/Mondu/Controllers/WebhooksController.php:127
-#: src/Mondu/Mondu/Controllers/WebhooksController.php:150
-#: src/Mondu/Mondu/Controllers/WebhooksController.php:169
+#: src/Mondu/Mondu/Controllers/WebhooksController.php:88
+#: src/Mondu/Mondu/Controllers/WebhooksController.php:109
+#: src/Mondu/Mondu/Controllers/WebhooksController.php:130
+#: src/Mondu/Mondu/Controllers/WebhooksController.php:153
+#: src/Mondu/Mondu/Controllers/WebhooksController.php:172
 msgid "Not Found"
 msgstr "Niet gevonden"
 
@@ -126,12 +126,12 @@ msgstr "Gespreid betalen, betaal gemakkelijk in termijnen via automatische incas
 msgid "Mondu Ratenzahlung"
 msgstr "Mondu gespreid betalenn"
 
-#: src/Mondu/Mondu/MonduRequestWrapper.php:278
+#: src/Mondu/Mondu/MonduRequestWrapper.php:291
 msgid "Mondu: Can not create a credit note without an invoice"
 msgstr "Mondu: Kan geen creditnota aanmaken zonder factuur"
 
 #: src/Mondu/Mondu/Presenters/PaymentInfo.php:43
-#: src/Mondu/Plugin.php:270
+#: src/Mondu/Plugin.php:274
 msgid "Order state"
 msgstr "Order status"
 
@@ -180,10 +180,12 @@ msgstr "Totaal"
 msgid "Paid out"
 msgstr "Uitbetaald"
 
+#: src/Mondu/Admin/Option/Account.php:39
 #: src/Mondu/Mondu/Presenters/PaymentInfo.php:143
 msgid "Yes"
 msgstr "Ja"
 
+#: src/Mondu/Admin/Option/Account.php:41
 #: src/Mondu/Mondu/Presenters/PaymentInfo.php:143
 msgid "No"
 msgstr "Nee"
@@ -196,48 +198,48 @@ msgstr "Creditnota Nummer"
 msgid "Cancel Invoice"
 msgstr "Factuur annuleren"
 
-#: src/Mondu/Plugin.php:153
+#: src/Mondu/Plugin.php:163
 msgid "Since this order will be paid via Mondu you will not be able to change the addresses."
 msgstr "Omdat deze bestelling via Mondu wordt betaald kunt u de adressen niet meer aanpassen."
 
-#: src/Mondu/Plugin.php:197
+#: src/Mondu/Plugin.php:207
 msgid "View Mondu settings"
 msgstr "Bekijk Mondu instellingen"
 
-#: src/Mondu/Plugin.php:217
+#: src/Mondu/Plugin.php:227
 msgid "View Mondu documentation"
 msgstr "Bekijk Mondu documentatie"
 
-#: src/Mondu/Plugin.php:217
+#: src/Mondu/Plugin.php:227
 msgid "Docs"
 msgstr "Documenten"
 
-#: src/Mondu/Plugin.php:233
+#: src/Mondu/Plugin.php:243
 msgid "Company is a required field for Mondu payments."
 msgstr "Bedrijfsnaam is een verplicht veld voor Mondu-betalingen."
 
-#: src/Mondu/Plugin.php:237
+#: src/Mondu/Plugin.php:247
 msgid "Billing country not available for Mondu Payments."
 msgstr "Dit land is niet beschikbaar voor Mondu-betalingen."
 
-#: src/Mondu/Plugin.php:271
-#: src/Mondu/Plugin.php:309
-#: src/Mondu/Plugin.php:350
+#: src/Mondu/Plugin.php:275
+#: src/Mondu/Plugin.php:313
+#: src/Mondu/Plugin.php:354
 msgid "Cancelled"
 msgstr "Geannuleerd"
 
-#: src/Mondu/Plugin.php:289
-#: src/Mondu/Plugin.php:328
+#: src/Mondu/Plugin.php:293
+#: src/Mondu/Plugin.php:332
 msgid "Mondu Invoice paid"
 msgstr "Mondu Factuur betaald"
 
-#: src/Mondu/Plugin.php:290
-#: src/Mondu/Plugin.php:329
+#: src/Mondu/Plugin.php:294
+#: src/Mondu/Plugin.php:333
 msgid "True"
 msgstr "True"
 
-#: src/Mondu/Plugin.php:308
-#: src/Mondu/Plugin.php:349
+#: src/Mondu/Plugin.php:312
+#: src/Mondu/Plugin.php:353
 msgid "Mondu Invoice state"
 msgstr "Mondu Factuur status"
 
@@ -268,6 +270,33 @@ msgstr "Download Logs"
 msgid "Log date"
 msgstr "Log datum"
 
-#: views/checkout/payment-form.php:142
+#: views/checkout/payment-form.php:123
 msgid "Hinweise zur Verarbeitung Ihrer personenbezogenen Daten durch die Mondu GmbH finden Sie <a href=\"https://mondu.ai/de/datenschutzgrundverordnung-kaeufer\" target=\"_blank\">hier</a>."
-msgstr "Informatie over de verwerking van uw persoonsgegevens door Mondu GmbH vindt u <a href=\"https://mondu.ai/de/datenschutzgrundverordnung-kaeufer\" target=\"_blank\">hier</a>."
+msgstr "Informatie over de verwerking van uw persoonsgegevens door Mondu GmbH vindt u <a href=\"https://mondu.ai/nl/datenschutzgrundverordnung-kaeufer\" target=\"_blank\">hier</a>."
+
+#: src/Mondu/Mondu/Controllers/WebhooksController.php:70
+msgid "Something happened on our end."
+msgstr "Er is iets gebeurd aan onze kant."
+
+#: src/Mondu/Admin/Option/Account.php:31
+msgid "Send line items"
+msgstr "Regel items verzenden"
+
+#: src/Mondu/Admin/Option/Account.php:40
+msgid "Send line items only for orders"
+msgstr "Stuur alleen regelitems voor bestellingen"
+
+#: src/Mondu/Plugin.php:366
+msgid "Mondu requires WooCommerce to be activated."
+msgstr "Mondu vereist dat WooCommerce wordt geactiveerd."
+
+#: src/Mondu/Mondu/Gateway.php:95
+#: src/Mondu/Mondu/GatewayDirectDebit.php:90
+#: src/Mondu/Mondu/GatewayInstallment.php:89
+msgid "Error placing an order. Please try again."
+msgstr "Fout bij het plaatsen van een bestelling. Probeer het opnieuw."
+
+#: src/Mondu/Mondu/Controllers/OrdersController.php:38
+#: views/checkout/payment-form.php:95
+msgid "Error processing checkout. Please try again."
+msgstr "Fout bij het afrekenen. Probeer het opnieuw."

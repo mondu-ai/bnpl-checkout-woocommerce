@@ -1,0 +1,19 @@
+name: Release auto update
+
+on:
+  pull_request:
+    types:
+    - closed
+    branches: 
+    - main
+
+jobs:
+  release:
+    name: auto_release
+    if: github.event.pull_request.merged == true
+    uses: mondu-ai/release-action/.github/workflows/release-update.yml@master
+    secrets: inherit
+    with:
+      asset_creation_script: |
+        ./releaser.sh -v "${NEW_TAG}"
+        echo "FILES=Woocommerce-Mondu-${NEW_TAG}.zip" >> $GITHUB_ENV

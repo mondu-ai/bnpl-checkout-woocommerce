@@ -31,7 +31,7 @@ class MonduRequestWrapper {
     $payment_method = array_search($payment_method, Plugin::PAYMENT_METHODS);
 
     $order_data = OrderData::create_order_data($payment_method);
-    $response = $this->api->create_order($order_data);
+    $response = $this->wrap_with_mondu_log_event('create_order', array($order_data));
     $order = $response['order'];
     WC()->session->set('mondu_order_id', $order['uuid']);
     return $order;
@@ -50,7 +50,7 @@ class MonduRequestWrapper {
     }
 
     $mondu_order_id = get_post_meta($order_id, Plugin::ORDER_ID_KEY, true);
-    $response = $this->api->get_order($mondu_order_id);
+    $response = $this->wrap_with_mondu_log_event('get_order', array($mondu_order_id));
     return @$response['order'];
   }
 
@@ -67,8 +67,8 @@ class MonduRequestWrapper {
     }
 
     $mondu_order_id = get_post_meta($order_id, Plugin::ORDER_ID_KEY, true);
-    $params = ['external_reference_id' => (string) $order_id];
-    $response = $this->api->update_external_info($mondu_order_id, $params);
+    $params = ['external_reference_id' => $order->get_order_number()];
+    $response = $this->wrap_with_mondu_log_event('update_external_info', array($mondu_order_id, $params));
     return $response['order'];
   }
 
@@ -86,7 +86,7 @@ class MonduRequestWrapper {
     }
 
     $mondu_order_id = get_post_meta($order_id, Plugin::ORDER_ID_KEY, true);
-    $response = $this->api->adjust_order($mondu_order_id, $data_to_update);
+    $response = $this->wrap_with_mondu_log_event('adjust_order', array($mondu_order_id, $data_to_update));
     return $response['order'];
   }
 
@@ -103,7 +103,7 @@ class MonduRequestWrapper {
     }
 
     $mondu_order_id = get_post_meta($order_id, Plugin::ORDER_ID_KEY, true);
-    $response = $this->api->cancel_order($mondu_order_id);
+    $response = $this->wrap_with_mondu_log_event('cancel_order', array($mondu_order_id));
     return $response['order'];
   }
 
@@ -121,7 +121,7 @@ class MonduRequestWrapper {
 
     $mondu_order_id = get_post_meta($order_id, Plugin::ORDER_ID_KEY, true);
     $invoice_data = OrderData::invoice_data_from_wc_order($order);
-    $response = $this->api->ship_order($mondu_order_id, $invoice_data);
+    $response = $this->wrap_with_mondu_log_event('ship_order', array($mondu_order_id, $invoice_data));
     $invoice = $response['invoice'];
     add_post_meta($order_id, Plugin::INVOICE_ID_KEY, $invoice['uuid']);
     return $invoice;
@@ -140,7 +140,7 @@ class MonduRequestWrapper {
     }
 
     $mondu_order_id = get_post_meta($order_id, Plugin::ORDER_ID_KEY, true);
-    $response = $this->api->get_invoices($mondu_order_id);
+    $response = $this->wrap_with_mondu_log_event('get_invoices', array($mondu_order_id));
     return $response['invoices'];
   }
 
@@ -158,10 +158,8 @@ class MonduRequestWrapper {
 
     $mondu_order_id = get_post_meta($order_id, Plugin::ORDER_ID_KEY, true);
     $mondu_invoice_id = get_post_meta($order_id, Plugin::INVOICE_ID_KEY, true);
-
-    $response = $this->api->get_invoice($mondu_order_id, $mondu_invoice_id);
-
-    return @$response['invoice'];
+    $response = $this->wrap_with_mondu_log_event('get_invoice', array($mondu_order_id, $mondu_invoice_id));
+    return $response['invoice'];
   }
 
   /**
@@ -170,17 +168,22 @@ class MonduRequestWrapper {
    * @throws ResponseException
    */
   public function get_merchant_payment_methods(): array {
-    try {
-      $response = $this->api->get_payment_methods();
+    $merchant_payment_methods = get_transient('mondu_merchant_payment_methods');
+    if ($merchant_payment_methods === false) {
+      try {
+        $response = $this->wrap_with_mondu_log_event('get_payment_methods');
 
-      # return only an array with the identifier (invoice, direct_debit, installment)
-      $merchant_payment_methods = array_map(function($payment_method) {
-        return $payment_method['identifier'];
-      }, @$response['payment_methods']);
-      return $merchant_payment_methods;
-    } catch (\Exception $e) {
-      return array_keys(Plugin::PAYMENT_METHODS);
+        # return only an array with the identifier (invoice, direct_debit, installment)
+        $merchant_payment_methods = array_map(function($payment_method) {
+          return $payment_method['identifier'];
+        }, $response['payment_methods']);
+        set_transient('mondu_merchant_payment_methods', $merchant_payment_methods, 1 * 60);
+        return $merchant_payment_methods;
+      } catch (\Exception $e) {
+        return array_keys(Plugin::PAYMENT_METHODS);
+      }
     }
+    return $merchant_payment_methods;
   }
 
   /**
@@ -193,6 +196,11 @@ class MonduRequestWrapper {
   public function process_payment($order_id) {
     $order = new WC_Order($order_id);
 
+    if(!$this->confirm_order_status($order_id)) {
+      WC()->session->set('mondu_order_id', null);
+      WC()->session->set('woocommerce_order_id', null);
+      return;
+    }
     // Update Mondu order's external reference id
     $this->update_external_info($order_id);
 
@@ -207,6 +215,15 @@ class MonduRequestWrapper {
     WC()->session->set('woocommerce_order_id', null);
 
     return $order;
+  }
+
+  public function confirm_order_status($order_id) {
+    $order = $this->get_order($order_id);
+
+    if(!$order) return false;
+    if(!in_array($order['state'], ['confirmed', 'pending'])) return false;
+
+    return true;
   }
 
   /**
@@ -246,15 +263,11 @@ class MonduRequestWrapper {
 
     Helper::log(array('order_id' => $order_id, 'from_status' => $from_status, 'to_status' => $to_status));
 
-    try {
-      if ($to_status === 'cancelled') {
-        $this->cancel_order($order_id);
-      }
-      if ($to_status === 'completed') {
-        $this->ship_order($order_id);
-      }
-    } catch (ResponseException $e) {
-      Helper::log(array('error' => array('code' => $e->getBody(), 'message' => $e->getCode())));
+    if ($to_status === 'cancelled') {
+      $this->cancel_order($order_id);
+    }
+    if ($to_status === 'completed') {
+      $this->ship_order($order_id);
     }
   }
 
@@ -284,9 +297,8 @@ class MonduRequestWrapper {
       'external_reference_id' => (string) $refund->get_id()
     ];
 
-    $this->api->create_credit_note($mondu_invoice_id, $credit_note);
+    $this->wrap_with_mondu_log_event('create_credit_note', array($mondu_invoice_id, $credit_note));
   }
-
 
   /**
    * @param $mondu_order_id
@@ -296,6 +308,72 @@ class MonduRequestWrapper {
    * @throws ResponseException
    */
   public function cancel_invoice($mondu_order_id, $mondu_invoice_id) {
-    $this->api->cancel_invoice($mondu_order_id, $mondu_invoice_id);
+    $this->wrap_with_mondu_log_event('cancel_invoice', array($mondu_order_id, $mondu_invoice_id));
+  }
+
+  /**
+   * @param $topic
+   *
+   * @throws MonduException
+   * @throws ResponseException
+   */
+  public function register_webhook(string $topic) {
+    $response = $this->wrap_with_mondu_log_event('register_webhook', array($topic));
+
+    return $response['webhooks'];
+  }
+
+  /**
+   * @throws MonduException
+   * @throws ResponseException
+   */
+  public function get_webhooks() {
+    $response = $this->wrap_with_mondu_log_event('get_webhooks');
+
+    return $response['webhooks'];
+  }
+
+  /**
+   * @throws MonduException
+   * @throws ResponseException
+   */
+  public function webhook_secret() {
+    $response = $this->wrap_with_mondu_log_event('webhook_secret');
+
+    return $response['webhook_secret'];
+  }
+
+  /**
+   * @param $exception
+   *
+   * @throws MonduException
+   * @throws ResponseException
+   */
+  public function log_plugin_event(\Exception $exception, string $event, $body = null) {
+    global $wp_version;
+    $params = [
+      'plugin' => 'woocommerce',
+      'version' => MONDU_PLUGIN_VERSION,
+      'language_version' => 'PHP ' . phpversion(),
+      'shop_version' => $wp_version,
+      'origin_event' => strtoupper($event),
+      'response_body' => $body,
+      'response_status' => (string) $exception->getCode(),
+      'error_message' => $exception->getMessage(),
+      'error_trace' => $exception->getTraceAsString()
+    ];
+    $this->api->log_plugin_event($params);
+  }
+
+  private function wrap_with_mondu_log_event(string $action, array $params = []) {
+    try {
+      return call_user_func_array(array($this->api, $action), $params);
+    } catch (ResponseException $e) {
+      $this->log_plugin_event($e, $action, $e->getBody());
+      throw $e;
+    } catch (\Exception $e) {
+      $this->log_plugin_event($e, $action);
+      throw $e;
+    }
   }
 }

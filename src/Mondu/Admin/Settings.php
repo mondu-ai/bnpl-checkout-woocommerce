@@ -3,21 +3,34 @@
 namespace Mondu\Admin;
 
 use Mondu\Plugin;
-use Mondu\Mondu\Api;
 use Mondu\Admin\Option\Account;
 use Mondu\Exceptions\MonduException;
 use Mondu\Exceptions\CredentialsNotSetException;
+use Mondu\Mondu\MonduRequestWrapper;
 
 defined('ABSPATH') or die('Direct access not allowed');
 
 class Settings {
-  /** @var Account */
+  /**
+   * @var array|bool|mixed|void
+   */
+  private $global_settings;
+
+  /**
+   * @var MonduRequestWrapper
+   */
+  private $mondu_request_wrapper;
+
+  /**
+   * @var Account
+   */
   private $account_options;
 
-  /** @var Api */
-  private $api;
+  public function __construct() {
+    $this->global_settings = get_option(Plugin::OPTION_NAME);
 
-  private $global_settings;
+    $this->mondu_request_wrapper = new MonduRequestWrapper();
+  }
 
   public function init() {
     add_action('admin_menu', [$this, 'plugin_menu']);
@@ -42,10 +55,6 @@ class Settings {
   public function register_options() {
     $this->account_options = new Account();
     $this->account_options->register();
-
-    $this->api = new Api();
-
-    $this->global_settings = get_option(Plugin::OPTION_NAME);
   }
 
   public function render_account_options() {
@@ -58,8 +67,8 @@ class Settings {
           throw new CredentialsNotSetException(__('Missing Credentials', 'mondu'));
         }
 
-        $secret = $this->api->webhook_secret();
-        update_option('_mondu_webhook_secret', $secret['webhook_secret']);
+        $secret = $this->mondu_request_wrapper->webhook_secret();
+        update_option('_mondu_webhook_secret', $secret);
 
         update_option('_mondu_credentials_validated', time());
       } catch (MonduException | CredentialsNotSetException $e) {
@@ -93,15 +102,15 @@ class Settings {
   }
 
   private function register_webhooks_if_not_registered() {
-    $webhooks = $this->api->get_webhooks();
+    $webhooks = $this->mondu_request_wrapper->get_webhooks();
     $registered_topics = array_map(function($webhook) {
       return $webhook['topic'];
-    }, $webhooks['webhooks']);
+    }, $webhooks);
 
     $required_topics = ['order', 'invoice'];
     foreach ($required_topics as $topic) {
       if (!in_array($topic, $registered_topics)) {
-        $this->api->register_webhook($topic);
+        $this->mondu_request_wrapper->register_webhook($topic);
       }
     }
   }
@@ -132,7 +141,7 @@ class Settings {
   }
 
   private function get_file($date) {
-    $base_dir = WP_CONTENT_DIR. '/uploads/wc-logs/';
+    $base_dir = WP_CONTENT_DIR . '/uploads/wc-logs/';
 
     if ($dir = opendir($base_dir)) {
       while ($file = readdir($dir)) {

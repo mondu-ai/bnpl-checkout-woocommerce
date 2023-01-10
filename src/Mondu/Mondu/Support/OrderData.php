@@ -11,7 +11,7 @@ class OrderData {
    * @return array[]
    */
   public static function create_order_data($payment_method) {
-    $except_keys = ['amount'];
+    $except_keys = self::add_lines_to_except_keys(['amount'], 'order');
     $order_data = self::raw_order_data($payment_method);
 
     return Helper::remove_keys($order_data, $except_keys);
@@ -24,7 +24,7 @@ class OrderData {
    * @return array[]
    */
   public static function adjust_order_data($order_id, $data_to_update) {
-    $except_keys = ['buyer', 'billing_address', 'shipping_address'];
+    $except_keys = self::add_lines_to_except_keys(['buyer', 'billing_address', 'shipping_address'], 'order');
     $order_data = get_post_meta($order_id, Plugin::ORDER_DATA_KEY, true);
 
     $new_order_data = array_merge($order_data, $data_to_update);
@@ -46,8 +46,9 @@ class OrderData {
     $order_data = [
       'payment_method' => $payment_method,
       'currency' => get_woocommerce_currency(),
-      'external_reference_id' => '0', // We will update this id when woocommerce order is created
+      'external_reference_id' => substr(md5(mt_rand()), 0, 7), // We will update this id when woocommerce order is created
       'gross_amount_cents' => round((float) $cart_totals['total'] * 100),
+      'language' => substr(get_locale(), 0, 2),
       'buyer' => [
         'first_name' => isset($customer['first_name']) && Helper::not_null_or_empty($customer['first_name']) ? $customer['first_name'] : null,
         'last_name' => isset($customer['last_name']) && Helper::not_null_or_empty($customer['last_name']) ? $customer['last_name'] : null,
@@ -90,6 +91,8 @@ class OrderData {
     foreach ($cart as $key => $cart_item) {
       /** @var WC_Product $product */
       $product = WC()->product_factory->get_product($cart_item['product_id']);
+      if(!$cart_item['line_total']) continue;
+
       $line_item = [
         'title' => $product->get_title(),
         'quantity' => isset($cart_item['quantity']) ? $cart_item['quantity'] : null,
@@ -127,7 +130,7 @@ class OrderData {
   public static function order_data_from_wc_order(WC_Order $order) {
     $order_data = [
       'currency' => get_woocommerce_currency(),
-      'external_reference_id' => (string) $order->get_id(),
+      'external_reference_id' => $order->get_order_number(),
       'lines' => [],
       'amount' => [],
     ];
@@ -143,6 +146,7 @@ class OrderData {
 
     foreach ($order->get_items() as $item_id => $item) {
       $product = $item->get_product();
+      if(!$item->get_total()) continue;
 
       $line_item = [
         'title' => $product->get_title(),
@@ -180,8 +184,9 @@ class OrderData {
    * @return array[]
    */
   public static function invoice_data_from_wc_order(WC_Order $order) {
+    $except_keys = self::add_lines_to_except_keys([], 'invoice');
     $invoice_data = [
-      'external_reference_id' => (string) $order->get_id(),
+      'external_reference_id' => $order->get_order_number(),
       'invoice_url' => Helper::create_invoice_url($order->get_id()),
       'gross_amount_cents' => round((float) $order->get_total() * 100),
       'tax_cents' => round((float) ($order->get_total_tax() - $order->get_shipping_tax()) * 100), # Considering that is not possible to save taxes that does not belongs to products, removes shipping taxes here
@@ -202,6 +207,7 @@ class OrderData {
 
     foreach ($order->get_items() as $item_id => $item) {
       $product = $item->get_product();
+      if(!$item->get_total()) continue;
 
       $line_item = [
         'external_reference_id' => Helper::not_null_or_empty($product->get_id()) ? (string) $product->get_id() : null,
@@ -210,7 +216,31 @@ class OrderData {
 
       $invoice_data['line_items'][] = $line_item;
     }
+    return Helper::remove_keys($invoice_data, $except_keys);
+  }
 
-    return $invoice_data;
+  private static function add_lines_to_except_keys($keys, $itemType = 'order') {
+    $global_settings = get_option(Plugin::OPTION_NAME);
+    $sendLineSetting = $global_settings['field_send_line_items'] ?? 'yes';
+    $key = 'lines';
+    $sendLines = true;
+
+    switch($itemType) {
+      case 'order':
+        $sendLines = in_array($sendLineSetting, ['yes', 'order']);
+        break;
+      case 'invoice':
+        $sendLines = in_array($sendLineSetting, ['yes']);
+        $key = 'line_items';
+        break;
+      default:
+        $sendLines = true;
+    }
+
+    if(!$sendLines) {
+      $keys[] = $key;
+    }
+
+    return $keys;
   }
 }

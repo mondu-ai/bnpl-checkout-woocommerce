@@ -2,10 +2,11 @@
 
 namespace Mondu\Mondu\Controllers;
 
+use Mondu\Mondu\MonduRequestWrapper;
 use Mondu\Mondu\Models\SignatureVerifier;
+use Mondu\Mondu\Support\Helper;
 use Mondu\Exceptions\MonduException;
 use Mondu\Plugin;
-use WP_Error;
 use WC_Order;
 use WP_REST_Controller;
 use WP_REST_Request;
@@ -14,6 +15,7 @@ use WP_REST_Response;
 class WebhooksController extends WP_REST_Controller {
   public function __construct() {
     $this->namespace = 'mondu/v1/webhooks';
+    $this->mondu_request_wrapper = new MonduRequestWrapper();
   }
 
   // Register our routes
@@ -35,7 +37,7 @@ class WebhooksController extends WP_REST_Controller {
       $signature_payload = $request->get_header('X-MONDU-SIGNATURE');
       $signature = $verifier->create_hmac($params);
 
-      if (!$signature === $signature_payload) {
+      if ($signature !== $signature_payload) {
         throw new MonduException(__('Signature mismatch.', 'mondu'));
       }
 
@@ -58,17 +60,18 @@ class WebhooksController extends WP_REST_Controller {
           break;
         default:
           throw new MonduException(__('Unregistered topic.', 'mondu'));
-        }
-      } catch (MonduException $e) {
-        $res_body = ['message' => $e->getMessage()];
-        $res_status = 400;
+      }
+    } catch (MonduException $e) {
+      $this->mondu_request_wrapper->log_plugin_event($e, 'webhooks');
+      $res_body = ['message' => $e->getMessage()];
+      $res_status = 400;
+    } catch (\Exception $e) {
+      $this->mondu_request_wrapper->log_plugin_event($e, 'webhooks');
+      $res_body = ['message' => __('Something happened on our end.', 'mondu')];
+      $res_status = 200;
     }
 
-    if (strpos($res_status, '2') === 0) {
-      return new WP_REST_Response($res_body, 200);
-    } else {
-      return new WP_Error($res_body, array('status' => $res_status));
-    }
+    return new WP_REST_Response($res_body, $res_status);
   }
 
   private function handle_pending($params) {

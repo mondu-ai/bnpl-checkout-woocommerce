@@ -5,13 +5,14 @@ services:
     build: .
     volumes:
       - wordpress_data:/var/www/html
-      - .:/var/www/html/wp-content/plugins/woocommerce-mondu
+      - .:/var/www/html/wp-content/plugins/Woocommerce-Mondu
     links:
       - mariadb
       - mailcatcher
     ports:
       - 8080:80
     environment:
+      WP_DEBUG: 1
       WORDPRESS_DEBUG: 1
       WORDPRESS_DB_HOST: mariadb
       WORDPRESS_DB_USER: wordpress
