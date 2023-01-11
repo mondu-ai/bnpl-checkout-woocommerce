@@ -14,6 +14,7 @@ Increase your revenue with Mondu’s solution, without the operational burden.
 
 * Hotfix in checkout validation
 * Allow user to change title, description and instructions in payment gateways
+* Include payment method title and description in english by default
 * Minor fixes
 
 === 1.1.0 ===
