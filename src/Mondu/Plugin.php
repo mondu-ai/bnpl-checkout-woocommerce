@@ -239,10 +239,12 @@ class Plugin {
     }
 
     if (!Helper::not_null_or_empty($fields['billing_company'])) {
+      /* translators: %s: Company */
       $errors->add('validation', sprintf(__('%s is a required field for Mondu payments.', 'mondu'), '<strong>' . __('Company', 'mondu') . '</strong>'));
     }
 
     if (!$this->is_country_available($fields['billing_country'])) {
+      /* translators: %s: Billing country */
       $errors->add('validation', sprintf(__('%s not available for Mondu Payments.', 'mondu'), '<strong>' . __('Billing country', 'mondu') . '</strong>'));
     }
   }

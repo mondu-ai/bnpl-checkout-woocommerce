@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: WooCommerce-Mondu 1.1.0\n"
+"Project-Id-Version: WooCommerce-Mondu 1.1.1\n"
 "Report-Msgid-Bugs-To: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -32,7 +32,7 @@ msgid "https://mondu.ai"
 msgstr "https://mondu.ai"
 
 #: src/Mondu/Admin/Option/Account.php:17
-#: src/Mondu/Plugin.php:207
+#: src/Mondu/Plugin.php:206
 msgid "Settings"
 msgstr "Einstellungen"
 
@@ -65,7 +65,7 @@ msgstr "Mondu Einstellungen"
 msgid "Missing Credentials"
 msgstr "Fehlende Credentials"
 
-#: src/Mondu/Mondu/Api.php:290
+#: src/Mondu/Mondu/Api.php:286
 msgid "Unexpected API response format."
 msgstr "Unerwartetes API-Antwortformat."
 
@@ -93,7 +93,6 @@ msgstr "Erforderliche Parameter fehlen."
 msgid "Not Found"
 msgstr "Nicht gefunden"
 
-#: src/Mondu/Mondu/Gateway.php:32
 #: src/Mondu/Mondu/Gateway.php:34
 msgid "Invoice - Pay later by bank transfer"
 msgstr "Rechnungskauf - jetzt kaufen, später bezahlen"
@@ -102,36 +101,32 @@ msgstr "Rechnungskauf - jetzt kaufen, später bezahlen"
 msgid "Mondu Invoice"
 msgstr "Mondu Rechnungskauf"
 
-#: src/Mondu/Mondu/Gateway.php:49
-#: src/Mondu/Mondu/GatewayDirectDebit.php:45
-#: src/Mondu/Mondu/GatewayInstallment.php:44
+#: src/Mondu/Mondu/GatewayFields.php:15
 msgid "Enable this payment method"
 msgstr "Aktivieren Sie diese Zahlungsart"
 
-#: src/Mondu/Mondu/GatewayDirectDebit.php:28
-#: src/Mondu/Mondu/GatewayDirectDebit.php:30
+#: src/Mondu/Mondu/GatewayDirectDebit.php:34
 msgid "SEPA - Pay later by direct debit"
 msgstr "SEPA-Lastschrift - jetzt kaufen, später bezahlen"
 
-#: src/Mondu/Mondu/GatewayDirectDebit.php:29
+#: src/Mondu/Mondu/GatewayDirectDebit.php:33
 msgid "Mondu SEPA Direct Debit"
 msgstr "Mondu SEPA-Lastschrift"
 
-#: src/Mondu/Mondu/GatewayInstallment.php:28
-#: src/Mondu/Mondu/GatewayInstallment.php:30
+#: src/Mondu/Mondu/GatewayInstallment.php:34
 msgid "Split payments - Pay conveniently in installments by direct debit"
 msgstr "Ratenzahlung - Bequem in Raten per Bankeinzug zahlen"
 
-#: src/Mondu/Mondu/GatewayInstallment.php:29
+#: src/Mondu/Mondu/GatewayInstallment.php:33
 msgid "Mondu Installment"
 msgstr "Mondu Ratenzahlung"
 
-#: src/Mondu/Mondu/MonduRequestWrapper.php:291
+#: src/Mondu/Mondu/MonduRequestWrapper.php:289
 msgid "Mondu: Can not create a credit note without an invoice"
 msgstr "Mondu: Kann keine Gutschrift ohne Rechnung erstellen"
 
 #: src/Mondu/Mondu/Presenters/PaymentInfo.php:43
-#: src/Mondu/Plugin.php:274
+#: src/Mondu/Plugin.php:275
 msgid "Order state"
 msgstr "Bestellstatus"
 
@@ -198,48 +193,60 @@ msgstr "Gutschriftsnummer"
 msgid "Cancel Invoice"
 msgstr "Rechnung stornieren"
 
-#: src/Mondu/Plugin.php:163
+#: src/Mondu/Plugin.php:162
 msgid "Since this order will be paid via Mondu you will not be able to change the addresses."
 msgstr "Da diese Bestellung über Mondu bezahlt wird, können Sie die Adressen nicht ändern."
 
-#: src/Mondu/Plugin.php:207
+#: src/Mondu/Plugin.php:206
 msgid "View Mondu settings"
 msgstr "Mondu-Einstellungen anzeigen"
 
-#: src/Mondu/Plugin.php:227
+#: src/Mondu/Plugin.php:226
 msgid "View Mondu documentation"
 msgstr "Mondu-Dokumentation anzeigen"
 
-#: src/Mondu/Plugin.php:227
+#: src/Mondu/Plugin.php:226
 msgid "Docs"
 msgstr "Dokumente"
 
+#. translators: %s: Company
 #: src/Mondu/Plugin.php:243
-msgid "Company is a required field for Mondu payments."
-msgstr "Firma ist ein Pflichtfeld für Mondu-Zahlungen."
+msgid "%s is a required field for Mondu payments."
+msgstr "%s ist ein Pflichtfeld für Mondu-Zahlungen."
 
-#: src/Mondu/Plugin.php:247
-msgid "Billing country not available for Mondu Payments."
-msgstr "Rechnungsland für Mondu-Zahlungen nicht verfügbar."
+#. translators: %s: Company
+#: src/Mondu/Plugin.php:243
+msgid "Company"
+msgstr "Firma"
 
-#: src/Mondu/Plugin.php:275
-#: src/Mondu/Plugin.php:313
-#: src/Mondu/Plugin.php:354
+#. translators: %s: Billing country
+#: src/Mondu/Plugin.php:248
+msgid "%s not available for Mondu Payments."
+msgstr "%s für Mondu-Zahlungen nicht verfügbar."
+
+#. translators: %s: Billing country
+#: src/Mondu/Plugin.php:248
+msgid "Billing country"
+msgstr "Rechnungsland"
+
+#: src/Mondu/Plugin.php:276
+#: src/Mondu/Plugin.php:314
+#: src/Mondu/Plugin.php:355
 msgid "Cancelled"
 msgstr "Storniert"
 
-#: src/Mondu/Plugin.php:293
-#: src/Mondu/Plugin.php:332
+#: src/Mondu/Plugin.php:294
+#: src/Mondu/Plugin.php:333
 msgid "Mondu Invoice paid"
 msgstr "Mondu-Rechnung bezahlt"
 
-#: src/Mondu/Plugin.php:294
-#: src/Mondu/Plugin.php:333
+#: src/Mondu/Plugin.php:295
+#: src/Mondu/Plugin.php:334
 msgid "True"
 msgstr "Wahr"
 
-#: src/Mondu/Plugin.php:312
-#: src/Mondu/Plugin.php:353
+#: src/Mondu/Plugin.php:313
+#: src/Mondu/Plugin.php:354
 msgid "Mondu Invoice state"
 msgstr "Mondu-Rechnungsstatus"
 
@@ -270,7 +277,7 @@ msgstr "Protokolle herunterladen"
 msgid "Log date"
 msgstr "Log date"
 
-#: views/checkout/payment-form.php:123
+#: views/checkout/payment-form.php:132
 msgid "Hinweise zur Verarbeitung Ihrer personenbezogenen Daten durch die Mondu GmbH finden Sie <a href=\"https://mondu.ai/de/datenschutzgrundverordnung-kaeufer\" target=\"_blank\">hier</a>."
 msgstr "Hinweise zur Verarbeitung Ihrer personenbezogenen Daten durch die Mondu GmbH finden Sie <a href=\"https://mondu.ai/de/datenschutzgrundverordnung-kaeufer\" target=\"_blank\">hier</a>."
 
@@ -286,17 +293,29 @@ msgstr "Einzelposten senden"
 msgid "Send line items only for orders"
 msgstr "Senden Sie nur Einzelposten für Bestellungen"
 
-#: src/Mondu/Plugin.php:366
+#: src/Mondu/Plugin.php:367
 msgid "Mondu requires WooCommerce to be activated."
 msgstr "Mondu erfordert die Aktivierung von WooCommerce."
 
-#: src/Mondu/Mondu/Gateway.php:95
-#: src/Mondu/Mondu/GatewayDirectDebit.php:90
-#: src/Mondu/Mondu/GatewayInstallment.php:89
+#: src/Mondu/Mondu/Gateway.php:105
+#: src/Mondu/Mondu/GatewayDirectDebit.php:105
+#: src/Mondu/Mondu/GatewayInstallment.php:105
 msgid "Error placing an order. Please try again."
 msgstr "Fehler beim Aufgeben einer Bestellung. Bitte versuchen Sie es erneut."
 
-#: src/Mondu/Mondu/Controllers/OrdersController.php:38
-#: views/checkout/payment-form.php:95
+#: src/Mondu/Mondu/Controllers/OrdersController.php:44
+#: views/checkout/payment-form.php:98
 msgid "Error processing checkout. Please try again."
 msgstr "Fehler bei der Bearbeitung der Kaufabwicklung. Bitte versuchen Sie es erneut."
+
+#: src/Mondu/Mondu/GatewayFields.php:21
+msgid "This controls the title which the user sees during checkout."
+msgstr "Dies steuert den Titel, den der Benutzer während der Kaufabwicklung sieht."
+
+#: src/Mondu/Mondu/GatewayFields.php:28
+msgid "Payment method description that the customer will see on your checkout."
+msgstr "Beschreibung der Zahlungsmethode, die der Kunde bei der Kaufabwicklung sehen wird."
+
+#: src/Mondu/Mondu/GatewayFields.php:35
+msgid "Instructions that will be added to the thank you page and emails."
+msgstr "Anweisungen, die der Dankesseite und den E-Mails hinzugefügt werden."
