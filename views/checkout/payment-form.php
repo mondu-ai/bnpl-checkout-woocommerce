@@ -85,18 +85,31 @@
     }
   }
 
-  function handleErrors(errors = null) {
-    jQuery('.woocommerce-error').remove();
-    if (errors) {
-      jQuery('form.woocommerce-checkout').prepend(errors);
-    } else {
+  function handleErrors(error_message = null) {
+    var scrollElement = jQuery('.woocommerce-NoticeGroup-updateOrderReview, .woocommerce-NoticeGroup-checkout');
+    if (!scrollElement.length ) {
+      scrollElement = jQuery('form.checkout');
+    }
+
+    if(!error_message) {
       jQuery('form.woocommerce-checkout').prepend(
         '<div class="woocommerce-error">' +
         '<?php echo __('Error processing checkout. Please try again.', 'mondu'); ?>' +
         '</div>'
       );
+      jQuery.scroll_to_notices( scrollElement );
+      return;
     }
-    jQuery.scroll_to_notices(jQuery('.woocommerce-error'));
+    // from woocommerce checkout.js submit_error function line 570
+    var $checkout_form = jQuery('form.checkout');
+    jQuery('.woocommerce-NoticeGroup-checkout, .woocommerce-error, .woocommerce-message').remove();
+    $checkout_form.prepend('<div class="woocommerce-NoticeGroup woocommerce-NoticeGroup-checkout">' + error_message + '</div>');
+    $checkout_form.removeClass('processing').unblock();
+    $checkout_form.find('.input-text, select, input:checkbox').trigger('validate').trigger('blur');
+    var scrollElement = jQuery('.woocommerce-NoticeGroup-updateOrderReview, .woocommerce-NoticeGroup-checkout');
+
+    jQuery.scroll_to_notices( scrollElement );
+    jQuery( document.body ).trigger( 'checkout_error' , [ error_message ] );
   }
 
   jQuery(document).ready(function () {
@@ -108,6 +121,7 @@
         payWithMondu();
         return false;
       }
+      return false;
     });
   });
 </script>

@@ -49,9 +49,16 @@ class OrdersController extends WP_REST_Controller {
     $errors = new WP_Error();
 
     $posted_data = WC()->checkout()->get_posted_data();
-    call_user_func_array(array(WC()->checkout(), 'update_session'), array($posted_data));
-    call_user_func_array(array(WC()->checkout(), 'validate_checkout'), array($posted_data, $errors));
-    do_action('woocommerce_after_checkout_validation', $posted_data, $errors);
+
+    $validate_checkout_method = new \ReflectionMethod(get_class(WC()->checkout()), 'validate_checkout');
+    $update_session_method = new \ReflectionMethod(get_class(WC()->checkout()), 'update_session');
+
+    $update_session_method->setAccessible(true);
+    $validate_checkout_method->setAccessible(true);
+
+    $update_session_method->invoke(WC()->checkout(), $posted_data);
+    $validate_checkout_method->invoke(WC()->checkout(), $posted_data, $errors);
+    // do_action('woocommerce_after_checkout_validation', $posted_data, $errors);
 
     foreach ($errors->errors as $code => $messages) {
       $data = $errors->get_error_data($code);
