@@ -4,6 +4,7 @@ namespace Mondu\Mondu;
 
 use Mondu\Exceptions\MonduException;
 use Mondu\Exceptions\ResponseException;
+use Mondu\Mondu\GatewayFields;
 use Mondu\Mondu\MonduRequestWrapper;
 use Mondu\Mondu\Support\OrderData;
 use Mondu\Plugin;
@@ -20,62 +21,39 @@ class GatewayInstallment extends WC_Payment_Gateway {
    * @var string|void
    */
   protected $method_name;
+  /**
+   * @var MonduRequestWrapper
+   */
+  private $mondu_request_wrapper;
 
   public function __construct() {
     $this->global_settings = get_option(Plugin::OPTION_NAME);
 
     $this->id = Plugin::PAYMENT_METHODS['installment'];
-    $this->title = __('Ratenzahlung - Bequem in Raten per Bankeinzug zahlen', 'mondu');
     $this->method_title = __('Mondu Ratenzahlung', 'mondu');
     $this->method_description = __('Ratenzahlung - Bequem in Raten per Bankeinzug zahlen', 'mondu');
     $this->has_fields = true;
-    $this->icon = apply_filters( 'woocommerce_gateway_icon',  MONDU_PUBLIC_PATH . '/views/mondu.svg', $this->id);
+    $this->icon = apply_filters('woocommerce_gateway_icon', MONDU_PUBLIC_PATH . '/views/mondu.svg', $this->id);
+
     $this->init_form_fields();
     $this->init_settings();
 
     // Define user set variables
-		$this->title        = $this->get_option( 'title' );
-		$this->description  = $this->get_option( 'description' );
-		$this->instructions = $this->get_option( 'instructions', $this->description );
+    $this->title = $this->get_option('title');
+    $this->description = $this->get_option('description');
+    $this->instructions = $this->get_option('instructions');
 
     $this->mondu_request_wrapper = new MonduRequestWrapper();
+
+    add_action('woocommerce_update_options_payment_gateways_' . $this->id, array($this, 'process_admin_options'));
+    add_action('woocommerce_thankyou_' . $this->id, array($this, 'thankyou_page'));
   }
 
   /**
    * Initialise Gateway Settings Form Fields
    */
   public function init_form_fields() {
-    $this->form_fields = array(
-      'enabled' => array(
-        'title' => __('Enable/Disable', 'woocommerce'),
-        'type' => 'checkbox',
-        'label' => __('Enable this payment method', 'mondu'),
-        'default' => 'no',
-      ),
-      'title' => array(
-        'title'       => __( 'Title', 'woocommerce' ),
-        'type'        => 'text',
-        'description' => __( 'This controls the title which the user sees during checkout.', 'woocommerce' ),
-        'default'     => $this->title,
-        'desc_tip'    => true,
-        ),
-      'description' => array(
-        'title'       => __( 'Description', 'woocommerce' ),
-        'type'        => 'textarea',
-        'description' => __( 'Payment method description that the customer will see on your checkout.', 'woocommerce' ),
-        'default'     => $this->method_description,
-        'desc_tip'    => true,
-      ),
-      'instructions' => array(
-        'title'       => __( 'Instructions', 'woocommerce' ),
-        'type'        => 'textarea',
-        'description' => __( 'Instructions that will be added to the thank you page and emails.', 'woocommerce' ),
-        'default'     => '',
-        'desc_tip'    => true,
-      ),
-    );
-
-    add_action('woocommerce_update_options_payment_gateways_' . $this->id, [$this, 'process_admin_options']);
+    $this->form_fields = GatewayFields::fields($this->method_title, $this->method_description);
   }
 
   /**
@@ -96,12 +74,15 @@ class GatewayInstallment extends WC_Payment_Gateway {
    * @throws ResponseException
    */
   public function payment_fields() {
-    $description = $this->get_description();
-    if ( $description ) {
-            echo wpautop( wptexturize( $description ) ); // @codingStandardsIgnoreLine.
-    }
-  
+    parent::payment_fields();
+
     include MONDU_VIEW_PATH . '/checkout/payment-form.php';
+  }
+
+  public function thankyou_page() {
+    if ($this->instructions) {
+      echo wp_kses_post(wpautop(wptexturize($this->instructions)));
+    }
   }
 
   /**
@@ -119,10 +100,12 @@ class GatewayInstallment extends WC_Payment_Gateway {
     update_post_meta($order_id, Plugin::ORDER_DATA_KEY, $order_data);
 
     $order = $this->mondu_request_wrapper->process_payment($order_id);
+
     if(!$order) {
       wc_add_notice(__('Error placing an order. Please try again.', 'mondu'), 'error');
       return;
     }
+
     return array(
       'result' => 'success',
       'redirect' => $this->get_return_url($order)
