@@ -3,12 +3,18 @@ Contributors: mondu-ai, arthurmmoreira, tikohov20
 Tags: mondu, woocommerce, e-commerce, store, sales, sell, woo, shop, cart, checkout, payment, payments, woo commerce, bnpl, b2b
 Requires at least: 5.9.0
 Tested up to: 6.1.0
-Stable tag: 1.1.0
+Stable tag: 1.1.1
 Requires PHP: 7.4.0
 
 Increase your revenue with Mondu’s solution, without the operational burden.
 
 == Changelog ==
+
+=== 1.1.1 ===
+
+* Hotfix in checkout validation
+* Allow user to change title, description and instructions in payment gateways
+* Minor fixes
 
 === 1.1.0 ===
 
