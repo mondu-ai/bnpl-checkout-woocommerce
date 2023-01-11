@@ -125,11 +125,11 @@ msgstr ""
 
 #: src/Mondu/Mondu/Gateway.php:32
 #: src/Mondu/Mondu/Gateway.php:34
-msgid "Rechnungskauf - jetzt kaufen, später bezahlen"
+msgid "Invoice - Pay later by bank transfer"
 msgstr ""
 
 #: src/Mondu/Mondu/Gateway.php:33
-msgid "Mondu Rechnungskauf"
+msgid "Mondu Invoice"
 msgstr ""
 
 #: src/Mondu/Mondu/Gateway.php:49
@@ -146,20 +146,20 @@ msgstr ""
 
 #: src/Mondu/Mondu/GatewayDirectDebit.php:28
 #: src/Mondu/Mondu/GatewayDirectDebit.php:30
-msgid "SEPA-Lastschrift - jetzt kaufen, später bezahlen"
+msgid "SEPA - Pay later by direct debit"
 msgstr ""
 
 #: src/Mondu/Mondu/GatewayDirectDebit.php:29
-msgid "Mondu SEPA-Lastschrift"
+msgid "Mondu SEPA Direct Debit"
 msgstr ""
 
 #: src/Mondu/Mondu/GatewayInstallment.php:28
 #: src/Mondu/Mondu/GatewayInstallment.php:30
-msgid "Ratenzahlung - Bequem in Raten per Bankeinzug zahlen"
+msgid "Split payments - Pay conveniently in installments by direct debit"
 msgstr ""
 
 #: src/Mondu/Mondu/GatewayInstallment.php:29
-msgid "Mondu Ratenzahlung"
+msgid "Mondu Installment"
 msgstr ""
 
 #: src/Mondu/Mondu/MonduRequestWrapper.php:291

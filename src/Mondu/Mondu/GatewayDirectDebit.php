@@ -30,8 +30,8 @@ class GatewayDirectDebit extends WC_Payment_Gateway {
     $this->global_settings = get_option(Plugin::OPTION_NAME);
 
     $this->id = Plugin::PAYMENT_METHODS['direct_debit'];
-    $this->method_title = __('Mondu SEPA-Lastschrift', 'mondu');
-    $this->method_description = __('SEPA-Lastschrift - jetzt kaufen, später bezahlen', 'mondu');
+    $this->method_title = __('Mondu SEPA Direct Debit', 'mondu');
+    $this->method_description = __('SEPA - Pay later by direct debit', 'mondu');
     $this->has_fields = true;
     $this->icon = apply_filters('woocommerce_gateway_icon', MONDU_PUBLIC_PATH . '/views/mondu.svg', $this->id);
 

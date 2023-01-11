@@ -30,8 +30,8 @@ class Gateway extends WC_Payment_Gateway {
     $this->global_settings = get_option(Plugin::OPTION_NAME);
 
     $this->id = Plugin::PAYMENT_METHODS['invoice'];
-    $this->method_title = __('Mondu Rechnungskauf', 'mondu');
-    $this->method_description = __('Rechnungskauf - jetzt kaufen, später bezahlen', 'mondu');
+    $this->method_title = __('Mondu Invoice', 'mondu');
+    $this->method_description = __('Invoice - Pay later by bank transfer', 'mondu');
     $this->has_fields = true;
     $this->icon = apply_filters('woocommerce_gateway_icon', MONDU_PUBLIC_PATH . '/views/mondu.svg', $this->id);
 
