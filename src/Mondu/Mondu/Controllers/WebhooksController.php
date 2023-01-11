@@ -25,8 +25,8 @@ class WebhooksController extends WP_REST_Controller {
         'methods' => 'POST',
         'callback' => array($this, 'index'),
         'permission_callback' => '__return_true'
-     ),
-   ));
+      )
+    ));
   }
 
   public function index(WP_REST_Request $request) {

@@ -198,7 +198,6 @@ class MonduRequestWrapper {
 
     if(!$this->confirm_order_status($order_id)) {
       WC()->session->set('mondu_order_id', null);
-      WC()->session->set('woocommerce_order_id', null);
       return;
     }
     // Update Mondu order's external reference id
@@ -212,7 +211,6 @@ class MonduRequestWrapper {
      * otherwise we might try to use the same session id for the next order
      */
     WC()->session->set('mondu_order_id', null);
-    WC()->session->set('woocommerce_order_id', null);
 
     return $order;
   }

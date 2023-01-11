@@ -39,6 +39,7 @@
       data: jQuery('form.woocommerce-checkout').serialize(),
       dataType: 'json',
       success: function(res) {
+        // TODO: check refresh and reload
         if (res['token']) {
           let token = res['token'];
           renderWidget(token);
@@ -125,12 +126,6 @@
     });
   });
 </script>
-
-<style>
-  #checkout_mondu_logo {
-    max-height: 1em;
-  }
-</style>
 
 <p>
   <?php

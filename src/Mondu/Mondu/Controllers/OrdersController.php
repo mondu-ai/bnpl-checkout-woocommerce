@@ -5,11 +5,17 @@ namespace Mondu\Mondu\Controllers;
 use Mondu\Exceptions\MonduException;
 use Mondu\Exceptions\ResponseException;
 use Mondu\Mondu\MonduRequestWrapper;
+use ReflectionMethod;
 use WP_Error;
 use WP_REST_Controller;
 use WP_REST_Request;
 
 class OrdersController extends WP_REST_Controller {
+  /**
+   * @var MonduRequestWrapper
+   */
+  private $mondu_request_wrapper;
+
   public function __construct() {
     $this->namespace = 'mondu/v1/orders';
     $this->mondu_request_wrapper = new MonduRequestWrapper();
@@ -30,9 +36,9 @@ class OrdersController extends WP_REST_Controller {
     try {
       $this->validate_checkout();
       if (wc_notice_count('error') === 0) {
-        $this->mondu_request_wrapper->create_order();
+        $order = $this->mondu_request_wrapper->create_order();
         return array(
-          'token' => WC()->session->get('mondu_order_id')
+          'token' => $order['uuid']
         );
       } else {
         throw new MonduException(__('Error processing checkout. Please try again.', 'mondu'));
@@ -50,15 +56,14 @@ class OrdersController extends WP_REST_Controller {
 
     $posted_data = WC()->checkout()->get_posted_data();
 
-    $validate_checkout_method = new \ReflectionMethod(get_class(WC()->checkout()), 'validate_checkout');
-    $update_session_method = new \ReflectionMethod(get_class(WC()->checkout()), 'update_session');
+    $validate_checkout_method = new ReflectionMethod(get_class(WC()->checkout()), 'validate_checkout');
+    $update_session_method = new ReflectionMethod(get_class(WC()->checkout()), 'update_session');
 
     $update_session_method->setAccessible(true);
     $validate_checkout_method->setAccessible(true);
 
     $update_session_method->invoke(WC()->checkout(), $posted_data);
     $validate_checkout_method->invoke(WC()->checkout(), $posted_data, $errors);
-    // do_action('woocommerce_after_checkout_validation', $posted_data, $errors);
 
     foreach ($errors->errors as $code => $messages) {
       $data = $errors->get_error_data($code);

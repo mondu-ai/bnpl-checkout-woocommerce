@@ -120,7 +120,6 @@ class Plugin {
     add_action('woocommerce_checkout_order_processed', function($order_id) {
       $mondu_order_id = WC()->session->get('mondu_order_id');
 
-      WC()->session->set('woocommerce_order_id', $order_id);
       update_post_meta($order_id, Plugin::ORDER_ID_KEY, $mondu_order_id);
     }, 10, 3);
 
@@ -240,11 +239,11 @@ class Plugin {
     }
 
     if (!Helper::not_null_or_empty($fields['billing_company'])) {
-      $errors->add('validation', __('Company is a required field for Mondu payments.', 'mondu'));
+      $errors->add('validation', sprintf(__('%s is a required field for Mondu payments.', 'mondu'), '<strong>' . __('Company', 'mondu') . '</strong>'));
     }
 
     if (!$this->is_country_available($fields['billing_country'])) {
-      $errors->add('validation', __('Billing country not available for Mondu Payments.', 'mondu'));
+      $errors->add('validation', sprintf(__('%s not available for Mondu Payments.', 'mondu'), '<strong>' . __('Billing country', 'mondu') . '</strong>'));
     }
   }
 

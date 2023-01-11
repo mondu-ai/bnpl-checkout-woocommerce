@@ -4,7 +4,7 @@ namespace Mondu\Mondu\Models;
 
 class SignatureVerifier {
   /** @var string */
-  private $secret;
+  private string $secret;
 
   /**
    * @param string $secret
