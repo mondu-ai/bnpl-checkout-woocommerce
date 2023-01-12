@@ -24,6 +24,14 @@ class PaymentInfo {
     $this->invoices_data = $this->get_invoices();
   }
 
+  public function get_order_data() {
+    return $this->order_data;
+  }
+
+  public function get_invoices_data() {
+    return $this->invoices_data;
+  }
+
   /**
    * @return string
    * @throws Exception
@@ -184,17 +192,66 @@ class PaymentInfo {
     return ob_get_clean();
   }
 
+  /**
+   * @return string
+   * @throws Exception
+   */
+  public function get_mondu_wcpdf_section_html() {
+    if (!in_array($this->order->get_payment_method(), Plugin::PAYMENT_METHODS)) {
+      return null;
+    }
+
+    ob_start();
+
+    if ($this->order_data && isset($this->order_data['bank_account'])) {
+      $order_data = $this->order_data;
+      ?>
+        <p>
+          <strong>
+            <?php _e('Please transfer your invoice exclusively to the following bank account', 'mondu'); ?>:
+          </strong>
+        </p>
+        <br>
+        <?php printf($this->get_mondu_payment_html()) ?>
+        <?php printf($this->get_mondu_net_terms()) ?>
+      <?php
+    } else {
+      ?>
+        <section class="woocommerce-order-details mondu-payment">
+          <p>
+            <span><strong><?php _e('Corrupt Mondu order!', 'mondu'); ?></strong></span>
+          </p>
+        </section>
+      <?php
+    }
+
+    return ob_get_clean();
+  }
+
+  private function get_mondu_net_terms() {
+    if (!in_array($this->order->get_payment_method(), Plugin::PAYMENT_METHODS)) {
+      return null;
+    }
+
+    ob_start();
+
+    if ($this->order_data && isset($this->order_data['authorized_net_term'])) {
+      $order_data = $this->order_data;
+      ?>
+        <p>
+          <strong>
+            <?php printf(__('Your authorized net term is %s days from delivery date', 'mondu'), $order_data['authorized_net_term']); ?>.
+          </strong>
+        </p>
+      <?php
+    }
+
+    return ob_get_clean();
+  }
+
   private function get_invoices() {
     try {
-      $mondu_uuid = $this->order->get_id();
-      $trans_key  = $mondu_uuid . 'invoices';
-      $info = get_transient($trans_key);
-      if (false === $info) {
-        $info = $this->mondu_request_wrapper->get_invoices($this->order->get_id());
-        set_transient($trans_key, $info, 1 * 86400);
-      }
-
-      return $info;
+      return $this->mondu_request_wrapper->get_invoices($this->order->get_id());
     } catch (ResponseException $e) {
       return false;
     }
@@ -202,21 +259,9 @@ class PaymentInfo {
 
   private function get_order() {
     try {
-      $mondu_uuid = $this->order->get_id();
-      $trans_key  = $mondu_uuid . 'order';
-      $info = get_transient($trans_key);
-      if (false === $info) {
-        $info = $this->mondu_request_wrapper->get_order($mondu_uuid);
-        set_transient($trans_key, $info, 1 * 86400);
-      }
-
-      return $info;
+      return $this->mondu_request_wrapper->get_order($this->order->get_id());
     } catch (ResponseException $e) {
       return false;
     }
-  }
-
-  public function get_order_data() {
-    return $this->order_data;
   }
 }

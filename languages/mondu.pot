@@ -259,11 +259,6 @@ msgstr ""
 msgid "Mondu Invoice paid"
 msgstr ""
 
-#: src/Mondu/Plugin.php:294
-#: src/Mondu/Plugin.php:333
-msgid "True"
-msgstr ""
-
 #: src/Mondu/Plugin.php:312
 #: src/Mondu/Plugin.php:353
 msgid "Mondu Invoice state"
