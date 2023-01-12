@@ -48,7 +48,7 @@ class Order {
 
   public function render_meta_box_content($order) {
     $payment_info = new PaymentInfo($order->get_id());
-    echo $payment_info->get_mondu_section_html();
+    return $payment_info->get_mondu_section_html();
   }
 
   public function cancel_invoice() {
@@ -63,7 +63,6 @@ class Order {
 
     try {
       $this->mondu_request_wrapper->cancel_invoice($mondu_order_id, $invoice_id);
-      update_post_meta($order_id, Plugin::INVOICE_CANCELED_KEY, true);
     } catch (ResponseException | MonduException $e) {
       wp_send_json([
         'error' => true,

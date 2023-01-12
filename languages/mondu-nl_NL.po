@@ -32,7 +32,7 @@ msgid "https://mondu.ai"
 msgstr "https://mondu.ai"
 
 #: src/Mondu/Admin/Option/Account.php:17
-#: src/Mondu/Plugin.php:206
+#: src/Mondu/Plugin.php:203
 msgid "Settings"
 msgstr "Instellingen"
 
@@ -125,128 +125,135 @@ msgstr "Mondu gespreid betalenn"
 msgid "Mondu: Can not create a credit note without an invoice"
 msgstr "Mondu: Kan geen creditnota aanmaken zonder factuur"
 
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:43
-#: src/Mondu/Plugin.php:275
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:51
+#: src/Mondu/Plugin.php:277
 msgid "Order state"
 msgstr "Order status"
 
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:47
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:55
 msgid "Mondu ID"
 msgstr "Mondu ID"
 
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:57
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:65
 msgid "Create Invoice"
 msgstr "Factuur aanmaken"
 
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:71
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:79
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:222
 msgid "Corrupt Mondu order!"
 msgstr "Corrupte Mondu order!"
 
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:102
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:110
 msgid "Account holder"
 msgstr "Rekeninghouder"
 
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:106
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:114
 msgid "Bank"
 msgstr "Bank"
 
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:110
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:118
 msgid "IBAN"
 msgstr "IBAN"
 
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:114
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:122
 msgid "BIC"
 msgstr "BIC"
 
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:130
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:138
 msgid "Invoice state"
 msgstr "Factuurstatus"
 
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:134
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:142
 msgid "Invoice number"
 msgstr "Factuurnummer"
 
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:138
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:178
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:146
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:186
 msgid "Total"
 msgstr "Totaal"
 
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:142
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:150
 msgid "Paid out"
 msgstr "Uitbetaald"
 
 #: src/Mondu/Admin/Option/Account.php:39
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:143
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:151
+#: src/Mondu/Plugin.php:300
+#: src/Mondu/Plugin.php:345
 msgid "Yes"
 msgstr "Ja"
 
 #: src/Mondu/Admin/Option/Account.php:41
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:143
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:151
 msgid "No"
 msgstr "Nee"
 
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:174
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:182
 msgid "Credit Note number"
 msgstr "Creditnota Nummer"
 
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:157
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:211
+msgid "Please transfer your invoice exclusively to the following bank account"
+msgstr "Maak uw factuur uitsluitend over op de volgende bankrekening"
+
+#. translators: %s: Authorized net term
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:245
+msgid "Your authorized net term is %s days from delivery date."
+msgstr "Uw toegestane netto termijn is %s dagen vanaf leverdatum"
+
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:165
 msgid "Cancel Invoice"
 msgstr "Factuur annuleren"
 
-#: src/Mondu/Plugin.php:162
+#: src/Mondu/Plugin.php:159
 msgid "Since this order will be paid via Mondu you will not be able to change the addresses."
 msgstr "Omdat deze bestelling via Mondu wordt betaald kunt u de adressen niet meer aanpassen."
 
-#: src/Mondu/Plugin.php:206
+#: src/Mondu/Plugin.php:203
 msgid "View Mondu settings"
 msgstr "Bekijk Mondu instellingen"
 
-#: src/Mondu/Plugin.php:226
+#: src/Mondu/Plugin.php:223
 msgid "View Mondu documentation"
 msgstr "Bekijk Mondu documentatie"
 
-#: src/Mondu/Plugin.php:226
+#: src/Mondu/Plugin.php:223
 msgid "Docs"
 msgstr "Documenten"
 
 #. translators: %s: Company
-#: src/Mondu/Plugin.php:243
+#: src/Mondu/Plugin.php:240
 msgid "%s is a required field for Mondu payments."
 msgstr "%s is een verplicht veld voor Mondu-betalingen."
 
 #. translators: %s: Company
-#: src/Mondu/Plugin.php:243
+#: src/Mondu/Plugin.php:240
 msgid "Company"
 msgstr "Bedrijfsnaam"
 
 #. translators: %s: Billing country
-#: src/Mondu/Plugin.php:248
+#: src/Mondu/Plugin.php:245
 msgid "%s not available for Mondu Payments."
 msgstr "%s is niet beschikbaar voor Mondu-betalingen."
 
 #. translators: %s: Billing country
-#: src/Mondu/Plugin.php:248
+#: src/Mondu/Plugin.php:245
 msgid "Billing country"
 msgstr "Factureringsland"
 
-#: src/Mondu/Plugin.php:276
-#: src/Mondu/Plugin.php:314
-#: src/Mondu/Plugin.php:355
+#: src/Mondu/Plugin.php:278
+#: src/Mondu/Plugin.php:322
+#: src/Mondu/Plugin.php:369
 msgid "Cancelled"
 msgstr "Geannuleerd"
 
-#: src/Mondu/Plugin.php:294
-#: src/Mondu/Plugin.php:333
+#: src/Mondu/Plugin.php:299
+#: src/Mondu/Plugin.php:344
 msgid "Mondu Invoice paid"
 msgstr "Mondu Factuur betaald"
 
-#: src/Mondu/Plugin.php:295
-#: src/Mondu/Plugin.php:334
-msgid "True"
-msgstr "True"
-
-#: src/Mondu/Plugin.php:313
-#: src/Mondu/Plugin.php:354
+#: src/Mondu/Plugin.php:321
+#: src/Mondu/Plugin.php:368
 msgid "Mondu Invoice state"
 msgstr "Mondu Factuur status"
 
@@ -293,7 +300,7 @@ msgstr "Regel items verzenden"
 msgid "Send line items only for orders"
 msgstr "Stuur alleen regelitems voor bestellingen"
 
-#: src/Mondu/Plugin.php:367
+#: src/Mondu/Plugin.php:381
 msgid "Mondu requires WooCommerce to be activated."
 msgstr "Mondu vereist dat WooCommerce wordt geactiveerd."
 
