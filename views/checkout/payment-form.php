@@ -60,7 +60,6 @@
       onClose: () => {
         monduUnblock();
         checkoutCallback();
-        result = '';
         return new Promise((resolve) => resolve())
       },
       onSuccess: () => {
@@ -80,6 +79,7 @@
     if (result === 'success') {
       jQuery('#place_order').parents('form').submit();
     } else {
+      result = '';
       jQuery(document.body).trigger('wc_update_cart');
       jQuery(document.body).trigger('update_checkout');
       window.monduCheckout.destroy();
