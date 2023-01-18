@@ -139,6 +139,7 @@ class Plugin {
     add_action('wpo_wcpdf_after_order_data', [$this, 'wcpdf_add_status_to_invoice_when_invoice_is_cancelled'], 10, 2);
     add_action('wpo_wcpdf_meta_box_after_document_data', [$this, 'wcpdf_add_paid_to_invoice_admin_when_invoice_is_paid'], 10, 2);
     add_action('wpo_wcpdf_meta_box_after_document_data', [$this, 'wcpdf_add_status_to_invoice_admin_when_invoice_is_cancelled'], 10, 2);
+    add_action('wpo_wcpdf_reload_text_domains', [$this, 'wcpdf_add_mondu_payment_language_switch'], 10, 1);
   }
 
   public function load_textdomain() {
@@ -256,7 +257,7 @@ class Plugin {
     if ($template_type !== 'invoice') return;
 
     $payment_info = new PaymentInfo($order->get_id());
-    echo $payment_info->get_mondu_wcpdf_section_html();
+    echo $payment_info->get_mondu_wcpdf_section_html(true);
   }
 
   /**
@@ -371,6 +372,14 @@ class Plugin {
         </div>
       <?php
     }
+  }
+
+  /**
+   * @param $locale
+   */
+  public function wcpdf_add_mondu_payment_language_switch($locale) {
+    unload_textdomain( 'mondu' );
+    $this->load_textdomain();
   }
 
   /**
