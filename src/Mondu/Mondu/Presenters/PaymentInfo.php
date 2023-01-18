@@ -20,8 +20,17 @@ class PaymentInfo {
   public function __construct($order_id) {
     $this->order = new WC_Order($order_id);
     $this->mondu_request_wrapper = new MonduRequestWrapper();
-    $this->order_data = $this->get_order();
-    $this->invoices_data = $this->get_invoices();
+    $order_data = $this->get_order();
+    if (!$order_data)
+      $order_data = array();
+
+    $this->order_data = $order_data;
+
+    $invoices_data = $this->get_invoices();
+    if (!$invoices_data)
+      $invoices_data = array();
+
+    $this->invoices_data = $invoices_data;
   }
 
   public function get_order_data() {
