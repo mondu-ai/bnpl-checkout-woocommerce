@@ -185,8 +185,18 @@ class OrderData {
    */
   public static function invoice_data_from_wc_order(WC_Order $order) {
     $except_keys = self::add_lines_to_except_keys([], 'invoice');
+
+    if (function_exists('wcpdf_get_document')) {
+      $document = wcpdf_get_document( 'invoice', $order, false );
+      $invoice_number = $document->get_number()->get_formatted();
+    } else {
+      $invoice_number = $order->get_order_number();
+    }
+
+    $invoice_number = apply_filters('mondu_invoice_reference_id', $invoice_number);
+
     $invoice_data = [
-      'external_reference_id' => $order->get_order_number(),
+      'external_reference_id' => $invoice_number,
       'invoice_url' => Helper::create_invoice_url($order->get_id()),
       'gross_amount_cents' => round((float) $order->get_total() * 100),
       'tax_cents' => round((float) ($order->get_total_tax() - $order->get_shipping_tax()) * 100), # Considering that is not possible to save taxes that does not belongs to products, removes shipping taxes here
