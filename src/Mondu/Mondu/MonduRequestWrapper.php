@@ -38,6 +38,27 @@ class MonduRequestWrapper {
   }
 
   /**
+   * @throws MonduException
+   * @throws ResponseException
+   */
+  public function create_order_pay_page($data) {
+    $payment_method = $data['payment_method'];
+    if (!in_array($payment_method, Plugin::PAYMENT_METHODS)) {
+      return;
+    }
+    $payment_method = array_search($payment_method, Plugin::PAYMENT_METHODS);
+
+    $order = wc_get_order($data['order_id']);
+    $order_data = OrderData::raw_order_data_from_wc_order($order);
+
+    $response = $this->wrap_with_mondu_log_event('create_order', array($order_data));
+    $order = $response['order'];
+    WC()->session->set('mondu_order_id', $order['uuid']);
+    update_post_meta($data['order_id'], Plugin::ORDER_ID_KEY, $order['uuid']);
+    return $order;
+  }
+
+  /**
    * @param $order_id
    *
    * @throws MonduException
@@ -219,7 +240,9 @@ class MonduRequestWrapper {
     $order = $this->get_order($order_id);
 
     if(!$order) return false;
-    if(!in_array($order['state'], ['confirmed', 'pending'])) return false;
+
+    $confirm_order_status = apply_filters('mondu_confirm_order_statuses', ['confirmed', 'pending']);
+    if(!in_array($order['state'], $confirm_order_status)) return false;
 
     return true;
   }

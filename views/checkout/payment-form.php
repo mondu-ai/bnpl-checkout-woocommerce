@@ -1,5 +1,7 @@
 <script>
   var shouldShowMondu = true;
+  var order_id = 0;
+  var orderpay = false;
   var result = '';
   var url = '<?php echo get_site_url(null, '/index.php'); ?>';
 
@@ -33,10 +35,16 @@
     }
     monduBlock();
 
+    if (orderpay === false) {
+      $data = jQuery('form.woocommerce-checkout').serialize();
+    } else {
+      $data = jQuery('form#order_review').serialize() + "&orderpay=yes" + "&order_id=" + order_id;
+    }
+
     jQuery.ajax({
       type: 'POST',
       url: `${url}?rest_route=/mondu/v1/orders/create`,
-      data: jQuery('form.woocommerce-checkout').serialize(),
+      data: $data,
       dataType: 'json',
       success: function(res) {
         // TODO: check refresh and reload
@@ -88,12 +96,23 @@
 
   function handleErrors(error_message = null) {
     var scrollElement = jQuery('.woocommerce-NoticeGroup-updateOrderReview, .woocommerce-NoticeGroup-checkout');
+
+    if (orderpay)
+      var $checkout_form = jQuery('form#order_review');
+    else
+      var $checkout_form = jQuery('form.checkout');
+
     if (!scrollElement.length ) {
-      scrollElement = jQuery('form.checkout');
+      scrollElement = $checkout_form;
     }
 
-    if(!error_message) {
-      jQuery('form.woocommerce-checkout').prepend(
+    if (!error_message) {
+      if (orderpay)
+        var $checkout_form = jQuery('form#order_review');
+      else
+        var $checkout_form = jQuery('form.woocommerce-checkout');
+
+      $checkout_form.prepend(
         '<div class="woocommerce-error">' +
         '<?php echo __('Error processing checkout. Please try again.', 'mondu'); ?>' +
         '</div>'
@@ -102,7 +121,6 @@
       return;
     }
     // from woocommerce checkout.js submit_error function line 570
-    var $checkout_form = jQuery('form.checkout');
     jQuery('.woocommerce-NoticeGroup-checkout, .woocommerce-error, .woocommerce-message').remove();
     $checkout_form.prepend('<div class="woocommerce-NoticeGroup woocommerce-NoticeGroup-checkout">' + error_message + '</div>');
     $checkout_form.removeClass('processing').unblock();
@@ -114,16 +132,33 @@
   }
 
   jQuery(document).ready(function () {
-    jQuery('form.woocommerce-checkout').on('checkout_place_order', function (e) {
-      if (!isMondu()) return true;
-      if (result ==='success') return true;
+    if ( jQuery( document.body ).hasClass( 'woocommerce-order-pay' ) ) {
+      jQuery( '#order_review' ).on( 'submit', function (e) {
+        if (!isMondu()) return true;
+        if (result ==='success') return true;
 
-      if (shouldShowMondu === true) {
-        payWithMondu();
+        e.preventDefault();
+        orderpay = true;
+        order_id = <?php echo $order_id; ?>;
+
+        if (shouldShowMondu === true) {
+          payWithMondu();
+          return false;
+        }
         return false;
-      }
-      return false;
-    });
+      });
+    } else {
+      jQuery('form.woocommerce-checkout').on('checkout_place_order', function (e) {
+        if (!isMondu()) return true;
+        if (result ==='success') return true;
+
+        if (shouldShowMondu === true) {
+          payWithMondu();
+          return false;
+        }
+        return false;
+      });
+    }
   });
 </script>
 
