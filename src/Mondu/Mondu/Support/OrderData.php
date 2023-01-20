@@ -42,11 +42,12 @@ class OrderData {
     $cart = WC()->session->get('cart');
     $cart_totals = WC()->session->get('cart_totals');
     $customer = WC()->session->get('customer');
+    $cart_hash = WC()->cart->get_cart_hash();
 
     $order_data = [
       'payment_method' => $payment_method,
       'currency' => get_woocommerce_currency(),
-      'external_reference_id' => substr(md5(mt_rand()), 0, 7), // We will update this id when woocommerce order is created
+      'external_reference_id' => $cart_hash, // We will update this id when woocommerce order is created
       'gross_amount_cents' => round((float) $cart_totals['total'] * 100),
       'language' => substr(get_locale(), 0, 2),
       'buyer' => [
