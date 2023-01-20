@@ -66,7 +66,7 @@ class MonduRequestWrapper {
    */
   public function get_order($order_id) {
     $order = new WC_Order($order_id);
-    if (!in_array($order->get_payment_method(), Plugin::PAYMENT_METHODS)) {
+    if (!PLUGIN::order_has_mondu($order)) {
       return;
     }
 
@@ -83,7 +83,7 @@ class MonduRequestWrapper {
    */
   public function update_external_info($order_id) {
     $order = new WC_Order($order_id);
-    if (!in_array($order->get_payment_method(), Plugin::PAYMENT_METHODS)) {
+    if (!PLUGIN::order_has_mondu($order)) {
       return;
     }
 
@@ -102,7 +102,7 @@ class MonduRequestWrapper {
    */
   public function adjust_order($order_id, $data_to_update) {
     $order = new WC_Order($order_id);
-    if (!in_array($order->get_payment_method(), Plugin::PAYMENT_METHODS)) {
+    if (!PLUGIN::order_has_mondu($order)) {
       return;
     }
 
@@ -119,7 +119,7 @@ class MonduRequestWrapper {
    */
   public function cancel_order($order_id) {
     $order = new WC_Order($order_id);
-    if (!in_array($order->get_payment_method(), Plugin::PAYMENT_METHODS)) {
+    if (!PLUGIN::order_has_mondu($order)) {
       return;
     }
 
@@ -136,7 +136,7 @@ class MonduRequestWrapper {
    */
   public function ship_order($order_id) {
     $order = new WC_Order($order_id);
-    if (!in_array($order->get_payment_method(), Plugin::PAYMENT_METHODS)) {
+    if (!PLUGIN::order_has_mondu($order)) {
       return;
     }
 
@@ -156,7 +156,7 @@ class MonduRequestWrapper {
    */
   public function get_invoices($order_id) {
     $order = new WC_Order($order_id);
-    if (!in_array($order->get_payment_method(), Plugin::PAYMENT_METHODS)) {
+    if (!PLUGIN::order_has_mondu($order)) {
       return;
     }
 
@@ -173,7 +173,7 @@ class MonduRequestWrapper {
    */
   public function get_invoice($order_id) {
     $order = new WC_Order($order_id);
-    if (!in_array($order->get_payment_method(), Plugin::PAYMENT_METHODS)) {
+    if (!PLUGIN::order_has_mondu($order)) {
       return;
     }
 
@@ -254,7 +254,7 @@ class MonduRequestWrapper {
    * @throws ResponseException
    */
   public function update_order_if_changed_some_fields($order) {
-    if (!in_array($order->get_payment_method(), Plugin::PAYMENT_METHODS)) {
+    if (!PLUGIN::order_has_mondu($order)) {
       return;
     }
 
@@ -278,7 +278,7 @@ class MonduRequestWrapper {
    */
   public function order_status_changed($order_id, $from_status, $to_status) {
     $order = new WC_Order($order_id);
-    if (!in_array($order->get_payment_method(), Plugin::PAYMENT_METHODS)) {
+    if (!PLUGIN::order_has_mondu($order)) {
       return;
     }
 
@@ -301,7 +301,7 @@ class MonduRequestWrapper {
    */
   public function order_refunded($order_id, $refund_id) {
     $order = new WC_Order($order_id);
-    if (!in_array($order->get_payment_method(), Plugin::PAYMENT_METHODS)) {
+    if (!PLUGIN::order_has_mondu($order)) {
       return;
     }
 
