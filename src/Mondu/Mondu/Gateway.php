@@ -77,8 +77,8 @@ class Gateway extends WC_Payment_Gateway {
     parent::payment_fields();
     $order_id = 0;
 
-    if ( is_wc_endpoint_url( 'order-pay' ) ) {
-      $order_id = absint( get_query_var( 'order-pay' ) );
+    if (is_wc_endpoint_url('order-pay')) {
+      $order_id = absint(get_query_var('order-pay'));
     }
 
     include MONDU_VIEW_PATH . '/checkout/payment-form.php';
