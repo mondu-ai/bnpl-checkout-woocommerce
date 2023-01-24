@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: WooCommerce-Mondu 1.1.1\n"
+"Project-Id-Version: WooCommerce-Mondu 1.1.2\n"
 "Report-Msgid-Bugs-To: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -32,7 +32,7 @@ msgid "https://mondu.ai"
 msgstr "https://mondu.ai"
 
 #: src/Mondu/Admin/Option/Account.php:17
-#: src/Mondu/Plugin.php:203
+#: src/Mondu/Plugin.php:204
 msgid "Settings"
 msgstr "Einstellungen"
 
@@ -121,139 +121,139 @@ msgstr "Ratenzahlung - Bequem in Raten per Bankeinzug zahlen"
 msgid "Mondu Installment"
 msgstr "Mondu Ratenzahlung"
 
-#: src/Mondu/Mondu/MonduRequestWrapper.php:289
+#: src/Mondu/Mondu/MonduRequestWrapper.php:312
 msgid "Mondu: Can not create a credit note without an invoice"
 msgstr "Mondu: Kann keine Gutschrift ohne Rechnung erstellen"
 
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:51
-#: src/Mondu/Plugin.php:277
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:60
+#: src/Mondu/Plugin.php:286
 msgid "Order state"
 msgstr "Bestellstatus"
 
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:55
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:64
 msgid "Mondu ID"
 msgstr "Mondu-ID"
 
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:65
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:74
 msgid "Create Invoice"
 msgstr "Rechnung erstellen"
 
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:79
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:222
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:89
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:251
 msgid "Corrupt Mondu order!"
 msgstr "Fehlerhafte Mondu Bestellung!"
 
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:110
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:132
 msgid "Account holder"
 msgstr "Kontoinhaber"
 
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:114
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:136
 msgid "Bank"
 msgstr "Bankinstitut"
 
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:118
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:140
 msgid "IBAN"
 msgstr "IBAN"
 
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:122
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:144
 msgid "BIC"
 msgstr "BIC"
 
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:138
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:167
 msgid "Invoice state"
 msgstr "Rechnungsstatus"
 
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:142
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:171
 msgid "Invoice number"
 msgstr "Rechnungsnummer"
 
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:146
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:186
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:175
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:215
 msgid "Total"
 msgstr "Gesamt"
 
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:150
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:179
 msgid "Paid out"
 msgstr "Ausgezahlt"
 
 #: src/Mondu/Admin/Option/Account.php:39
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:151
-#: src/Mondu/Plugin.php:300
-#: src/Mondu/Plugin.php:345
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:180
+#: src/Mondu/Plugin.php:313
+#: src/Mondu/Plugin.php:366
 msgid "Yes"
 msgstr "Ja"
 
 #: src/Mondu/Admin/Option/Account.php:41
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:151
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:180
 msgid "No"
 msgstr "Nein"
 
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:182
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:211
 msgid "Credit Note number"
 msgstr "Gutschriftsnummer"
 
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:211
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:240
 msgid "Please transfer your invoice exclusively to the following bank account"
 msgstr "Bitte überweisen Sie Ihre Rechnung ausschließlich an folgendes Bankkonto"
 
 #. translators: %s: Authorized net term
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:245
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:274
 msgid "Your authorized net term is %s days from delivery date."
 msgstr "Ihre genehmigte Nettolaufzeit beträgt %s Tage ab Lieferdatum"
 
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:165
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:194
 msgid "Cancel Invoice"
 msgstr "Rechnung stornieren"
 
-#: src/Mondu/Plugin.php:159
+#: src/Mondu/Plugin.php:160
 msgid "Since this order will be paid via Mondu you will not be able to change the addresses."
 msgstr "Da diese Bestellung über Mondu bezahlt wird, können Sie die Adressen nicht ändern."
 
-#: src/Mondu/Plugin.php:203
+#: src/Mondu/Plugin.php:204
 msgid "View Mondu settings"
 msgstr "Mondu-Einstellungen anzeigen"
 
-#: src/Mondu/Plugin.php:223
+#: src/Mondu/Plugin.php:224
 msgid "View Mondu documentation"
 msgstr "Mondu-Dokumentation anzeigen"
 
-#: src/Mondu/Plugin.php:223
+#: src/Mondu/Plugin.php:224
 msgid "Docs"
 msgstr "Dokumente"
 
 #. translators: %s: Company
-#: src/Mondu/Plugin.php:240
+#: src/Mondu/Plugin.php:241
 msgid "%s is a required field for Mondu payments."
 msgstr "%s ist ein Pflichtfeld für Mondu-Zahlungen."
 
 #. translators: %s: Company
-#: src/Mondu/Plugin.php:240
+#: src/Mondu/Plugin.php:241
 msgid "Company"
 msgstr "Firma"
 
 #. translators: %s: Billing country
-#: src/Mondu/Plugin.php:245
+#: src/Mondu/Plugin.php:246
 msgid "%s not available for Mondu Payments."
 msgstr "%s für Mondu-Zahlungen nicht verfügbar."
 
 #. translators: %s: Billing country
-#: src/Mondu/Plugin.php:245
+#: src/Mondu/Plugin.php:246
 msgid "Billing country"
 msgstr "Rechnungsland"
 
-#: src/Mondu/Plugin.php:278
-#: src/Mondu/Plugin.php:322
-#: src/Mondu/Plugin.php:369
+#: src/Mondu/Plugin.php:287
+#: src/Mondu/Plugin.php:339
+#: src/Mondu/Plugin.php:394
 msgid "Cancelled"
 msgstr "Storniert"
 
-#: src/Mondu/Plugin.php:299
-#: src/Mondu/Plugin.php:344
+#: src/Mondu/Plugin.php:312
+#: src/Mondu/Plugin.php:365
 msgid "Mondu Invoice paid"
 msgstr "Mondu-Rechnung bezahlt"
 
-#: src/Mondu/Plugin.php:321
-#: src/Mondu/Plugin.php:368
+#: src/Mondu/Plugin.php:338
+#: src/Mondu/Plugin.php:393
 msgid "Mondu Invoice state"
 msgstr "Mondu-Rechnungsstatus"
 
@@ -284,8 +284,8 @@ msgstr "Protokolle herunterladen"
 msgid "Log date"
 msgstr "Log date"
 
-#: views/checkout/payment-form.php:132
-msgid "Information on the processing of your personal data by Mondu GmbH can be found <a href=\"https://mondu.ai/de/datenschutzgrundverordnung-kaeufer\" target=\"_blank\">here</a>."
+#: views/checkout/payment-form.php:152
+msgid "Information on the processing of your personal data by Mondu GmbH can be found <a href=\"https://mondu.ai/datenschutzgrundverordnung-haendler/\" target=\"_blank\">here</a>."
 msgstr "Hinweise zur Verarbeitung Ihrer personenbezogenen Daten durch die Mondu GmbH finden Sie <a href=\"https://mondu.ai/de/datenschutzgrundverordnung-kaeufer\" target=\"_blank\">hier</a>."
 
 #: src/Mondu/Mondu/Controllers/WebhooksController.php:70
@@ -300,18 +300,19 @@ msgstr "Einzelposten senden"
 msgid "Send line items only for orders"
 msgstr "Senden Sie nur Einzelposten für Bestellungen"
 
-#: src/Mondu/Plugin.php:381
+#: src/Mondu/Plugin.php:414
 msgid "Mondu requires WooCommerce to be activated."
 msgstr "Mondu erfordert die Aktivierung von WooCommerce."
 
-#: src/Mondu/Mondu/Gateway.php:105
-#: src/Mondu/Mondu/GatewayDirectDebit.php:105
-#: src/Mondu/Mondu/GatewayInstallment.php:105
+#: src/Mondu/Mondu/Gateway.php:110
+#: src/Mondu/Mondu/GatewayDirectDebit.php:110
+#: src/Mondu/Mondu/GatewayInstallment.php:110
 msgid "Error placing an order. Please try again."
 msgstr "Fehler beim Aufgeben einer Bestellung. Bitte versuchen Sie es erneut."
 
-#: src/Mondu/Mondu/Controllers/OrdersController.php:44
-#: views/checkout/payment-form.php:98
+#: src/Mondu/Mondu/Controllers/OrdersController.php:43
+#: src/Mondu/Mondu/Controllers/OrdersController.php:57
+#: views/checkout/payment-form.php:109
 msgid "Error processing checkout. Please try again."
 msgstr "Fehler bei der Bearbeitung der Kaufabwicklung. Bitte versuchen Sie es erneut."
 
@@ -326,3 +327,7 @@ msgstr "Beschreibung der Zahlungsmethode, die der Kunde bei der Kaufabwicklung s
 #: src/Mondu/Mondu/GatewayFields.php:35
 msgid "Instructions that will be added to the thank you page and emails."
 msgstr "Anweisungen, die der Dankesseite und den E-Mails hinzugefügt werden."
+
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:149
+msgid "Purpose"
+msgstr "Zweck"

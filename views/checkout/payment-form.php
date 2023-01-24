@@ -149,6 +149,6 @@
 
 <p>
   <?php
-    printf(wp_kses(__('Information on the processing of your personal data by Mondu GmbH can be found <a href="https://www.mondu.ai/datenschutzgrundverordnung-haendler/" target="_blank">here</a>.', 'mondu'), array('a' => array('href' => array(), 'target' => array()))));
+    printf(wp_kses(__('Information on the processing of your personal data by Mondu GmbH can be found <a href="https://mondu.ai/datenschutzgrundverordnung-haendler/" target="_blank">here</a>.', 'mondu'), array('a' => array('href' => array(), 'target' => array()))));
   ?>
 </p>
