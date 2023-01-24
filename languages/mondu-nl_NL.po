@@ -285,8 +285,8 @@ msgid "Log date"
 msgstr "Log datum"
 
 #: views/checkout/payment-form.php:132
-msgid "Hinweise zur Verarbeitung Ihrer personenbezogenen Daten durch die Mondu GmbH finden Sie <a href=\"https://mondu.ai/de/datenschutzgrundverordnung-kaeufer\" target=\"_blank\">hier</a>."
-msgstr "Informatie over de verwerking van uw persoonsgegevens door Mondu GmbH vindt u <a href=\"https://mondu.ai/nl/datenschutzgrundverordnung-kaeufer\" target=\"_blank\">hier</a>."
+msgid "Information on the processing of your personal data by Mondu GmbH can be found <a href=\"https://mondu.ai/de/datenschutzgrundverordnung-kaeufer\" target=\"_blank\">here</a>."
+msgstr "Informatie over de verwerking van uw persoonsgegevens door Mondu GmbH vindt u <a href=\"https://mondu.ai/nl/information-nach-art-13-datenschutzgrundverordnung-fur-handler\" target=\"_blank\">hier</a>."
 
 #: src/Mondu/Mondu/Controllers/WebhooksController.php:70
 msgid "Something happened on our end."
