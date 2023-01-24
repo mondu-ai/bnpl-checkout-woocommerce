@@ -3,12 +3,20 @@ Contributors: mondu-ai, arthurmmoreira, tikohov20
 Tags: mondu, woocommerce, e-commerce, store, sales, sell, woo, shop, cart, checkout, payment, payments, woo commerce, bnpl, b2b
 Requires at least: 5.9.0
 Tested up to: 6.1.0
-Stable tag: 1.1.1
+Stable tag: 1.1.2
 Requires PHP: 7.4.0
 
 Increase your revenue with Mondu’s solution, without the operational burden.
 
 == Changelog ==
+
+=== 1.1.2 ===
+
+* WCPDF Invoice: Language change and formatting
+* Non mondu orders crash with an error message
+* Support Order Pay page
+* Use cart hash as external_reference_id
+* Minor fixes
 
 === 1.1.1 ===
 
