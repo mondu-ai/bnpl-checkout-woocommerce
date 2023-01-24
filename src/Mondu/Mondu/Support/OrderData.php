@@ -42,11 +42,12 @@ class OrderData {
     $cart = WC()->session->get('cart');
     $cart_totals = WC()->session->get('cart_totals');
     $customer = WC()->session->get('customer');
+    $cart_hash = WC()->cart->get_cart_hash();
 
     $order_data = [
       'payment_method' => $payment_method,
       'currency' => get_woocommerce_currency(),
-      'external_reference_id' => substr(md5(mt_rand()), 0, 7), // We will update this id when woocommerce order is created
+      'external_reference_id' => $cart_hash, // We will update this id when woocommerce order is created
       'gross_amount_cents' => round((float) $cart_totals['total'] * 100),
       'language' => substr(get_locale(), 0, 2),
       'buyer' => [
@@ -127,6 +128,74 @@ class OrderData {
    *
    * @return array[]
    */
+  public static function raw_order_data_from_wc_order(WC_Order $order, $payment_method = 'invoice') {
+    $order_data_extra = OrderData::order_data_from_wc_order($order);
+
+    $customer_id              = $order->get_customer_id();
+
+    $billing_email            = $order->get_billing_email();
+    $billing_first_name       = $order->get_billing_first_name();
+    $billing_last_name        = $order->get_billing_last_name();
+    $billing_company_name     = $order->get_billing_company();
+    $billing_phone            = $order->get_billing_phone();
+
+    $billing_address_line1    = $order->get_billing_address_1();
+    $billing_address_line2    = $order->get_billing_address_2();
+    $billing_city             = $order->get_billing_city();
+    $billing_state            = $order->get_billing_state();
+    $billing_zip_code         = $order->get_billing_postcode();
+    $billing_country_code     = $order->get_billing_country();
+
+    $shipping_address_line1    = $order->get_shipping_address_1();
+    $shipping_address_line2    = $order->get_shipping_address_2();
+    $shipping_city             = $order->get_shipping_city();
+    $shipping_state            = $order->get_shipping_state();
+    $shipping_zip_code         = $order->get_shipping_postcode();
+    $shipping_country_code     = $order->get_shipping_country();
+
+    $order_data = [
+      'payment_method' => $payment_method,
+      'currency' => get_woocommerce_currency(),
+      'external_reference_id' => (string) $order->get_order_number(), // We will update this id when woocommerce order is created
+      'gross_amount_cents' => $order_data_extra['amount']['gross_amount_cents'],
+      'language' => substr(get_locale(), 0, 2),
+      'buyer' => [
+        'first_name' => isset($billing_first_name) && Helper::not_null_or_empty($billing_first_name) ? $billing_first_name : null,
+        'last_name' => isset($billing_last_name) && Helper::not_null_or_empty($billing_last_name) ? $billing_last_name : null,
+        'company_name' => isset($billing_company_name) && Helper::not_null_or_empty($billing_company_name) ? $billing_company_name : null,
+        'email' => isset($billing_email) && Helper::not_null_or_empty($billing_email) ? $billing_email : null,
+        'phone' => isset($billing_phone) && Helper::not_null_or_empty($billing_phone) ? $billing_phone : null,
+        'external_reference_id' => isset($customer_id) && Helper::not_null_or_empty($customer_id) ? (string) $customer_id : null,
+        'is_registered' => is_user_logged_in(),
+      ],
+      'billing_address' => [
+        'address_line1' => isset($billing_address_line1) && Helper::not_null_or_empty($billing_address_line1) ? $billing_address_line1 : null,
+        'address_line2' => isset($billing_address_line2) && Helper::not_null_or_empty($billing_address_line2) ? $billing_address_line2 : null,
+        'city' => isset($billing_city) && Helper::not_null_or_empty($billing_city) ? $billing_city : null,
+        'state' => isset($billing_state) && Helper::not_null_or_empty($billing_state) ? $billing_state : null,
+        'zip_code' => isset($billing_zip_code) && Helper::not_null_or_empty($billing_zip_code) ? $billing_zip_code : null,
+        'country_code' => isset($billing_country_code) && Helper::not_null_or_empty($billing_country_code) ? $billing_country_code : null,
+      ],
+      'shipping_address' => [
+        'address_line1' => isset($shipping_address_line1) && Helper::not_null_or_empty($shipping_address_line1) ? $shipping_address_line1 : null,
+        'address_line2' => isset($shipping_address_line2) && Helper::not_null_or_empty($shipping_address_line2) ? $shipping_address_line2 : null,
+        'city' => isset($shipping_city) && Helper::not_null_or_empty($shipping_city) ? $shipping_city : null,
+        'state' => isset($shipping_state) && Helper::not_null_or_empty($shipping_state) ? $shipping_state : null,
+        'zip_code' => isset($shipping_zip_code) && Helper::not_null_or_empty($shipping_zip_code) ? $shipping_zip_code : null,
+        'country_code' => isset($shipping_country_code) && Helper::not_null_or_empty($shipping_country_code) ? $shipping_country_code : null,
+      ],
+      'lines' => $order_data_extra['lines'],
+      'amount' => $order_data_extra['amount'],
+    ];
+
+    return $order_data;
+  }
+
+  /**
+   * @param $order
+   *
+   * @return array[]
+   */
   public static function order_data_from_wc_order(WC_Order $order) {
     $order_data = [
       'currency' => get_woocommerce_currency(),
@@ -185,8 +254,18 @@ class OrderData {
    */
   public static function invoice_data_from_wc_order(WC_Order $order) {
     $except_keys = self::add_lines_to_except_keys([], 'invoice');
+
+    if (function_exists('wcpdf_get_document')) {
+      $document = wcpdf_get_document('invoice', $order, false);
+      $invoice_number = $document->get_number()->get_formatted();
+    } else {
+      $invoice_number = $order->get_order_number();
+    }
+
+    $invoice_number = apply_filters('mondu_invoice_reference_id', $invoice_number);
+
     $invoice_data = [
-      'external_reference_id' => $order->get_order_number(),
+      'external_reference_id' => $invoice_number,
       'invoice_url' => Helper::create_invoice_url($order->get_id()),
       'gross_amount_cents' => round((float) $order->get_total() * 100),
       'tax_cents' => round((float) ($order->get_total_tax() - $order->get_shipping_tax()) * 100), # Considering that is not possible to save taxes that does not belongs to products, removes shipping taxes here

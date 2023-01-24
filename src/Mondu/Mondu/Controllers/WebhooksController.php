@@ -25,8 +25,8 @@ class WebhooksController extends WP_REST_Controller {
         'methods' => 'POST',
         'callback' => array($this, 'index'),
         'permission_callback' => '__return_true'
-     ),
-   ));
+      )
+    ));
   }
 
   public function index(WP_REST_Request $request) {
@@ -153,7 +153,7 @@ class WebhooksController extends WP_REST_Controller {
       return [['message' => __('Not Found', 'mondu')], 404];
     }
 
-    update_post_meta($woocommerce_order_id, Plugin::INVOICE_PAID_KEY, true);
+    // add invoice invoice payment action
 
     return [['message' => 'ok'], 200];
   }
@@ -172,7 +172,7 @@ class WebhooksController extends WP_REST_Controller {
       return [['message' => __('Not Found', 'mondu')], 404];
     }
 
-    update_post_meta($woocommerce_order_id, Plugin::INVOICE_CANCELED_KEY, true);
+    // add invoice invoice canceled action
 
     return [['message' => 'ok'], 200];
   }

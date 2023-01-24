@@ -20,8 +20,25 @@ class PaymentInfo {
   public function __construct($order_id) {
     $this->order = new WC_Order($order_id);
     $this->mondu_request_wrapper = new MonduRequestWrapper();
-    $this->order_data = $this->get_order();
-    $this->invoices_data = $this->get_invoices();
+    $order_data = $this->get_order();
+    if (!$order_data)
+      $order_data = array();
+
+    $this->order_data = $order_data;
+
+    $invoices_data = $this->get_invoices();
+    if (!$invoices_data)
+      $invoices_data = array();
+
+    $this->invoices_data = $invoices_data;
+  }
+
+  public function get_order_data() {
+    return $this->order_data;
+  }
+
+  public function get_invoices_data() {
+    return $this->invoices_data;
   }
 
   /**
@@ -62,6 +79,7 @@ class PaymentInfo {
         </section>
         <hr>
         <?php printf($this->get_mondu_payment_html()) ?>
+        <?php printf($this->get_mondu_net_terms()) ?>
         <?php printf($this->get_mondu_invoices_html()) ?>
       <?php
     } else {
@@ -83,7 +101,7 @@ class PaymentInfo {
    * @return string
    * @throws Exception
    */
-  public function get_mondu_payment_html() {
+  public function get_mondu_payment_html($pdf=false) {
     if (!in_array($this->order->get_payment_method(), Plugin::PAYMENT_METHODS)) {
       return null;
     }
@@ -94,26 +112,45 @@ class PaymentInfo {
 
     $bank_account = $this->order_data['bank_account'];
 
+    if ($pdf) {
+      if (function_exists('wcpdf_get_document')) {
+        $document = wcpdf_get_document('invoice', $this->order, false);
+        $invoice_number = $document->get_number()->get_formatted();
+      } else {
+        $invoice_number = $this->order->get_order_number();
+      }
+
+      $invoice_number = apply_filters('mondu_invoice_reference_id', $invoice_number);
+    }
+
     ob_start();
 
     ?>
       <section class="woocommerce-order-details mondu-payment">
-        <p>
-          <span><strong><?php _e('Account holder', 'mondu'); ?>:</strong></span>
-          <span><?php printf($bank_account['account_holder']); ?></span>
-        </p>
-        <p>
-          <span><strong><?php _e('Bank', 'mondu'); ?>:</strong></span>
-          <span><?php printf($bank_account['bank']); ?></span>
-        </p>
-        <p>
-          <span><strong><?php _e('IBAN', 'mondu'); ?>:</strong></span>
-          <span><?php printf($bank_account['iban']); ?></span>
-        </p>
-        <p>
-          <span><strong><?php _e('BIC', 'mondu'); ?>:</strong></span>
-          <span><?php printf($bank_account['bic']); ?></span>
-        </p>
+        <table>
+          <tr>
+            <td><strong><?php _e('Account holder', 'mondu'); ?>:</strong></td>
+            <td><?php printf($bank_account['account_holder']); ?></span></td>
+          </tr>
+          <tr>
+            <td><strong><?php _e('Bank', 'mondu'); ?>:</strong></td>
+            <td><?php printf($bank_account['bank']); ?></td>
+          </tr>
+          <tr>
+            <td><strong><?php _e('IBAN', 'mondu'); ?>:</strong></td>
+            <td><?php printf($bank_account['iban']); ?></td>
+          </tr>
+          <tr>
+            <td><strong><?php _e('BIC', 'mondu'); ?>:</strong></td>
+            <td><?php printf($bank_account['bic']); ?></td>
+          </tr>
+          <?php if ($pdf) { ?>
+          <tr>
+            <td><strong><?php _e('Purpose', 'mondu'); ?>:</strong></td>
+            <td><?php printf($invoice_number); ?></td>
+          </tr>
+          <?php } ?>
+        </table>
       </section>
     <?php
 
@@ -177,6 +214,66 @@ class PaymentInfo {
         <p>
           <span><strong><?php _e('Total', 'mondu'); ?>:</strong></span>
           <?php printf('%s %s', ($note['gross_amount_cents'] / 100), $invoice['order']['currency']) ?>
+        </p>
+      <?php
+    }
+
+    return ob_get_clean();
+  }
+
+  /**
+   * @return string
+   * @throws Exception
+   */
+  public function get_mondu_wcpdf_section_html($pdf=false) {
+    if (!in_array($this->order->get_payment_method(), Plugin::PAYMENT_METHODS)) {
+      return null;
+    }
+
+    ob_start();
+
+    if ($this->order_data && isset($this->order_data['bank_account'])) {
+      $order_data = $this->order_data;
+      ?>
+        <p>
+          <strong style="color: red;">
+            <?php _e('Please transfer your invoice exclusively to the following bank account', 'mondu'); ?>:
+          </strong>
+        </p>
+        <br>
+        <?php printf($this->get_mondu_payment_html($pdf)) ?>
+        <?php printf($this->get_mondu_net_terms()) ?>
+      <?php
+    } else {
+      ?>
+        <section class="woocommerce-order-details mondu-payment">
+          <p>
+            <span><strong><?php _e('Corrupt Mondu order!', 'mondu'); ?></strong></span>
+          </p>
+        </section>
+      <?php
+    }
+
+    return ob_get_clean();
+  }
+
+  private function get_mondu_net_terms() {
+    if (!in_array($this->order->get_payment_method(), Plugin::PAYMENT_METHODS)) {
+      return null;
+    }
+
+    ob_start();
+
+    if ($this->order_data && isset($this->order_data['authorized_net_term'])) {
+      $order_data = $this->order_data;
+      ?>
+        <p>
+          <strong>
+            <?php
+              /* translators: %s: Authorized net term */
+              printf(__('Your authorized net term is %s days from delivery date.', 'mondu'), $order_data['authorized_net_term']);
+              ?>
+          </strong>
         </p>
       <?php
     }
