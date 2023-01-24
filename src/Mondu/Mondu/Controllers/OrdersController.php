@@ -36,10 +36,10 @@ class OrdersController extends WP_REST_Controller {
     try {
       $data = $request->get_params();
       // We need to distinguish order pay page and checkout page
-      if (array_key_exists('orderpay', $data) && $data['orderpay'] == 'yes') {
+      if (array_key_exists('orderpay', $data) && $data['orderpay'] == 'true') {
         // We only need to check the terms and condition box
-        if (empty( $data['terms'] ) && ! empty( $data['terms-field'] ) ) {
-          wc_add_notice( __( 'Please read and accept the terms and conditions to proceed with your order.', 'woocommerce' ), 'error' );
+        if (empty($data['terms']) && ! empty($data['terms-field'])) {
+          wc_add_notice(__('Please read and accept the terms and conditions to proceed with your order.', 'woocommerce'), 'error');
           throw new MonduException(__('Error processing checkout. Please try again.', 'mondu'));
         }
         $order = $this->mondu_request_wrapper->create_order_pay_page($data);

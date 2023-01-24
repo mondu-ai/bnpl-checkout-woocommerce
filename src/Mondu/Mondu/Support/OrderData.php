@@ -256,7 +256,7 @@ class OrderData {
     $except_keys = self::add_lines_to_except_keys([], 'invoice');
 
     if (function_exists('wcpdf_get_document')) {
-      $document = wcpdf_get_document( 'invoice', $order, false );
+      $document = wcpdf_get_document('invoice', $order, false);
       $invoice_number = $document->get_number()->get_formatted();
     } else {
       $invoice_number = $order->get_order_number();

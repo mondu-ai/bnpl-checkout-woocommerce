@@ -114,7 +114,7 @@ class PaymentInfo {
 
     if ($pdf) {
       if (function_exists('wcpdf_get_document')) {
-        $document = wcpdf_get_document( 'invoice', $this->order, false );
+        $document = wcpdf_get_document('invoice', $this->order, false);
         $invoice_number = $document->get_number()->get_formatted();
       } else {
         $invoice_number = $this->order->get_order_number();
