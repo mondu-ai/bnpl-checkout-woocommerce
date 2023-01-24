@@ -1,12 +1,25 @@
 === mondu-checkout-woocommerce ===
 Contributors: mondu-ai, arthurmmoreira, tikohov20
-Tags: mondu, woocommerce, e-commerce, store, sales, sell, woo, shop, cart, checkout, payment, payments, woo commerce, bnpl, b2b
+Tags: mondu, woocommerce, e-commerce, ecommerce, store, sales, sell, woo, shop, cart, checkout, payment, payments, bnpl, b2b
 Requires at least: 5.9.0
 Tested up to: 6.1.0
 Stable tag: 1.1.2
 Requires PHP: 7.4.0
 
 Increase your revenue with Mondu’s solution, without the operational burden.
+
+== Installation ==
+
+1. In your admin panel, go to Plugins -> Add New and click on the 'Upload Plugin' button.
+2. Select the Woocommerce-Mondu-<VERSION>.zip file downloaded from our Github page: https://github.com/mondu-ai/bnpl-checkout-woocommerce/releases and click on the 'Install Now' button.
+3. Click on the 'Activate Plugin' button to use the plugin right away.
+4. Navigate to the new menu Mondu in your admin panel.
+5. Insert the API Token provided by Mondu and the other settings.
+6. Save the changes, validate the credentials and register the webhooks.
+7. Navigate to WooCommerce -> Settings in your admin panel.
+8. Open the Payments tab and enable the Mondu payment methods.
+9. Save the changes.
+10. Read more about the configuration process in the [installation guide](https://docs.mondu.ai/docs/woocommerce-installation-guide).
 
 == Changelog ==
 
