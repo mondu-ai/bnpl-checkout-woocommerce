@@ -266,7 +266,7 @@ class OrderData {
 
     $invoice_data = [
       'external_reference_id' => $invoice_number,
-      'invoice_url' => Helper::create_invoice_url($order->get_id()),
+      'invoice_url' => Helper::create_invoice_url($order),
       'gross_amount_cents' => round((float) $order->get_total() * 100),
       'tax_cents' => round((float) ($order->get_total_tax() - $order->get_shipping_tax()) * 100), # Considering that is not possible to save taxes that does not belongs to products, removes shipping taxes here
       'discount_cents' => round($order->get_discount_total() * 100),

@@ -147,10 +147,12 @@ class WebhooksController extends WP_REST_Controller {
       throw new MonduException(__('Required params missing.', 'mondu'));
     }
 
-    $invoice = wcpdf_get_invoice($woocommerce_order_id);
+    if (function_exists('wcpdf_get_invoice')) {
+      $invoice = wcpdf_get_invoice($woocommerce_order_id);
 
-    if (!$invoice) {
-      return [['message' => __('Not Found', 'mondu')], 404];
+      if (!$invoice) {
+        return [['message' => __('Not Found', 'mondu')], 404];
+      }
     }
 
     // add invoice invoice payment action
@@ -165,11 +167,13 @@ class WebhooksController extends WP_REST_Controller {
       throw new MonduException(__('Required params missing.', 'mondu'));
     }
 
-    $order = new WC_Order($woocommerce_order_id);
-    $invoice = wcpdf_get_invoice($order);
+    if (function_exists('wcpdf_get_invoice')) {
+      $order = new WC_Order($woocommerce_order_id);
+      $invoice = wcpdf_get_invoice($order);
 
-    if (!$order || !$invoice) {
-      return [['message' => __('Not Found', 'mondu')], 404];
+      if (!$order || !$invoice) {
+        return [['message' => __('Not Found', 'mondu')], 404];
+      }
     }
 
     // add invoice invoice canceled action

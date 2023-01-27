@@ -29,24 +29,30 @@ class Helper {
   }
 
   /**
-   * @param $order_id
+   * @param $order
    *
    * @return string
    */
-  public static function create_invoice_url($order_id) {
-    return add_query_arg(
-      '_wpnonce',
-      wp_create_nonce('generate_wpo_wcpdf'),
-      add_query_arg(
-        array(
-          'action' => 'generate_wpo_wcpdf',
-          'document_type' => 'invoice',
-          'order_ids' => $order_id,
-          'my-account' => true,
-        ),
-        admin_url('admin-ajax.php')
-      )
-    );
+  public static function create_invoice_url($order) {
+    if (has_action('generate_wpo_wcpdf')) {
+      $invoice_url = add_query_arg(
+        '_wpnonce',
+        wp_create_nonce('generate_wpo_wcpdf'),
+        add_query_arg(
+          array(
+            'action' => 'generate_wpo_wcpdf',
+            'document_type' => 'invoice',
+            'order_ids' => $order->get_id(),
+            'my-account' => true,
+          ),
+          admin_url('admin-ajax.php')
+        )
+      );
+    } else {
+      $invoice_url = $order->get_view_order_url();
+    }
+
+    return apply_filters('mondu_invoice_url', $invoice_url);
   }
 
   public static function log(array $message, string $level = 'DEBUG') {
