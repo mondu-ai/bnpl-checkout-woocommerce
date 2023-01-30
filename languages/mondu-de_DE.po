@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: WooCommerce-Mondu 1.1.2\n"
+"Project-Id-Version: WooCommerce-Mondu 1.1.3\n"
 "Report-Msgid-Bugs-To: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -32,7 +32,7 @@ msgid "https://mondu.ai"
 msgstr "https://mondu.ai"
 
 #: src/Mondu/Admin/Option/Account.php:17
-#: src/Mondu/Plugin.php:204
+#: src/Mondu/Plugin.php:206
 msgid "Settings"
 msgstr "Einstellungen"
 
@@ -81,15 +81,15 @@ msgstr "Unregistriertes Thema."
 #: src/Mondu/Mondu/Controllers/WebhooksController.php:103
 #: src/Mondu/Mondu/Controllers/WebhooksController.php:124
 #: src/Mondu/Mondu/Controllers/WebhooksController.php:147
-#: src/Mondu/Mondu/Controllers/WebhooksController.php:165
+#: src/Mondu/Mondu/Controllers/WebhooksController.php:167
 msgid "Required params missing."
 msgstr "Erforderliche Parameter fehlen."
 
 #: src/Mondu/Mondu/Controllers/WebhooksController.php:88
 #: src/Mondu/Mondu/Controllers/WebhooksController.php:109
 #: src/Mondu/Mondu/Controllers/WebhooksController.php:130
-#: src/Mondu/Mondu/Controllers/WebhooksController.php:153
-#: src/Mondu/Mondu/Controllers/WebhooksController.php:172
+#: src/Mondu/Mondu/Controllers/WebhooksController.php:154
+#: src/Mondu/Mondu/Controllers/WebhooksController.php:175
 msgid "Not Found"
 msgstr "Nicht gefunden"
 
@@ -126,7 +126,7 @@ msgid "Mondu: Can not create a credit note without an invoice"
 msgstr "Mondu: Kann keine Gutschrift ohne Rechnung erstellen"
 
 #: src/Mondu/Mondu/Presenters/PaymentInfo.php:60
-#: src/Mondu/Plugin.php:286
+#: src/Mondu/Plugin.php:288
 msgid "Order state"
 msgstr "Bestellstatus"
 
@@ -178,8 +178,8 @@ msgstr "Ausgezahlt"
 
 #: src/Mondu/Admin/Option/Account.php:39
 #: src/Mondu/Mondu/Presenters/PaymentInfo.php:180
-#: src/Mondu/Plugin.php:313
-#: src/Mondu/Plugin.php:366
+#: src/Mondu/Plugin.php:315
+#: src/Mondu/Plugin.php:368
 msgid "Yes"
 msgstr "Ja"
 
@@ -205,55 +205,55 @@ msgstr "Ihre genehmigte Nettolaufzeit beträgt %s Tage ab Lieferdatum"
 msgid "Cancel Invoice"
 msgstr "Rechnung stornieren"
 
-#: src/Mondu/Plugin.php:160
+#: src/Mondu/Plugin.php:162
 msgid "Since this order will be paid via Mondu you will not be able to change the addresses."
 msgstr "Da diese Bestellung über Mondu bezahlt wird, können Sie die Adressen nicht ändern."
 
-#: src/Mondu/Plugin.php:204
+#: src/Mondu/Plugin.php:206
 msgid "View Mondu settings"
 msgstr "Mondu-Einstellungen anzeigen"
 
-#: src/Mondu/Plugin.php:224
+#: src/Mondu/Plugin.php:226
 msgid "View Mondu documentation"
 msgstr "Mondu-Dokumentation anzeigen"
 
-#: src/Mondu/Plugin.php:224
+#: src/Mondu/Plugin.php:226
 msgid "Docs"
 msgstr "Dokumente"
 
 #. translators: %s: Company
-#: src/Mondu/Plugin.php:241
+#: src/Mondu/Plugin.php:243
 msgid "%s is a required field for Mondu payments."
 msgstr "%s ist ein Pflichtfeld für Mondu-Zahlungen."
 
 #. translators: %s: Company
-#: src/Mondu/Plugin.php:241
+#: src/Mondu/Plugin.php:243
 msgid "Company"
 msgstr "Firma"
 
 #. translators: %s: Billing country
-#: src/Mondu/Plugin.php:246
+#: src/Mondu/Plugin.php:248
 msgid "%s not available for Mondu Payments."
 msgstr "%s für Mondu-Zahlungen nicht verfügbar."
 
 #. translators: %s: Billing country
-#: src/Mondu/Plugin.php:246
+#: src/Mondu/Plugin.php:248
 msgid "Billing country"
 msgstr "Rechnungsland"
 
-#: src/Mondu/Plugin.php:287
-#: src/Mondu/Plugin.php:339
-#: src/Mondu/Plugin.php:394
+#: src/Mondu/Plugin.php:289
+#: src/Mondu/Plugin.php:341
+#: src/Mondu/Plugin.php:396
 msgid "Cancelled"
 msgstr "Storniert"
 
-#: src/Mondu/Plugin.php:312
-#: src/Mondu/Plugin.php:365
+#: src/Mondu/Plugin.php:314
+#: src/Mondu/Plugin.php:367
 msgid "Mondu Invoice paid"
 msgstr "Mondu-Rechnung bezahlt"
 
-#: src/Mondu/Plugin.php:338
-#: src/Mondu/Plugin.php:393
+#: src/Mondu/Plugin.php:340
+#: src/Mondu/Plugin.php:395
 msgid "Mondu Invoice state"
 msgstr "Mondu-Rechnungsstatus"
 
@@ -300,13 +300,13 @@ msgstr "Einzelposten senden"
 msgid "Send line items only for orders"
 msgstr "Senden Sie nur Einzelposten für Bestellungen"
 
-#: src/Mondu/Plugin.php:414
+#: src/Mondu/Plugin.php:416
 msgid "Mondu requires WooCommerce to be activated."
 msgstr "Mondu erfordert die Aktivierung von WooCommerce."
 
-#: src/Mondu/Mondu/Gateway.php:110
-#: src/Mondu/Mondu/GatewayDirectDebit.php:110
-#: src/Mondu/Mondu/GatewayInstallment.php:110
+#: src/Mondu/Mondu/Gateway.php:120
+#: src/Mondu/Mondu/GatewayDirectDebit.php:120
+#: src/Mondu/Mondu/GatewayInstallment.php:120
 msgid "Error placing an order. Please try again."
 msgstr "Fehler beim Aufgeben einer Bestellung. Bitte versuchen Sie es erneut."
 
