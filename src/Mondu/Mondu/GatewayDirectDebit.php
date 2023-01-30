@@ -33,7 +33,6 @@ class GatewayDirectDebit extends WC_Payment_Gateway {
     $this->method_title = __('Mondu SEPA Direct Debit', 'mondu');
     $this->method_description = __('SEPA - Pay later by direct debit', 'mondu');
     $this->has_fields = true;
-    $this->icon = apply_filters('woocommerce_gateway_icon', MONDU_PUBLIC_PATH . '/views/mondu.svg', $this->id);
 
     $this->init_form_fields();
     $this->init_settings();
@@ -88,6 +87,17 @@ class GatewayDirectDebit extends WC_Payment_Gateway {
     if ($this->instructions) {
       echo wp_kses_post(wpautop(wptexturize($this->instructions)));
     }
+  }
+
+  /**
+   * Get gateway icon.
+   *
+   * @return string
+   */
+  public function get_icon() {
+    $icon_src  = 'https://checkout.mondu.ai/logo.svg';
+    $icon_html = '<img src="' . $icon_src . '" alt="' . $this->method_title . '" width="100" />';
+    return apply_filters('woocommerce_gateway_icon', $icon_html, $this->id);
   }
 
   /**

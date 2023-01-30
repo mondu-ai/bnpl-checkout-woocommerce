@@ -39,7 +39,7 @@ class Settings {
   }
 
   public function plugin_menu() {
-    $mondu_icon = 'data:image/svg+xml;base64,' . base64_encode(file_get_contents(MONDU_VIEW_PATH . '/mondu.svg'));
+    $mondu_icon = 'data:image/svg+xml;base64,' . base64_encode(file_get_contents('https://checkout.mondu.ai/logo.svg'));
 
     add_menu_page(
       __('Mondu Settings', 'mondu'),
