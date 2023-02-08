@@ -251,12 +251,26 @@ class Plugin {
 
   /**
    * @param $template_type
+   *
+   * @throws Exception
+   */
+  public function wcpdf_mondu_template_type($template_type) {
+
+    $allowed_templates = apply_filters('mondu_wcpdf_template_type', array('invoice'));
+    if (in_array($template_type, $allowed_templates))
+      return true;
+
+    return false;
+  }
+
+  /**
+   * @param $template_type
    * @param $order
    *
    * @throws Exception
    */
   public function wcpdf_add_mondu_payment_info_to_pdf($template_type, $order) {
-    if ($template_type !== 'invoice') return;
+    if (!$this->wcpdf_mondu_template_type($template_type)) return;
 
     if (!in_array($order->get_payment_method(), Plugin::PAYMENT_METHODS)) {
       return;
@@ -273,7 +287,7 @@ class Plugin {
    * @throws Exception
    */
   public function wcpdf_add_status_to_invoice_when_order_is_cancelled($template_type, $order) {
-    if ($template_type !== 'invoice') return;
+    if (!$this->wcpdf_mondu_template_type($template_type)) return;
 
     if (!in_array($order->get_payment_method(), Plugin::PAYMENT_METHODS)) {
       return;
@@ -299,7 +313,7 @@ class Plugin {
    * @throws Exception
    */
   public function wcpdf_add_paid_to_invoice_when_invoice_is_paid($template_type, $order) {
-    if ($template_type !== 'invoice') return;
+    if (!$this->wcpdf_mondu_template_type($template_type)) return;
 
     if (!in_array($order->get_payment_method(), Plugin::PAYMENT_METHODS)) {
       return;
@@ -325,7 +339,7 @@ class Plugin {
    * @throws Exception
    */
   public function wcpdf_add_status_to_invoice_when_invoice_is_cancelled($template_type, $order) {
-    if ($template_type !== 'invoice') return;
+    if (!$this->wcpdf_mondu_template_type($template_type)) return;
 
     if (!in_array($order->get_payment_method(), Plugin::PAYMENT_METHODS)) {
       return;
