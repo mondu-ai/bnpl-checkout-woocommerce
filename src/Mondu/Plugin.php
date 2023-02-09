@@ -168,6 +168,11 @@ class Plugin {
       return;
     }
 
+    $payment_info = new PaymentInfo($order->get_id());
+    $order_data = $payment_info->get_order_data();
+    if ($order_data && $order_data['state'] == 'declined')
+      return;
+
     wc_enqueue_js("
       jQuery(document).ready(function() {
         jQuery('a.edit_address').remove();
