@@ -10,9 +10,13 @@ class OrderData {
   /**
    * @return array[]
    */
-  public static function create_order_data($payment_method) {
+  public static function create_order_data($payment_method, $lang = null) {
     $except_keys = self::add_lines_to_except_keys(['amount'], 'order');
     $order_data = self::raw_order_data($payment_method);
+    
+    if ($lang) {
+      $order_data['language'] = substr($lang, 0, 2);
+    }
 
     return Helper::remove_keys($order_data, $except_keys);
   }
@@ -43,13 +47,11 @@ class OrderData {
     $cart_totals = WC()->session->get('cart_totals');
     $customer = WC()->session->get('customer');
     $cart_hash = WC()->cart->get_cart_hash();
-
     $order_data = [
       'payment_method' => $payment_method,
       'currency' => get_woocommerce_currency(),
       'external_reference_id' => $cart_hash, // We will update this id when woocommerce order is created
       'gross_amount_cents' => round((float) $cart_totals['total'] * 100),
-      'language' => substr(get_locale(), 0, 2),
       'buyer' => [
         'first_name' => isset($customer['first_name']) && Helper::not_null_or_empty($customer['first_name']) ? $customer['first_name'] : null,
         'last_name' => isset($customer['last_name']) && Helper::not_null_or_empty($customer['last_name']) ? $customer['last_name'] : null,
@@ -158,7 +160,6 @@ class OrderData {
       'currency' => get_woocommerce_currency(),
       'external_reference_id' => (string) $order->get_order_number(), // We will update this id when woocommerce order is created
       'gross_amount_cents' => $order_data_extra['amount']['gross_amount_cents'],
-      'language' => substr(get_locale(), 0, 2),
       'buyer' => [
         'first_name' => isset($billing_first_name) && Helper::not_null_or_empty($billing_first_name) ? $billing_first_name : null,
         'last_name' => isset($billing_last_name) && Helper::not_null_or_empty($billing_last_name) ? $billing_last_name : null,

@@ -40,13 +40,14 @@
       return;
     }
     monduBlock();
-
     if (orderpay === true) {
       orderId = <?php echo $order_id; ?>;
       data = checkoutForm().serialize() + "&orderpay=true" + "&order_id=" + orderId;
     } else {
       data = checkoutForm().serialize();
     }
+    var lang = '<?php echo apply_filters( 'mondu_order_locale', get_locale() ); ?>'
+    data += '&lang=' + lang;
 
     jQuery.ajax({
       type: 'POST',

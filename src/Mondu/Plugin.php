@@ -77,6 +77,8 @@ class Plugin {
      */
     add_action('init', [$this, 'load_textdomain']);
 
+    add_filter('mondu_order_locale', [$this, 'get_mondu_order_locale'], 1);
+
     /*
      * Adds the mondu gateway to the list of gateways
      * (And remove it again if we're not in Germany)
@@ -447,5 +449,9 @@ class Plugin {
   private function get_wc_customer() {
     $customer = isset(WC()->customer) ? WC()->customer : new WC_Customer(get_current_user_id());
     return $customer;
+  }
+
+  public function get_mondu_order_locale() {
+    return apply_filters( 'wpml_current_language', null );
   }
 }

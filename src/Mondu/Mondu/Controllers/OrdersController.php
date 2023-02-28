@@ -49,7 +49,8 @@ class OrdersController extends WP_REST_Controller {
       } else {
         $this->validate_checkout();
         if (wc_notice_count('error') === 0) {
-          $order = $this->mondu_request_wrapper->create_order();
+          $lang = $data['lang'] ?? null;
+          $order = $this->mondu_request_wrapper->create_order($lang);
           return array(
             'token' => $order['uuid']
           );

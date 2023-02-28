@@ -23,14 +23,14 @@ class MonduRequestWrapper {
    * @throws MonduException
    * @throws ResponseException
    */
-  public function create_order() {
+  public function create_order($lang = null) {
     $payment_method = WC()->session->get('chosen_payment_method');
     if (!in_array($payment_method, Plugin::PAYMENT_METHODS)) {
       return;
     }
     $payment_method = array_search($payment_method, Plugin::PAYMENT_METHODS);
 
-    $order_data = OrderData::create_order_data($payment_method);
+    $order_data = OrderData::create_order_data($payment_method, $lang);
     $response = $this->wrap_with_mondu_log_event('create_order', array($order_data));
     $order = $response['order'];
     WC()->session->set('mondu_order_id', $order['uuid']);
