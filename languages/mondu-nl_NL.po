@@ -326,7 +326,7 @@ msgstr "Doel"
 
 #: src/Mondu/Mondu/Presenters/PaymentInfo.php:159
 msgid "Payment term"
-msgstr ""
+msgstr "Betalingstermijn"
 
 #: views/pdf/mondu_invoice_section.php:18
 msgid "mondu_sepa_section"
@@ -341,5 +341,6 @@ msgid "mondu_installment_section"
 msgstr "Deze factuur is gemaakt in overeenstemming met de algemene voorwaarden van <strong>%s</strong> en <strong>Mondu GmbH</strong> voor het termijnbetaling betalingsmodel.<br/><br/>Aangezien u heeft gekozen voor de termijn betalingsmethode via SEPA automatische incasso via Mondu, worden de individuele bedragen voor elke betalingstermijnen op de vervaldatum van uw bankrekening afgeschreven.<br/><br/>Voordat de bedragen van uw rekening worden afgeschreven, ontvangt u bericht over de automatische incasso. Zorg ervoor dat u voldoende geld op uw rekening heeft staan. Voor het geval dat er wijzigingen in uw bestelling plaats vindt, wordt het afbetalingsplan aangepast aan het nieuwe orderbedrag."
 
 #: src/Mondu/Mondu/Presenters/PaymentInfo.php:160
+#. translators: %s: Company
 msgid "%s Days"
 msgstr "%s Dagen"

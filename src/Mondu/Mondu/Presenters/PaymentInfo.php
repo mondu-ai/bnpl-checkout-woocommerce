@@ -44,7 +44,7 @@ class PaymentInfo {
   public function get_wcpdf_shop_name() {
     $wcpdf = \WPO_WCPDF::instance();
 
-    return $wcpdf->documents->documents['\WPO\WC\PDF_Invoices\Documents\Invoice']->get_shop_name();
+    return $wcpdf->documents->documents['\WPO\WC\PDF_Invoices\Documents\Invoice']->get_shop_name() ?? get_bloginfo('name');
   }
 
   /**
