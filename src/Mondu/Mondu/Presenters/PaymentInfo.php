@@ -41,6 +41,12 @@ class PaymentInfo {
     return $this->invoices_data;
   }
 
+  public function get_wcpdf_shop_name() {
+    $wcpdf = \WPO_WCPDF::instance();
+
+    return $wcpdf->documents->documents['\WPO\WC\PDF_Invoices\Documents\Invoice']->get_shop_name();
+  }
+
   /**
    * @return string
    * @throws Exception
@@ -79,7 +85,6 @@ class PaymentInfo {
         </section>
         <hr>
         <?php printf($this->get_mondu_payment_html()) ?>
-        <?php printf($this->get_mondu_net_terms()) ?>
         <?php printf($this->get_mondu_invoices_html()) ?>
       <?php
     } else {
@@ -129,7 +134,7 @@ class PaymentInfo {
       <section class="woocommerce-order-details mondu-payment">
         <table>
           <tr>
-            <td><strong><?php _e('Account holder', 'mondu'); ?>:</strong></td>
+            <td><strong><?php _e('Account holder', 'mondu'); ?>:&nbsp;&nbsp;&nbsp;</strong></td>
             <td><?php printf($bank_account['account_holder']); ?></span></td>
           </tr>
           <tr>
@@ -146,15 +151,31 @@ class PaymentInfo {
           </tr>
           <?php if ($pdf) { ?>
           <tr>
-            <td><strong><?php _e('Purpose', 'mondu'); ?>:</strong></td>
-            <td><?php printf($invoice_number); ?></td>
+            <td><strong><?php _e('Purpose', 'mondu'); ?>:&nbsp;&nbsp;&nbsp;</strong></td>
+            <td><?php echo __('Invoice number', 'mondu'). ' '. $invoice_number. ' ' . $this->get_wcpdf_shop_name() ?></td>
           </tr>
+          <?php } ?>
+          <?php if ($this->get_mondu_net_term()) { ?>
+            <td><strong><?php _e('Payment term', 'mondu'); ?>:</strong></td>
+            <td><?php printf(__('%s Days', 'mondu'), $this->get_mondu_net_term()); ?></td>
           <?php } ?>
         </table>
       </section>
     <?php
 
     return ob_get_clean();
+  }
+
+  public function get_mondu_net_term() {
+    if (!in_array($this->order->get_payment_method(), Plugin::PAYMENT_METHODS)) {
+      return null;
+    }
+
+    if ($this->order_data && isset($this->order_data['authorized_net_term'])) {
+      return $this->order_data['authorized_net_term'];
+    }
+
+    return null;
   }
 
   public function get_mondu_invoices_html() {
@@ -235,14 +256,8 @@ class PaymentInfo {
     if ($this->order_data && isset($this->order_data['bank_account'])) {
       $order_data = $this->order_data;
       ?>
-        <p>
-          <strong style="color: red;">
-            <?php _e('Please transfer your invoice exclusively to the following bank account', 'mondu'); ?>:
-          </strong>
-        </p>
-        <br>
-        <?php printf($this->get_mondu_payment_html($pdf)) ?>
-        <?php printf($this->get_mondu_net_terms()) ?>
+        <?php printf($this->get_mondu_payment_notice($this->order->get_payment_method())) ?>
+        <?php if($this->order->get_payment_method() === 'mondu_invoice') printf($this->get_mondu_payment_html($pdf)) ?>
       <?php
     } else {
       ?>
@@ -256,26 +271,15 @@ class PaymentInfo {
 
     return ob_get_clean();
   }
-
-  private function get_mondu_net_terms() {
-    if (!in_array($this->order->get_payment_method(), Plugin::PAYMENT_METHODS)) {
-      return null;
-    }
-
+  private function get_mondu_payment_notice($payment_method) {
     ob_start();
 
-    if ($this->order_data && isset($this->order_data['authorized_net_term'])) {
-      $order_data = $this->order_data;
-      ?>
-        <p>
-          <strong>
-            <?php
-              /* translators: %s: Authorized net term */
-              printf(__('Your authorized net term is %s days from delivery date.', 'mondu'), $order_data['authorized_net_term']);
-              ?>
-          </strong>
-        </p>
-      <?php
+    $file = MONDU_VIEW_PATH. '/pdf/mondu_invoice_section.php';
+
+    //used in the file that is included
+    $wcpdfShopName = $this->get_wcpdf_shop_name();
+    if (file_exists($file)) {
+      include($file);
     }
 
     return ob_get_clean();
