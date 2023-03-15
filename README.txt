@@ -3,7 +3,7 @@ Contributors: mondu-ai, arthurmmoreira, tikohov20
 Tags: mondu, woocommerce, e-commerce, ecommerce, store, sales, sell, woo, shop, cart, checkout, payment, payments, bnpl, b2b
 Requires at least: 5.9.0
 Tested up to: 6.1.0
-Stable tag: 1.1.3
+Stable tag: 1.1.4
 Requires PHP: 7.4.0
 
 Increase your revenue with Mondu’s solution, without the operational burden.
@@ -22,6 +22,10 @@ Increase your revenue with Mondu’s solution, without the operational burden.
 10. Read more about the configuration process in the [installation guide](https://docs.mondu.ai/docs/woocommerce-installation-guide).
 
 == Changelog ==
+
+=== 1.1.4 ===
+
+* Added WCPDF invoice extensions for our payment methods
 
 === 1.1.3 ===
 
