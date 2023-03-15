@@ -322,7 +322,7 @@ msgstr "Instructies die worden toegevoegd aan de bedankpagina en e-mails."
 
 #: src/Mondu/Mondu/Presenters/PaymentInfo.php:154
 msgid "Purpose"
-msgstr "Doel"
+msgstr "Betalingsreferentie"
 
 #: src/Mondu/Mondu/Presenters/PaymentInfo.php:159
 msgid "Payment term"
