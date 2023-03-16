@@ -132,8 +132,8 @@ class PaymentInfo {
 
     ?>
       <style>
-        .mondu-payment > table > tr > td{
-          min-width: 400px;
+        .mondu-payment > table > tbody > tr > td {
+          min-width: 130px;
         }
       </style>
       <section class="woocommerce-order-details mondu-payment">
