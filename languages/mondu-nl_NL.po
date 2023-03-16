@@ -340,6 +340,7 @@ msgstr "Deze factuur is opgesteld in overeenstemming met de algemene voorwaarden
 msgid "mondu_installment_section"
 msgstr "Deze factuur is gemaakt in overeenstemming met de algemene voorwaarden van <strong>%s</strong> en <strong>Mondu GmbH</strong> voor het termijnbetaling betalingsmodel.<br/><br/>Aangezien u heeft gekozen voor de termijn betalingsmethode via SEPA automatische incasso via Mondu, worden de individuele bedragen voor elke betalingstermijnen op de vervaldatum van uw bankrekening afgeschreven.<br/><br/>Voordat de bedragen van uw rekening worden afgeschreven, ontvangt u bericht over de automatische incasso. Zorg ervoor dat u voldoende geld op uw rekening heeft staan. Voor het geval dat er wijzigingen in uw bestelling plaats vindt, wordt het afbetalingsplan aangepast aan het nieuwe orderbedrag."
 
+#. translators: %s: Days
 #: src/Mondu/Mondu/Presenters/PaymentInfo.php:160
 msgid "%s Days"
 msgstr "%s Dagen"

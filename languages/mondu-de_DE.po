@@ -340,6 +340,7 @@ msgstr "Diese Rechnung wurde abgetreten gemäß den Allgemeinen Bedingungen von 
 msgid "mondu_installment_section"
 msgstr "Diese Rechnung wurde gemäß den Allgemeinen Bedingungen von <strong>%s</strong> und <strong>Mondu GmbH</strong> zum Zahlungsmodell Ratenkauf abgetreten.<br/><br/>Da Sie die Zahlart Ratenkauf mit Begleichung via SEPA-Lastschrift über Mondu gewählt haben, werden die einzelnen Raten an ihrem jeweiligen Fälligkeitstag von Ihrem Bankkonto abgebucht.<br/><br/>Bevor die Beträge von Ihrem Konto abgebucht werden, erhalten Sie bezüglich der Lastschrift eine Vorankündigung. Bitte achten Sie auf eine ausreichende Kontodeckung. Im Falle von Änderungen an Ihrer Bestellung wird der Ratenplan an die neue Bestellsumme angepasst."
 
+#. translators: %s: Days
 #: src/Mondu/Mondu/Presenters/PaymentInfo.php:160
 msgid "%s Days"
 msgstr "%s Tage"

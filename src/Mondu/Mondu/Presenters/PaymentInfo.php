@@ -131,10 +131,15 @@ class PaymentInfo {
     ob_start();
 
     ?>
+      <style>
+        .mondu-payment > table > tr > td{
+          min-width: 400px;
+        }
+      </style>
       <section class="woocommerce-order-details mondu-payment">
         <table>
           <tr>
-            <td><strong><?php _e('Account holder', 'mondu'); ?>:&nbsp;&nbsp;&nbsp;</strong></td>
+            <td><strong><?php _e('Account holder', 'mondu'); ?>:</strong></td>
             <td><?php printf($bank_account['account_holder']); ?></span></td>
           </tr>
           <tr>
@@ -151,13 +156,13 @@ class PaymentInfo {
           </tr>
           <?php if ($pdf) { ?>
           <tr>
-            <td><strong><?php _e('Purpose', 'mondu'); ?>:&nbsp;&nbsp;&nbsp;</strong></td>
+            <td><strong><?php _e('Purpose', 'mondu'); ?>:</strong></td>
             <td><?php echo __('Invoice number', 'mondu'). ' '. $invoice_number. ' ' . $this->get_wcpdf_shop_name() ?></td>
           </tr>
           <?php } ?>
           <?php if ($this->get_mondu_net_term()) { ?>
             <td><strong><?php _e('Payment term', 'mondu'); ?>:</strong></td>
-            <td><?php printf(__('%s Days', 'mondu'), $this->get_mondu_net_term()); ?></td>
+            <td><?php /* translators: %s: Days */printf(__('%s Days', 'mondu'), $this->get_mondu_net_term()); ?></td>
           <?php } ?>
         </table>
       </section>
