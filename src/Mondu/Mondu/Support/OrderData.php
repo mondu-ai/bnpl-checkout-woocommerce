@@ -13,7 +13,7 @@ class OrderData {
   public static function create_order_data($payment_method, $lang = null) {
     $except_keys = self::add_lines_to_except_keys(['amount'], 'order');
     $order_data = self::raw_order_data($payment_method);
-    
+
     if ($lang) {
       $order_data['language'] = substr($lang, 0, 2);
     }
@@ -258,7 +258,11 @@ class OrderData {
 
     if (function_exists('wcpdf_get_document')) {
       $document = wcpdf_get_document('invoice', $order, false);
-      $invoice_number = $document->get_number()->get_formatted();
+      if ($document->get_number()) {
+        $invoice_number = $document->get_number()->get_formatted();
+      } else {
+        $invoice_number = $order->get_order_number();
+      }
     } else {
       $invoice_number = $order->get_order_number();
     }
