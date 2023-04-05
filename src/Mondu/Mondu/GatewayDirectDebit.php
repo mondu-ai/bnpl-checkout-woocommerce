@@ -42,6 +42,8 @@ class GatewayDirectDebit extends WC_Payment_Gateway {
     $this->description = $this->get_option('description');
     $this->instructions = $this->get_option('instructions');
 
+    $this->enabled = $this->is_enabled();
+
     $this->mondu_request_wrapper = new MonduRequestWrapper();
 
     add_action('woocommerce_update_options_payment_gateways_' . $this->id, array($this, 'process_admin_options'));
@@ -125,5 +127,16 @@ class GatewayDirectDebit extends WC_Payment_Gateway {
       'result' => 'success',
       'redirect' => $this->get_return_url($order)
     );
+  }
+
+  /**
+   * Check if Mondu has its credentials validated.
+   *
+   * @return string
+   */
+  private function is_enabled() {
+    if (get_option('_mondu_credentials_validated') == null) $this->settings['enabled'] = 'no';
+
+    return !empty($this->settings['enabled']) && 'yes' === $this->settings['enabled'] ? 'yes' : 'no';
   }
 }
