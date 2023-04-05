@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2023-03-16T09:58:19+00:00\n"
+"POT-Creation-Date: 2023-04-05T21:28:24+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.7.1\n"
 "X-Domain: mondu\n"
@@ -35,7 +35,7 @@ msgid "https://mondu.ai"
 msgstr ""
 
 #: src/Mondu/Admin/Option/Account.php:17
-#: src/Mondu/Plugin.php:208
+#: src/Mondu/Plugin.php:228
 msgid "Settings"
 msgstr ""
 
@@ -52,9 +52,9 @@ msgid "Send line items"
 msgstr ""
 
 #: src/Mondu/Admin/Option/Account.php:39
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:201
-#: src/Mondu/Plugin.php:317
-#: src/Mondu/Plugin.php:370
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:210
+#: src/Mondu/Plugin.php:353
+#: src/Mondu/Plugin.php:406
 msgid "Yes"
 msgstr ""
 
@@ -63,7 +63,7 @@ msgid "Send line items only for orders"
 msgstr ""
 
 #: src/Mondu/Admin/Option/Account.php:41
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:201
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:210
 msgid "No"
 msgstr ""
 
@@ -165,7 +165,7 @@ msgid "Instructions that will be added to the thank you page and emails."
 msgstr ""
 
 #: src/Mondu/Mondu/GatewayInstallment.php:33
-msgid "Mondu Installment"
+msgid "Mondu Installments"
 msgstr ""
 
 #: src/Mondu/Mondu/GatewayInstallment.php:34
@@ -177,7 +177,7 @@ msgid "Mondu: Can not create a credit note without an invoice"
 msgstr ""
 
 #: src/Mondu/Mondu/Presenters/PaymentInfo.php:66
-#: src/Mondu/Plugin.php:290
+#: src/Mondu/Plugin.php:326
 msgid "Order state"
 msgstr ""
 
@@ -190,118 +190,142 @@ msgid "Create Invoice"
 msgstr ""
 
 #: src/Mondu/Mondu/Presenters/PaymentInfo.php:94
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:266
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:275
 msgid "Corrupt Mondu order!"
 msgstr ""
 
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:137
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:146
 msgid "Account holder"
 msgstr ""
 
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:141
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:150
 msgid "Bank"
 msgstr ""
 
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:145
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:154
 msgid "IBAN"
 msgstr ""
 
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:149
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:158
 msgid "BIC"
 msgstr ""
 
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:154
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:163
 msgid "Purpose"
 msgstr ""
 
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:155
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:192
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:164
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:201
 msgid "Invoice number"
 msgstr ""
 
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:159
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:168
 msgid "Payment term"
 msgstr ""
 
 #. translators: %s: Days
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:160
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:169
 msgid "%s Days"
 msgstr ""
 
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:188
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:197
 msgid "Invoice state"
 msgstr ""
 
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:196
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:236
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:205
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:245
 msgid "Total"
 msgstr ""
 
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:200
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:209
 msgid "Paid out"
 msgstr ""
 
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:215
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:224
 msgid "Cancel Invoice"
 msgstr ""
 
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:232
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:241
 msgid "Credit Note number"
 msgstr ""
 
-#: src/Mondu/Plugin.php:164
+#: src/Mondu/Plugin.php:184
 msgid "Since this order will be paid via Mondu you will not be able to change the addresses."
 msgstr ""
 
-#: src/Mondu/Plugin.php:208
+#: src/Mondu/Plugin.php:228
 msgid "View Mondu settings"
 msgstr ""
 
-#: src/Mondu/Plugin.php:228
+#: src/Mondu/Plugin.php:248
 msgid "View Mondu documentation"
 msgstr ""
 
-#: src/Mondu/Plugin.php:228
+#: src/Mondu/Plugin.php:248
 msgid "Docs"
 msgstr ""
 
+#: src/Mondu/Plugin.php:249
+msgid "https://mondu.ai/introduction-to-paying-with-mondu"
+msgstr ""
+
+#: src/Mondu/Plugin.php:249
+msgid "View introduction to paying with Mondu"
+msgstr ""
+
+#: src/Mondu/Plugin.php:249
+msgid "Mondu introduction"
+msgstr ""
+
+#: src/Mondu/Plugin.php:250
+msgid "https://mondu.ai/faq"
+msgstr ""
+
+#: src/Mondu/Plugin.php:250
+msgid "View FAQ"
+msgstr ""
+
+#: src/Mondu/Plugin.php:250
+msgid "FAQ"
+msgstr ""
+
 #. translators: %s: Company
-#: src/Mondu/Plugin.php:245
+#: src/Mondu/Plugin.php:267
 msgid "%s is a required field for Mondu payments."
 msgstr ""
 
 #. translators: %s: Company
-#: src/Mondu/Plugin.php:245
+#: src/Mondu/Plugin.php:267
 msgid "Company"
 msgstr ""
 
 #. translators: %s: Billing country
-#: src/Mondu/Plugin.php:250
+#: src/Mondu/Plugin.php:272
 msgid "%s not available for Mondu Payments."
 msgstr ""
 
 #. translators: %s: Billing country
-#: src/Mondu/Plugin.php:250
+#: src/Mondu/Plugin.php:272
 msgid "Billing country"
 msgstr ""
 
-#: src/Mondu/Plugin.php:291
-#: src/Mondu/Plugin.php:343
-#: src/Mondu/Plugin.php:398
-msgid "Cancelled"
+#: src/Mondu/Plugin.php:327
+#: src/Mondu/Plugin.php:379
+#: src/Mondu/Plugin.php:434
+msgid "Canceled"
 msgstr ""
 
-#: src/Mondu/Plugin.php:316
-#: src/Mondu/Plugin.php:369
+#: src/Mondu/Plugin.php:352
+#: src/Mondu/Plugin.php:405
 msgid "Mondu Invoice paid"
 msgstr ""
 
-#: src/Mondu/Plugin.php:342
-#: src/Mondu/Plugin.php:397
+#: src/Mondu/Plugin.php:378
+#: src/Mondu/Plugin.php:433
 msgid "Mondu Invoice state"
 msgstr ""
 
-#: src/Mondu/Plugin.php:418
+#: src/Mondu/Plugin.php:454
 msgid "Mondu requires WooCommerce to be activated."
 msgstr ""
 
@@ -333,17 +357,20 @@ msgid "Log date"
 msgstr ""
 
 #: views/checkout/payment-form.php:153
-msgid "Information on the processing of your personal data by Mondu GmbH can be found <a href=\"https://mondu.ai/gdpr-notification-for-buyers\" target=\"_blank\">here</a>."
+msgid "Information on the processing of your personal data by <strong>Mondu GmbH</strong> can be found <a href=\"https://mondu.ai/gdpr-notification-for-buyers\" target=\"_blank\">here</a>."
 msgstr ""
 
-#: views/pdf/mondu_invoice_section.php:7
-msgid "mondu_invoice_section"
+#. translators: %s: Company
+#: views/pdf/mondu-invoice-section.php:7
+msgid "This invoice was created in accordance with the general terms and conditions of <strong>%s</strong> and <strong>Mondu GmbH</strong> for the purchase on account payment model. Please pay debt-discharging to the following account:"
 msgstr ""
 
-#: views/pdf/mondu_invoice_section.php:18
-msgid "mondu_sepa_section"
+#. translators: %s: Company
+#: views/pdf/mondu-invoice-section.php:18
+msgid "This invoice was created in accordance with the general terms and conditions of <strong>%s</strong> and <strong>Mondu GmbH</strong> for the purchase on account payment model.<br/><br/>Since you have chosen the payment method to purchase on account with payment via SEPA direct debit through Mondu, the invoice amount will be debited from your bank account on the due date.<br/><br/>Before the amount is debited from your account, you will receive notice of the direct debit. Kindly make sure you have sufficient funds in your account."
 msgstr ""
 
-#: views/pdf/mondu_invoice_section.php:28
-msgid "mondu_installment_section"
+#. translators: %s: Company
+#: views/pdf/mondu-invoice-section.php:28
+msgid "This invoice was created in accordance with the general terms and conditions of <strong>%s</strong> and <strong>Mondu GmbH</strong> for the instalment payment model.<br/><br/>Since you have chosen the instalment payment method via SEPA direct debit through Mondu, the individual installments will be debited from your bank account on the due date.<br/><br/>Before the amounts are debited from your account, you will receive notice regarding the direct debit. Kindly make sure you have sufficient funds in your account. In the event of changes to your order, the instalment plan will be adjusted to reflect the new order total."
 msgstr ""

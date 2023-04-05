@@ -30,7 +30,7 @@ class GatewayInstallment extends WC_Payment_Gateway {
     $this->global_settings = get_option(Plugin::OPTION_NAME);
 
     $this->id = Plugin::PAYMENT_METHODS['installment'];
-    $this->method_title = __('Mondu Installment', 'mondu');
+    $this->method_title = __('Mondu Installments', 'mondu');
     $this->method_description = __('Split payments - Pay conveniently in installments by direct debit', 'mondu');
     $this->has_fields = true;
 
