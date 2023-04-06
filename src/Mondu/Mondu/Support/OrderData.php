@@ -13,7 +13,7 @@ class OrderData {
   public static function create_order_data($payment_method, $lang = null) {
     $except_keys = self::add_lines_to_except_keys(['amount'], 'order');
     $order_data = self::raw_order_data($payment_method);
-    
+
     if ($lang) {
       $order_data['language'] = substr($lang, 0, 2);
     }
