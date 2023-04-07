@@ -123,25 +123,11 @@ msgstr "Paramètres requis manquants."
 msgid "Not Found"
 msgstr "Aucun résultat"
 
-#: src/Mondu/Mondu/Gateway.php:33
-msgid "Mondu Invoice"
-msgstr "Facture Mondu"
-
-#: src/Mondu/Mondu/Gateway.php:34
-msgid "Invoice - Pay later by bank transfer"
-msgstr "Facture - Payez plus tard par virement"
-
-#: src/Mondu/Mondu/Gateway.php:120
-#: src/Mondu/Mondu/GatewayDirectDebit.php:120
-#: src/Mondu/Mondu/GatewayInstallment.php:120
-msgid "Error placing an order. Please try again."
-msgstr "Erreur de commande. Veuillez réessayer."
-
-#: src/Mondu/Mondu/GatewayDirectDebit.php:33
+#: src/Mondu/Mondu/GatewayDirectDebit.php:11
 msgid "Mondu SEPA Direct Debit"
 msgstr "Mondu Prélèvement SEPA"
 
-#: src/Mondu/Mondu/GatewayDirectDebit.php:34
+#: src/Mondu/Mondu/GatewayDirectDebit.php:12
 msgid "SEPA - Pay later by direct debit"
 msgstr "SEPA - Payer plus tard par prélèvement SEPA"
 
@@ -161,13 +147,25 @@ msgstr "Description du mode de paiement que le client verra lors du paiement."
 msgid "Instructions that will be added to the thank you page and emails."
 msgstr "Instructions ajoutées à la page de remerciement et aux courriels."
 
-#: src/Mondu/Mondu/GatewayInstallment.php:33
+#: src/Mondu/Mondu/GatewayInstallment.php:11
 msgid "Mondu Installments"
 msgstr "Mondu Paiements Fractionnés"
 
-#: src/Mondu/Mondu/GatewayInstallment.php:34
+#: src/Mondu/Mondu/GatewayInstallment.php:12
 msgid "Split payments - Pay conveniently in installments by direct debit"
 msgstr "Paiements Fractionnés - Payer facilement en plusieurs fois par prélèvement automatique"
+
+#: src/Mondu/Mondu/GatewayInvoice.php:11
+msgid "Mondu Invoice"
+msgstr "Facture Mondu"
+
+#: src/Mondu/Mondu/GatewayInvoice.php:12
+msgid "Invoice - Pay later by bank transfer"
+msgstr "Facture - Payez plus tard par virement"
+
+#: src/Mondu/Mondu/MonduGateway.php:117
+msgid "Error placing an order. Please try again."
+msgstr "Erreur de commande. Veuillez réessayer."
 
 #: src/Mondu/Mondu/MonduRequestWrapper.php:312
 msgid "Mondu: Can not create a credit note without an invoice"

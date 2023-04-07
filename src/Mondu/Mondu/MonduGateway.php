@@ -11,7 +11,7 @@ use Mondu\Plugin;
 use WC_Data_Exception;
 use WC_Payment_Gateway;
 
-class Gateway extends WC_Payment_Gateway {
+class MonduGateway extends WC_Payment_Gateway {
 
   /**
    * @var array|bool|mixed|void
@@ -28,11 +28,6 @@ class Gateway extends WC_Payment_Gateway {
 
   public function __construct() {
     $this->global_settings = get_option(Plugin::OPTION_NAME);
-
-    $this->id = Plugin::PAYMENT_METHODS['invoice'];
-    $this->method_title = __('Mondu Invoice', 'mondu');
-    $this->method_description = __('Invoice - Pay later by bank transfer', 'mondu');
-    $this->has_fields = true;
 
     $this->init_form_fields();
     $this->init_settings();

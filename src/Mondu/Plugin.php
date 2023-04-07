@@ -3,7 +3,7 @@
 namespace Mondu;
 
 use Mondu\Admin\Settings;
-use Mondu\Mondu\Gateway;
+use Mondu\Mondu\GatewayInvoice;
 use Mondu\Mondu\GatewayDirectDebit;
 use Mondu\Mondu\GatewayInstallment;
 use Mondu\Mondu\MonduRequestWrapper;
@@ -82,7 +82,7 @@ class Plugin {
      * Adds the mondu gateway to the list of gateways
      * (And remove it again if we're not in Germany)
      */
-    add_filter('woocommerce_payment_gateways', [Gateway::class, 'add']);
+    add_filter('woocommerce_payment_gateways', [GatewayInvoice::class, 'add']);
     add_filter('woocommerce_payment_gateways', [GatewayDirectDebit::class, 'add']);
     add_filter('woocommerce_payment_gateways', [GatewayInstallment::class, 'add']);
     add_filter('woocommerce_available_payment_gateways', [$this, 'remove_mondu_outside_germany']);

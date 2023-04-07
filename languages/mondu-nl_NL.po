@@ -123,25 +123,11 @@ msgstr "Vereiste params ontbreken."
 msgid "Not Found"
 msgstr "Niet gevonden"
 
-#: src/Mondu/Mondu/Gateway.php:33
-msgid "Mondu Invoice"
-msgstr "Mondu Factuurbetaling"
-
-#: src/Mondu/Mondu/Gateway.php:34
-msgid "Invoice - Pay later by bank transfer"
-msgstr "Aankoop op rekening - nu kopen, later betalen"
-
-#: src/Mondu/Mondu/Gateway.php:120
-#: src/Mondu/Mondu/GatewayDirectDebit.php:120
-#: src/Mondu/Mondu/GatewayInstallment.php:120
-msgid "Error placing an order. Please try again."
-msgstr "Fout bij het plaatsen van een bestelling. Probeer het opnieuw."
-
-#: src/Mondu/Mondu/GatewayDirectDebit.php:33
+#: src/Mondu/Mondu/GatewayDirectDebit.php:11
 msgid "Mondu SEPA Direct Debit"
 msgstr "Mondu SEPA Incasso"
 
-#: src/Mondu/Mondu/GatewayDirectDebit.php:34
+#: src/Mondu/Mondu/GatewayDirectDebit.php:12
 msgid "SEPA - Pay later by direct debit"
 msgstr "SEPA automatische incasso - nu kopen, later betalen"
 
@@ -161,13 +147,25 @@ msgstr "Beschrijving van de betalingsmethode die de klant te zien krijgt bij het
 msgid "Instructions that will be added to the thank you page and emails."
 msgstr "Instructies die worden toegevoegd aan de bedankpagina en e-mails."
 
-#: src/Mondu/Mondu/GatewayInstallment.php:33
+#: src/Mondu/Mondu/GatewayInstallment.php:11
 msgid "Mondu Installments"
 msgstr "Mondu Termijnbetalingen"
 
-#: src/Mondu/Mondu/GatewayInstallment.php:34
+#: src/Mondu/Mondu/GatewayInstallment.php:12
 msgid "Split payments - Pay conveniently in installments by direct debit"
 msgstr "Gespreid betalen, betaal gemakkelijk in termijnen via automatische incasso"
+
+#: src/Mondu/Mondu/GatewayInvoice.php:11
+msgid "Mondu Invoice"
+msgstr "Mondu Factuurbetaling"
+
+#: src/Mondu/Mondu/GatewayInvoice.php:12
+msgid "Invoice - Pay later by bank transfer"
+msgstr "Aankoop op rekening - nu kopen, later betalen"
+
+#: src/Mondu/Mondu/MonduGateway.php:117
+msgid "Error placing an order. Please try again."
+msgstr "Fout bij het plaatsen van een bestelling. Probeer het opnieuw."
 
 #: src/Mondu/Mondu/MonduRequestWrapper.php:312
 msgid "Mondu: Can not create a credit note without an invoice"
