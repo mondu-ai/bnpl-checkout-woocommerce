@@ -3,7 +3,7 @@
 namespace Mondu;
 
 use Mondu\Admin\Settings;
-use Mondu\Mondu\Gateway;
+use Mondu\Mondu\GatewayInvoice;
 use Mondu\Mondu\GatewayDirectDebit;
 use Mondu\Mondu\GatewayInstallment;
 use Mondu\Mondu\MonduRequestWrapper;
@@ -17,7 +17,6 @@ use WP_Error;
 use WC_Order;
 
 class Plugin {
-  const ADJUST_ORDER_TRIGGERED_KEY = '_mondu_adjust_order_triggered';
   const ORDER_DATA_KEY = '_mondu_order_data';
   const ORDER_ID_KEY = '_mondu_order_id';
   const INVOICE_ID_KEY = '_mondu_invoice_id';
@@ -60,7 +59,7 @@ class Plugin {
       } else {
         add_action('admin_notices', array($this, 'woocommerce_notice'));
       }
-      deactivate_plugins('Woocommerce-Mondu/woocommerce-mondu.php');
+      deactivate_plugins(MONDU_PLUGIN_BASENAME);
       return;
     }
 
@@ -83,7 +82,7 @@ class Plugin {
      * Adds the mondu gateway to the list of gateways
      * (And remove it again if we're not in Germany)
      */
-    add_filter('woocommerce_payment_gateways', [Gateway::class, 'add']);
+    add_filter('woocommerce_payment_gateways', [GatewayInvoice::class, 'add']);
     add_filter('woocommerce_payment_gateways', [GatewayDirectDebit::class, 'add']);
     add_filter('woocommerce_payment_gateways', [GatewayInstallment::class, 'add']);
     add_filter('woocommerce_available_payment_gateways', [$this, 'remove_mondu_outside_germany']);
@@ -137,11 +136,11 @@ class Plugin {
      */
     if (class_exists('WPO_WCPDF') ) {
       add_action('wpo_wcpdf_after_order_details', [$this, 'wcpdf_add_mondu_payment_info_to_pdf'], 10, 2);
-      add_action('wpo_wcpdf_after_order_data', [$this, 'wcpdf_add_status_to_invoice_when_order_is_cancelled'], 10, 2);
+      add_action('wpo_wcpdf_after_order_data', [$this, 'wcpdf_add_status_to_invoice_when_order_is_canceled'], 10, 2);
       add_action('wpo_wcpdf_after_order_data', [$this, 'wcpdf_add_paid_to_invoice_when_invoice_is_paid'], 10, 2);
-      add_action('wpo_wcpdf_after_order_data', [$this, 'wcpdf_add_status_to_invoice_when_invoice_is_cancelled'], 10, 2);
+      add_action('wpo_wcpdf_after_order_data', [$this, 'wcpdf_add_status_to_invoice_when_invoice_is_canceled'], 10, 2);
       add_action('wpo_wcpdf_meta_box_after_document_data', [$this, 'wcpdf_add_paid_to_invoice_admin_when_invoice_is_paid'], 10, 2);
-      add_action('wpo_wcpdf_meta_box_after_document_data', [$this, 'wcpdf_add_status_to_invoice_admin_when_invoice_is_cancelled'], 10, 2);
+      add_action('wpo_wcpdf_meta_box_after_document_data', [$this, 'wcpdf_add_status_to_invoice_admin_when_invoice_is_canceled'], 10, 2);
       add_action('wpo_wcpdf_reload_text_domains', [$this, 'wcpdf_add_mondu_payment_language_switch'], 10, 1);
     }
   }
@@ -245,6 +244,8 @@ class Plugin {
 
     $row_meta = [
       'docs' => '<a target="_blank" href="' . esc_url('https://docs.mondu.ai/docs/woocommerce-installation-guide') . '" aria-label="' . esc_attr__('View Mondu documentation', 'mondu') . '">' . esc_html__('Docs', 'mondu') . '</a>',
+      'intro' => '<a target="_blank" href="' . esc_url(esc_attr__('https://mondu.ai/introduction-to-paying-with-mondu', 'mondu')) . '" aria-label="' . esc_attr__('View introduction to paying with Mondu', 'mondu') . '">' . esc_html__('Mondu introduction', 'mondu') . '</a>',
+      'faq' => '<a target="_blank" href="' . esc_url(esc_attr__('https://mondu.ai/faq', 'mondu')) . '" aria-label="' . esc_attr__('View FAQ', 'mondu') . '">' . esc_html__('FAQ', 'mondu') . '</a>',
     ];
 
     return array_merge($links, $row_meta);
@@ -307,7 +308,7 @@ class Plugin {
    *
    * @throws Exception
    */
-  public function wcpdf_add_status_to_invoice_when_order_is_cancelled($template_type, $order) {
+  public function wcpdf_add_status_to_invoice_when_order_is_canceled($template_type, $order) {
     if (!$this->wcpdf_mondu_template_type($template_type)) return;
 
     if (!$this->order_has_mondu($order)) {
@@ -321,7 +322,7 @@ class Plugin {
       ?>
         <tr class="order-status">
           <th><?php _e('Order state','mondu'); ?>:</th>
-          <td><?php _e('Cancelled','mondu'); ?></td>
+          <td><?php _e('Canceled','mondu'); ?></td>
         </tr>
       <?php
     }
@@ -359,7 +360,7 @@ class Plugin {
    *
    * @throws Exception
    */
-  public function wcpdf_add_status_to_invoice_when_invoice_is_cancelled($template_type, $order) {
+  public function wcpdf_add_status_to_invoice_when_invoice_is_canceled($template_type, $order) {
     if (!$this->wcpdf_mondu_template_type($template_type)) return;
 
     if (!$this->order_has_mondu($order)) {
@@ -373,7 +374,7 @@ class Plugin {
       ?>
         <tr class="invoice-status">
           <th><?php _e('Mondu Invoice state','mondu'); ?>:</th>
-          <td><?php _e('Cancelled','mondu'); ?></td>
+          <td><?php _e('Canceled','mondu'); ?></td>
         </tr>
       <?php
     }
@@ -413,7 +414,7 @@ class Plugin {
    *
    * @throws Exception
    */
-  public function wcpdf_add_status_to_invoice_admin_when_invoice_is_cancelled($document, $order) {
+  public function wcpdf_add_status_to_invoice_admin_when_invoice_is_canceled($document, $order) {
     if ($document->get_type() !== 'invoice') return;
 
     if (!$this->order_has_mondu($order)) {
@@ -428,7 +429,7 @@ class Plugin {
         <div class="invoice-number">
           <p>
             <span><strong><?php _e('Mondu Invoice state','mondu'); ?>:</strong></span>
-            <span><?php _e('Cancelled','mondu'); ?></span>
+            <span><?php _e('Canceled','mondu'); ?></span>
           </p>
         </div>
       <?php

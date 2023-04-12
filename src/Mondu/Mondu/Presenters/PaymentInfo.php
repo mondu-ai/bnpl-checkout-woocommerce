@@ -279,7 +279,7 @@ class PaymentInfo {
   private function get_mondu_payment_notice($payment_method) {
     ob_start();
 
-    $file = MONDU_VIEW_PATH. '/pdf/mondu_invoice_section.php';
+    $file = MONDU_VIEW_PATH. '/pdf/mondu-invoice-section.php';
 
     //used in the file that is included
     $wcpdfShopName = $this->get_wcpdf_shop_name();

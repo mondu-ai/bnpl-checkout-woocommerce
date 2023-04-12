@@ -9,7 +9,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2022-11-01T18:21:49+00:00\n"
 "PO-Revision-Date: 2022-11-01T18:21:49+00:00\n"
-"Language: de_DE\n"
+"Language: de_AT\n"
 
 #. Plugin Name of the plugin
 msgid "WooCommerce-Mondu"
@@ -262,7 +262,7 @@ msgstr "Dokumente"
 
 #: src/Mondu/Plugin.php:247
 msgid "https://mondu.ai/introduction-to-paying-with-mondu"
-msgstr "https://mondu.ai/de/introduction-to-paying-with-mondu"
+msgstr "https://mondu.ai/at/introduction-to-paying-with-mondu"
 
 #: src/Mondu/Plugin.php:247
 msgid "View introduction to paying with Mondu"
@@ -274,7 +274,7 @@ msgstr "Mondu Einführung"
 
 #: src/Mondu/Plugin.php:248
 msgid "https://mondu.ai/faq"
-msgstr "https://mondu.ai/de/faq"
+msgstr "https://mondu.ai/at/faq"
 
 #: src/Mondu/Plugin.php:248
 msgid "View FAQ"
@@ -353,7 +353,7 @@ msgstr "Log date"
 
 #: views/checkout/payment-form.php:153
 msgid "Information on the processing of your personal data by <strong>Mondu GmbH</strong> can be found <a href=\"https://mondu.ai/gdpr-notification-for-buyers\" target=\"_blank\">here</a>."
-msgstr "Hinweise zur Verarbeitung Ihrer personenbezogenen Daten durch die <strong>Mondu GmbH</strong> finden Sie <a href=\"https://mondu.ai/de/gdpr-notification-for-buyers\" target=\"_blank\">hier</a>."
+msgstr "Hinweise zur Verarbeitung Ihrer personenbezogenen Daten durch die <strong>Mondu GmbH</strong> finden Sie <a href=\"https://mondu.ai/at/gdpr-notification-for-buyers\" target=\"_blank\">hier</a>."
 
 #. translators: %s: Company
 #: views/pdf/mondu-invoice-section.php:7

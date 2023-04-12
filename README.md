@@ -20,11 +20,10 @@ docker-compose up -d --build
 
 ```
 wp i18n --allow-root make-pot . languages/mondu.pot
-wp i18n --allow-root update-po languages/mondu.pot languages/mondu-de_DE.po
-wp i18n --allow-root update-po languages/mondu.pot languages/mondu-nl_NL.po
+wp i18n --allow-root update-po languages/mondu.pot languages/
 ```
 
-- Include the translated strings in the files `languages/mondu-de_DE.po` and `languages/mondu-nl_NL.po`.
+- Include the translated strings in the `languages/*.po` files.
 - Run the following command to update `.mo` files:
 
 ```

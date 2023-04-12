@@ -11,7 +11,7 @@ use Mondu\Plugin;
 use WC_Data_Exception;
 use WC_Payment_Gateway;
 
-class Gateway extends WC_Payment_Gateway {
+class MonduGateway extends WC_Payment_Gateway {
 
   /**
    * @var array|bool|mixed|void
@@ -29,11 +29,6 @@ class Gateway extends WC_Payment_Gateway {
   public function __construct() {
     $this->global_settings = get_option(Plugin::OPTION_NAME);
 
-    $this->id = Plugin::PAYMENT_METHODS['invoice'];
-    $this->method_title = __('Mondu Invoice', 'mondu');
-    $this->method_description = __('Invoice - Pay later by bank transfer', 'mondu');
-    $this->has_fields = true;
-
     $this->init_form_fields();
     $this->init_settings();
 
@@ -41,6 +36,8 @@ class Gateway extends WC_Payment_Gateway {
     $this->title = $this->get_option('title');
     $this->description = $this->get_option('description');
     $this->instructions = $this->get_option('instructions');
+
+    $this->enabled = $this->is_enabled();
 
     $this->mondu_request_wrapper = new MonduRequestWrapper();
 
@@ -125,5 +122,16 @@ class Gateway extends WC_Payment_Gateway {
       'result' => 'success',
       'redirect' => $this->get_return_url($order)
     );
+  }
+
+  /**
+   * Check if Mondu has its credentials validated.
+   *
+   * @return string
+   */
+  private function is_enabled() {
+    if (get_option('_mondu_credentials_validated') == null) $this->settings['enabled'] = 'no';
+
+    return !empty($this->settings['enabled']) && 'yes' === $this->settings['enabled'] ? 'yes' : 'no';
   }
 }
