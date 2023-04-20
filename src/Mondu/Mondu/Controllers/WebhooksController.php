@@ -13,6 +13,11 @@ use WP_REST_Request;
 use WP_REST_Response;
 
 class WebhooksController extends WP_REST_Controller {
+  /**
+   * @var MonduRequestWrapper
+   */
+  private $mondu_request_wrapper;
+
   public function __construct() {
     $this->namespace = 'mondu/v1/webhooks';
     $this->mondu_request_wrapper = new MonduRequestWrapper();
@@ -36,12 +41,14 @@ class WebhooksController extends WP_REST_Controller {
       $params = $request->get_json_params();
       $signature_payload = $request->get_header('X-MONDU-SIGNATURE');
       $signature = $verifier->create_hmac($params);
+      $topic = @$params['topic'];
+
+      Helper::log(array('webhook_topic' => $topic, 'params' => $params));
 
       if ($signature !== $signature_payload) {
         throw new MonduException(__('Signature mismatch.', 'mondu'));
       }
 
-      $topic = @$params['topic'];
       switch ($topic) {
         case 'order/pending':
           [$res_body, $res_status] = $this->handle_pending($params);
