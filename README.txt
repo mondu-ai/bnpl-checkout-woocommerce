@@ -3,7 +3,7 @@ Contributors: mondu-ai, arthurmmoreira, tikohov20
 Tags: mondu, woocommerce, e-commerce, ecommerce, store, sales, sell, woo, shop, cart, checkout, payment, payments, bnpl, b2b
 Requires at least: 5.9.0
 Tested up to: 6.1.0
-Stable tag: 1.1.4
+Stable tag: 1.2.2
 Requires PHP: 7.4.0
 
 Increase your revenue with Mondu’s solution, without the operational burden.
@@ -22,6 +22,27 @@ Increase your revenue with Mondu’s solution, without the operational burden.
 10. Read more about the configuration process in the [installation guide](https://docs.mondu.ai/docs/woocommerce-installation-guide).
 
 == Changelog ==
+
+=== 1.2.2 ===
+
+* Add fallback if the wcpdf_get_document number is not found
+* Fix webhooks signature
+* Remove title and description from payment method gateway's configuration to dynamically change the language
+* Include instruction in the created order email
+* Add wordpress language to mondu filter
+* Minor fixes
+
+=== 1.2.1 ===
+
+* Add cache if payment method endpoint returns 403
+
+=== 1.2.0 ===
+
+* WCPDF: Add filter for template extension
+* Mondu only block order if we have an actually payment
+* Add French translations
+* Add Austria i18n
+* Only show Mondu if it is validated
 
 === 1.1.4 ===
 

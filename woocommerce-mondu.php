@@ -3,7 +3,7 @@
  * Plugin Name: WooCommerce-Mondu
  * Plugin URI: https://github.com/mondu-ai/bnpl-checkout-woocommerce/releases
  * Description: Increase your revenue with Mondu’s solution, without the operational burden.
- * Version: 1.1.4
+ * Version: 1.2.2
  * Author: Mondu
  * Author URI: https://mondu.ai
  * License: MIT
@@ -21,7 +21,7 @@
 
 defined('ABSPATH') or die('Direct access not allowed');
 
-define('MONDU_PLUGIN_VERSION', '1.1.4');
+define('MONDU_PLUGIN_VERSION', '1.2.2');
 define('MONDU_PLUGIN_FILE', __FILE__);
 define('MONDU_PLUGIN_PATH', __DIR__);
 define('MONDU_PLUGIN_BASENAME', plugin_basename(MONDU_PLUGIN_FILE));
