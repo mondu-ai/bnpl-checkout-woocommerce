@@ -33,8 +33,6 @@ class MonduGateway extends WC_Payment_Gateway {
     $this->init_settings();
 
     // Define user set variables
-    $this->title = $this->get_option('title');
-    $this->description = $this->get_option('description');
     $this->instructions = $this->get_option('instructions');
 
     $this->enabled = $this->is_enabled();
@@ -49,7 +47,7 @@ class MonduGateway extends WC_Payment_Gateway {
    * Initialise Gateway Settings Form Fields
    */
   public function init_form_fields() {
-    $this->form_fields = GatewayFields::fields($this->method_title, $this->method_description);
+    $this->form_fields = GatewayFields::fields();
   }
 
   /**
