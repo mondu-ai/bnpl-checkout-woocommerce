@@ -66,7 +66,7 @@ class MonduRequestWrapper {
    */
   public function get_order($order_id) {
     $order = new WC_Order($order_id);
-    if (!PLUGIN::order_has_mondu($order)) {
+    if (!Plugin::order_has_mondu($order)) {
       return;
     }
 
@@ -83,7 +83,7 @@ class MonduRequestWrapper {
    */
   public function update_external_info($order_id) {
     $order = new WC_Order($order_id);
-    if (!PLUGIN::order_has_mondu($order)) {
+    if (!Plugin::order_has_mondu($order)) {
       return;
     }
 
@@ -102,7 +102,7 @@ class MonduRequestWrapper {
    */
   public function adjust_order($order_id, $data_to_update) {
     $order = new WC_Order($order_id);
-    if (!PLUGIN::order_has_mondu($order)) {
+    if (!Plugin::order_has_mondu($order)) {
       return;
     }
 
@@ -119,7 +119,7 @@ class MonduRequestWrapper {
    */
   public function cancel_order($order_id) {
     $order = new WC_Order($order_id);
-    if (!PLUGIN::order_has_mondu($order)) {
+    if (!Plugin::order_has_mondu($order)) {
       return;
     }
 
@@ -136,7 +136,7 @@ class MonduRequestWrapper {
    */
   public function ship_order($order_id) {
     $order = new WC_Order($order_id);
-    if (!PLUGIN::order_has_mondu($order)) {
+    if (!Plugin::order_has_mondu($order)) {
       return;
     }
 
@@ -156,7 +156,7 @@ class MonduRequestWrapper {
    */
   public function get_invoices($order_id) {
     $order = new WC_Order($order_id);
-    if (!PLUGIN::order_has_mondu($order)) {
+    if (!Plugin::order_has_mondu($order)) {
       return;
     }
 
@@ -173,7 +173,7 @@ class MonduRequestWrapper {
    */
   public function get_invoice($order_id) {
     $order = new WC_Order($order_id);
-    if (!PLUGIN::order_has_mondu($order)) {
+    if (!Plugin::order_has_mondu($order)) {
       return;
     }
 
@@ -256,7 +256,7 @@ class MonduRequestWrapper {
    * @throws ResponseException
    */
   public function update_order_if_changed_some_fields($order) {
-    if (!PLUGIN::order_has_mondu($order)) {
+    if (!Plugin::order_has_mondu($order)) {
       return;
     }
 
@@ -280,7 +280,7 @@ class MonduRequestWrapper {
    */
   public function order_status_changed($order_id, $from_status, $to_status) {
     $order = new WC_Order($order_id);
-    if (!PLUGIN::order_has_mondu($order)) {
+    if (!Plugin::order_has_mondu($order)) {
       return;
     }
 
@@ -303,12 +303,12 @@ class MonduRequestWrapper {
    */
   public function order_refunded($order_id, $refund_id) {
     $order = new WC_Order($order_id);
-    if (!PLUGIN::order_has_mondu($order)) {
+    if (!Plugin::order_has_mondu($order)) {
       return;
     }
 
     $refund = new WC_Order_Refund($refund_id);
-    $mondu_invoice_id = get_post_meta($order->get_id(), PLUGIN::INVOICE_ID_KEY, true);
+    $mondu_invoice_id = get_post_meta($order->get_id(), Plugin::INVOICE_ID_KEY, true);
 
     if (!$mondu_invoice_id) {
       throw new ResponseException(__('Mondu: Can not create a credit note without an invoice', 'mondu'));

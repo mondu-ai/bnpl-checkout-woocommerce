@@ -134,7 +134,7 @@ class Plugin {
     /*
      * These methods add the Mondu invoice's info to a WCPDF Invoice
      */
-    if (class_exists('WPO_WCPDF') ) {
+    if (class_exists('WPO_WCPDF')) {
       add_action('wpo_wcpdf_after_order_details', [$this, 'wcpdf_add_mondu_payment_info_to_pdf'], 10, 2);
       add_action('wpo_wcpdf_after_order_data', [$this, 'wcpdf_add_status_to_invoice_when_order_is_canceled'], 10, 2);
       add_action('wpo_wcpdf_after_order_data', [$this, 'wcpdf_add_paid_to_invoice_when_invoice_is_paid'], 10, 2);
@@ -157,7 +157,7 @@ class Plugin {
 
     // Check if we actually have a payment as well
     $mondu_order_id = get_post_meta($order->get_id(), Plugin::ORDER_ID_KEY, true);
-    if ( !$mondu_order_id ) {
+    if (!$mondu_order_id) {
       return false;
     }
 
@@ -171,8 +171,9 @@ class Plugin {
 
     $payment_info = new PaymentInfo($order->get_id());
     $order_data = $payment_info->get_order_data();
-    if ($order_data && $order_data['state'] == 'declined')
+    if ($order_data && $order_data['state'] == 'declined') {
       return;
+    }
 
     wc_enqueue_js("
       jQuery(document).ready(function() {
@@ -292,9 +293,7 @@ class Plugin {
    * @throws Exception
    */
   public function wcpdf_add_mondu_payment_info_to_pdf($template_type, $order) {
-    if (!$this->wcpdf_mondu_template_type($template_type)) return;
-
-    if (!$this->order_has_mondu($order)) {
+    if (!$this->wcpdf_mondu_template_type($template_type) || !$this->order_has_mondu($order)) {
       return;
     }
 
@@ -309,9 +308,7 @@ class Plugin {
    * @throws Exception
    */
   public function wcpdf_add_status_to_invoice_when_order_is_canceled($template_type, $order) {
-    if (!$this->wcpdf_mondu_template_type($template_type)) return;
-
-    if (!$this->order_has_mondu($order)) {
+    if (!$this->wcpdf_mondu_template_type($template_type) || !$this->order_has_mondu($order)) {
       return;
     }
 
@@ -335,9 +332,7 @@ class Plugin {
    * @throws Exception
    */
   public function wcpdf_add_paid_to_invoice_when_invoice_is_paid($template_type, $order) {
-    if (!$this->wcpdf_mondu_template_type($template_type)) return;
-
-    if (!$this->order_has_mondu($order)) {
+    if (!$this->wcpdf_mondu_template_type($template_type) || !$this->order_has_mondu($order)) {
       return;
     }
 
@@ -361,9 +356,7 @@ class Plugin {
    * @throws Exception
    */
   public function wcpdf_add_status_to_invoice_when_invoice_is_canceled($template_type, $order) {
-    if (!$this->wcpdf_mondu_template_type($template_type)) return;
-
-    if (!$this->order_has_mondu($order)) {
+    if (!$this->wcpdf_mondu_template_type($template_type) || !$this->order_has_mondu($order)) {
       return;
     }
 
@@ -387,9 +380,7 @@ class Plugin {
    * @throws Exception
    */
   public function wcpdf_add_paid_to_invoice_admin_when_invoice_is_paid($document, $order) {
-    if ($document->get_type() !== 'invoice') return;
-
-    if (!$this->order_has_mondu($order)) {
+    if ($document->get_type() !== 'invoice' || !$this->order_has_mondu($order)) {
       return;
     }
 
@@ -415,9 +406,7 @@ class Plugin {
    * @throws Exception
    */
   public function wcpdf_add_status_to_invoice_admin_when_invoice_is_canceled($document, $order) {
-    if ($document->get_type() !== 'invoice') return;
-
-    if (!$this->order_has_mondu($order)) {
+    if ($document->get_type() !== 'invoice' || !$this->order_has_mondu($order)) {
       return;
     }
 
@@ -486,6 +475,6 @@ class Plugin {
   }
 
   public function get_mondu_order_locale() {
-    return apply_filters( 'wpml_current_language', null );
+    return apply_filters('wpml_current_language', null);
   }
 }

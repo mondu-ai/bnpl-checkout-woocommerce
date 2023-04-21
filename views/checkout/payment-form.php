@@ -46,7 +46,7 @@
     } else {
       data = checkoutForm().serialize();
     }
-    var lang = '<?php echo apply_filters( 'mondu_order_locale', get_locale() ); ?>'
+    var lang = '<?php echo apply_filters('mondu_order_locale', get_locale()); ?>'
     data += '&lang=' + lang;
 
     jQuery.ajax({

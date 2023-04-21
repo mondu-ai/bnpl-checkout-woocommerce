@@ -1,4 +1,4 @@
-<?php if ( ! defined( 'ABSPATH' ) ) exit;
+<?php if (! defined('ABSPATH')) exit;
 
 if ($payment_method === 'mondu_invoice') {
   ?>
