@@ -475,6 +475,6 @@ class Plugin {
   }
 
   public function get_mondu_order_locale() {
-    return apply_filters('wpml_current_language', null);
+    return apply_filters('wpml_current_language', get_locale());
   }
 }
