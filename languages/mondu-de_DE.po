@@ -32,7 +32,7 @@ msgid "https://mondu.ai"
 msgstr "https://mondu.ai"
 
 #: src/Mondu/Admin/Option/Account.php:17
-#: src/Mondu/Plugin.php:226
+#: src/Mondu/Plugin.php:227
 msgid "Settings"
 msgstr "Einstellungen"
 
@@ -44,31 +44,31 @@ msgstr "Sandbox oder Production"
 msgid "API Token"
 msgstr "API Token"
 
-#: src/Mondu/Admin/Option/Account.php:31
+#: src/Mondu/Admin/Option/Account.php:36
 msgid "Send line items"
 msgstr "Einzelposten senden"
 
-#: src/Mondu/Admin/Option/Account.php:39
+#: src/Mondu/Admin/Option/Account.php:44
 #: src/Mondu/Mondu/Presenters/PaymentInfo.php:206
-#: src/Mondu/Plugin.php:351
-#: src/Mondu/Plugin.php:404
+#: src/Mondu/Plugin.php:346
+#: src/Mondu/Plugin.php:395
 msgid "Yes"
 msgstr "Ja"
 
-#: src/Mondu/Admin/Option/Account.php:40
+#: src/Mondu/Admin/Option/Account.php:45
 msgid "Send line items only for orders"
 msgstr "Senden Sie nur Einzelposten für Bestellungen"
 
-#: src/Mondu/Admin/Option/Account.php:41
+#: src/Mondu/Admin/Option/Account.php:46
 #: src/Mondu/Mondu/Presenters/PaymentInfo.php:206
 msgid "No"
 msgstr "Nein"
 
-#: src/Mondu/Admin/Option/Account.php:47
+#: src/Mondu/Admin/Option/Account.php:52
 msgid "Sandbox"
 msgstr "Sandbox"
 
-#: src/Mondu/Admin/Option/Account.php:48
+#: src/Mondu/Admin/Option/Account.php:53
 msgid "Production"
 msgstr "Production"
 
@@ -128,6 +128,7 @@ msgid "Mondu SEPA Direct Debit"
 msgstr "Mondu SEPA-Lastschrift"
 
 #: src/Mondu/Mondu/GatewayDirectDebit.php:12
+#: src/Mondu/Mondu/GatewayDirectDebit.php:13
 msgid "SEPA - Pay later by direct debit"
 msgstr "SEPA-Lastschrift - jetzt kaufen, später bezahlen"
 
@@ -136,14 +137,6 @@ msgid "Enable this payment method"
 msgstr "Aktivieren Sie diese Zahlungsart"
 
 #: src/Mondu/Mondu/GatewayFields.php:21
-msgid "This controls the title which the user sees during checkout."
-msgstr "Dies steuert den Titel, den der Benutzer während der Kaufabwicklung sieht."
-
-#: src/Mondu/Mondu/GatewayFields.php:28
-msgid "Payment method description that the customer will see on your checkout."
-msgstr "Beschreibung der Zahlungsmethode, die der Kunde bei der Kaufabwicklung sehen wird."
-
-#: src/Mondu/Mondu/GatewayFields.php:35
 msgid "Instructions that will be added to the thank you page and emails."
 msgstr "Anweisungen, die der Dankesseite und den E-Mails hinzugefügt werden."
 
@@ -152,6 +145,7 @@ msgid "Mondu Installments"
 msgstr "Mondu Ratenkauf"
 
 #: src/Mondu/Mondu/GatewayInstallment.php:12
+#: src/Mondu/Mondu/GatewayInstallment.php:13
 msgid "Split payments - Pay conveniently in installments by direct debit"
 msgstr "Ratenzahlung - Bequem in Raten per Bankeinzug zahlen"
 
@@ -160,19 +154,20 @@ msgid "Mondu Invoice"
 msgstr "Mondu Rechnungskauf"
 
 #: src/Mondu/Mondu/GatewayInvoice.php:12
+#: src/Mondu/Mondu/GatewayInvoice.php:13
 msgid "Invoice - Pay later by bank transfer"
 msgstr "Rechnungskauf - jetzt kaufen, später bezahlen"
 
-#: src/Mondu/Mondu/MonduGateway.php:117
+#: src/Mondu/Mondu/MonduGateway.php:135
 msgid "Error placing an order. Please try again."
 msgstr "Fehler beim Aufgeben einer Bestellung. Bitte versuchen Sie es erneut."
 
-#: src/Mondu/Mondu/MonduRequestWrapper.php:312
+#: src/Mondu/Mondu/MonduRequestWrapper.php:314
 msgid "Mondu: Can not create a credit note without an invoice"
 msgstr "Mondu: Kann keine Gutschrift ohne Rechnung erstellen"
 
 #: src/Mondu/Mondu/Presenters/PaymentInfo.php:66
-#: src/Mondu/Plugin.php:324
+#: src/Mondu/Plugin.php:321
 msgid "Order state"
 msgstr "Bestellstatus"
 
@@ -244,83 +239,83 @@ msgstr "Rechnung stornieren"
 msgid "Credit Note number"
 msgstr "Gutschriftsnummer"
 
-#: src/Mondu/Plugin.php:182
+#: src/Mondu/Plugin.php:183
 msgid "Since this order will be paid via Mondu you will not be able to change the addresses."
 msgstr "Da diese Bestellung über Mondu bezahlt wird, können Sie die Adressen nicht ändern."
 
-#: src/Mondu/Plugin.php:226
+#: src/Mondu/Plugin.php:227
 msgid "View Mondu settings"
 msgstr "Mondu-Einstellungen anzeigen"
 
-#: src/Mondu/Plugin.php:246
+#: src/Mondu/Plugin.php:247
 msgid "View Mondu documentation"
 msgstr "Mondu-Dokumentation anzeigen"
 
-#: src/Mondu/Plugin.php:246
+#: src/Mondu/Plugin.php:247
 msgid "Docs"
 msgstr "Dokumente"
 
-#: src/Mondu/Plugin.php:247
+#: src/Mondu/Plugin.php:248
 msgid "https://mondu.ai/introduction-to-paying-with-mondu"
 msgstr "https://mondu.ai/de/introduction-to-paying-with-mondu"
 
-#: src/Mondu/Plugin.php:247
+#: src/Mondu/Plugin.php:248
 msgid "View introduction to paying with Mondu"
 msgstr "Einführung in das Bezahlen mit Mondu ansehen"
 
-#: src/Mondu/Plugin.php:247
+#: src/Mondu/Plugin.php:248
 msgid "Mondu introduction"
 msgstr "Mondu Einführung"
 
-#: src/Mondu/Plugin.php:248
+#: src/Mondu/Plugin.php:249
 msgid "https://mondu.ai/faq"
 msgstr "https://mondu.ai/de/faq"
 
-#: src/Mondu/Plugin.php:248
+#: src/Mondu/Plugin.php:249
 msgid "View FAQ"
 msgstr "FAQ anzeigen"
 
-#: src/Mondu/Plugin.php:248
+#: src/Mondu/Plugin.php:249
 msgid "FAQ"
 msgstr "FAQ"
 
 #. translators: %s: Company
-#: src/Mondu/Plugin.php:265
+#: src/Mondu/Plugin.php:266
 msgid "%s is a required field for Mondu payments."
 msgstr "%s ist ein Pflichtfeld für Mondu-Zahlungen."
 
 #. translators: %s: Company
-#: src/Mondu/Plugin.php:265
+#: src/Mondu/Plugin.php:266
 msgid "Company"
 msgstr "Firma"
 
 #. translators: %s: Billing country
-#: src/Mondu/Plugin.php:270
+#: src/Mondu/Plugin.php:271
 msgid "%s not available for Mondu Payments."
 msgstr "%s für Mondu-Zahlungen nicht verfügbar."
 
 #. translators: %s: Billing country
-#: src/Mondu/Plugin.php:270
+#: src/Mondu/Plugin.php:271
 msgid "Billing country"
 msgstr "Rechnungsland"
 
-#: src/Mondu/Plugin.php:325
-#: src/Mondu/Plugin.php:377
-#: src/Mondu/Plugin.php:432
+#: src/Mondu/Plugin.php:322
+#: src/Mondu/Plugin.php:370
+#: src/Mondu/Plugin.php:421
 msgid "Canceled"
 msgstr "Storniert"
 
-#: src/Mondu/Plugin.php:350
-#: src/Mondu/Plugin.php:403
+#: src/Mondu/Plugin.php:345
+#: src/Mondu/Plugin.php:394
 msgid "Mondu Invoice paid"
 msgstr "Mondu-Rechnung bezahlt"
 
-#: src/Mondu/Plugin.php:376
-#: src/Mondu/Plugin.php:431
+#: src/Mondu/Plugin.php:369
+#: src/Mondu/Plugin.php:420
 msgid "Mondu Invoice state"
 msgstr "Mondu-Rechnungsstatus"
 
-#: src/Mondu/Plugin.php:452
+#: src/Mondu/Plugin.php:441
 msgid "Mondu requires WooCommerce to be activated."
 msgstr "Mondu erfordert die Aktivierung von WooCommerce."
 
