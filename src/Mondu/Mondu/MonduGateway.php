@@ -41,6 +41,8 @@ class MonduGateway extends WC_Payment_Gateway {
 
     add_action('woocommerce_update_options_payment_gateways_' . $this->id, array($this, 'process_admin_options'));
     add_action('woocommerce_thankyou_' . $this->id, array($this, 'thankyou_page'));
+
+    add_action('woocommerce_email_before_order_table', array($this, 'email_instructions'), 10, 3);
   }
 
   /**
@@ -78,8 +80,26 @@ class MonduGateway extends WC_Payment_Gateway {
     include MONDU_VIEW_PATH . '/checkout/payment-form.php';
   }
 
+  /**
+   * Output for the order received page.
+   */
   public function thankyou_page() {
     if ($this->instructions) {
+      echo wp_kses_post(wpautop(wptexturize($this->instructions)));
+    }
+  }
+
+  /**
+   * Add content to the WC emails.
+   *
+   * @param WC_Order $order
+   */
+  public function email_instructions($order) {
+    if (!Plugin::order_has_mondu($order)) {
+      return;
+    }
+
+    if ($this->instructions && $this->id === $order->get_payment_method()) {
       echo wp_kses_post(wpautop(wptexturize($this->instructions)));
     }
   }
