@@ -27,6 +27,7 @@ Increase your revenue with Mondu’s solution, without the operational burden.
 
 * Add fallback if the wcpdf_get_document number is not found
 * Fix webhooks signature
+* Allow send products with value zero
 * Remove title and description from payment method gateway's configuration to dynamically change the language
 * Include instruction in the created order email
 * Add wordpress language to mondu filter
