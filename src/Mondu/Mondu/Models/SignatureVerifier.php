@@ -37,7 +37,7 @@ class SignatureVerifier {
    * @return bool
    */
   public function create_hmac($payload) {
-    return hash_hmac('sha256', json_encode($payload), $this->secret);
+    return hash_hmac('sha256', json_encode($payload, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_FORCE_OBJECT), $this->secret);
   }
 
   /**

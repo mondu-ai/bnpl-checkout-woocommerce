@@ -343,7 +343,7 @@ class MonduRequestWrapper {
   public function register_webhook(string $topic) {
     $response = $this->wrap_with_mondu_log_event('register_webhook', array($topic));
 
-    return $response['webhooks'];
+    return @$response['webhooks'];
   }
 
   /**
