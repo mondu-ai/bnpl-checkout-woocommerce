@@ -224,7 +224,7 @@ class Plugin {
    */
   public static function add_action_links($links) {
     $action_links = array(
-      'settings' => '<a href="' . admin_url('admin.php?page=mondu-settings-account') . '" aria-label="' . esc_attr__('View Mondu settings', 'mondu') . '">' . esc_html__('Settings', 'mondu') . '</a>',
+      'settings' => '<a href="' . admin_url('admin.php?page=mondu-settings-account') . '" aria-label="' . esc_attr__('View Mondu settings', 'mondu') . '">' . esc_html__('Settings', 'woocommerce') . '</a>',
   );
 
     return array_merge($action_links, $links);

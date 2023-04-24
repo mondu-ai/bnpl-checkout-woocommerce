@@ -14,7 +14,7 @@ class Account extends Helper {
      * General Settings
      */
     add_settings_section('mondu_account_settings_general',
-      __('Settings', 'mondu'),
+      __('Settings', 'woocommerce'),
       [],
       'mondu-settings-account');
     add_settings_field('sandbox_or_production',

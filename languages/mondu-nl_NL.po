@@ -31,11 +31,6 @@ msgstr "Mondu"
 msgid "https://mondu.ai"
 msgstr "https://mondu.ai"
 
-#: src/Mondu/Admin/Option/Account.php:17
-#: src/Mondu/Plugin.php:227
-msgid "Settings"
-msgstr "Instellingen"
-
 #: src/Mondu/Admin/Option/Account.php:21
 msgid "Sandbox or production"
 msgstr "Sandbox of productie"
@@ -49,7 +44,7 @@ msgid "Send line items"
 msgstr "Regel items verzenden"
 
 #: src/Mondu/Admin/Option/Account.php:44
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:206
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:210
 #: src/Mondu/Plugin.php:346
 #: src/Mondu/Plugin.php:395
 msgid "Yes"
@@ -60,7 +55,7 @@ msgid "Send line items only for orders"
 msgstr "Stuur alleen regelitems voor bestellingen"
 
 #: src/Mondu/Admin/Option/Account.php:46
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:206
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:210
 msgid "No"
 msgstr "Nee"
 
@@ -95,31 +90,31 @@ msgstr "Onverwachte API respons format."
 msgid "Error processing checkout. Please try again."
 msgstr "Fout bij het afrekenen. Probeer het opnieuw."
 
-#: src/Mondu/Mondu/Controllers/WebhooksController.php:41
+#: src/Mondu/Mondu/Controllers/WebhooksController.php:49
 msgid "Signature mismatch."
 msgstr "Signature mismatch."
 
-#: src/Mondu/Mondu/Controllers/WebhooksController.php:62
+#: src/Mondu/Mondu/Controllers/WebhooksController.php:69
 msgid "Unregistered topic."
 msgstr "Ongeregistreerd onderwerp."
 
-#: src/Mondu/Mondu/Controllers/WebhooksController.php:70
+#: src/Mondu/Mondu/Controllers/WebhooksController.php:77
 msgid "Something happened on our end."
 msgstr "Er is iets gebeurd aan onze kant."
 
-#: src/Mondu/Mondu/Controllers/WebhooksController.php:82
-#: src/Mondu/Mondu/Controllers/WebhooksController.php:103
-#: src/Mondu/Mondu/Controllers/WebhooksController.php:124
-#: src/Mondu/Mondu/Controllers/WebhooksController.php:147
-#: src/Mondu/Mondu/Controllers/WebhooksController.php:167
+#: src/Mondu/Mondu/Controllers/WebhooksController.php:89
+#: src/Mondu/Mondu/Controllers/WebhooksController.php:110
+#: src/Mondu/Mondu/Controllers/WebhooksController.php:131
+#: src/Mondu/Mondu/Controllers/WebhooksController.php:154
+#: src/Mondu/Mondu/Controllers/WebhooksController.php:174
 msgid "Required params missing."
 msgstr "Vereiste params ontbreken."
 
-#: src/Mondu/Mondu/Controllers/WebhooksController.php:88
-#: src/Mondu/Mondu/Controllers/WebhooksController.php:109
-#: src/Mondu/Mondu/Controllers/WebhooksController.php:130
-#: src/Mondu/Mondu/Controllers/WebhooksController.php:154
-#: src/Mondu/Mondu/Controllers/WebhooksController.php:175
+#: src/Mondu/Mondu/Controllers/WebhooksController.php:95
+#: src/Mondu/Mondu/Controllers/WebhooksController.php:116
+#: src/Mondu/Mondu/Controllers/WebhooksController.php:137
+#: src/Mondu/Mondu/Controllers/WebhooksController.php:161
+#: src/Mondu/Mondu/Controllers/WebhooksController.php:182
 msgid "Not Found"
 msgstr "Niet gevonden"
 
@@ -180,62 +175,62 @@ msgid "Create Invoice"
 msgstr "Factuur aanmaken"
 
 #: src/Mondu/Mondu/Presenters/PaymentInfo.php:94
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:271
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:275
 msgid "Corrupt Mondu order!"
 msgstr "Corrupte Mondu order!"
 
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:142
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:146
 msgid "Account holder"
 msgstr "Rekeninghouder"
 
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:146
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:150
 msgid "Bank"
 msgstr "Bank"
 
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:150
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:154
 msgid "IBAN"
 msgstr "IBAN"
 
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:154
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:158
 msgid "BIC"
 msgstr "BIC"
 
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:159
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:163
 msgid "Purpose"
 msgstr "Betalingsreferentie"
 
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:160
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:197
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:164
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:201
 msgid "Invoice number"
 msgstr "Factuurnummer"
 
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:164
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:168
 msgid "Payment term"
 msgstr "Betalingstermijn"
 
 #. translators: %s: Days
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:165
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:169
 msgid "%s Days"
 msgstr "%s Dagen"
 
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:193
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:197
 msgid "Invoice state"
 msgstr "Factuurstatus"
 
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:201
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:241
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:205
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:245
 msgid "Total"
 msgstr "Totaal"
 
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:205
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:209
 msgid "Paid out"
 msgstr "Uitbetaald"
 
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:220
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:224
 msgid "Cancel Invoice"
 msgstr "Factuur annuleren"
 
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:237
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:241
 msgid "Credit Note number"
 msgstr "Creditnota Nummer"
 
