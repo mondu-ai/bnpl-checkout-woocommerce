@@ -3,7 +3,7 @@ Contributors: mondu-ai, arthurmmoreira, tikohov20
 Tags: mondu, woocommerce, e-commerce, ecommerce, store, sales, sell, woo, shop, cart, checkout, payment, payments, bnpl, b2b
 Requires at least: 5.9.0
 Tested up to: 6.1.0
-Stable tag: 1.2.2
+Stable tag: 1.3.0
 Requires PHP: 7.4.0
 
 Increase your revenue with Mondu’s solution, without the operational burden.
@@ -23,7 +23,7 @@ Increase your revenue with Mondu’s solution, without the operational burden.
 
 == Changelog ==
 
-=== 1.2.2 ===
+=== 1.3.0 ===
 
 * Add fallback if the wcpdf_get_document number is not found
 * Fix webhooks signature
