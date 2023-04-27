@@ -7,12 +7,13 @@ class GatewayFields {
   /**
    * Returns the fields.
    */
-  public static function fields() {
+  public static function fields($payment_method) {
     $fields = array(
       'enabled' => array(
         'title' => __('Enable/Disable', 'woocommerce'),
         'type' => 'checkbox',
-        'label' => __('Enable this payment method', 'mondu'),
+        /* translators: %s: Payment Method */
+        'label' => sprintf(__('Enable %s payment method', 'mondu'), $payment_method),
         'default' => 'no',
       ),
       'instructions' => array(

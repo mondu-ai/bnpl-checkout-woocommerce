@@ -127,9 +127,10 @@ msgstr "Mondu SEPA-Lastschrift"
 msgid "SEPA - Pay later by direct debit"
 msgstr "SEPA-Lastschrift - jetzt kaufen, später bezahlen"
 
+#. translators: %s: Payment Method
 #: src/Mondu/Mondu/GatewayFields.php:15
-msgid "Enable this payment method"
-msgstr "Aktivieren Sie diese Zahlungsart"
+msgid "Enable %s payment method"
+msgstr "Aktivieren Sie %s Zahlungsart"
 
 #: src/Mondu/Mondu/GatewayFields.php:21
 msgid "Instructions that will be added to the thank you page and emails."

@@ -130,8 +130,9 @@ msgstr ""
 msgid "SEPA - Pay later by direct debit"
 msgstr ""
 
+#. translators: %s: Payment Method
 #: src/Mondu/Mondu/GatewayFields.php:15
-msgid "Enable this payment method"
+msgid "Enable %s payment method"
 msgstr ""
 
 #: src/Mondu/Mondu/GatewayFields.php:21
