@@ -131,10 +131,6 @@ msgstr "SEPA-Lastschrift - jetzt kaufen, später bezahlen"
 msgid "Enable this payment method"
 msgstr "Aktivieren Sie diese Zahlungsart"
 
-#: src/Mondu/Mondu/GatewayFields.php:21
-msgid "Instructions that will be added to the thank you page and emails."
-msgstr "Anweisungen, die der Dankesseite und den E-Mails hinzugefügt werden."
-
 #: src/Mondu/Mondu/GatewayInstallment.php:11
 msgid "Mondu Installments"
 msgstr "Mondu Ratenkauf"

@@ -32,9 +32,7 @@ class MonduGateway extends WC_Payment_Gateway {
     $this->init_form_fields();
     $this->init_settings();
 
-    // Define user set variables
-    $this->instructions = $this->get_option('instructions');
-
+    $this->instructions = $this->description;
     $this->enabled = $this->is_enabled();
 
     $this->mondu_request_wrapper = new MonduRequestWrapper();

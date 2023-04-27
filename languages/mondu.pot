@@ -134,10 +134,6 @@ msgstr ""
 msgid "Enable this payment method"
 msgstr ""
 
-#: src/Mondu/Mondu/GatewayFields.php:21
-msgid "Instructions that will be added to the thank you page and emails."
-msgstr ""
-
 #: src/Mondu/Mondu/GatewayInstallment.php:11
 msgid "Mondu Installments"
 msgstr ""

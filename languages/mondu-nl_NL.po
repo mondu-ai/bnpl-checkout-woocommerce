@@ -131,10 +131,6 @@ msgstr "SEPA automatische incasso - nu kopen, later betalen"
 msgid "Enable this payment method"
 msgstr "Schakel deze betaalmethode in"
 
-#: src/Mondu/Mondu/GatewayFields.php:21
-msgid "Instructions that will be added to the thank you page and emails."
-msgstr "Instructies die worden toegevoegd aan de bedankpagina en e-mails."
-
 #: src/Mondu/Mondu/GatewayInstallment.php:11
 msgid "Mondu Installments"
 msgstr "Mondu Termijnbetalingen"

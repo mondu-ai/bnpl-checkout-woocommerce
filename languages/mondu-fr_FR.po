@@ -131,10 +131,6 @@ msgstr "SEPA - Payer plus tard par prélèvement SEPA"
 msgid "Enable this payment method"
 msgstr "Activer ce mode de paiement"
 
-#: src/Mondu/Mondu/GatewayFields.php:21
-msgid "Instructions that will be added to the thank you page and emails."
-msgstr "Instructions ajoutées à la page de remerciement et aux courriels."
-
 #: src/Mondu/Mondu/GatewayInstallment.php:11
 msgid "Mondu Installments"
 msgstr "Mondu Paiements Fractionnés"
