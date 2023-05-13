@@ -30,7 +30,7 @@ class Plugin {
     'installment' => 'mondu_installment',
   ];
 
-  const AVAILABLE_COUNTRIES = ['DE', 'AT', 'NL'];
+  const AVAILABLE_COUNTRIES = ['DE', 'AT', 'NL', 'FR', 'BE', 'GB'];
 
   /**
    * @var array|bool|mixed|void
@@ -203,8 +203,8 @@ class Plugin {
     foreach (Plugin::PAYMENT_METHODS as $payment_method => $woo_payment_method) {
       $customer = $this->get_wc_customer();
       if (
-        !$this->is_country_available($customer->get_billing_country()) &&
-        in_array($payment_method, $mondu_payments)
+        !$this->is_country_available($customer->get_billing_country()) ||
+        !in_array($payment_method, $mondu_payments)
     ) {
         if (isset($available_gateways[Plugin::PAYMENT_METHODS[$payment_method]])) {
           unset($available_gateways[Plugin::PAYMENT_METHODS[$payment_method]]);
