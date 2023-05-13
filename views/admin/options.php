@@ -41,8 +41,12 @@
     <h2><?php _e('Download Logs', 'mondu'); ?></h2>
     <form action='<?php echo get_option('siteurl'); ?>/wp-admin/admin-post.php?action=download_logs' method='post'>
       <input type='hidden' name='action' value='download_logs' />
-      <label for='date'><?php _e('Log date', 'mondu'); ?>:</label>
-      <input type='date' id='date' name='date' value="<?php echo date('Y-m-d'); ?>" required />
+      <tr>
+        <th scope="row"><label for="date"><?php _e('Log date', 'mondu'); ?>:</label></th>
+        <td>
+          <input type='date' id='date' name='date' value="<?php echo date('Y-m-d'); ?>" required />
+        </td>
+      </tr>
       <?php submit_button(__('Download Logs', 'mondu')); ?>
     </form>
   <?php ?>

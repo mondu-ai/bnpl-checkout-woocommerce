@@ -16,39 +16,40 @@ abstract class Helper {
     $this->global_settings = get_option(Plugin::OPTION_NAME);
   }
 
-  protected function textField($option_name, $field_name, $default = '') {
-    printf(
-      '<input type="text" id="' . $field_name . '" name="' . $option_name . '[' . $field_name . ']" value="%s" />',
-      isset($this->global_settings[$field_name]) ? esc_attr($this->global_settings[$field_name]) : $default
-   );
+  protected function textField($option_name, $field_name, $tip = '') {
+    $field_id = $field_name;
+    $field_value = isset($this->global_settings[$field_name]) ? $this->global_settings[$field_name] : '';
+    $field_name = $option_name . '[' . $field_name . ']';
+
+    ob_start();
+    ?>
+      <span class="woocommerce-help-tip" data-tip="<?php echo esc_attr($tip); ?>"></span>
+      <input type="text" id="<?php echo esc_attr($field_id); ?>" name="<?php echo esc_attr($field_name); ?>" value="<?php echo esc_attr($field_value); ?>" />
+    <?php
+
+    return ob_get_clean();
   }
 
-  protected function selectField($option_name, $field_name, $options, $type = 'single') {
-    $selected_value = isset($this->global_settings[$field_name]) ? $this->global_settings[$field_name] : '';
+  protected function selectField($option_name, $field_name, $options, $tip) {
+    $field_id = $field_name;
+    $field_value = isset($this->global_settings[$field_name]) ? $this->global_settings[$field_name] : '';
+    $field_name = $option_name . '[' . $field_name . ']';
 
-    $multiple = '';
-    $name = $option_name . '[' . $field_name . ']';
-    if ($type === 'multiple') {
-      $multiple = ' multiple="multiple"';
-      $name     .= '[]';
-    }
+    ob_start();
+    ?>
+      <span class="woocommerce-help-tip" data-tip="<?php echo esc_attr($tip); ?>"></span>
+      <select id="<?php echo esc_attr($field_id); ?>" name="<?php echo esc_attr($field_name); ?>">
+        <?php
+          foreach ($options as $value => $label) {
+            ?>
+              <?php $selected = $field_value === $value ? 'selected' : ''; ?>
+              <option value="<?php echo esc_attr($value); ?>" <?php echo esc_attr($selected); ?>><?php echo esc_attr($label); ?></option>
+            <?php
+          }
+        ?>
+      </select>
+    <?php
 
-    echo '<select id="' . $field_name . '" name="' . $name . '"' . $multiple . '>';
-    foreach ($options as $value => $label) {
-      $selected = false;
-      if (is_array($selected_value) && $type === 'multiple') {
-        if (in_array($value, $selected_value, true)) {
-          $selected = true;
-        }
-      } elseif ($selected_value === $value) {
-        $selected = true;
-      }
-
-      if ($selected) {
-        $selected = ' selected="selected"';
-      }
-      echo '<option value="' . esc_attr($value) . '" ' . $selected . '>' . esc_html($label) . '</option>';
-    }
-    echo '</select>';
+    return ob_get_clean();
   }
 }

@@ -35,35 +35,47 @@ msgstr "https://mondu.ai"
 msgid "Sandbox or production"
 msgstr "Sandbox of productie"
 
-#: src/Mondu/Admin/Option/Account.php:26
+#: src/Mondu/Admin/Option/Account.php:27
+msgid "Mondu's environment to use."
+msgstr "Mondu's omgeving te gebruiken."
+
+#: src/Mondu/Admin/Option/Account.php:31
 msgid "API Token"
 msgstr "API Token"
 
-#: src/Mondu/Admin/Option/Account.php:36
+#: src/Mondu/Admin/Option/Account.php:37
+msgid "API Token provided by Mondu."
+msgstr "API Token verstrekt door Mondu."
+
+#: src/Mondu/Admin/Option/Account.php:41
 msgid "Send line items"
 msgstr "Regel items verzenden"
 
-#: src/Mondu/Admin/Option/Account.php:44
+#: src/Mondu/Admin/Option/Account.php:47
+msgid "Send the line items when creating order and invoice."
+msgstr "Stuur de posten bij het aanmaken van de bestelling en de factuur."
+
+#: src/Mondu/Admin/Option/Account.php:55
 #: src/Mondu/Mondu/Presenters/PaymentInfo.php:210
 #: src/Mondu/Plugin.php:346
 #: src/Mondu/Plugin.php:395
 msgid "Yes"
 msgstr "Ja"
 
-#: src/Mondu/Admin/Option/Account.php:45
+#: src/Mondu/Admin/Option/Account.php:56
 msgid "Send line items only for orders"
 msgstr "Stuur alleen regelitems voor bestellingen"
 
-#: src/Mondu/Admin/Option/Account.php:46
+#: src/Mondu/Admin/Option/Account.php:57
 #: src/Mondu/Mondu/Presenters/PaymentInfo.php:210
 msgid "No"
 msgstr "Nee"
 
-#: src/Mondu/Admin/Option/Account.php:52
+#: src/Mondu/Admin/Option/Account.php:65
 msgid "Sandbox"
 msgstr "Sandbox"
 
-#: src/Mondu/Admin/Option/Account.php:53
+#: src/Mondu/Admin/Option/Account.php:66
 msgid "Production"
 msgstr "Productie"
 
@@ -71,12 +83,12 @@ msgstr "Productie"
 msgid "Mondu Order Information"
 msgstr "Mondu Order Informatie"
 
-#: src/Mondu/Admin/Settings.php:45
+#: src/Mondu/Admin/Settings.php:46
 #: views/admin/options.php:2
 msgid "Mondu Settings"
 msgstr "Mondu-instellingen"
 
-#: src/Mondu/Admin/Settings.php:67
+#: src/Mondu/Admin/Settings.php:73
 msgid "Missing Credentials"
 msgstr "Ontbrekende Credentials"
 
@@ -127,9 +139,10 @@ msgstr "Mondu SEPA Incasso"
 msgid "SEPA - Pay later by direct debit"
 msgstr "SEPA automatische incasso - nu kopen, later betalen"
 
-#: src/Mondu/Mondu/GatewayFields.php:15
-msgid "Enable this payment method"
-msgstr "Schakel deze betaalmethode in"
+#. translators: %s: Payment Method
+#: src/Mondu/Mondu/GatewayFields.php:16
+msgid "Enable %s payment method"
+msgstr "Schakel %s betaalmethode in"
 
 #: src/Mondu/Mondu/GatewayInstallment.php:11
 msgid "Mondu Installments"
@@ -149,11 +162,11 @@ msgstr "Mondu Factuurbetaling"
 msgid "Invoice - Pay later by bank transfer"
 msgstr "Aankoop op rekening - nu kopen, later betalen"
 
-#: src/Mondu/Mondu/MonduGateway.php:135
+#: src/Mondu/Mondu/MonduGateway.php:133
 msgid "Error placing an order. Please try again."
 msgstr "Fout bij het plaatsen van een bestelling. Probeer het opnieuw."
 
-#: src/Mondu/Mondu/MonduRequestWrapper.php:314
+#: src/Mondu/Mondu/MonduRequestWrapper.php:316
 msgid "Mondu: Can not create a credit note without an invoice"
 msgstr "Mondu: Kan geen creditnota aanmaken zonder factuur"
 
@@ -329,11 +342,11 @@ msgid "Webhooks registered"
 msgstr "Webhooks geregistreerd"
 
 #: views/admin/options.php:41
-#: views/admin/options.php:46
+#: views/admin/options.php:50
 msgid "Download Logs"
 msgstr "Download Logs"
 
-#: views/admin/options.php:44
+#: views/admin/options.php:45
 msgid "Log date"
 msgstr "Log datum"
 

@@ -36,6 +36,7 @@ class Settings {
     add_action('admin_menu', [$this, 'plugin_menu']);
     add_action('admin_init', [$this, 'register_options']);
     add_action('admin_post_download_logs', [$this, 'download_mondu_logs']);
+    add_filter('woocommerce_screen_ids', [$this, 'set_wc_screen_ids']);
   }
 
   public function plugin_menu() {
@@ -55,6 +56,11 @@ class Settings {
   public function register_options() {
     $this->account_options = new Account();
     $this->account_options->register();
+  }
+
+  public function set_wc_screen_ids($screen){
+    $screen[] = 'toplevel_page_mondu-settings-account';
+    return $screen;
   }
 
   public function render_account_options() {

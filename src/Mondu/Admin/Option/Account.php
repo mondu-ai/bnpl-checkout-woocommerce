@@ -21,36 +21,55 @@ class Account extends Helper {
       __('Sandbox or production', 'mondu'),
       [$this, 'field_sandbox_or_production'],
       'mondu-settings-account',
-      'mondu_account_settings_general');
+      'mondu_account_settings_general',
+      array(
+        'label_for' => 'sandbox_or_production',
+        'tip' => __('Mondu\'s environment to use.', 'mondu'),
+      )
+    );
     add_settings_field('api_token',
       __('API Token', 'mondu'),
       [$this, 'field_api_token'],
       'mondu-settings-account',
-      'mondu_account_settings_general');
+      'mondu_account_settings_general',
+      array(
+        'label_for' => 'api_token',
+        'tip' => __('API Token provided by Mondu.', 'mondu'),
+      )
+    );
     add_settings_field('send_line_items',
       __('Send line items', 'mondu'),
       [$this, 'field_send_line_items'],
       'mondu-settings-account',
-      'mondu_account_settings_general');
+      'mondu_account_settings_general',
+      array(
+        'label_for' => 'send_line_items',
+        'tip' => __('Send the line items when creating order and invoice.', 'mondu'),
+      )
+    );
   }
 
-  public function field_send_line_items() {
-    $this->selectField(Plugin::OPTION_NAME, 'field_send_line_items', [
-      'yes' => __('Yes', 'mondu'),
-      'order' => __('Send line items only for orders', 'mondu'),
-      'no' => __('No', 'mondu'),
-    ], 'single');
+  public function field_send_line_items($args = []) {
+    printf(
+      $this->selectField(Plugin::OPTION_NAME, 'send_line_items', [
+        'yes' => __('Yes', 'mondu'),
+        'order' => __('Send line items only for orders', 'mondu'),
+        'no' => __('No', 'mondu'),
+      ], $args['tip'])
+    );
   }
 
-  public function field_sandbox_or_production() {
-    $this->selectField(Plugin::OPTION_NAME, 'field_sandbox_or_production', [
-      'sandbox' => __('Sandbox', 'mondu'),
-      'production' => __('Production', 'mondu'),
-    ], 'single');
+  public function field_sandbox_or_production($args = []) {
+    printf(
+      $this->selectField(Plugin::OPTION_NAME, 'sandbox_or_production', [
+        'sandbox' => __('Sandbox', 'mondu'),
+        'production' => __('Production', 'mondu'),
+      ], $args['tip'])
+    );
   }
 
-  public function field_api_token() {
-    $this->textField(Plugin::OPTION_NAME, 'api_token');
+  public function field_api_token($args = []) {
+    printf($this->textField(Plugin::OPTION_NAME, 'api_token', $args['tip']));
   }
 
   public function render($validation_error = null, $webhooks_error = null) {
