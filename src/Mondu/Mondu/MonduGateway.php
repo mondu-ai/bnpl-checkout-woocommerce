@@ -47,7 +47,7 @@ class MonduGateway extends WC_Payment_Gateway {
    * Initialise Gateway Settings Form Fields
    */
   public function init_form_fields() {
-    $this->form_fields = GatewayFields::fields();
+    $this->form_fields = GatewayFields::fields($this->title);
   }
 
   /**
