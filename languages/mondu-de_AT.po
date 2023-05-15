@@ -166,7 +166,7 @@ msgstr "Rechnungskauf - jetzt kaufen, später bezahlen"
 msgid "Error placing an order. Please try again."
 msgstr "Fehler beim Aufgeben einer Bestellung. Bitte versuchen Sie es erneut."
 
-#: src/Mondu/Mondu/MonduRequestWrapper.php:314
+#: src/Mondu/Mondu/MonduRequestWrapper.php:316
 msgid "Mondu: Can not create a credit note without an invoice"
 msgstr "Mondu: Kann keine Gutschrift ohne Rechnung erstellen"
 

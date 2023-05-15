@@ -3,7 +3,7 @@ Contributors: mondu-ai, arthurmmoreira, tikohov20
 Tags: mondu, woocommerce, e-commerce, ecommerce, store, sales, sell, woo, shop, cart, checkout, payment, payments, bnpl, b2b
 Requires at least: 5.9.0
 Tested up to: 6.1.0
-Stable tag: 1.3.0
+Stable tag: 1.3.1
 Requires PHP: 7.4.0
 
 Increase your revenue with Mondu’s solution, without the operational burden.
@@ -22,6 +22,13 @@ Increase your revenue with Mondu’s solution, without the operational burden.
 10. Read more about the configuration process in the [installation guide](https://docs.mondu.ai/docs/woocommerce-installation-guide).
 
 == Changelog ==
+
+=== 1.3.1 ===
+
+* Add payment method name to the enabled label
+* Remove instruction field to make it automatically localised
+* Add tips to admin fields
+* Include more supported countries in the list
 
 === 1.3.0 ===
 

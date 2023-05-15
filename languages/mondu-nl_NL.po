@@ -166,7 +166,7 @@ msgstr "Aankoop op rekening - nu kopen, later betalen"
 msgid "Error placing an order. Please try again."
 msgstr "Fout bij het plaatsen van een bestelling. Probeer het opnieuw."
 
-#: src/Mondu/Mondu/MonduRequestWrapper.php:314
+#: src/Mondu/Mondu/MonduRequestWrapper.php:316
 msgid "Mondu: Can not create a credit note without an invoice"
 msgstr "Mondu: Kan geen creditnota aanmaken zonder factuur"
 
