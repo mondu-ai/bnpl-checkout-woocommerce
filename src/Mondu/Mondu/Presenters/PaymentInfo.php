@@ -213,14 +213,14 @@ class PaymentInfo {
           <?php printf($this->get_mondu_credit_note_html($invoice)) ?>
         </div>
           <?php
-            if (in_array($invoice['state'], ['created', 'canceled'])) {
+            if ($invoice['state'] !== 'canceled') {
               ?>
                 <?php $mondu_data = [
                   'order_id' => $this->order->get_id(),
                   'invoice_id' => $invoice['uuid'],
                   'mondu_order_id' => $this->order_data['uuid'],
                 ]; ?>
-                <button <?php $invoice['state'] === 'canceled' ? printf('disabled') : ''?> data-mondu='<?php echo(json_encode($mondu_data)) ?>' id="mondu-cancel-invoice-button" type="submit" class="button grant_access">
+                <button data-mondu='<?php echo(json_encode($mondu_data)) ?>' id="mondu-cancel-invoice-button" type="submit" class="button grant_access">
                   <?php _e('Cancel Invoice', 'mondu'); ?>
                 </button>
               <?php
