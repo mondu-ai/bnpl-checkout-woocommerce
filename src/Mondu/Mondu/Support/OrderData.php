@@ -282,12 +282,6 @@ class OrderData {
       $invoice_data['shipping_info']['shipping_method'] = $order->get_shipping_method();
     }
 
-    if ($order->get_shipping_method()) {
-      $invoice_data['shipping_info'] = [
-        'shipping_method' => $order->get_shipping_method()
-      ];
-    }
-
     foreach ($order->get_items() as $item_id => $item) {
       $product = $item->get_product();
 
