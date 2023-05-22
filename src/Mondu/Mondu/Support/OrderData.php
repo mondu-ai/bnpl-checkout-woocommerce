@@ -5,6 +5,7 @@ namespace Mondu\Mondu\Support;
 use Mondu\Mondu\Support\Helper;
 use Mondu\Plugin;
 use WC_Order;
+use WC_Order_Refund;
 
 class OrderData {
   /**
@@ -298,6 +299,38 @@ class OrderData {
       $invoice_data['line_items'][] = $line_item;
     }
     return Helper::remove_keys($invoice_data, $except_keys);
+  }
+
+  /**
+   * @param $order
+   * @param $refund
+   *
+   * @return array[]
+   */
+  public static function create_credit_note(WC_Order_Refund $refund) {
+    $credit_note = [
+      'gross_amount_cents' => abs(round((float) $refund->get_total() * 100)),
+      'tax_cents' => abs(round((float) $refund->get_total_tax() * 100)),
+      'external_reference_id' => (string) $refund->get_id(),
+      'line_items' => []
+    ];
+
+    if ($refund->get_reason()) {
+      $credit_note['notes'] = $refund->get_reason();
+    }
+
+    foreach ($refund->get_items() as $item_id => $item) {
+      $product = $item->get_product();
+
+      $line_item = [
+        'external_reference_id' => Helper::not_null_or_empty($product->get_id()) ? (string) $product->get_id() : null,
+        'quantity' => abs($item->get_quantity()), # The quantity will be negative
+      ];
+
+      $credit_note['line_items'][] = $line_item;
+    }
+
+    return $credit_note;
   }
 
   private static function add_lines_to_except_keys($keys, $itemType = 'order') {

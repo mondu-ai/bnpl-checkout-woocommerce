@@ -316,11 +316,8 @@ class MonduRequestWrapper {
       throw new ResponseException(__('Mondu: Can not create a credit note without an invoice', 'mondu'));
     }
 
-    $refund_total = $refund->get_total();
-    $credit_note = [
-      'gross_amount_cents' => abs(round((float) $refund_total * 100)),
-      'external_reference_id' => (string) $refund->get_id()
-    ];
+    $refund = new WC_Order_Refund($refund_id);
+    $credit_note = OrderData::create_credit_note($refund);
 
     $this->wrap_with_mondu_log_event('create_credit_note', array($mondu_invoice_id, $credit_note));
   }

@@ -209,23 +209,21 @@ class PaymentInfo {
           <span><strong><?php _e('Paid out', 'mondu'); ?>:</strong></span>
           <?php printf($invoice['paid_out'] ? __('Yes', 'mondu') : __('No', 'mondu')) ?>
         </p>
-        <div>
-          <?php printf($this->get_mondu_credit_note_html($invoice)) ?>
-        </div>
-          <?php
-            if (in_array($invoice['state'], ['created', 'canceled'])) {
-              ?>
-                <?php $mondu_data = [
-                  'order_id' => $this->order->get_id(),
-                  'invoice_id' => $invoice['uuid'],
-                  'mondu_order_id' => $this->order_data['uuid'],
-                ]; ?>
-                <button <?php $invoice['state'] === 'canceled' ? printf('disabled') : ''?> data-mondu='<?php echo(json_encode($mondu_data)) ?>' id="mondu-cancel-invoice-button" type="submit" class="button grant_access">
-                  <?php _e('Cancel Invoice', 'mondu'); ?>
-                </button>
-              <?php
-            }
-          ?>
+        <?php
+          printf($this->get_mondu_credit_note_html($invoice));
+          if (in_array($invoice['state'], ['created', 'canceled'])) {
+            ?>
+              <?php $mondu_data = [
+                'order_id' => $this->order->get_id(),
+                'invoice_id' => $invoice['uuid'],
+                'mondu_order_id' => $this->order_data['uuid'],
+              ]; ?>
+              <button <?php $invoice['state'] === 'canceled' ? printf('disabled') : ''?> data-mondu='<?php echo(json_encode($mondu_data)) ?>' id="mondu-cancel-invoice-button" type="submit" class="button grant_access">
+                <?php _e('Cancel Invoice', 'mondu'); ?>
+              </button>
+            <?php
+          }
+        ?>
       <?php
     }
 
@@ -235,16 +233,15 @@ class PaymentInfo {
   public function get_mondu_credit_note_html($invoice) {
     ob_start();
 
+    ?>
+      <p><strong><?php if (!empty($invoice['credit_notes'])) _e('Credit Notes:') ?></strong></p>
+    <?php
+
     foreach ($invoice['credit_notes'] as $note) {
       ?>
-        <p>
-          <span><strong><?php _e('Credit Note number', 'mondu'); ?>:</strong></span>
-          <?php printf($note['external_reference_id']) ?>
-        </p>
-        <p>
-          <span><strong><?php _e('Total', 'mondu'); ?>:</strong></span>
-          <?php printf('%s %s', ($note['gross_amount_cents'] / 100), $invoice['order']['currency']) ?>
-        </p>
+        <li>
+          <?php printf('%s: %s %s (%s: %s %s)', '<strong>#' . $note['external_reference_id'] . '</strong>', ($note['gross_amount_cents'] / 100), $invoice['order']['currency'], __('Tax', 'mondu'), ($note['tax_cents'] / 100), $invoice['order']['currency']) ?>
+        </li>
       <?php
     }
 
