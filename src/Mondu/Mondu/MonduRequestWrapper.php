@@ -309,11 +309,9 @@ class MonduRequestWrapper {
       return;
     }
 
-    $refund = new WC_Order_Refund($refund_id);
     $mondu_invoice_id = get_post_meta($order->get_id(), Plugin::INVOICE_ID_KEY, true);
-
     if (!$mondu_invoice_id) {
-      throw new ResponseException(__('Mondu: Can not create a credit note without an invoice', 'mondu'));
+      return;
     }
 
     $refund = new WC_Order_Refund($refund_id);
