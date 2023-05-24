@@ -234,7 +234,7 @@ class PaymentInfo {
     ob_start();
 
     ?>
-      <p><strong><?php if (!empty($invoice['credit_notes'])) _e('Credit Notes:') ?></strong></p>
+      <p><strong><?php if (!empty($invoice['credit_notes'])) _e('Credit Notes', 'mondu') ?>:</strong></p>
     <?php
 
     foreach ($invoice['credit_notes'] as $note) {

@@ -180,7 +180,7 @@ msgid "Create Invoice"
 msgstr "Factuur aanmaken"
 
 #: src/Mondu/Mondu/Presenters/PaymentInfo.php:94
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:275
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:272
 msgid "Corrupt Mondu order!"
 msgstr "Corrupte Mondu order!"
 
@@ -223,7 +223,6 @@ msgid "Invoice state"
 msgstr "Factuurstatus"
 
 #: src/Mondu/Mondu/Presenters/PaymentInfo.php:205
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:245
 msgid "Total"
 msgstr "Totaal"
 
@@ -231,13 +230,17 @@ msgstr "Totaal"
 msgid "Paid out"
 msgstr "Uitbetaald"
 
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:224
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:222
 msgid "Cancel Invoice"
 msgstr "Factuur annuleren"
 
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:241
-msgid "Credit Note number"
-msgstr "Creditnota Nummer"
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:237
+msgid "Credit Notes"
+msgstr "Creditnota's"
+
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:243
+msgid "Tax"
+msgstr "Belasting"
 
 #: src/Mondu/Plugin.php:183
 msgid "Since this order will be paid via Mondu you will not be able to change the addresses."

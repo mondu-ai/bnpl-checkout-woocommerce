@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2023-05-17T13:06:27+00:00\n"
+"POT-Creation-Date: 2023-05-24T15:04:20+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.7.1\n"
 "X-Domain: mondu\n"
@@ -183,7 +183,7 @@ msgid "Create Invoice"
 msgstr ""
 
 #: src/Mondu/Mondu/Presenters/PaymentInfo.php:94
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:275
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:272
 msgid "Corrupt Mondu order!"
 msgstr ""
 
@@ -226,7 +226,6 @@ msgid "Invoice state"
 msgstr ""
 
 #: src/Mondu/Mondu/Presenters/PaymentInfo.php:205
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:245
 msgid "Total"
 msgstr ""
 
@@ -234,12 +233,16 @@ msgstr ""
 msgid "Paid out"
 msgstr ""
 
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:224
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:222
 msgid "Cancel Invoice"
 msgstr ""
 
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:241
-msgid "Credit Note number"
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:237
+msgid "Credit Notes"
+msgstr ""
+
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:243
+msgid "Tax"
 msgstr ""
 
 #: src/Mondu/Plugin.php:183
