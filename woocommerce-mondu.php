@@ -19,7 +19,9 @@
  * Copyright 2023 Mondu
  */
 
-defined('ABSPATH') or die('Direct access not allowed');
+if (!defined('ABSPATH')) {
+	die('Direct access not allowed');
+}
 
 define('MONDU_PLUGIN_VERSION', '1.3.2');
 define('MONDU_PLUGIN_FILE', __FILE__);
