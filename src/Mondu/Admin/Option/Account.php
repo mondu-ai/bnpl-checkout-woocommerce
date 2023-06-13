@@ -47,24 +47,22 @@ class Account extends Helper {
 	}
 
 	public function field_send_line_items( $args = [] ) {
-		printf(esc_html($this->selectField(Plugin::OPTION_NAME, 'send_line_items', [
+		$this->selectField(Plugin::OPTION_NAME, 'send_line_items', [
 			'yes' => __('Yes', 'mondu'),
 			'order' => __('Send line items only for orders', 'mondu'),
 			'no' => __('No', 'mondu'),
-			], $args['tip'])
-		));
+			], $args['tip']);
 	}
 
 	public function field_sandbox_or_production( $args = [] ) {
-		printf(esc_html($this->selectField(Plugin::OPTION_NAME, 'sandbox_or_production', [
+		$this->selectField(Plugin::OPTION_NAME, 'sandbox_or_production', [
 			'sandbox' => __('Sandbox', 'mondu'),
 			'production' => __('Production', 'mondu'),
-			], $args['tip'])
-		));
+			], $args['tip']);
 	}
 
 	public function field_api_token( $args = [] ) {
-		printf(esc_html($this->textField(Plugin::OPTION_NAME, 'api_token', $args['tip'])));
+		$this->textField(Plugin::OPTION_NAME, 'api_token', $args['tip']);
 	}
 
 	public function render( $validation_error = null, $webhooks_error = null) {

@@ -20,13 +20,10 @@ abstract class Helper {
 		$field_value = isset($this->global_settings[$field_name]) ? $this->global_settings[$field_name] : '';
 		$field_name  = $option_name . '[' . $field_name . ']';
 
-		ob_start();
 		?>
 		<span class="woocommerce-help-tip" data-tip="<?php echo esc_attr($tip); ?>"></span>
 		<input type="text" id="<?php echo esc_attr($field_id); ?>" name="<?php echo esc_attr($field_name); ?>" value="<?php echo esc_attr($field_value); ?>" />
 	<?php
-
-		return ob_get_clean();
 	}
 
 	protected function selectField( $option_name, $field_name, $options, $tip) {
@@ -34,7 +31,6 @@ abstract class Helper {
 		$field_value = isset($this->global_settings[$field_name]) ? $this->global_settings[$field_name] : '';
 		$field_name  = $option_name . '[' . $field_name . ']';
 
-		ob_start();
 		?>
 		<span class="woocommerce-help-tip" data-tip="<?php echo esc_attr($tip); ?>"></span>
 		<select id="<?php echo esc_attr($field_id); ?>" name="<?php echo esc_attr($field_name); ?>">
@@ -49,6 +45,5 @@ abstract class Helper {
 		</select>
 		<?php
 
-		return ob_get_clean();
 	}
 }

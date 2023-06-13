@@ -83,8 +83,6 @@ class PaymentInfo {
 			return null;
 		}
 
-		ob_start();
-
 		if ($this->order_data && isset($this->order_data['bank_account'])) {
 			$order_data = $this->order_data;
 			?>
@@ -113,8 +111,8 @@ class PaymentInfo {
 			?>
 		</section>
 		<hr>
-			<?php printf(esc_html($this->get_mondu_payment_html())); ?>
-			<?php printf(esc_html($this->get_mondu_invoices_html())); ?>
+			<?php $this->get_mondu_payment_html(); ?>
+			<?php $this->get_mondu_invoices_html(); ?>
 			<?php
 		} else {
 			?>
@@ -125,8 +123,6 @@ class PaymentInfo {
 		</section>
 		<?php
 		}
-
-		return ob_get_clean();
 	}
 
 
@@ -167,8 +163,6 @@ class PaymentInfo {
 			$invoice_number = apply_filters('mondu_invoice_reference_id', $invoice_number);
 		}
 
-		ob_start();
-
 		?>
 		<style>
 		.mondu-payment > table > tbody > tr > td {
@@ -206,8 +200,6 @@ class PaymentInfo {
 		</table>
 		</section>
 	<?php
-
-		return ob_get_clean();
 	}
 
 	public function get_mondu_net_term() {
@@ -223,8 +215,6 @@ class PaymentInfo {
 	}
 
 	public function get_mondu_invoices_html() {
-		ob_start();
-
 		foreach ($this->invoices_data as $invoice) {
 			?>
 		<hr>
@@ -245,7 +235,7 @@ class PaymentInfo {
 			<?php printf(esc_html($invoice['paid_out'] ? __('Yes', 'mondu') : __('No', 'mondu'))); ?>
 		</p>
 		<?php
-			printf(esc_html($this->get_mondu_credit_note_html($invoice)));
+			$this->get_mondu_credit_note_html($invoice);
 			if ('canceled' !== $invoice['state']) {
 				?>
 				<?php 
@@ -263,13 +253,9 @@ class PaymentInfo {
 			?>
 			<?php
 		}
-
-		return ob_get_clean();
 	}
 
 	public function get_mondu_credit_note_html( $invoice) {
-		ob_start();
-
 		?>
 		<p><strong>
 		<?php
@@ -286,8 +272,6 @@ class PaymentInfo {
 		</li>
 		<?php
 		}
-
-		return ob_get_clean();
 	}
 
 	/**
