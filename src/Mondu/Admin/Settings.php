@@ -43,11 +43,7 @@ class Settings {
 	}
 
 	public function plugin_menu() {
-		//TODO
-		/*
-			$mondu_icon = 'data:image/svg+xml;base64,' . base64_encode(file_get_contents('https://checkout.mondu.ai/logo.svg'));
-		*/
-		$mondu_icon = 'https://checkout.mondu.ai/logo.svg';
+		$mondu_icon = 'data:image/svg+xml;base64,' . base64_encode(file_get_contents('https://checkout.mondu.ai/logo.svg'));
 
 		add_menu_page(
 			__('Mondu Settings', 'mondu'),
@@ -129,7 +125,12 @@ class Settings {
 	}
 
 	public function download_mondu_logs() {
-		$date = $_REQUEST['date'];
+		$is_nonce_valid = check_ajax_referer( 'mondu-download-logs', 'security', false );
+		if ( ! $is_nonce_valid ) {
+			status_header(400);
+			exit(esc_html__('Bad Request.'));
+		}
+		$date = isset( $_POST['date'] ) ? sanitize_text_field($_POST['date']) : null;
 
 		if (null === $date) {
 			status_header(400);
@@ -148,9 +149,7 @@ class Settings {
 		header('Content-Type: text/plain');
 		header('Content-Disposition: attachment; filename="' . $filename . '";');
 
-//		readfile($file);
-		//TODO
-		WP_Filesystem($file);
+		readfile($file);
 
 		die();
 	}
@@ -159,8 +158,7 @@ class Settings {
 		$base_dir = WP_CONTENT_DIR . '/uploads/wc-logs/';
 		$dir      = opendir($base_dir);
 		if ($dir) {
-			$file = readdir($dir);
-			while ($file) {
+			while ($file = readdir($dir)) {
 				if (str_starts_with($file, 'mondu-' . $date) && str_ends_with($file, '.log')) {
 					return $base_dir . $file;
 				}

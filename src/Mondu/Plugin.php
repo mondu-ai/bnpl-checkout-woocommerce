@@ -95,7 +95,11 @@ class Plugin {
 		/*
 		 * Adds the mondu javascript to the list of WordPress javascripts
 		 */
-		add_action('wp_head', [$this, 'add_mondu_js']);
+		add_action('wp_enqueue_scripts', [$this, 'add_mondu_scripts']);
+		/*
+		 * Adds the mondu HTML
+		 */
+		add_action('wp_head', [$this, 'add_mondu_html']);
 
 		/*
 		 * These deal with order and status changes
@@ -179,13 +183,19 @@ class Plugin {
 		echo '<p>' . esc_html__('Since this order will be paid via Mondu you will not be able to change the addresses.', 'mondu') . '</p>';
 	}
 
-	public function add_mondu_js() {
+	public function add_mondu_scripts() {
 		if (is_checkout()) {
 			if ($this->is_sandbox()) {
-				require_once MONDU_VIEW_PATH . '/checkout/mondu-checkout-sandbox.html';
+				wp_enqueue_script( 'mondu', 'https://checkout.demo.mondu.ai/widget.js', null, '1.0.0', true );
 			} else {
-				require_once MONDU_VIEW_PATH . '/checkout/mondu-checkout.html';
+				wp_enqueue_script( 'mondu', 'https://checkout.mondu.ai/widget.js', null, '1.0.0', true );
 			}
+		}
+	}
+
+	public function add_mondu_html() {
+		if (is_checkout()) {
+			require_once MONDU_VIEW_PATH . '/checkout/mondu-checkout.html';
 		}
 	}
 

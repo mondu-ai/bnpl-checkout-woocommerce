@@ -41,6 +41,7 @@
 	<h2><?php esc_html_e('Download Logs', 'mondu'); ?></h2>
 	<form action='<?php echo esc_html(get_option('siteurl')); ?>/wp-admin/admin-post.php?action=download_logs' method='post'>
 		<input type='hidden' name='action' value='download_logs' />
+		<input type='hidden' name='security' value='<?php echo esc_html(wp_create_nonce( 'mondu-download-logs' )); ?>' />
 		<tr>
 		<th scope="row"><label for="date"><?php esc_html_e('Log date', 'mondu'); ?>:</label></th>
 		<td>

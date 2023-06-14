@@ -101,6 +101,7 @@ class PaymentInfo {
 				<?php
 				$mondu_data = [
 					'order_id' => $this->order->get_id(),
+					'security' => wp_create_nonce('mondu-create-invoice')
 				];
 				?>
 					<button data-mondu='<?php echo( wp_json_encode($mondu_data) ); ?>' id="mondu-create-invoice-button" type="submit" class="button grant_access">
@@ -243,6 +244,7 @@ class PaymentInfo {
 					'order_id' => $this->order->get_id(),
 					'invoice_id' => $invoice['uuid'],
 					'mondu_order_id' => $this->order_data['uuid'],
+					'security' => wp_create_nonce('mondu-cancel-invoice')
 				];
 				?>
 				<button data-mondu='<?php echo( wp_json_encode($mondu_data) ); ?>' id="mondu-cancel-invoice-button" type="submit" class="button grant_access">
@@ -285,15 +287,14 @@ class PaymentInfo {
 			return null;
 		}
 
-		ob_start();
-
 		if ($this->order_data && isset($this->order_data['bank_account'])) {
 			$order_data = $this->order_data;
 			?>
-			<?php printf(esc_html($this->get_mondu_payment_notice($this->order->get_payment_method()))); ?>
-		<?php 
+			<?php $this->get_mondu_payment_notice($this->order->get_payment_method()); ?>
+			<?php
 			if ($this->order->get_payment_method() === 'mondu_invoice') {
-	printf(esc_html($this->get_mondu_payment_html($pdf)));}
+				$this->get_mondu_payment_html($pdf);
+			}
 			?>
 		<?php
 		} else {
@@ -305,12 +306,9 @@ class PaymentInfo {
 		</section>
 		<?php
 		}
-
-		return ob_get_clean();
 	}
-	private function get_mondu_payment_notice( $payment_method) {
-		ob_start();
 
+	private function get_mondu_payment_notice( $payment_method) {
 		$file = MONDU_VIEW_PATH . '/pdf/mondu-invoice-section.php';
 
 		//used in the file that is included
@@ -318,8 +316,6 @@ class PaymentInfo {
 		if (file_exists($file)) {
 			include $file;
 		}
-
-		return ob_get_clean();
 	}
 
 	private function get_invoices() {

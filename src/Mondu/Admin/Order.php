@@ -58,10 +58,15 @@ class Order {
 	}
 
 	public function cancel_invoice() {
-		//TODO
-		$invoice_id     = isset($_POST['invoice_id']) ? $_POST['invoice_id'] : '';
-		$mondu_order_id = isset($_POST['mondu_order_id']) ? $_POST['mondu_order_id'] : '';
-		$order_id       = isset($_POST['order_id']) ? $_POST['order_id'] : '';
+		$is_nonce_valid = check_ajax_referer( 'mondu-cancel-invoice', 'security', false );
+		if ( ! $is_nonce_valid ) {
+			status_header(400);
+			exit(esc_html__('Bad Request.'));
+		}
+
+		$invoice_id     = isset($_POST['invoice_id']) ? sanitize_text_field($_POST['invoice_id']) : '';
+		$mondu_order_id = isset($_POST['mondu_order_id']) ? sanitize_text_field($_POST['mondu_order_id']) : '';
+		$order_id       = isset($_POST['order_id']) ? sanitize_text_field($_POST['order_id']) : '';
 
 		$order = new WC_Order($order_id);
 
@@ -81,7 +86,13 @@ class Order {
 	}
 
 	public function create_invoice() {
-		$order_id = isset($_POST['order_id']) ? $_POST['order_id'] : '';
+		$is_nonce_valid = check_ajax_referer( 'mondu-create-invoice', 'security', false );
+		if ( ! $is_nonce_valid ) {
+			status_header(400);
+			exit(esc_html__('Bad Request.'));
+		}
+
+		$order_id = isset($_POST['order_id']) ? sanitize_text_field($_POST['order_id']) : '';
 
 		$order = new WC_Order($order_id);
 		if (null === $order) {
