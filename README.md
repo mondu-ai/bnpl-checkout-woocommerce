@@ -1,6 +1,6 @@
 # Mondu for Woocommerce
 
-Increase your revenue with Mondu’s solution, without the operational burden.
+Mondu provides B2B E-commerce and B2B marketplaces with an online payment solution to enable their customers to pay with their preferred payment methods and flexible payment terms.
 
 ## Installation
 
