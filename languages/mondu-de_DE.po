@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: WooCommerce-Mondu 1.1.3\n"
-"Report-Msgid-Bugs-To: \n"
+"Project-Id-Version: WooCommerce-Mondu 1.3.2\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/Woocommerce-Mondu\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -20,8 +20,8 @@ msgid "https://github.com/mondu-ai/bnpl-checkout-woocommerce/releases"
 msgstr "https://github.com/mondu-ai/bnpl-checkout-woocommerce/releases"
 
 #. Description of the plugin
-msgid "Increase your revenue with Mondu’s solution, without the operational burden."
-msgstr "Steigern Sie Ihren Umsatz mit der Lösung von Mondu, ohne den operativen Aufwand."
+msgid "Mondu provides B2B E-commerce and B2B marketplaces with an online payment solution to buy now and pay later."
+msgstr "Mondu bietet B2B-E-Commerce und B2B-Marktplätzen eine Online-Zahlungslösung, die es ihren Kunden ermöglicht, mit ihren bevorzugten Zahlungsmethoden und flexiblen Zahlungsbedingungen zu bezahlen."
 
 #. Author of the plugin
 msgid "Mondu"
@@ -97,8 +97,8 @@ msgid "Unexpected API response format."
 msgstr "Unerwartetes API-Antwortformat."
 
 #: src/Mondu/Mondu/Controllers/OrdersController.php:43
-#: src/Mondu/Mondu/Controllers/OrdersController.php:58
-#: views/checkout/payment-form.php:110
+#: src/Mondu/Mondu/Controllers/OrdersController.php:61
+#: views/checkout/payment-form.php:111
 msgid "Error processing checkout. Please try again."
 msgstr "Fehler bei der Bearbeitung der Kaufabwicklung. Bitte versuchen Sie es erneut."
 
@@ -349,7 +349,7 @@ msgstr "Protokolle herunterladen"
 msgid "Log date"
 msgstr "Log date"
 
-#: views/checkout/payment-form.php:153
+#: views/checkout/payment-form.php:154
 msgid "Information on the processing of your personal data by <strong>Mondu GmbH</strong> can be found <a href=\"https://mondu.ai/gdpr-notification-for-buyers\" target=\"_blank\">here</a>."
 msgstr "Hinweise zur Verarbeitung Ihrer personenbezogenen Daten durch die <strong>Mondu GmbH</strong> finden Sie <a href=\"https://mondu.ai/de/gdpr-notification-for-buyers\" target=\"_blank\">hier</a>."
 
