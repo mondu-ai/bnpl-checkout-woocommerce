@@ -1,5 +1,5 @@
 <?php
-if (!isset($order_id)) {
+if ( !isset($order_id) ) {
 	$order_id = '';
 }
 
@@ -163,6 +163,11 @@ $lang = apply_filters('mondu_order_locale', get_locale());
 
 <p>
 	<?php
-	printf(wp_kses(__('Information on the processing of your personal data by <strong>Mondu GmbH</strong> can be found <a href="https://mondu.ai/gdpr-notification-for-buyers" target="_blank">here</a>.', 'mondu'), array('a' => array('href' => array(), 'target' => array()))));
+	printf(wp_kses(__('Information on the processing of your personal data by <strong>Mondu GmbH</strong> can be found <a href="https://mondu.ai/gdpr-notification-for-buyers" target="_blank">here</a>.', 'mondu'), array(
+		'a' => array(
+			'href'   => array(),
+			'target' => array(), 
+		),
+	)));
 	?>
 </p>

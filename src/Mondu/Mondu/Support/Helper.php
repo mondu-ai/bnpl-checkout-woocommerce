@@ -38,17 +38,17 @@ class Helper {
 	 * @param $order
 	 * @return mixed|void
 	 */
-	public static function create_invoice_url( $order) {
-		if (has_action('generate_wpo_wcpdf')) {
+	public static function create_invoice_url( $order ) {
+		if ( has_action('generate_wpo_wcpdf') ) {
 			$invoice_url = add_query_arg(
 			'_wpnonce',
 			wp_create_nonce('generate_wpo_wcpdf'),
 			add_query_arg(
 				[
-					'action' => 'generate_wpo_wcpdf',
+					'action'        => 'generate_wpo_wcpdf',
 					'document_type' => 'invoice',
-					'order_ids' => $order->get_id(),
-					'my-account' => true,
+					'order_ids'     => $order->get_id(),
+					'my-account'    => true,
 				],
 				admin_url('admin-ajax.php')
 			));
@@ -64,8 +64,8 @@ class Helper {
 		return apply_filters('mondu_invoice_url', $invoice_url );
 	}
 
-	public static function log( array $message, $level = 'DEBUG') {
+	public static function log( array $message, $level = 'DEBUG' ) {
 		$logger = wc_get_logger();
-		$logger->log($level, wc_print_r($message, true), array('source' => 'mondu'));
+		$logger->log($level, wc_print_r($message, true), array( 'source' => 'mondu' ));
 	}
 }

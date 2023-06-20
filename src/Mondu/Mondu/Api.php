@@ -44,7 +44,6 @@ class Api {
 	 */
 	public function get_order( $mondu_uuid ) {
 		$result = $this->get(sprintf('/orders/%s', $mondu_uuid), null);
-
 		return json_decode($result['body'], true);
 	}
 
@@ -171,8 +170,8 @@ class Api {
 	 */
 	public function register_webhook( $topic ) {
 		$params = [
-			'topic' => $topic,
-			'address' => get_site_url() . '/?rest_route=/mondu/v1/webhooks/index'
+			'topic'   => $topic,
+			'address' => get_site_url() . '/?rest_route=/mondu/v1/webhooks/index',
 		];
 
 		$result = $this->post('/webhooks', $params);
@@ -189,7 +188,7 @@ class Api {
 	 * @throws MonduException
 	 * @throws ResponseException
 	 */
-	public function cancel_invoice( $mondu_uuid, $mondu_invoice_uuid) {
+	public function cancel_invoice( $mondu_uuid, $mondu_invoice_uuid ) {
 		$result = $this->post(sprintf('/orders/%s/invoices/%s/cancel', $mondu_uuid, $mondu_invoice_uuid));
 		return json_decode($result['body'], true);
 	}
@@ -203,7 +202,7 @@ class Api {
 	 * @throws MonduException
 	 * @throws ResponseException
 	 */
-	public function create_credit_note( $mondu_invoice_uuid, array $credit_note) {
+	public function create_credit_note( $mondu_invoice_uuid, array $credit_note ) {
 		$result = $this->post(sprintf('/invoices/%s/credit_notes', $mondu_invoice_uuid), $credit_note);
 		return json_decode($result['body'], true);
 	}
@@ -287,8 +286,8 @@ class Api {
 	 * @throws MonduException
 	 * @throws ResponseException
 	 */
-	private function get( $path, $parameters = null) {
-		if (null !== $parameters) {
+	private function get( $path, $parameters = null ) {
+		if ( null !== $parameters ) {
 			$path .= '&' . http_build_query($parameters);
 		}
 
@@ -307,22 +306,22 @@ class Api {
 	 * @throws ResponseException
 	 */
 	private function validate_remote_result( $url, $result ) {
-		if ($result instanceof \WP_Error) {
+		if ( $result instanceof \WP_Error ) {
 			throw new MonduException($result->get_error_message(), $result->get_error_code());
 		} else {
 			Helper::log([
-				'code' => isset($result['response']['code']) ? $result['response']['code'] : null,
-				'url' => $url,
-				'response' => isset($result['body']) ? $result['body'] : null
+				'code'     => isset($result['response']['code']) ? $result['response']['code'] : null,
+				'url'      => $url,
+				'response' => isset($result['body']) ? $result['body'] : null,
 			]);
 		}
 
-		if (!is_array($result) || !isset($result['response'], $result['body']) || !isset($result['response']['code'], $result['response']['message'])) {
+		if ( !is_array($result) || !isset($result['response'], $result['body']) || !isset($result['response']['code'], $result['response']['message']) ) {
 			throw new MonduException(__('Unexpected API response format.', 'mondu'));
 		}
-		if (strpos($result['response']['code'], '2') !== 0) {
+		if ( strpos($result['response']['code'], '2') !== 0 ) {
 			$message = $result['response']['message'];
-			if (isset($result['body']['errors'], $result['body']['errors']['title'])) {
+			if ( isset($result['body']['errors'], $result['body']['errors']['title']) ) {
 				$message = $result['body']['errors']['title'];
 			}
 
@@ -347,31 +346,31 @@ class Api {
 		$url .= $path;
 
 		$headers = [
-			'Content-Type' => 'application/json',
-			'Api-Token' => $this->global_settings['api_token'],
-			'X-Plugin-Name' => 'woocommerce',
+			'Content-Type'     => 'application/json',
+			'Api-Token'        => $this->global_settings['api_token'],
+			'X-Plugin-Name'    => 'woocommerce',
 			'X-Plugin-Version' => MONDU_PLUGIN_VERSION,
 		];
 
 		$args = [
 			'headers' => $headers,
-			'method' => $method,
+			'method'  => $method,
 			'timeout' => 30,
 		];
 
-		if (null !== $body) {
+		if ( null !== $body ) {
 			$args['body'] = wp_json_encode($body);
 		}
 
 		Helper::log([
 			'method' => $method,
-			'url' => $url,
-			'body' => isset($args['body']) ? $args['body'] : null
+			'url'    => $url,
+			'body'   => isset($args['body']) ? $args['body'] : null,
 		]);
 
 		return $this->validate_remote_result($url, wp_remote_request($url, $args));
 	}
-	
+
 	/**
 	 * Is Production
 	 *
@@ -379,10 +378,9 @@ class Api {
 	 */
 	private function is_production() {
 		$is_production = false;
-		if (
-			is_array($this->global_settings) &&
-			isset($this->global_settings['field_sandbox_or_production']) &&
-			'production' === $this->global_settings['field_sandbox_or_production']
+		if ( is_array($this->global_settings)
+			&& isset($this->global_settings['field_sandbox_or_production'])
+			&& 'production' === $this->global_settings['field_sandbox_or_production']
 		) {
 			$is_production = true;
 		}

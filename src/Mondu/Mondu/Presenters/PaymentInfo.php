@@ -42,14 +42,14 @@ class PaymentInfo {
 		$this->order                 = new WC_Order($order_id);
 		$this->mondu_request_wrapper = new MonduRequestWrapper();
 		$order_data                  = $this->get_order();
-		if (!$order_data) {
+		if ( !$order_data ) {
 			$order_data = array();
 		}
 
 		$this->order_data = $order_data;
 
 		$invoices_data = $this->get_invoices();
-		if (!$invoices_data) {
+		if ( !$invoices_data ) {
 			$invoices_data = array();
 		}
 
@@ -79,34 +79,34 @@ class PaymentInfo {
 	 * @throws Exception
 	 */
 	public function get_mondu_section_html() {
-		if (!in_array($this->order->get_payment_method(), Plugin::PAYMENT_METHODS, true)) {
+		if ( !in_array($this->order->get_payment_method(), Plugin::PAYMENT_METHODS, true) ) {
 			return null;
 		}
 
-		if ($this->order_data && isset($this->order_data['bank_account'])) {
+		if ( $this->order_data && isset($this->order_data['bank_account']) ) {
 			$order_data = $this->order_data;
 			?>
-				<section class="woocommerce-order-details mondu-payment">
-					<p>
-					<span><strong><?php esc_html_e('Order state', 'mondu'); ?>:</strong></span>
-					<span><?php printf(esc_html($order_data['state'])); ?></span>
-					</p>
-					<p>
-					<span><strong><?php esc_html_e('Mondu ID', 'mondu'); ?>:</strong></span>
-					<span><?php printf(esc_html($order_data['uuid'])); ?></span>
-					</p>
+			<section class="woocommerce-order-details mondu-payment">
+				<p>
+				<span><strong><?php esc_html_e('Order state', 'mondu'); ?>:</strong></span>
+				<span><?php printf(esc_html($order_data['state'])); ?></span>
+				</p>
+				<p>
+				<span><strong><?php esc_html_e('Mondu ID', 'mondu'); ?>:</strong></span>
+				<span><?php printf(esc_html($order_data['uuid'])); ?></span>
+				</p>
 			<?php
-			if (in_array($this->order_data['state'], ['confirmed', 'partially_shipped'], true)) {
+			if ( in_array($this->order_data['state'], [ 'confirmed', 'partially_shipped' ], true) ) {
 				?>
 				<?php
 				$mondu_data = [
 					'order_id' => $this->order->get_id(),
-					'security' => wp_create_nonce('mondu-create-invoice')
+					'security' => wp_create_nonce('mondu-create-invoice'),
 				];
 				?>
-					<button data-mondu='<?php echo( wp_json_encode($mondu_data) ); ?>' id="mondu-create-invoice-button" type="submit" class="button grant_access">
-						<?php esc_html_e('Create Invoice', 'mondu'); ?>
-					</button>
+				<button data-mondu='<?php echo( wp_json_encode($mondu_data) ); ?>' id="mondu-create-invoice-button" type="submit" class="button grant_access">
+				<?php esc_html_e('Create Invoice', 'mondu'); ?>
+				</button>
 				<?php
 			}
 			?>
@@ -117,12 +117,12 @@ class PaymentInfo {
 			<?php
 		} else {
 			?>
-		<section class="woocommerce-order-details mondu-payment">
-			<p>
-			<span><strong><?php esc_html_e('Corrupt Mondu order!', 'mondu'); ?></strong></span>
-			</p>
-		</section>
-		<?php
+			<section class="woocommerce-order-details mondu-payment">
+				<p>
+				<span><strong><?php esc_html_e('Corrupt Mondu order!', 'mondu'); ?></strong></span>
+				</p>
+			</section>
+			<?php
 		}
 	}
 
@@ -134,20 +134,20 @@ class PaymentInfo {
 	 * @return false|string|null
 	 */
 	public function get_mondu_payment_html( $pdf = false ) {
-		if (!in_array($this->order->get_payment_method(), Plugin::PAYMENT_METHODS, true)) {
+		if ( !in_array($this->order->get_payment_method(), Plugin::PAYMENT_METHODS, true) ) {
 			return null;
 		}
 
-		if (!isset($this->order_data['bank_account'])) {
+		if ( !isset($this->order_data['bank_account']) ) {
 			return null;
 		}
 
 		$bank_account = $this->order_data['bank_account'];
 
-		if ($pdf) {
-			if (function_exists('wcpdf_get_document')) {
+		if ( $pdf ) {
+			if ( function_exists('wcpdf_get_document') ) {
 				$document = wcpdf_get_document('invoice', $this->order, false);
-				if ($document->get_number()) {
+				if ( $document->get_number() ) {
 					$invoice_number = $document->get_number()->get_formatted();
 				} else {
 					$invoice_number = $this->order->get_order_number();
@@ -188,13 +188,13 @@ class PaymentInfo {
 			<td><strong><?php esc_html_e('BIC', 'mondu'); ?>:</strong></td>
 			<td><?php printf(esc_html($bank_account['bic'])); ?></td>
 			</tr>
-			<?php if ($pdf) { ?>
+			<?php if ( $pdf ) { ?>
 			<tr>
 			<td><strong><?php esc_html_e('Purpose', 'mondu'); ?>:</strong></td>
 			<td><?php echo esc_html__('Invoice number', 'mondu') . ' ' . esc_html($invoice_number . ' ' . $this->get_wcpdf_shop_name()); ?></td>
 			</tr>
 			<?php } ?>
-			<?php if ($this->get_mondu_net_term()) { ?>
+			<?php if ( $this->get_mondu_net_term() ) { ?>
 			<td><strong><?php esc_html_e('Payment term', 'mondu'); ?>:</strong></td>
 			<td><?php /* translators: %s: Days */printf(esc_html__('%s Days', 'mondu'), esc_html($this->get_mondu_net_term())); ?></td>
 			<?php } ?>
@@ -204,11 +204,11 @@ class PaymentInfo {
 	}
 
 	public function get_mondu_net_term() {
-		if (!in_array($this->order->get_payment_method(), Plugin::PAYMENT_METHODS, true)) {
+		if ( !in_array($this->order->get_payment_method(), Plugin::PAYMENT_METHODS, true) ) {
 			return null;
 		}
 
-		if ($this->order_data && isset($this->order_data['authorized_net_term'])) {
+		if ( $this->order_data && isset($this->order_data['authorized_net_term']) ) {
 			return $this->order_data['authorized_net_term'];
 		}
 
@@ -216,7 +216,7 @@ class PaymentInfo {
 	}
 
 	public function get_mondu_invoices_html() {
-		foreach ($this->invoices_data as $invoice) {
+		foreach ( $this->invoices_data as $invoice ) {
 			?>
 		<hr>
 		<p>
@@ -237,14 +237,14 @@ class PaymentInfo {
 		</p>
 		<?php
 			$this->get_mondu_credit_note_html($invoice);
-			if ('canceled' !== $invoice['state']) {
+			if ( 'canceled' !== $invoice['state'] ) {
 				?>
-				<?php 
+				<?php
 				$mondu_data = [
-					'order_id' => $this->order->get_id(),
-					'invoice_id' => $invoice['uuid'],
+					'order_id'       => $this->order->get_id(),
+					'invoice_id'     => $invoice['uuid'],
 					'mondu_order_id' => $this->order_data['uuid'],
-					'security' => wp_create_nonce('mondu-cancel-invoice')
+					'security'       => wp_create_nonce('mondu-cancel-invoice'),
 				];
 				?>
 				<button data-mondu='<?php echo( wp_json_encode($mondu_data) ); ?>' id="mondu-cancel-invoice-button" type="submit" class="button grant_access">
@@ -257,17 +257,17 @@ class PaymentInfo {
 		}
 	}
 
-	public function get_mondu_credit_note_html( $invoice) {
+	public function get_mondu_credit_note_html( $invoice ) {
 		?>
 		<p><strong>
 		<?php
-		if (!empty($invoice['credit_notes'])) {
+		if ( !empty($invoice['credit_notes']) ) {
 			esc_html_e('Credit Notes', 'mondu');}
 		?>
 		:</strong></p>
 	<?php
 
-		foreach ($invoice['credit_notes'] as $note) {
+		foreach ( $invoice['credit_notes'] as $note ) {
 			?>
 		<li>
 			<?php printf('%s: %s %s (%s: %s %s)', '<strong>#' . esc_html($note['external_reference_id']) . '</strong>', esc_html( $note['gross_amount_cents'] / 100 ), esc_html($invoice['order']['currency']), esc_html__('Tax', 'mondu'), esc_html( $note['tax_cents'] / 100 ), esc_html($invoice['order']['currency'])); ?>
@@ -283,16 +283,16 @@ class PaymentInfo {
 	 * @return false|string|null
 	 */
 	public function get_mondu_wcpdf_section_html( $pdf = false ) {
-		if (!in_array($this->order->get_payment_method(), Plugin::PAYMENT_METHODS, true)) {
+		if ( !in_array($this->order->get_payment_method(), Plugin::PAYMENT_METHODS, true) ) {
 			return null;
 		}
 
-		if ($this->order_data && isset($this->order_data['bank_account'])) {
+		if ( $this->order_data && isset($this->order_data['bank_account']) ) {
 			$order_data = $this->order_data;
 			?>
 			<?php $this->get_mondu_payment_notice($this->order->get_payment_method()); ?>
 			<?php
-			if ($this->order->get_payment_method() === 'mondu_invoice') {
+			if ( $this->order->get_payment_method() === 'mondu_invoice' ) {
 				$this->get_mondu_payment_html($pdf);
 			}
 			?>
@@ -308,12 +308,12 @@ class PaymentInfo {
 		}
 	}
 
-	private function get_mondu_payment_notice( $payment_method) {
+	private function get_mondu_payment_notice( $payment_method ) {
 		$file = MONDU_VIEW_PATH . '/pdf/mondu-invoice-section.php';
 
 		//used in the file that is included
 		$wcpdfShopName = $this->get_wcpdf_shop_name();
-		if (file_exists($file)) {
+		if ( file_exists($file) ) {
 			include $file;
 		}
 	}
@@ -321,7 +321,7 @@ class PaymentInfo {
 	private function get_invoices() {
 		try {
 			return $this->mondu_request_wrapper->get_invoices($this->order->get_id());
-		} catch (ResponseException $e) {
+		} catch ( ResponseException $e ) {
 			return false;
 		}
 	}
@@ -329,7 +329,7 @@ class PaymentInfo {
 	private function get_order() {
 		try {
 			return $this->mondu_request_wrapper->get_order($this->order->get_id());
-		} catch (ResponseException $e) {
+		} catch ( ResponseException $e ) {
 			return false;
 		}
 	}

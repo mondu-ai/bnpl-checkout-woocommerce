@@ -29,3 +29,7 @@ wp i18n --allow-root update-po languages/mondu.pot languages/
 ```
 wp i18n --allow-root make-mo languages
 ```
+
+## Before pushing your changes
+- run `composer install` ( one time to install dev dependencies )
+- run `composer lint` and fix all the linting errors if present

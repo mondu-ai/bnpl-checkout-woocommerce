@@ -9,10 +9,10 @@
 		?>
 	</form>
 	<h2><?php esc_html_e('Validate Credentials', 'mondu'); ?></h2>
-	<?php if (isset($validation_error) && null !== $validation_error) : ?>
+	<?php if ( isset($validation_error) && null !== $validation_error ) : ?>
 		<p><?php echo esc_html($validation_error); ?></p>
 	<?php endif; ?>
-	<?php if (isset($credentials_validated) && false !== $credentials_validated) : ?>
+	<?php if ( isset($credentials_validated) && false !== $credentials_validated ) : ?>
 		<p> ✅ <?php esc_html_e('Credentials validated', 'mondu'); ?>:
 		<?php echo esc_html(date_i18n(get_option('date_format'), $credentials_validated)); ?>
 		</p>
@@ -24,10 +24,10 @@
 		?>
 	</form>
 	<h2><?php esc_html_e('Register Webhooks', 'mondu'); ?></h2>
-	<?php if (isset($webhooks_error) && null !== $webhooks_error) : ?>
+	<?php if ( isset($webhooks_error) && null !== $webhooks_error ) : ?>
 		<p><?php echo esc_html($webhooks_error); ?></p>
 	<?php endif; ?>
-	<?php if (isset($webhooks_registered) && false !== $webhooks_registered) : ?>
+	<?php if ( isset($webhooks_registered) && false !== $webhooks_registered ) : ?>
 		<p> ✅ <?php esc_html_e('Webhooks registered', 'mondu'); ?>:
 		<?php echo esc_html(date_i18n(get_option('date_format'), $webhooks_registered)); ?>
 		</p>

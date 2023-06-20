@@ -8,7 +8,7 @@ use Mondu\Exceptions\MonduException;
 use Mondu\Exceptions\CredentialsNotSetException;
 use Mondu\Mondu\MonduRequestWrapper;
 
-if (!defined('ABSPATH')) {
+if ( !defined('ABSPATH') ) {
 	die('Direct access not allowed');
 }
 
@@ -36,10 +36,10 @@ class Settings {
 	}
 
 	public function init() {
-		add_action('admin_menu', [$this, 'plugin_menu']);
-		add_action('admin_init', [$this, 'register_options']);
-		add_action('admin_post_download_logs', [$this, 'download_mondu_logs']);
-		add_filter('woocommerce_screen_ids', [$this, 'set_wc_screen_ids']);
+		add_action('admin_menu', [ $this, 'plugin_menu' ]);
+		add_action('admin_init', [ $this, 'register_options' ]);
+		add_action('admin_post_download_logs', [ $this, 'download_mondu_logs' ]);
+		add_filter('woocommerce_screen_ids', [ $this, 'set_wc_screen_ids' ]);
 	}
 
 	public function plugin_menu() {
@@ -50,7 +50,7 @@ class Settings {
 			'Mondu',
 			'manage_options',
 			'mondu-settings-account',
-			[$this, 'render_account_options'],
+			[ $this, 'render_account_options' ],
 			$mondu_icon,
 			'55.5'
 		);
@@ -61,7 +61,7 @@ class Settings {
 		$this->account_options->register();
 	}
 
-	public function set_wc_screen_ids( $screen) {
+	public function set_wc_screen_ids( $screen ) {
 		$screen[] = 'toplevel_page_mondu-settings-account';
 		return $screen;
 	}
@@ -70,9 +70,9 @@ class Settings {
 		$validation_error = null;
 		$webhooks_error   = null;
 
-		if (isset($_POST['validate-credentials']) && check_admin_referer('validate-credentials', 'validate-credentials')) {
+		if ( isset($_POST['validate-credentials']) && check_admin_referer('validate-credentials', 'validate-credentials') ) {
 			try {
-				if ($this->missing_credentials()) {
+				if ( $this->missing_credentials() ) {
 					throw new CredentialsNotSetException(__('Missing Credentials', 'mondu'));
 				}
 
@@ -80,20 +80,20 @@ class Settings {
 				update_option('_mondu_webhook_secret', $secret);
 
 				update_option('_mondu_credentials_validated', time());
-			} catch (MonduException $e) {
+			} catch ( MonduException $e ) {
 				delete_option('_mondu_credentials_validated');
 				$validation_error = $e->getMessage();
 			}
-		} elseif (isset($_POST['register-webhooks']) && check_admin_referer('register-webhooks', 'register-webhooks')) {
+		} elseif ( isset($_POST['register-webhooks']) && check_admin_referer('register-webhooks', 'register-webhooks') ) {
 			try {
 				$this->register_webhooks_if_not_registered();
 
 				update_option('_mondu_webhooks_registered', time());
-			} catch (MonduException $e) {
+			} catch ( MonduException $e ) {
 				delete_option('_mondu_webhooks_registered');
 				$webhooks_error = $e->getMessage();
 			}
-		} elseif (isset($_GET['settings-updated']) || $this->missing_credentials()) {
+		} elseif ( isset($_GET['settings-updated']) || $this->missing_credentials() ) {
 			delete_option('_mondu_credentials_validated');
 			delete_option('_mondu_webhooks_registered');
 		}
@@ -112,13 +112,13 @@ class Settings {
 
 	private function register_webhooks_if_not_registered() {
 		$webhooks          = $this->mondu_request_wrapper->get_webhooks();
-		$registered_topics = array_map(function( $webhook) {
+		$registered_topics = array_map(function( $webhook ) {
 			return $webhook['topic'];
 		}, $webhooks);
 
-		$required_topics = ['order', 'invoice'];
-		foreach ($required_topics as $topic) {
-			if (!in_array($topic, $registered_topics, true)) {
+		$required_topics = [ 'order', 'invoice' ];
+		foreach ( $required_topics as $topic ) {
+			if ( !in_array($topic, $registered_topics, true) ) {
 				$this->mondu_request_wrapper->register_webhook($topic);
 			}
 		}
@@ -126,20 +126,20 @@ class Settings {
 
 	public function download_mondu_logs() {
 		$is_nonce_valid = check_ajax_referer( 'mondu-download-logs', 'security', false );
-		if ( ! $is_nonce_valid ) {
+		if ( !$is_nonce_valid ) {
 			status_header(400);
-			exit(esc_html__('Bad Request.'));
+			exit(esc_html__('Bad Request.', 'mondu'));
 		}
 		$date = isset( $_POST['date'] ) ? sanitize_text_field($_POST['date']) : null;
 
-		if (null === $date) {
+		if ( null === $date ) {
 			status_header(400);
 			exit(esc_html__('Date is required.'));
 		}
 
 		$file = $this->get_file($date);
 
-		if (null === $file) {
+		if ( null === $file ) {
 			status_header(404);
 			exit(esc_html__('Log not found.'));
 		}
@@ -154,12 +154,12 @@ class Settings {
 		die();
 	}
 
-	private function get_file( $date) {
+	private function get_file( $date ) {
 		$base_dir = WP_CONTENT_DIR . '/uploads/wc-logs/';
 		$dir      = opendir($base_dir);
-		if ($dir) {
-			while ($file = readdir($dir)) {
-				if (str_starts_with($file, 'mondu-' . $date) && str_ends_with($file, '.log')) {
+		if ( $dir ) {
+			while ( $file = readdir($dir) ) {
+				if ( str_starts_with($file, 'mondu-' . $date) && str_ends_with($file, '.log') ) {
 					return $base_dir . $file;
 				}
 			}

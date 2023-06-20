@@ -36,10 +36,10 @@ class MonduGateway extends WC_Payment_Gateway {
 
 		$this->mondu_request_wrapper = new MonduRequestWrapper();
 
-		add_action('woocommerce_update_options_payment_gateways_' . $this->id, [$this, 'process_admin_options']);
-		add_action('woocommerce_thankyou_' . $this->id, [$this, 'thankyou_page']);
+		add_action('woocommerce_update_options_payment_gateways_' . $this->id, [ $this, 'process_admin_options' ]);
+		add_action('woocommerce_thankyou_' . $this->id, [ $this, 'thankyou_page' ]);
 
-		add_action('woocommerce_email_before_order_table', [$this, 'email_instructions'], 10, 3);
+		add_action('woocommerce_email_before_order_table', [ $this, 'email_instructions' ], 10, 3);
 	}
 
 	/**
@@ -55,7 +55,7 @@ class MonduGateway extends WC_Payment_Gateway {
 	 * @param array $methods
 	 * @return array
 	 */
-	public static function add( array $methods) {
+	public static function add( array $methods ) {
 		array_unshift($methods, static::class);
 
 		return $methods;
@@ -70,7 +70,7 @@ class MonduGateway extends WC_Payment_Gateway {
 		parent::payment_fields();
 		$order_id = 0;
 
-		if (is_wc_endpoint_url('order-pay')) {
+		if ( is_wc_endpoint_url('order-pay') ) {
 			$order_id = absint(get_query_var('order-pay'));
 		}
 
@@ -81,7 +81,7 @@ class MonduGateway extends WC_Payment_Gateway {
 	 * Output for the order received page.
 	 */
 	public function thankyou_page() {
-		if ($this->instructions) {
+		if ( $this->instructions ) {
 			echo wp_kses_post(wpautop(wptexturize($this->instructions)));
 		}
 	}
@@ -91,12 +91,12 @@ class MonduGateway extends WC_Payment_Gateway {
 	 *
 	 * @param WC_Order $order
 	 */
-	public function email_instructions( $order) {
-		if (!Plugin::order_has_mondu($order)) {
+	public function email_instructions( $order ) {
+		if ( !Plugin::order_has_mondu($order) ) {
 			return;
 		}
 
-		if ($this->instructions && $this->id === $order->get_payment_method()) {
+		if ( $this->instructions && $this->id === $order->get_payment_method() ) {
 			echo wp_kses_post(wpautop(wptexturize($this->instructions)));
 		}
 	}
@@ -125,7 +125,7 @@ class MonduGateway extends WC_Payment_Gateway {
 	 * @return array|void
 	 * @throws ResponseException
 	 */
-	public function process_payment( $order_id) {
+	public function process_payment( $order_id ) {
 		// This is just to have an updated data saved for future references
 		// It is not possible to do it in Mondu's order creation because we do not have an order_id
 		$order_data = OrderData::raw_order_data('invoice');
@@ -133,14 +133,14 @@ class MonduGateway extends WC_Payment_Gateway {
 
 		$order = $this->mondu_request_wrapper->process_payment($order_id);
 
-		if (!$order) {
+		if ( !$order ) {
 			wc_add_notice(__('Error placing an order. Please try again.', 'mondu'), 'error');
 			return;
 		}
 
 		return array(
-			'result' => 'success',
-			'redirect' => $this->get_return_url($order)
+			'result'   => 'success',
+			'redirect' => $this->get_return_url($order),
 		);
 	}
 
@@ -150,7 +150,7 @@ class MonduGateway extends WC_Payment_Gateway {
 	 * @return string
 	 */
 	private function is_enabled() {
-		if (null === get_option('_mondu_credentials_validated')) {
+		if ( null === get_option('_mondu_credentials_validated') ) {
 			$this->settings['enabled'] = 'no';
 		}
 

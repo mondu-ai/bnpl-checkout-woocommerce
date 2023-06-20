@@ -5,7 +5,7 @@
     },
     "scripts": {
         "lint": "./vendor/bin/phpcs --standard=./pbs-rules-set.xml --extensions=php,phtml,js,html --warning-severity=0 --ignore-annotations .",
-        "lint-fix": "./vendor/bin/phpcbf --standard=./pbs-rules-set.xml --extensions=php,phtml,js,html --warning-severity=0 --ignore-annotations ."
+        "lint-fix": "./vendor/bin/phpcbf --standard=./pbs-rules-set.xml --extensions=php,phtml,js,html ."
     },
     "config": {
         "allow-plugins": {
