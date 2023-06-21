@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: WooCommerce-Mondu 1.3.2\n"
+"Project-Id-Version: WooCommerce-Mondu 1.3.3\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/Woocommerce-Mondu\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -82,6 +82,12 @@ msgstr "Productie"
 #: src/Mondu/Admin/Order.php:42
 msgid "Mondu Order Information"
 msgstr "Mondu Order Informatie"
+
+#: src/Mondu/Admin/Order.php:64
+#: src/Mondu/Admin/Order.php:92
+#: src/Mondu/Admin/Settings.php:131
+msgid "Bad Request."
+msgstr "Slecht verzoek."
 
 #: src/Mondu/Admin/Settings.php:49
 #: views/admin/options.php:2
@@ -366,9 +372,3 @@ msgstr "Deze factuur is opgesteld in overeenstemming met de algemene voorwaarden
 #: views/pdf/mondu-invoice-section.php:50
 msgid "This invoice was created in accordance with the general terms and conditions of <strong>%s</strong> and <strong>Mondu GmbH</strong> for the instalment payment model.<br/><br/>Since you have chosen the instalment payment method via SEPA direct debit through Mondu, the individual installments will be debited from your bank account on the due date.<br/><br/>Before the amounts are debited from your account, you will receive notice regarding the direct debit. Kindly make sure you have sufficient funds in your account. In the event of changes to your order, the instalment plan will be adjusted to reflect the new order total."
 msgstr "Deze factuur is gemaakt in overeenstemming met de algemene voorwaarden van <strong>%s</strong> en <strong>Mondu GmbH</strong> voor het termijnbetaling betalingsmodel.<br/><br/>Aangezien u heeft gekozen voor de termijn betalingsmethode via SEPA automatische incasso via Mondu, worden de individuele bedragen voor elke betalingstermijnen op de vervaldatum van uw bankrekening afgeschreven.<br/><br/>Voordat de bedragen van uw rekening worden afgeschreven, ontvangt u bericht over de automatische incasso. Zorg ervoor dat u voldoende geld op uw rekening heeft staan. Voor het geval dat er wijzigingen in uw bestelling plaats vindt, wordt het afbetalingsplan aangepast aan het nieuwe orderbedrag."
-
-#: src/Mondu/Admin/Order.php:64
-#: src/Mondu/Admin/Order.php:92
-#: src/Mondu/Admin/Settings.php:131
-msgid "Bad Request."
-msgstr ""

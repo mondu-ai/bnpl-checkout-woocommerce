@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: WooCommerce-Mondu 1.3.2\n"
+"Project-Id-Version: WooCommerce-Mondu 1.3.3\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/Woocommerce-Mondu\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -82,6 +82,12 @@ msgstr "Production"
 #: src/Mondu/Admin/Order.php:42
 msgid "Mondu Order Information"
 msgstr "Mondu Bestellinformationen"
+
+#: src/Mondu/Admin/Order.php:64
+#: src/Mondu/Admin/Order.php:92
+#: src/Mondu/Admin/Settings.php:131
+msgid "Bad Request."
+msgstr "Schlechte Anfrage."
 
 #: src/Mondu/Admin/Settings.php:49
 #: views/admin/options.php:2
@@ -366,9 +372,3 @@ msgstr "Diese Rechnung wurde abgetreten gemäß den Allgemeinen Bedingungen von 
 #: views/pdf/mondu-invoice-section.php:50
 msgid "This invoice was created in accordance with the general terms and conditions of <strong>%s</strong> and <strong>Mondu GmbH</strong> for the instalment payment model.<br/><br/>Since you have chosen the instalment payment method via SEPA direct debit through Mondu, the individual installments will be debited from your bank account on the due date.<br/><br/>Before the amounts are debited from your account, you will receive notice regarding the direct debit. Kindly make sure you have sufficient funds in your account. In the event of changes to your order, the instalment plan will be adjusted to reflect the new order total."
 msgstr "Diese Rechnung wurde gemäß den Allgemeinen Bedingungen von <strong>%s</strong> und <strong>Mondu GmbH</strong> zum Zahlungsmodell Ratenkauf abgetreten.<br/><br/>Da Sie die Zahlart Ratenkauf mit Begleichung via SEPA-Lastschrift über Mondu gewählt haben, werden die einzelnen Raten an ihrem jeweiligen Fälligkeitstag von Ihrem Bankkonto abgebucht.<br/><br/>Bevor die Beträge von Ihrem Konto abgebucht werden, erhalten Sie bezüglich der Lastschrift eine Vorankündigung. Bitte achten Sie auf eine ausreichende Kontodeckung. Im Falle von Änderungen an Ihrer Bestellung wird der Ratenplan an die neue Bestellsumme angepasst."
-
-#: src/Mondu/Admin/Order.php:64
-#: src/Mondu/Admin/Order.php:92
-#: src/Mondu/Admin/Settings.php:131
-msgid "Bad Request."
-msgstr ""
