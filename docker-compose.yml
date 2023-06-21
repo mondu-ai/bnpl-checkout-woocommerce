@@ -32,6 +32,12 @@ services:
           error_log(implode("; ", $$wperror->get_error_messages()));
         });
 
+  composer:
+    image: composer:latest
+    command: composer install
+    volumes:
+      - .:/app
+
   mariadb:
     container_name: woocommerce_mariadb
     image: mariadb

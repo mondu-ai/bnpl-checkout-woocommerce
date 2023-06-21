@@ -10,6 +10,9 @@ RUN apt -y install nano
 # To avoid problems with another plugins
 RUN docker-php-ext-install mysqli pdo pdo_mysql
 
+# Install Composer
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+
 # Install WP CLI
 RUN wget https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar -O /tmp/wp-cli.phar \
   && chmod +x /tmp/wp-cli.phar \
