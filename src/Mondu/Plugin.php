@@ -186,9 +186,9 @@ class Plugin {
 	public function add_mondu_scripts() {
 		if ( is_checkout() ) {
 			if ( $this->is_sandbox() ) {
-				wp_enqueue_script( 'mondu', 'https://checkout.demo.mondu.ai/widget.js', null, '1.0.0', true );
+				wp_enqueue_script( 'mondu', MONDU_WIDGET_SANDBOX_URL, null, null, true );
 			} else {
-				wp_enqueue_script( 'mondu', 'https://checkout.mondu.ai/widget.js', null, '1.0.0', true );
+				wp_enqueue_script( 'mondu', MONDU_WIDGET_PRODUCTION_URL, null, null, true );
 			}
 		}
 	}

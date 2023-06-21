@@ -6,12 +6,17 @@
  * Version: 1.3.2
  * Author: Mondu
  * Author URI: https://mondu.ai
- * License: GPLv3
- * License URI: https://www.gnu.org/licenses/gpl-3.0.html
+ *
  * Text Domain: mondu
  * Domain Path: /languages/
+ *
  * Requires at least: 5.9.0
  * Requires PHP: 7.4
+ * WC requires at least: 6.5
+ * WC tested up to: 7.8
+ *
+ * License: GPLv3
+ * License URI: https://www.gnu.org/licenses/gpl-3.0.html
  *
  * Copyright 2023 Mondu
  */
@@ -27,8 +32,10 @@ define('MONDU_PLUGIN_BASENAME', plugin_basename(MONDU_PLUGIN_FILE));
 define('MONDU_PUBLIC_PATH', plugin_dir_url(MONDU_PLUGIN_FILE));
 define('MONDU_VIEW_PATH', MONDU_PLUGIN_PATH . '/views');
 
-define('MONDU_SANDBOX_URL', 'https://api.demo.mondu.ai/api/v1');
-define('MONDU_PRODUCTION_URL', 'https://api.mondu.ai/api/v1');
+define('MONDU_SANDBOX_URL', getenv('MONDU_SANDBOX_URL') ?: 'https://api.demo.mondu.ai/api/v1');
+define('MONDU_PRODUCTION_URL', getenv('MONDU_PRODUCTION_URL') ?: 'https://api.mondu.ai/api/v1');
+define('MONDU_WIDGET_SANDBOX_URL', getenv('MONDU_WIDGET_SANDBOX_URL') ?: 'https://checkout.demo.mondu.ai/widget.js');
+define('MONDU_WIDGET_PRODUCTION_URL', getenv('MONDU_WIDGET_PRODUCTION_URL') ?: 'https://checkout.mondu.ai/widget.js');
 
 require_once 'src/autoload.php';
 

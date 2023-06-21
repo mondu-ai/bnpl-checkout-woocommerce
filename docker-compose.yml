@@ -12,6 +12,10 @@ services:
     ports:
       - 8080:80
     environment:
+      MONDU_SANDBOX_URL: http://host.docker.internal:3000/api/v1
+      MONDU_PRODUCTION_URL: http://host.docker.internal:3000/api/v1
+      MONDU_WIDGET_SANDBOX_URL: http://localhost:3002/widget.js
+      MONDU_WIDGET_PRODUCTION_URL: http://localhost:3002/widget.js
       WP_DEBUG: 1
       WORDPRESS_DEBUG: 1
       WORDPRESS_DB_HOST: mariadb
