@@ -33,22 +33,25 @@ define('MONDU_PUBLIC_PATH', plugin_dir_url(MONDU_PLUGIN_FILE));
 define('MONDU_VIEW_PATH', MONDU_PLUGIN_PATH . '/views');
 
 if ( getenv('MONDU_SANDBOX_URL') !== false ) {
-	putenv('MONDU_SANDBOX_URL=https://api.demo.mondu.ai/api/v1');
+	define('MONDU_SANDBOX_URL', getenv('MONDU_SANDBOX_URL'));
+} else {
+	define('MONDU_SANDBOX_URL', 'https://api.demo.mondu.ai/api/v1');
 }
 if ( getenv('MONDU_PRODUCTION_URL') !== false ) {
-	putenv('MONDU_PRODUCTION_URL=https://api.mondu.ai/api/v1');
+	define('MONDU_PRODUCTION_URL', getenv('MONDU_PRODUCTION_URL'));
+} else {
+	define('MONDU_PRODUCTION_URL', 'https://api.mondu.ai/api/v1');
 }
 if ( getenv('MONDU_WIDGET_SANDBOX_URL') !== false ) {
-	putenv('MONDU_WIDGET_SANDBOX_URL=https://checkout.demo.mondu.ai/widget.js');
+	define('MONDU_WIDGET_SANDBOX_URL', getenv('MONDU_WIDGET_SANDBOX_URL'));
+} else {
+	define('MONDU_WIDGET_SANDBOX_URL', 'https://checkout.demo.mondu.ai/widget.js');
 }
 if ( getenv('MONDU_WIDGET_PRODUCTION_URL') !== false ) {
-	putenv('MONDU_WIDGET_PRODUCTION_URL=https://checkout.mondu.ai/widget.js');
+	define('MONDU_WIDGET_PRODUCTION_URL', getenv('MONDU_WIDGET_PRODUCTION_URL'));
+} else {
+	define('MONDU_WIDGET_PRODUCTION_URL', 'https://checkout.mondu.ai/widget.js');
 }
-
-define('MONDU_SANDBOX_URL', getenv('MONDU_SANDBOX_URL'));
-define('MONDU_PRODUCTION_URL', getenv('MONDU_PRODUCTION_URL'));
-define('MONDU_WIDGET_SANDBOX_URL', getenv('MONDU_WIDGET_SANDBOX_URL'));
-define('MONDU_WIDGET_PRODUCTION_URL', getenv('MONDU_WIDGET_PRODUCTION_URL'));
 
 require_once 'src/autoload.php';
 
