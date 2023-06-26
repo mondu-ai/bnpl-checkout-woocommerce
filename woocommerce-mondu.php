@@ -25,7 +25,7 @@ if ( !defined('ABSPATH') ) {
 	die('Direct access not allowed');
 }
 
-define('MONDU_PLUGIN_VERSION', '1.3.3');
+define('MONDU_PLUGIN_VERSION', '1.3.4');
 define('MONDU_PLUGIN_FILE', __FILE__);
 define('MONDU_PLUGIN_PATH', __DIR__);
 define('MONDU_PLUGIN_BASENAME', plugin_basename(MONDU_PLUGIN_FILE));
