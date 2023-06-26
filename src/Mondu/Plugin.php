@@ -143,6 +143,10 @@ class Plugin {
 			add_action('wpo_wcpdf_meta_box_after_document_data', [ $this, 'wcpdf_add_status_to_invoice_admin_when_invoice_is_canceled' ], 10, 2);
 			add_action('wpo_wcpdf_reload_text_domains', [ $this, 'wcpdf_add_mondu_payment_language_switch' ], 10, 1);
 		}
+
+		if ( class_exists('BM') ) {
+			add_filter( 'bm_filter_price', '__return_false' );
+		}
 	}
 
 	public function load_textdomain() {
