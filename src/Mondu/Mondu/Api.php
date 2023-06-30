@@ -19,7 +19,6 @@ class Api {
 		register_setting('mondu', Plugin::OPTION_NAME);
 	}
 
-
 	/**
 	 * Create order
 	 *
@@ -30,7 +29,6 @@ class Api {
 	 */
 	public function create_order( array $params ) {
 		$result = $this->post('/orders', $params);
-
 		return json_decode($result['body'], true);
 	}
 
@@ -48,21 +46,6 @@ class Api {
 	}
 
 	/**
-	 * Update External Info
-	 *
-	 * @param $mondu_uuid
-	 * @param $params
-	 * @return mixed
-	 * @throws MonduException
-	 * @throws ResponseException
-	 */
-	public function update_external_info( $mondu_uuid, $params ) {
-		$result = $this->post(sprintf('/orders/%s/update_external_info', $mondu_uuid), $params);
-
-		return json_decode($result['body'], true);
-	}
-
-	/**
 	 * Adjust Order
 	 *
 	 * @param $mondu_uuid
@@ -73,7 +56,6 @@ class Api {
 	 */
 	public function adjust_order( $mondu_uuid, array $params ) {
 		$result = $this->post(sprintf('/orders/%s/adjust', $mondu_uuid), $params);
-
 		return json_decode($result['body'], true);
 	}
 
@@ -87,7 +69,6 @@ class Api {
 	 */
 	public function cancel_order( $mondu_uuid ) {
 		$result = $this->post(sprintf('/orders/%s/cancel', $mondu_uuid));
-
 		return json_decode($result['body'], true);
 	}
 
@@ -102,7 +83,20 @@ class Api {
 	 */
 	public function ship_order( $mondu_uuid, array $params ) {
 		$result = $this->post(sprintf('/orders/%s/invoices', $mondu_uuid), $params);
+		return json_decode($result['body'], true);
+	}
 
+	/**
+	 * Confirm order
+	 *
+	 * @param $mondu_uuid
+	 * @param array $params
+	 * @return mixed
+	 * @throws MonduException
+	 * @throws ResponseException
+	 */
+	public function confirm_order( $mondu_uuid, array $params ) {
+		$result = $this->post(sprintf('/orders/%s/confirm', $mondu_uuid), $params);
 		return json_decode($result['body'], true);
 	}
 
@@ -116,7 +110,6 @@ class Api {
 	 */
 	public function get_invoices( $mondu_uuid ) {
 		$result = $this->get(sprintf('/orders/%s/invoices', $mondu_uuid), null);
-
 		return json_decode($result['body'], true);
 	}
 
@@ -143,7 +136,6 @@ class Api {
 	 */
 	public function webhook_secret() {
 		$result = $this->get('/webhooks/keys', null);
-
 		return json_decode($result['body'], true);
 	}
 
@@ -156,7 +148,6 @@ class Api {
 	 */
 	public function get_webhooks() {
 		$result = $this->get('/webhooks', null);
-
 		return json_decode($result['body'], true);
 	}
 
@@ -171,11 +162,10 @@ class Api {
 	public function register_webhook( $topic ) {
 		$params = [
 			'topic'   => $topic,
-			'address' => get_site_url() . '/?rest_route=/mondu/v1/webhooks/index',
+			'address' => MONDU_WEBHOOKS_URL . '/?rest_route=/mondu/v1/webhooks/index',
 		];
 
 		$result = $this->post('/webhooks', $params);
-
 		return json_decode($result['body'], true);
 	}
 
@@ -216,7 +206,6 @@ class Api {
 	 */
 	public function get_payment_methods() {
 		$result = $this->get('/payment_methods', null);
-
 		return json_decode($result['body'], true);
 	}
 
@@ -243,7 +232,6 @@ class Api {
 	 */
 	private function post( $path, array $body = null ) {
 		$method = 'POST';
-
 		return $this->request($path, $method, $body);
 	}
 
@@ -258,7 +246,6 @@ class Api {
 	 */
 	private function put( $path, array $body = null ) {
 		$method = 'PUT';
-
 		return $this->request($path, $method, $body);
 	}
 
@@ -273,7 +260,6 @@ class Api {
 	 */
 	private function patch( $path, array $body = null ) {
 		$method = 'PATCH';
-
 		return $this->request($path, $method, $body);
 	}
 
@@ -292,7 +278,6 @@ class Api {
 		}
 
 		$method = 'GET';
-
 		return $this->request($path, $method);
 	}
 
@@ -342,7 +327,7 @@ class Api {
 	 * @throws ResponseException
 	 */
 	private function request( $path, $method = 'GET', $body = null ) {
-		$url  = $this->is_production() ? MONDU_PRODUCTION_URL : MONDU_SANDBOX_URL;
+		$url  = Helper::is_production() ? MONDU_PRODUCTION_URL : MONDU_SANDBOX_URL;
 		$url .= $path;
 
 		$headers = [
@@ -369,22 +354,5 @@ class Api {
 		]);
 
 		return $this->validate_remote_result($url, wp_remote_request($url, $args));
-	}
-
-	/**
-	 * Is Production
-	 *
-	 * @return bool
-	 */
-	private function is_production() {
-		$is_production = false;
-		if ( is_array($this->global_settings)
-			&& isset($this->global_settings['field_sandbox_or_production'])
-			&& 'production' === $this->global_settings['field_sandbox_or_production']
-		) {
-			$is_production = true;
-		}
-
-		return $is_production;
 	}
 }

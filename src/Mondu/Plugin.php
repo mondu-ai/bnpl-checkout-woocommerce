@@ -17,7 +17,6 @@ use WP_Error;
 use WC_Order;
 
 class Plugin {
-	const ORDER_DATA_KEY      = '_mondu_order_data';
 	const ORDER_ID_KEY        = '_mondu_order_id';
 	const INVOICE_ID_KEY      = '_mondu_invoice_id';
 	const FAILURE_REASON_KEY  = '_mondu_failure_reason';
@@ -115,12 +114,6 @@ class Plugin {
 			$webhooks->register_routes();
 		});
 
-		add_action('woocommerce_checkout_order_processed', function( $order_id ) {
-			$mondu_order_id = WC()->session->get('mondu_order_id');
-
-			update_post_meta($order_id, Plugin::ORDER_ID_KEY, $mondu_order_id);
-		}, 10, 3);
-
 		/*
 		 * Validates required fields
 		 */
@@ -159,12 +152,6 @@ class Plugin {
 			return false;
 		}
 
-		// Check if we actually have a payment as well
-		$mondu_order_id = get_post_meta($order->get_id(), self::ORDER_ID_KEY, true);
-		if ( !$mondu_order_id ) {
-			return false;
-		}
-
 		return true;
 	}
 
@@ -189,11 +176,8 @@ class Plugin {
 
 	public function add_mondu_scripts() {
 		if ( is_checkout() ) {
-			if ( $this->is_sandbox() ) {
-				wp_enqueue_script( 'mondu', MONDU_WIDGET_SANDBOX_URL, null, '1.0.0', true );
-			} else {
-				wp_enqueue_script( 'mondu', MONDU_WIDGET_PRODUCTION_URL, null, '1.0.0', true );
-			}
+			$url = Helper::is_production() ? MONDU_WIDGET_PRODUCTION_URL : MONDU_WIDGET_SANDBOX_URL;
+			wp_enqueue_script( 'mondu', $url . '/widget.js', null, '1.0.0', true );
 		}
 	}
 
@@ -459,18 +443,6 @@ class Plugin {
 		$message = __('Mondu requires WooCommerce to be activated.', 'mondu');
 
 		printf('<div class="%1$s"><p>%2$s</p></div>', esc_attr($class), esc_html($message));
-	}
-
-	private function is_sandbox() {
-		$sandbox_env = true;
-		if ( is_array($this->global_settings)
-			&& isset($this->global_settings['field_sandbox_or_production'])
-			&& 'production' === $this->global_settings['field_sandbox_or_production']
-		) {
-			$sandbox_env = false;
-		}
-
-		return $sandbox_env;
 	}
 
 	private function is_country_available( $country ) {

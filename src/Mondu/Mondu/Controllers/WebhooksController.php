@@ -39,10 +39,10 @@ class WebhooksController extends WP_REST_Controller {
 			$signature         = $verifier->create_hmac($params);
 			$topic             = isset($params['topic']) ? $params['topic'] : null;
 
-			Helper::log(array(
+			Helper::log([
 				'webhook_topic' => $topic,
 				'params'        => $params,
-			));
+			]);
 
 			if ( $signature !== $signature_payload ) {
 				throw new MonduException(__('Signature mismatch.', 'mondu'));
@@ -52,11 +52,17 @@ class WebhooksController extends WP_REST_Controller {
 				case 'order/pending':
 					$result = $this->handle_pending($params);
 					break;
+				case 'order/authorized':
+					$result = $this->handle_authorized($params);
+					break;
 				case 'order/confirmed':
 					$result = $this->handle_confirmed($params);
 					break;
 				case 'order/declined':
 					$result = $this->handle_declined($params);
+					break;
+				case 'invoice/created':
+					$result = $this->handle_invoice_created($params);
 					break;
 				case 'invoice/payment':
 					$result = $this->handle_invoice_payment($params);
@@ -65,7 +71,8 @@ class WebhooksController extends WP_REST_Controller {
 					$result = $this->handle_invoice_canceled($params);
 					break;
 				default:
-					throw new MonduException(__('Unregistered topic.', 'mondu'));
+					$result = $this->handle_not_found_topic($params);
+					break;
 			}
 
 			$res_body   = $result[0];
@@ -94,19 +101,31 @@ class WebhooksController extends WP_REST_Controller {
 		$order = new WC_Order($woocommerce_order_id);
 
 		if ( !$order ) {
-			return [ [ 'message' => __('Not Found', 'mondu') ], 404 ];
+			return $this->return_not_found();
 		}
 
-		Helper::log(array(
-			'woocommerce_order_id' => $woocommerce_order_id,
-			'mondu_order_id'       => $mondu_order_id,
-			'state'                => $params['order_state'],
-			'params'               => $params,
-		));
+		$order->add_order_note( esc_html( sprintf( __( 'Mondu order is on pending state.', 'mondu' ) ) ), false );
 
-		$order->update_status('wc-processing', __('Processing', 'woocommerce'));
+		return $this->return_success();
+	}
 
-		return [ [ 'message' => 'ok' ], 200 ];
+	private function handle_authorized( $params ) {
+		$woocommerce_order_id = $params['external_reference_id'];
+		$mondu_order_id       = $params['order_uuid'];
+
+		if ( !$woocommerce_order_id || !$mondu_order_id ) {
+			throw new MonduException(__('Required params missing.', 'mondu'));
+		}
+
+		$order = new WC_Order($woocommerce_order_id);
+
+		if ( !$order ) {
+			return $this->return_not_found();
+		}
+
+		$order->add_order_note( esc_html( sprintf( __( 'Mondu order is on authorized state.', 'mondu' ) ) ), false );
+
+		return $this->return_success();
 	}
 
 	private function handle_confirmed( $params ) {
@@ -119,16 +138,14 @@ class WebhooksController extends WP_REST_Controller {
 
 		$order = new WC_Order($woocommerce_order_id);
 
-		Helper::log(array(
-			'woocommerce_order_id' => $woocommerce_order_id,
-			'mondu_order_id'       => $mondu_order_id,
-			'state'                => $params['order_state'],
-			'params'               => $params,
-		));
+		if ( !$order ) {
+			return $this->return_not_found();
+		}
 
-		$order->update_status('wc-completed', __('Completed', 'woocommerce'));
+		$order->add_order_note( esc_html( sprintf( __( 'Mondu order is on confirmed state.', 'mondu' ) ) ), false );
+		$order->update_status('wc-processing', __('Processing', 'woocommerce'));
 
-		return [ [ 'message' => 'ok' ], 200 ];
+		return $this->return_success();
 	}
 
 	private function handle_declined( $params ) {
@@ -142,22 +159,34 @@ class WebhooksController extends WP_REST_Controller {
 		$order = new WC_Order($woocommerce_order_id);
 
 		if ( !$order ) {
-			return [ [ 'message' => __('Not Found', 'mondu') ], 404 ];
+			return $this->return_not_found();
 		}
 
-		Helper::log(array(
-			'woocommerce_order_id' => $woocommerce_order_id,
-			'mondu_order_id'       => $mondu_order_id,
-			'state'                => $params['order_state'],
-			'params'               => $params,
-		));
-
+		$order->add_order_note( esc_html( sprintf( __( 'Mondu order is on declined state.', 'mondu' ) ) ), false );
 		$order->update_status('wc-failed', __('Failed', 'woocommerce'));
 
 		$reason = $params['reason'];
 		update_post_meta($woocommerce_order_id, Plugin::FAILURE_REASON_KEY, $reason);
 
-		return [ [ 'message' => 'ok' ], 200 ];
+		return $this->return_success();
+	}
+
+	private function handle_invoice_created( $params ) {
+		$woocommerce_order_id = $params['external_reference_id'];
+
+		if ( !$woocommerce_order_id ) {
+			throw new MonduException(__('Required params missing.', 'mondu'));
+		}
+
+		$order = new WC_Order($woocommerce_order_id);
+
+		if ( !$order ) {
+			return $this->return_not_found();
+		}
+
+		$order->add_order_note( esc_html( sprintf( __( 'Mondu invoice is on created state.', 'mondu' ) ) ), false );
+
+		return $this->return_success();
 	}
 
 	private function handle_invoice_payment( $params ) {
@@ -167,17 +196,15 @@ class WebhooksController extends WP_REST_Controller {
 			throw new MonduException(__('Required params missing.', 'mondu'));
 		}
 
-		if ( function_exists('wcpdf_get_invoice') ) {
-			$invoice = wcpdf_get_invoice($woocommerce_order_id);
+		$order = new WC_Order($woocommerce_order_id);
 
-			if ( !$invoice ) {
-				return [ [ 'message' => __('Not Found', 'mondu') ], 404 ];
-			}
+		if ( !$order ) {
+			return $this->return_not_found();
 		}
 
-		// add invoice invoice payment action
+		$order->add_order_note( esc_html( sprintf( __( 'Mondu invoice is on complete state.', 'mondu' ) ) ), false );
 
-		return [ [ 'message' => 'ok' ], 200 ];
+		return $this->return_success();
 	}
 
 	private function handle_invoice_canceled( $params ) {
@@ -187,17 +214,30 @@ class WebhooksController extends WP_REST_Controller {
 			throw new MonduException(__('Required params missing.', 'mondu'));
 		}
 
-		if ( function_exists('wcpdf_get_invoice') ) {
-			$order   = new WC_Order($woocommerce_order_id);
-			$invoice = wcpdf_get_invoice($order);
+		$order = new WC_Order($woocommerce_order_id);
 
-			if ( !$invoice ) {
-				return [ [ 'message' => __('Not Found', 'mondu') ], 404 ];
-			}
+		if ( !$order ) {
+			return $this->return_not_found();
 		}
 
-		// add invoice invoice canceled action
+		$order->add_order_note( esc_html( sprintf( __( 'Mondu invoice is on canceled state.', 'mondu' ) ) ), false );
 
-		return [ [ 'message' => 'ok' ], 200 ];
+		return $this->return_success();
+	}
+
+	private function handle_not_found_topic() {
+		Helper::log([
+			'not_found_topic' => $params,
+		]);
+
+		return $this->return_success();
+	}
+
+	private function return_success() {
+		return [ [ 'message' => 'Ok' ], 200 ];
+	}
+
+	private function return_not_found() {
+		return [ [ 'message' => __('Not Found', 'mondu') ], 404 ];
 	}
 }

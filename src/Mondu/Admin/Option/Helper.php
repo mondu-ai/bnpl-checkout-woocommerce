@@ -4,10 +4,10 @@ namespace Mondu\Admin\Option;
 
 use Mondu\Plugin;
 
-
 if ( !defined('ABSPATH') ) {
 	die('Direct access not allowed');
 }
+
 abstract class Helper {
 	protected $global_settings;
 

@@ -6,7 +6,7 @@ use Mondu\Exceptions\MonduException;
 use Mondu\Exceptions\ResponseException;
 use Mondu\Mondu\GatewayFields;
 use Mondu\Mondu\MonduRequestWrapper;
-use Mondu\Mondu\Support\OrderData;
+use Mondu\Mondu\Support\Helper;
 use Mondu\Plugin;
 use WC_Data_Exception;
 use WC_Order;
@@ -38,7 +38,6 @@ class MonduGateway extends WC_Payment_Gateway {
 
 		add_action('woocommerce_update_options_payment_gateways_' . $this->id, [ $this, 'process_admin_options' ]);
 		add_action('woocommerce_thankyou_' . $this->id, [ $this, 'thankyou_page' ]);
-
 		add_action('woocommerce_email_before_order_table', [ $this, 'email_instructions' ], 10, 3);
 	}
 
@@ -107,8 +106,7 @@ class MonduGateway extends WC_Payment_Gateway {
 	 * @return string
 	 */
 	public function get_icon() {
-		$icon_src  = 'https://checkout.mondu.ai/logo.svg';
-		$icon_html = '<img src="' . $icon_src . '" alt="' . $this->method_title . '" width="100" />';
+		$icon_html = '<img src="' . MONDU_LOGO_URL . '" alt="' . $this->method_title . '" width="100" />';
 
 		/**
 		 * Mondu payment icon
@@ -126,21 +124,18 @@ class MonduGateway extends WC_Payment_Gateway {
 	 * @throws ResponseException
 	 */
 	public function process_payment( $order_id ) {
-		// This is just to have an updated data saved for future references
-		// It is not possible to do it in Mondu's order creation because we do not have an order_id
-		$order_data = OrderData::raw_order_data('invoice');
-		update_post_meta($order_id, Plugin::ORDER_DATA_KEY, $order_data);
+		$order       = wc_get_order($order_id);
+		$success_url = get_site_url() . '/?rest_route=/mondu/v1/orders/confirm&external_reference_id=' . $order_id . '&return_url=' . urlencode( $this->get_return_url( $order ) ) ;
+		$mondu_order = $this->mondu_request_wrapper->create_order( $order, $success_url, null );
 
-		$order = $this->mondu_request_wrapper->process_payment($order_id);
-
-		if ( !$order ) {
+		if ( !$mondu_order ) {
 			wc_add_notice(__('Error placing an order. Please try again.', 'mondu'), 'error');
 			return;
 		}
 
 		return array(
 			'result'   => 'success',
-			'redirect' => $this->get_return_url($order),
+			'redirect' => $mondu_order['hosted_checkout_url'],
 		);
 	}
 

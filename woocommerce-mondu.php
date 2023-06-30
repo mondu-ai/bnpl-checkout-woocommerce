@@ -52,6 +52,16 @@ if ( getenv('MONDU_WIDGET_PRODUCTION_URL') !== false ) {
 } else {
 	define('MONDU_WIDGET_PRODUCTION_URL', 'https://checkout.mondu.ai/widget.js');
 }
+if ( getenv('MONDU_LOGO_URL') !== false ) {
+	define('MONDU_LOGO_URL', getenv('MONDU_LOGO_URL'));
+} else {
+	define('MONDU_LOGO_URL', 'https://checkout.mondu.ai/logo.svg');
+}
+if ( getenv('MONDU_WEBHOOKS_URL') !== false ) {
+	define('MONDU_WEBHOOKS_URL', getenv('MONDU_WEBHOOKS_URL'));
+} else {
+	define('MONDU_WEBHOOKS_URL', get_site_url());
+}
 
 require_once 'src/autoload.php';
 
