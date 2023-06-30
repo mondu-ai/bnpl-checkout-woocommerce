@@ -37,8 +37,13 @@ class OrdersController extends WP_REST_Controller {
 		$mondu_order_id       = $params['order_uuid'];
 		$return_url           = urldecode( $params['return_url'] );
 
-		// TODO: check if is already confirmed (when click on the link after finish hosted checkout)
-		$order = $this->mondu_request_wrapper->confirm_order($woocommerce_order_id, $mondu_order_id);
+		try {
+			$this->mondu_request_wrapper->confirm_order($woocommerce_order_id, $mondu_order_id);
+		} catch ( \Exception $e ) {
+			Helper::log([
+				'error_confirming_order' => $params,
+			]);
+		}
 
 		wp_safe_redirect( $return_url );
 		exit;

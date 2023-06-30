@@ -1,42 +1,77 @@
 <?php
-if ( !defined('ABSPATH') ) {
-	exit;
+if ( !defined( 'ABSPATH' ) ) {
+	die( 'Direct access not allowed' );
 }
 
 if ( !isset($payment_method) ) {
 	$payment_method = '';
 }
 
-if ( !isset($wcpdfShopName) ) {
-	$wcpdfShopName = '';
+if ( !isset($wcpdf_shop_name) ) {
+	$wcpdf_shop_name = '';
 }
 
 if ( 'mondu_invoice' === $payment_method ) {
 	?>
 	<section>
 		<p>
-		<?php 
-		/* translators: %s: Company */printf(wp_kses(__('This invoice was created in accordance with the general terms and conditions of <strong>%s</strong> and <strong>Mondu GmbH</strong> for the purchase on account payment model. Please pay debt-discharging to the following account:', 'mondu'), [
-			'strong' => [],
-			'br'     => [],
-		]), esc_html($wcpdfShopName)); 
-		?>
+			<?php
+			/* translators: %s: Company */ printf(wp_kses(__('This invoice was created in accordance with the general terms and conditions of <strong>%s</strong> and <strong>Mondu GmbH</strong> for the purchase on account payment model. Please pay debt-discharging to the following account:', 'mondu'), [
+				'strong' => [],
+				'br'     => [],
+			]), esc_html($wcpdf_shop_name));
+			?>
 		</p>
 	</section>
-	<br/>
-	<?php
+	<?php if ( $bank_account ) { ?>
+		<br />
+		<style>
+			.mondu-payment > table > tbody > tr > td {
+				min-width: 130px;
+			}
+		</style>
+		<section class="woocommerce-order-details mondu-payment">
+			<table>
+				<tr>
+					<td><strong><?php esc_html_e('Account holder', 'mondu'); ?>:</strong></td>
+					<td><?php printf(esc_html($bank_account['account_holder'])); ?></span></td>
+				</tr>
+				<tr>
+					<td><strong><?php esc_html_e('Bank', 'mondu'); ?>:</strong></td>
+					<td><?php printf(esc_html($bank_account['bank'])); ?></td>
+				</tr>
+				<tr>
+					<td><strong><?php esc_html_e('IBAN', 'mondu'); ?>:</strong></td>
+					<td><?php printf(esc_html($bank_account['iban'])); ?></td>
+				</tr>
+				<tr>
+					<td><strong><?php esc_html_e('BIC', 'mondu'); ?>:</strong></td>
+					<td><?php printf(esc_html($bank_account['bic'])); ?></td>
+				</tr>
+				<tr>
+					<td><strong><?php esc_html_e('Purpose', 'mondu'); ?>:</strong></td>
+					<td><?php echo esc_html__('Invoice number', 'mondu') . ' ' . esc_html($invoice_number . ' ' . $this->get_wcpdf_shop_name()); ?></td>
+				</tr>
+				<?php if ( $net_terms ) { ?>
+					<td><strong><?php esc_html_e('Payment term', 'mondu'); ?>:</strong></td>
+					<td><?php /* translators: %s: Days */ printf(esc_html__('%s Days', 'mondu'), esc_html($net_terms)); ?></td>
+				<?php } ?>
+			</table>
+		</section>
+		<?php
+	}
 }
 
 if ( 'mondu_direct_debit' === $payment_method ) {
 	?>
 	<section>
 		<p>
-		<?php 
-		/* translators: %s: Company */printf(wp_kses(__('This invoice was created in accordance with the general terms and conditions of <strong>%s</strong> and <strong>Mondu GmbH</strong> for the purchase on account payment model.<br/><br/>Since you have chosen the payment method to purchase on account with payment via SEPA direct debit through Mondu, the invoice amount will be debited from your bank account on the due date.<br/><br/>Before the amount is debited from your account, you will receive notice of the direct debit. Kindly make sure you have sufficient funds in your account.', 'mondu'), [
-			'strong' => [],
-			'br'     => [],
-		]), esc_html($wcpdfShopName)); 
-		?>
+			<?php
+			/* translators: %s: Company */ printf(wp_kses(__('This invoice was created in accordance with the general terms and conditions of <strong>%s</strong> and <strong>Mondu GmbH</strong> for the purchase on account payment model.<br/><br/>Since you have chosen the payment method to purchase on account with payment via SEPA direct debit through Mondu, the invoice amount will be debited from your bank account on the due date.<br/><br/>Before the amount is debited from your account, you will receive notice of the direct debit. Kindly make sure you have sufficient funds in your account.', 'mondu'), [
+				'strong' => [],
+				'br'     => [],
+			]), esc_html($wcpdf_shop_name));
+			?>
 		</p>
 	</section>
 	<?php
@@ -46,12 +81,12 @@ if ( 'mondu_installment' === $payment_method ) {
 	?>
 	<section>
 		<p>
-		<?php 
-		/* translators: %s: Company */printf(wp_kses(__('This invoice was created in accordance with the general terms and conditions of <strong>%s</strong> and <strong>Mondu GmbH</strong> for the instalment payment model.<br/><br/>Since you have chosen the instalment payment method via SEPA direct debit through Mondu, the individual installments will be debited from your bank account on the due date.<br/><br/>Before the amounts are debited from your account, you will receive notice regarding the direct debit. Kindly make sure you have sufficient funds in your account. In the event of changes to your order, the instalment plan will be adjusted to reflect the new order total.', 'mondu'), [
-			'strong' => [],
-			'br'     => [],
-		]), esc_html($wcpdfShopName)); 
-		?>
+			<?php
+			/* translators: %s: Company */ printf(wp_kses(__('This invoice was created in accordance with the general terms and conditions of <strong>%s</strong> and <strong>Mondu GmbH</strong> for the instalment payment model.<br/><br/>Since you have chosen the instalment payment method via SEPA direct debit through Mondu, the individual installments will be debited from your bank account on the due date.<br/><br/>Before the amounts are debited from your account, you will receive notice regarding the direct debit. Kindly make sure you have sufficient funds in your account. In the event of changes to your order, the instalment plan will be adjusted to reflect the new order total.', 'mondu'), [
+				'strong' => [],
+				'br'     => [],
+			]), esc_html($wcpdf_shop_name));
+			?>
 		</p>
 	</section>
 	<?php

@@ -9,8 +9,8 @@ use Mondu\Exceptions\MonduException;
 use Mondu\Exceptions\CredentialsNotSetException;
 use Mondu\Mondu\MonduRequestWrapper;
 
-if ( !defined('ABSPATH') ) {
-	die('Direct access not allowed');
+if ( !defined( 'ABSPATH' ) ) {
+	die( 'Direct access not allowed' );
 }
 
 class Settings {
@@ -44,10 +44,10 @@ class Settings {
 	}
 
 	public function plugin_menu() {
-		$mondu_icon = 'data:image/svg+xml;base64,' . base64_encode(file_get_contents(MONDU_LOGO_URL));
+		$mondu_icon = 'data:image/svg+xml;base64,' . base64_encode( file_get_contents( 'https://checkout.mondu.ai/logo.svg' ) );
 
 		add_menu_page(
-			__('Mondu Settings', 'mondu'),
+			__( 'Mondu Settings', 'mondu' ),
 			'Mondu',
 			'manage_options',
 			'mondu-settings-account',

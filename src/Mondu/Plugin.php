@@ -50,11 +50,11 @@ class Plugin {
 			include_once ABSPATH . '/wp-admin/includes/plugin.php';
 
 			if ( is_multisite() ) {
-				add_action('network_admin_notices', array( $this, 'woocommerce_notice' ));
+				add_action( 'network_admin_notices', [ $this, 'woocommerce_notice' ] );
 			} else {
-				add_action('admin_notices', array( $this, 'woocommerce_notice' ));
+				add_action( 'admin_notices', [ $this, 'woocommerce_notice' ] );
 			}
-			deactivate_plugins(MONDU_PLUGIN_BASENAME);
+			deactivate_plugins( MONDU_PLUGIN_BASENAME );
 			return;
 		}
 
@@ -90,15 +90,6 @@ class Plugin {
 		 * Adds meta information about the Mondu Plugin
 		 */
 		add_filter('plugin_row_meta', [ $this, 'add_row_meta' ], 10, 2);
-
-		/*
-		 * Adds the mondu javascript to the list of WordPress javascripts
-		 */
-		add_action('wp_enqueue_scripts', [ $this, 'add_mondu_scripts' ]);
-		/*
-		 * Adds the mondu HTML
-		 */
-		add_action('wp_head', [ $this, 'add_mondu_html' ]);
 
 		/*
 		 * These deal with order and status changes
@@ -174,19 +165,6 @@ class Plugin {
 		echo '<p>' . esc_html__('Since this order will be paid via Mondu you will not be able to change the addresses.', 'mondu') . '</p>';
 	}
 
-	public function add_mondu_scripts() {
-		if ( is_checkout() ) {
-			$url = Helper::is_production() ? MONDU_WIDGET_PRODUCTION_URL : MONDU_WIDGET_SANDBOX_URL;
-			wp_enqueue_script( 'mondu', $url . '/widget.js', null, '1.0.0', true );
-		}
-	}
-
-	public function add_mondu_html() {
-		if ( is_checkout() ) {
-			require_once MONDU_VIEW_PATH . '/checkout/mondu-checkout.html';
-		}
-	}
-
 	public function remove_mondu_outside_germany( $available_gateways ) {
 		if ( is_admin() || !is_checkout() ) {
 			return $available_gateways;
@@ -216,9 +194,9 @@ class Plugin {
 	 * @return array
 	 */
 	public static function add_action_links( $links ) {
-		$action_links = array(
+		$action_links = [
 			'settings' => '<a href="' . admin_url('admin.php?page=mondu-settings-account') . '" aria-label="' . esc_attr__('View Mondu settings', 'mondu') . '">' . esc_html__('Settings', 'woocommerce') . '</a>',
-		);
+		];
 
 		return array_merge($action_links, $links);
 	}

@@ -4,8 +4,8 @@ namespace Mondu\Admin\Option;
 
 use Mondu\Plugin;
 
-if ( !defined('ABSPATH') ) {
-	die('Direct access not allowed');
+if ( !defined( 'ABSPATH' ) ) {
+	die( 'Direct access not allowed' );
 }
 
 class Account extends Helper {

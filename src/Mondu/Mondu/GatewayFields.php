@@ -12,8 +12,7 @@ class GatewayFields {
 			'enabled' => [
 				'title'   => __('Enable/Disable', 'woocommerce'),
 				'type'    => 'checkbox',
-				/* translators: %s: Payment Method */
-				'label'   => sprintf(__('Enable %s payment method', 'mondu'), $payment_method),
+				'label'   => /* translators: %s: Payment Method */ sprintf(__('Enable %s payment method', 'mondu'), $payment_method),
 				'default' => 'no',
 			],
 		];

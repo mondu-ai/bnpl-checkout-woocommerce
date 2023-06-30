@@ -25,14 +25,14 @@ class MonduRequestWrapper {
 	 * @throws ResponseException
 	 */
 	public function create_order( WC_Order $order, $success_url, $laguage = null ) {
-		if ( !Plugin::order_has_mondu($order) ) {
+		if ( !Plugin::order_has_mondu( $order ) ) {
 			return;
 		}
 
 		$order_data  = OrderData::create_order( $order, $success_url, $laguage );
-		$response    = $this->wrap_with_mondu_log_event('create_order', [ $order_data ]);
+		$response    = $this->wrap_with_mondu_log_event( 'create_order', [ $order_data ] );
 		$mondu_order = $response['order'];
-	update_post_meta( $order->get_id(), Plugin::ORDER_ID_KEY, $mondu_order['uuid'] );
+		update_post_meta( $order->get_id(), Plugin::ORDER_ID_KEY, $mondu_order['uuid'] );
 		return $mondu_order;
 	}
 
@@ -50,7 +50,7 @@ class MonduRequestWrapper {
 		}
 
 		$mondu_order_id = get_post_meta($order_id, Plugin::ORDER_ID_KEY, true);
-		$response       = $this->wrap_with_mondu_log_event('get_order', array( $mondu_order_id ));
+		$response       = $this->wrap_with_mondu_log_event( 'get_order', [ $mondu_order_id ] );
 		return isset($response['order']) ? $response['order'] : null;
 	}
 
@@ -69,7 +69,7 @@ class MonduRequestWrapper {
 		}
 
 		$mondu_order_id = get_post_meta($order_id, Plugin::ORDER_ID_KEY, true);
-		$response       = $this->wrap_with_mondu_log_event('adjust_order', array( $mondu_order_id, $data_to_update ));
+		$response       = $this->wrap_with_mondu_log_event( 'adjust_order', [ $mondu_order_id, $data_to_update ] );
 		return $response['order'];
 	}
 
@@ -87,7 +87,7 @@ class MonduRequestWrapper {
 		}
 
 		$mondu_order_id = get_post_meta($order_id, Plugin::ORDER_ID_KEY, true);
-		$response       = $this->wrap_with_mondu_log_event('cancel_order', array( $mondu_order_id ));
+		$response       = $this->wrap_with_mondu_log_event( 'cancel_order', [ $mondu_order_id ] );
 		return $response['order'];
 	}
 
@@ -106,7 +106,7 @@ class MonduRequestWrapper {
 
 		$mondu_order_id = get_post_meta($order_id, Plugin::ORDER_ID_KEY, true);
 		$invoice_data   = OrderData::invoice_data_from_wc_order($order);
-		$response       = $this->wrap_with_mondu_log_event('ship_order', array( $mondu_order_id, $invoice_data ));
+		$response       = $this->wrap_with_mondu_log_event( 'ship_order', [ $mondu_order_id, $invoice_data ] );
 		$invoice        = $response['invoice'];
 		update_post_meta($order_id, Plugin::INVOICE_ID_KEY, $invoice['uuid']);
 		return $invoice;
@@ -126,7 +126,7 @@ class MonduRequestWrapper {
 		}
 
 		$mondu_order_id = get_post_meta($order_id, Plugin::ORDER_ID_KEY, true);
-		$response       = $this->wrap_with_mondu_log_event('get_invoices', array( $mondu_order_id ));
+		$response       = $this->wrap_with_mondu_log_event( 'get_invoices', [ $mondu_order_id ] );
 		return $response['invoices'];
 	}
 
@@ -145,7 +145,7 @@ class MonduRequestWrapper {
 
 		$mondu_order_id   = get_post_meta($order_id, Plugin::ORDER_ID_KEY, true);
 		$mondu_invoice_id = get_post_meta($order_id, Plugin::INVOICE_ID_KEY, true);
-		$response         = $this->wrap_with_mondu_log_event('get_invoice', array( $mondu_order_id, $mondu_invoice_id ));
+		$response         = $this->wrap_with_mondu_log_event( 'get_invoice', [ $mondu_order_id, $mondu_invoice_id ] );
 		return $response['invoice'];
 	}
 
@@ -159,7 +159,7 @@ class MonduRequestWrapper {
 		$merchant_payment_methods = get_transient('mondu_merchant_payment_methods');
 		if ( false === $merchant_payment_methods ) {
 			try {
-				$response = $this->wrap_with_mondu_log_event('get_payment_methods');
+				$response = $this->wrap_with_mondu_log_event( 'get_payment_methods' );
 
 				if ( !$response ) {
 					return [];
@@ -193,7 +193,7 @@ class MonduRequestWrapper {
 			return;
 		}
 
-		$response = $this->wrap_with_mondu_log_event('confirm_order', array( $mondu_order_id, [] ));
+		$response = $this->wrap_with_mondu_log_event( 'confirm_order', [ $mondu_order_id, [] ] );
 		return $response['order'];
 	}
 
@@ -209,7 +209,7 @@ class MonduRequestWrapper {
 			return;
 		}
 
-		if ( array_intersect(array( 'total', 'discount_total', 'discount_tax', 'cart_tax', 'total_tax', 'shipping_tax', 'shipping_total' ), array_keys($order->get_changes())) ) {
+		if ( array_intersect([ 'total', 'discount_total', 'discount_tax', 'cart_tax', 'total_tax', 'shipping_tax', 'shipping_total' ], array_keys($order->get_changes())) ) {
 			$data_to_update = OrderData::order_data_from_wc_order_with_amount($order);
 			$this->adjust_order($order->get_id(), $data_to_update);
 		}
@@ -267,7 +267,7 @@ class MonduRequestWrapper {
 		$refund      = new WC_Order_Refund($refund_id);
 		$credit_note = OrderData::create_credit_note($refund);
 
-		$this->wrap_with_mondu_log_event('create_credit_note', array( $mondu_invoice_id, $credit_note ));
+		$this->wrap_with_mondu_log_event( 'create_credit_note', [ $mondu_invoice_id, $credit_note ] );
 	}
 
 
@@ -280,7 +280,7 @@ class MonduRequestWrapper {
 	 * @throws ResponseException
 	 */
 	public function cancel_invoice( $mondu_order_id, $mondu_invoice_id ) {
-		$this->wrap_with_mondu_log_event('cancel_invoice', array( $mondu_order_id, $mondu_invoice_id ));
+		$this->wrap_with_mondu_log_event( 'cancel_invoice', [ $mondu_order_id, $mondu_invoice_id ] );
 	}
 
 	/**
@@ -291,7 +291,7 @@ class MonduRequestWrapper {
 	 * @throws ResponseException
 	 */
 	public function register_webhook( $topic ) {
-		$response = $this->wrap_with_mondu_log_event('register_webhook', array( $topic ));
+		$response = $this->wrap_with_mondu_log_event( 'register_webhook', [ $topic ] );
 
 		return isset($response['webhooks']) ? $response['webhooks'] : null;
 	}
@@ -303,7 +303,7 @@ class MonduRequestWrapper {
 	 * @throws ResponseException
 	 */
 	public function get_webhooks() {
-		$response = $this->wrap_with_mondu_log_event('get_webhooks');
+		$response = $this->wrap_with_mondu_log_event( 'get_webhooks' );
 
 		return $response['webhooks'];
 	}
@@ -315,7 +315,7 @@ class MonduRequestWrapper {
 	 * @throws ResponseException
 	 */
 	public function webhook_secret() {
-		$response = $this->wrap_with_mondu_log_event('webhook_secret');
+		$response = $this->wrap_with_mondu_log_event( 'webhook_secret' );
 
 		return $response['webhook_secret'];
 	}
@@ -346,12 +346,12 @@ class MonduRequestWrapper {
 
 	private function wrap_with_mondu_log_event( $action, array $params = [] ) {
 		try {
-			return call_user_func_array(array( $this->api, $action ), $params);
+			return call_user_func_array( [ $this->api, $action ], $params);
 		} catch ( ResponseException $e ) {
-			$this->log_plugin_event($e, $action, $e->getBody());
+			$this->log_plugin_event( $e, $action, $e->getBody() );
 			throw $e;
 		} catch ( \Exception $e ) {
-			$this->log_plugin_event($e, $action);
+			$this->log_plugin_event( $e, $action );
 			throw $e;
 		}
 	}

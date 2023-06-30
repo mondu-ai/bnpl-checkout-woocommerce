@@ -67,12 +67,6 @@ class MonduGateway extends WC_Payment_Gateway {
 	 */
 	public function payment_fields() {
 		parent::payment_fields();
-		$order_id = 0;
-
-		if ( is_wc_endpoint_url('order-pay') ) {
-			$order_id = absint(get_query_var('order-pay'));
-		}
-
 		include MONDU_VIEW_PATH . '/checkout/payment-form.php';
 	}
 
@@ -106,7 +100,7 @@ class MonduGateway extends WC_Payment_Gateway {
 	 * @return string
 	 */
 	public function get_icon() {
-		$icon_html = '<img src="' . MONDU_LOGO_URL . '" alt="' . $this->method_title . '" width="100" />';
+		$icon_html = '<img src="https://checkout.mondu.ai/logo.svg" alt="' . $this->method_title . '" width="100" />';
 
 		/**
 		 * Mondu payment icon
@@ -133,10 +127,10 @@ class MonduGateway extends WC_Payment_Gateway {
 			return;
 		}
 
-		return array(
+		return [
 			'result'   => 'success',
 			'redirect' => $mondu_order['hosted_checkout_url'],
-		);
+		];
 	}
 
 	/**

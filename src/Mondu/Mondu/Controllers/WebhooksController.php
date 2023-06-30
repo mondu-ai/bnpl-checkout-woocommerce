@@ -21,13 +21,13 @@ class WebhooksController extends WP_REST_Controller {
 	}
 
 	public function register_routes() {
-		register_rest_route($this->namespace, '/index', array(
-			array(
+		register_rest_route($this->namespace, '/index', [
+			[
 				'methods'             => 'POST',
-				'callback'            => array( $this, 'index' ),
+				'callback'            => [ $this, 'index' ],
 				'permission_callback' => '__return_true',
-			),
-		));
+			],
+		]);
 	}
 
 	public function index( WP_REST_Request $request ) {
@@ -225,7 +225,7 @@ class WebhooksController extends WP_REST_Controller {
 		return $this->return_success();
 	}
 
-	private function handle_not_found_topic() {
+	private function handle_not_found_topic( $params ) {
 		Helper::log([
 			'not_found_topic' => $params,
 		]);

@@ -9,8 +9,8 @@ use Mondu\Mondu\Presenters\PaymentInfo;
 use Mondu\Plugin;
 use WC_Order;
 
-if ( !defined('ABSPATH') ) {
-	die('Direct access not allowed');
+if ( !defined( 'ABSPATH' ) ) {
+	die( 'Direct access not allowed' );
 }
 
 class Order {
