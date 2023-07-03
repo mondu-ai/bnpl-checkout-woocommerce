@@ -3,7 +3,7 @@
  * Plugin Name: WooCommerce-Mondu
  * Plugin URI: https://github.com/mondu-ai/bnpl-checkout-woocommerce/releases
  * Description: Mondu provides B2B E-commerce and B2B marketplaces with an online payment solution to buy now and pay later.
- * Version: 1.3.3
+ * Version: 2.0.0
  * Author: Mondu
  * Author URI: https://mondu.ai
  *
@@ -25,7 +25,7 @@ if ( !defined( 'ABSPATH' ) ) {
 	die( 'Direct access not allowed' );
 }
 
-define( 'MONDU_PLUGIN_VERSION', '1.3.4' );
+define( 'MONDU_PLUGIN_VERSION', '2.0.0' );
 define( 'MONDU_PLUGIN_FILE', __FILE__ );
 define( 'MONDU_PLUGIN_PATH', __DIR__ );
 define( 'MONDU_PLUGIN_BASENAME', plugin_basename(MONDU_PLUGIN_FILE) );
