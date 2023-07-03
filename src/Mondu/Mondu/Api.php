@@ -3,7 +3,6 @@
 namespace Mondu\Mondu;
 
 use Mondu\Plugin;
-use Mondu\Mondu\Models\Token;
 use Mondu\Mondu\Support\Helper;
 use Mondu\Exceptions\MonduException;
 use Mondu\Exceptions\ResponseException;
