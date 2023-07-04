@@ -1,0 +1,133 @@
+== Changelog ==
+
+= 2.0.0 =
+
+* Hosted checkout and lot of fixes
+* Rename plugin and separate changelog from readme
+
+= 1.3.4 =
+
+* Changes for B2B market plugin compatibility
+
+= 1.3.3 =
+
+* Changes on plugin to update to the WordPress marketplace
+* Add code sniffer and fix the issues
+
+= 1.3.2 =
+
+* Add early return on credit note creation
+* Minor fixes on the credit note creation/listing
+
+= 1.3.1 =
+
+* Add payment method name to the enabled label
+* Remove instruction field to make it automatically localised
+* Add tips to admin fields
+* Include more supported countries in the list
+
+= 1.3.0 =
+
+* Add fallback if the wcpdf_get_document number is not found
+* Fix webhooks signature
+* Allow send products with value zero
+* Remove title and description from payment method gateway's configuration to dynamically change the language
+* Include instruction in the created order email
+* Add wordpress language to mondu filter
+* Minor fixes
+
+= 1.2.1 =
+
+* Add cache if payment method endpoint returns 403
+
+= 1.2.0 =
+
+* WCPDF: Add filter for template extension
+* Mondu only block order if we have an actually payment
+* Add French translations
+* Add Austria i18n
+* Only show Mondu if it is validated
+
+= 1.1.4 =
+
+* Added WCPDF invoice extensions for our payment methods
+
+= 1.1.3 =
+
+* Handle not found WCPDF class
+* Use hosted remote logo instead of a local one
+
+= 1.1.2 =
+
+* WCPDF Invoice: Language change and formatting
+* Non mondu orders crash with an error message
+* Support Order Pay page
+* Use cart hash as external_reference_id
+* Minor fixes
+
+= 1.1.1 =
+
+* Hotfix in checkout validation
+* Allow user to change title, description and instructions in payment gateways
+* Include payment method title and description in english by default
+* Enhance wcpdf data
+* Minor fixes
+
+= 1.1.0 =
+
+* Send language param when creating Mondu order
+* Remove checkout error validation message
+* Minor fixes
+
+= 1.0.5 =
+
+* Add a configuration field to disable sending line items to Mondu
+* Verify if WooCommerce is active before activate Mondu
+* Add uninstaller to remove Mondu data
+* Add activate and deactivate functions to plugin
+* Add transient on merchant payment methods
+* Minor fixes
+
+= 1.0.4 =
+
+* Send errors to mondu API
+* Use order number as external reference id
+* Add gateway id in the icon's filter
+
+= 1.0.3 =
+
+* Add gross amount cents to Order's API
+* Add DE and NL translations
+
+= 1.0.2 =
+
+* Bugfixes and improvements
+* Validates company name and country on Mondu payments
+
+= 1.0.1 =
+
+* Check for empty values before sending to Mondu’s API
+
+= 1.0.0 =
+
+* First plugin version
+
+= 0.0.5 =
+
+* Bugfixes and improvements
+
+= 0.0.4 =
+
+* Include direct debit payment
+
+= 0.0.3 =
+
+* Bugfixes
+
+= 0.0.2 =
+
+* Included webhooks, order adjusting and more features
+
+= 0.0.1 =
+
+* First version of plugin

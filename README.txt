@@ -60,6 +60,7 @@ Check out [Frequently Asked Questions](https://www.mondu.ai/faq) in the Mondu we
 = 2.0.0 =
 
 * Hosted checkout and lot of fixes
+* Rename plugin and separate changelog from readme
 
 = 1.3.4 =
 
@@ -187,3 +188,9 @@ Check out [Frequently Asked Questions](https://www.mondu.ai/faq) in the Mondu we
 = 0.0.1 =
 
 * First version of plugin
+
+== Upgrade Notice ==
+
+= 2.0.0 =
+
+If you were using the old Mondu plugin for WooCommerce, please remove it first before activating this new one.
