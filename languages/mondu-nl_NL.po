@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: WooCommerce-Mondu 1.3.3\n"
-"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/Woocommerce-Mondu\n"
+"Project-Id-Version: Mondu Buy Now Pay Later 1.3.3\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/Mondu Buy Now Pay Later\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -12,8 +12,8 @@ msgstr ""
 "Language: nl_NL\n"
 
 #. Plugin Name of the plugin
-msgid "WooCommerce-Mondu"
-msgstr "WooCommerce-Mondu"
+msgid "Mondu Buy Now Pay Later"
+msgstr "Mondu Buy Now Pay Later"
 
 #. Plugin URI of the plugin
 msgid "https://github.com/mondu-ai/bnpl-checkout-woocommerce/releases"
@@ -98,7 +98,7 @@ msgstr "Mondu-instellingen"
 msgid "Missing Credentials"
 msgstr "Ontbrekende Credentials"
 
-#: src/Mondu/Mondu/Api.php:305
+#: src/Mondu/Mondu/Api.php:304
 msgid "Unexpected API response format."
 msgstr "Onverwachte API respons format."
 

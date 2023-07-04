@@ -5,7 +5,7 @@ services:
     build: .
     volumes:
       - wordpress_data:/var/www/html
-      - .:/var/www/html/wp-content/plugins/Woocommerce-Mondu
+      - .:/var/www/html/wp-content/plugins/mondu-buy-now-pay-later
     links:
       - mariadb
       - mailcatcher

@@ -1,4 +1,4 @@
-# Mondu for Woocommerce
+# Mondu Buy Now Pay Later
 
 Mondu provides B2B E-commerce and B2B marketplaces with an online payment solution to enable their customers to pay with their preferred payment methods and flexible payment terms.
 
@@ -11,7 +11,7 @@ docker-compose up -d --build
 ```
 
 - Open Wordpress admin url `http://localhost:8080/wp-admin`
-- Activate Woocommerce and Mondu plugins `http://localhost:8080/wp-admin/plugins.php`
+- Activate WooCommerce and Mondu plugins `http://localhost:8080/wp-admin/plugins.php`
 
 ## Update translations
 
@@ -31,5 +31,6 @@ wp i18n --allow-root make-mo languages
 ```
 
 ## Before pushing your changes
+
 - run `composer install` ( one time to install dev dependencies )
 - run `composer lint` and fix all the linting errors if present

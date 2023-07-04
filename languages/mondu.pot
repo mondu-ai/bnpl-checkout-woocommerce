@@ -2,20 +2,20 @@
 # This file is distributed under the GPLv3.
 msgid ""
 msgstr ""
-"Project-Id-Version: WooCommerce-Mondu 2.0.0\n"
-"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/Woocommerce-Mondu\n"
+"Project-Id-Version: Mondu Buy Now Pay Later 2.0.0\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/mondu-buy-now-pay-later\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2023-07-03T12:41:24+00:00\n"
+"POT-Creation-Date: 2023-07-04T11:11:31+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.8.1\n"
 "X-Domain: mondu\n"
 
 #. Plugin Name of the plugin
-msgid "WooCommerce-Mondu"
+msgid "Mondu Buy Now Pay Later"
 msgstr ""
 
 #. Plugin URI of the plugin
@@ -101,7 +101,7 @@ msgstr ""
 msgid "Missing Credentials"
 msgstr ""
 
-#: src/Mondu/Mondu/Api.php:305
+#: src/Mondu/Mondu/Api.php:304
 msgid "Unexpected API response format."
 msgstr ""
 

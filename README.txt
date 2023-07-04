@@ -1,4 +1,4 @@
-=== WooCommerce Mondu ===
+=== Mondu Buy Now Pay Later ===
 Contributors: mondu-ai, arthurmmoreira, tikohov20
 Tags: mondu, woocommerce, e-commerce, ecommerce, store, sales, sell, woo, woo commerce, shop, cart, shopping cart, sell online, checkout, payment, payments, bnpl, b2b
 Requires at least: 5.9.0
@@ -25,7 +25,7 @@ Mondu provides B2B E-commerce and B2B marketplaces with an online payment soluti
 == Installation ==
 
 1. In your admin panel, go to Plugins -> Add New and click on the 'Upload Plugin' button.
-2. Select the Woocommerce-Mondu-<VERSION>.zip file downloaded from our Github page: https://github.com/mondu-ai/bnpl-checkout-woocommerce/releases and click on the 'Install Now' button.
+2. Select the mondu-buy-now-pay-later-<VERSION>.zip file downloaded from our Github page: https://github.com/mondu-ai/bnpl-checkout-woocommerce/releases and click on the 'Install Now' button.
 3. Click on the 'Activate Plugin' button to use the plugin right away.
 4. Navigate to the new menu Mondu in your admin panel.
 5. Insert the API Token provided by Mondu and the other settings.

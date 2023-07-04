@@ -3,9 +3,9 @@ name: Release auto update
 on:
   pull_request:
     types:
-    - closed
-    branches: 
-    - main
+      - closed
+    branches:
+      - main
 
 jobs:
   release:
@@ -16,4 +16,4 @@ jobs:
     with:
       asset_creation_script: |
         ./releaser.sh -v "${NEW_TAG}"
-        echo "FILES=Woocommerce-Mondu-${NEW_TAG}.zip" >> $GITHUB_ENV
+        echo "FILES=mondu-buy-now-pay-later-${NEW_TAG}.zip" >> $GITHUB_ENV
