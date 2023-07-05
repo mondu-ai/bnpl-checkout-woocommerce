@@ -77,6 +77,21 @@ class Helper {
 	}
 
 	/**
+	 * Get language
+	 *
+	 * @return string
+	 */
+	public static function get_language() {
+		/**
+		 * Locale for the order creation
+		 *
+		 * @since 2.0.0
+		 */
+		$language = apply_filters('mondu_order_locale', get_locale());
+		return substr($language, 0, 2);
+	}
+
+	/**
 	 * Is Production
 	 *
 	 * @return bool

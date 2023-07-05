@@ -193,4 +193,4 @@ Check out [Frequently Asked Questions](https://www.mondu.ai/faq) in the Mondu we
 
 = 2.0.0 =
 
-If you were using the old Mondu plugin for WooCommerce, please remove it first before activating this new one.
+If you were using the old Mondu plugin for WooCommerce, please remove it first before activating this new one. You will also need to reenter the Mondu API key and reenable the Payment Method on WooCommerce settings.

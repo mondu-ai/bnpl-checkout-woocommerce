@@ -13,11 +13,10 @@ class OrderData {
 	 *
 	 * @param WC_Order $order
 	 * @param $success_url
-	 * @param $language
 	 * @return array
 	 */
-	public static function create_order( WC_Order $order, $success_url, $language = null ) {
-		$data = self::order_data_from_wc_order( $order, $success_url, $language );
+	public static function create_order( WC_Order $order, $success_url ) {
+		$data = self::order_data_from_wc_order( $order );
 
 		if ( is_wc_endpoint_url('order-pay') ) {
 			$non_successful_url = $order->get_checkout_payment_url();
@@ -29,10 +28,7 @@ class OrderData {
 		$data['cancel_url']   = $non_successful_url;
 		$data['declined_url'] = $non_successful_url;
 		$data['state_flow']   = 'authorization_flow';
-
-		if ( $language ) {
-			$data['language'] = substr($language, 0, 2);
-		}
+		$data['language']     = Helper::get_language();
 
 		return $data;
 	}

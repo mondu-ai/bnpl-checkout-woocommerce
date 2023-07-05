@@ -20,16 +20,15 @@ class MonduRequestWrapper {
 	/**
 	 * Create Order
 	 *
-	 * @param $lang
 	 * @return mixed|void
 	 * @throws ResponseException
 	 */
-	public function create_order( WC_Order $order, $success_url, $laguage = null ) {
+	public function create_order( WC_Order $order, $success_url ) {
 		if ( !Plugin::order_has_mondu( $order ) ) {
 			return;
 		}
 
-		$order_data  = OrderData::create_order( $order, $success_url, $laguage );
+		$order_data  = OrderData::create_order( $order, $success_url );
 		$response    = $this->wrap_with_mondu_log_event( 'create_order', [ $order_data ] );
 		$mondu_order = $response['order'];
 		update_post_meta( $order->get_id(), Plugin::ORDER_ID_KEY, $mondu_order['uuid'] );
