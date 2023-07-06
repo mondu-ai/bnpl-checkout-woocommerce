@@ -129,13 +129,6 @@ class OrderData {
 		$billing_zip_code      = $order->get_billing_postcode();
 		$billing_country_code  = $order->get_billing_country();
 
-		$shipping_address_line1 = $order->get_shipping_address_1();
-		$shipping_address_line2 = $order->get_shipping_address_2();
-		$shipping_city          = $order->get_shipping_city();
-		$shipping_state         = $order->get_shipping_state();
-		$shipping_zip_code      = $order->get_shipping_postcode();
-		$shipping_country_code  = $order->get_shipping_country();
-
 		$order_data = [
 			'payment_method'        => array_flip( Plugin::PAYMENT_METHODS )[ $order->get_payment_method() ],
 			'currency'              => get_woocommerce_currency(),
@@ -160,14 +153,7 @@ class OrderData {
 				'zip_code'      => isset($billing_zip_code) && Helper::not_null_or_empty($billing_zip_code) ? $billing_zip_code : null,
 				'country_code'  => isset($billing_country_code) && Helper::not_null_or_empty($billing_country_code) ? $billing_country_code : null,
 			],
-			'shipping_address'      => [
-				'address_line1' => isset($shipping_address_line1) && Helper::not_null_or_empty($shipping_address_line1) ? $shipping_address_line1 : null,
-				'address_line2' => isset($shipping_address_line2) && Helper::not_null_or_empty($shipping_address_line2) ? $shipping_address_line2 : null,
-				'city'          => isset($shipping_city) && Helper::not_null_or_empty($shipping_city) ? $shipping_city : null,
-				'state'         => isset($shipping_state) && Helper::not_null_or_empty($shipping_state) ? $shipping_state : null,
-				'zip_code'      => isset($shipping_zip_code) && Helper::not_null_or_empty($shipping_zip_code) ? $shipping_zip_code : null,
-				'country_code'  => isset($shipping_country_code) && Helper::not_null_or_empty($shipping_country_code) ? $shipping_country_code : null,
-			],
+			'shipping_address'      => self::get_shipping_address_from_order( $order ),
 			'lines'                 => self::get_lines_from_order( $order ),
 		];
 
@@ -185,6 +171,52 @@ class OrderData {
 		$data['amount'] = self::get_amount_from_wc_order( $order );
 
 		return $data;
+	}
+
+	/**
+	 * Get shipping address from order
+	 *
+	 * @param WC_Order $order
+	 * @return array
+	 */
+	private static function get_shipping_address_from_order( WC_Order $order ) {
+		$shipping_data = [];
+
+		$shipping_address_line1 = $order->get_shipping_address_1();
+		$shipping_address_line2 = $order->get_shipping_address_2();
+		$shipping_city          = $order->get_shipping_city();
+		$shipping_state         = $order->get_shipping_state();
+		$shipping_zip_code      = $order->get_shipping_postcode();
+		$shipping_country_code  = $order->get_shipping_country();
+
+		$billing_address_line1 = $order->get_billing_address_1();
+		$billing_address_line2 = $order->get_billing_address_2();
+		$billing_city          = $order->get_billing_city();
+		$billing_state         = $order->get_billing_state();
+		$billing_zip_code      = $order->get_billing_postcode();
+		$billing_country_code  = $order->get_billing_country();
+
+		if ( $order->needs_shipping_address() ) {
+			$shipping_data = [
+				'address_line1' => isset($shipping_address_line1) && Helper::not_null_or_empty($shipping_address_line1) ? $shipping_address_line1 : null,
+				'address_line2' => isset($shipping_address_line2) && Helper::not_null_or_empty($shipping_address_line2) ? $shipping_address_line2 : null,
+				'city'          => isset($shipping_city) && Helper::not_null_or_empty($shipping_city) ? $shipping_city : null,
+				'state'         => isset($shipping_state) && Helper::not_null_or_empty($shipping_state) ? $shipping_state : null,
+				'zip_code'      => isset($shipping_zip_code) && Helper::not_null_or_empty($shipping_zip_code) ? $shipping_zip_code : null,
+				'country_code'  => isset($shipping_country_code) && Helper::not_null_or_empty($shipping_country_code) ? $shipping_country_code : null,
+			];
+		} else {
+			$shipping_data = [
+				'address_line1' => isset($billing_address_line1) && Helper::not_null_or_empty($billing_address_line1) ? $billing_address_line1 : null,
+				'address_line2' => isset($billing_address_line2) && Helper::not_null_or_empty($billing_address_line2) ? $billing_address_line2 : null,
+				'city'          => isset($billing_city) && Helper::not_null_or_empty($billing_city) ? $billing_city : null,
+				'state'         => isset($billing_state) && Helper::not_null_or_empty($billing_state) ? $billing_state : null,
+				'zip_code'      => isset($billing_zip_code) && Helper::not_null_or_empty($billing_zip_code) ? $billing_zip_code : null,
+				'country_code'  => isset($billing_country_code) && Helper::not_null_or_empty($billing_country_code) ? $billing_country_code : null,
+			];
+		}
+
+		return $shipping_data;
 	}
 
 	/**
