@@ -17,11 +17,10 @@ use WP_Error;
 use WC_Order;
 
 class Plugin {
-	const ORDER_ID_KEY        = '_mondu_order_id';
-	const INVOICE_ID_KEY      = '_mondu_invoice_id';
-	const FAILURE_REASON_KEY  = '_mondu_failure_reason';
-	const OPTION_NAME         = 'mondu_account';
-	const PAYMENT_METHODS     = [
+	const ORDER_ID_KEY    = '_mondu_order_id';
+	const INVOICE_ID_KEY  = '_mondu_invoice_id';
+	const OPTION_NAME     = 'mondu_account';
+	const PAYMENT_METHODS = [
 		'invoice'      => 'mondu_invoice',
 		'direct_debit' => 'mondu_direct_debit',
 		'installment'  => 'mondu_installment',

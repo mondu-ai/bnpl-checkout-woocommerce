@@ -32,13 +32,14 @@ class OrdersController extends WP_REST_Controller {
 	}
 
 	public function confirm( WP_REST_Request $request ) {
-		$params               = $request->get_params();
-		$woocommerce_order_id = $params['external_reference_id'];
-		$mondu_order_id       = $params['order_uuid'];
-		$return_url           = urldecode( $params['return_url'] );
+		$params         = $request->get_params();
+		$order_number   = $params['external_reference_id'];
+		$mondu_order_id = $params['order_uuid'];
+		$return_url     = urldecode( $params['return_url'] );
+		$order          = Helper::get_order_from_order_number( $order_number );
 
 		try {
-			$this->mondu_request_wrapper->confirm_order($woocommerce_order_id, $mondu_order_id);
+			$this->mondu_request_wrapper->confirm_order($order->get_id(), $mondu_order_id);
 		} catch ( \Exception $e ) {
 			Helper::log([
 				'error_confirming_order' => $params,

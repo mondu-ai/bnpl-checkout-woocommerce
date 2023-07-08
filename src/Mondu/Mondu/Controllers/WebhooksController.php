@@ -91,14 +91,14 @@ class WebhooksController extends WP_REST_Controller {
 	}
 
 	private function handle_pending( $params ) {
-		$woocommerce_order_id = $params['external_reference_id'];
-		$mondu_order_id       = $params['order_uuid'];
+		$woocommerce_order_number = $params['external_reference_id'];
+		$mondu_order_id           = $params['order_uuid'];
 
-		if ( !$woocommerce_order_id || !$mondu_order_id ) {
+		if ( !$woocommerce_order_number || !$mondu_order_id ) {
 			throw new MonduException(__('Required params missing.', 'mondu'));
 		}
 
-		$order = new WC_Order($woocommerce_order_id);
+		$order = Helper::get_order_from_order_number( $woocommerce_order_number );
 
 		if ( !$order ) {
 			return $this->return_not_found();
@@ -110,14 +110,14 @@ class WebhooksController extends WP_REST_Controller {
 	}
 
 	private function handle_authorized( $params ) {
-		$woocommerce_order_id = $params['external_reference_id'];
-		$mondu_order_id       = $params['order_uuid'];
+		$woocommerce_order_number = $params['external_reference_id'];
+		$mondu_order_id           = $params['order_uuid'];
 
-		if ( !$woocommerce_order_id || !$mondu_order_id ) {
+		if ( !$woocommerce_order_number || !$mondu_order_id ) {
 			throw new MonduException(__('Required params missing.', 'mondu'));
 		}
 
-		$order = new WC_Order($woocommerce_order_id);
+		$order = Helper::get_order_from_order_number( $woocommerce_order_number );
 
 		if ( !$order ) {
 			return $this->return_not_found();
@@ -129,34 +129,37 @@ class WebhooksController extends WP_REST_Controller {
 	}
 
 	private function handle_confirmed( $params ) {
-		$woocommerce_order_id = $params['external_reference_id'];
-		$mondu_order_id       = $params['order_uuid'];
+		$woocommerce_order_number = $params['external_reference_id'];
+		$mondu_order_id           = $params['order_uuid'];
 
-		if ( !$woocommerce_order_id || !$mondu_order_id ) {
+		if ( !$woocommerce_order_number || !$mondu_order_id ) {
 			throw new MonduException(__('Required params missing.', 'mondu'));
 		}
 
-		$order = new WC_Order($woocommerce_order_id);
+		$order = Helper::get_order_from_order_number( $woocommerce_order_number );
 
 		if ( !$order ) {
 			return $this->return_not_found();
 		}
 
 		$order->add_order_note( esc_html( sprintf( __( 'Mondu order is on confirmed state.', 'mondu' ) ) ), false );
-		$order->update_status('wc-processing', __('Processing', 'woocommerce'));
+
+		if ( $order->get_status() == 'pending' ) {
+			$order->update_status('wc-processing', __('Processing', 'woocommerce'));
+		}
 
 		return $this->return_success();
 	}
 
 	private function handle_declined( $params ) {
-		$woocommerce_order_id = $params['external_reference_id'];
-		$mondu_order_id       = $params['order_uuid'];
+		$woocommerce_order_number = $params['external_reference_id'];
+		$mondu_order_id           = $params['order_uuid'];
 
-		if ( !$woocommerce_order_id || !$mondu_order_id ) {
+		if ( !$woocommerce_order_number || !$mondu_order_id ) {
 			throw new MonduException(__('Required params missing.', 'mondu'));
 		}
 
-		$order = new WC_Order($woocommerce_order_id);
+		$order = Helper::get_order_from_order_number( $woocommerce_order_number );
 
 		if ( !$order ) {
 			return $this->return_not_found();
@@ -165,20 +168,17 @@ class WebhooksController extends WP_REST_Controller {
 		$order->add_order_note( esc_html( sprintf( __( 'Mondu order is on declined state.', 'mondu' ) ) ), false );
 		$order->update_status('wc-failed', __('Failed', 'woocommerce'));
 
-		$reason = $params['reason'];
-		update_post_meta($woocommerce_order_id, Plugin::FAILURE_REASON_KEY, $reason);
-
 		return $this->return_success();
 	}
 
 	private function handle_invoice_created( $params ) {
-		$woocommerce_order_id = $params['external_reference_id'];
+		$woocommerce_order_number = $params['external_reference_id'];
 
-		if ( !$woocommerce_order_id ) {
+		if ( !$woocommerce_order_number ) {
 			throw new MonduException(__('Required params missing.', 'mondu'));
 		}
 
-		$order = new WC_Order($woocommerce_order_id);
+		$order = Helper::get_order_from_order_number( $woocommerce_order_number );
 
 		if ( !$order ) {
 			return $this->return_not_found();
@@ -190,13 +190,13 @@ class WebhooksController extends WP_REST_Controller {
 	}
 
 	private function handle_invoice_payment( $params ) {
-		$woocommerce_order_id = $params['external_reference_id'];
+		$woocommerce_order_number = $params['external_reference_id'];
 
-		if ( !$woocommerce_order_id ) {
+		if ( !$woocommerce_order_number ) {
 			throw new MonduException(__('Required params missing.', 'mondu'));
 		}
 
-		$order = new WC_Order($woocommerce_order_id);
+		$order = Helper::get_order_from_order_number( $woocommerce_order_number );
 
 		if ( !$order ) {
 			return $this->return_not_found();
@@ -208,13 +208,13 @@ class WebhooksController extends WP_REST_Controller {
 	}
 
 	private function handle_invoice_canceled( $params ) {
-		$woocommerce_order_id = $params['external_reference_id'];
+		$woocommerce_order_number = $params['external_reference_id'];
 
-		if ( !$woocommerce_order_id ) {
+		if ( !$woocommerce_order_number ) {
 			throw new MonduException(__('Required params missing.', 'mondu'));
 		}
 
-		$order = new WC_Order($woocommerce_order_id);
+		$order = Helper::get_order_from_order_number( $woocommerce_order_number );
 
 		if ( !$order ) {
 			return $this->return_not_found();

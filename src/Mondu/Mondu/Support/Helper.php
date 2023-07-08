@@ -5,6 +5,7 @@ namespace Mondu\Mondu\Support;
 use Mondu\Plugin;
 use WC_Logger_Interface;
 use WC_Order;
+use WP_Query;
 
 class Helper {
 	/**
@@ -51,14 +52,28 @@ class Helper {
 	}
 
 	/**
+	 * Get invoice WCPDF document
+	 *
+	 * @param WC_Order $order
+	 * @return mixed
+	 */
+	public static function get_invoice( WC_Order $order ) {
+		if ( function_exists( 'wcpdf_get_invoice' ) ) {
+			return wcpdf_get_invoice( $order, false );
+		} else {
+			return $order;
+		}
+	}
+
+	/**
 	 * Get invoice number
 	 *
 	 * @param WC_Order $order
 	 * @return string
 	 */
 	public static function get_invoice_number( WC_Order $order ) {
-		if ( function_exists( 'wcpdf_get_document' ) ) {
-			$document = wcpdf_get_document( 'invoice', $order, false );
+		if ( function_exists( 'wcpdf_get_invoice' ) ) {
+			$document = wcpdf_get_invoice( $order, false );
 			if ( $document->get_number() ) {
 				$invoice_number = $document->get_number()->get_formatted();
 			} else {
@@ -89,6 +104,29 @@ class Helper {
 		 */
 		$language = apply_filters('mondu_order_locale', get_locale());
 		return substr($language, 0, 2);
+	}
+
+	/**
+	 * Get order from order number
+	 *
+	 * @param WC_Order $order
+	 * @return string
+	 */
+	public static function get_order_from_order_number( $order_number ) {
+		$order = wc_get_order( $order_number );
+		if ( $order ) {
+			return $order;
+		}
+
+		$args    = [
+			'post_type'   => 'shop_order',
+			'post_status' => 'any',
+			'meta_query'  => [ [ 'key' => '_order_number', 'value' => $order_number, 'compare' => '=', ] ]
+		];
+		$query   = new WP_Query( $args );
+		if ( !empty( $query->posts ) ) {
+			return wc_get_order( $query->posts[0]->ID );
+		}
 	}
 
 	/**
