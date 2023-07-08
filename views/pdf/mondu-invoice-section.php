@@ -53,8 +53,10 @@ if ( 'mondu_invoice' === $payment_method ) {
 					<td><?php echo esc_html__('Invoice number', 'mondu') . ' ' . esc_html($invoice_number . ' ' . $this->get_wcpdf_shop_name()); ?></td>
 				</tr>
 				<?php if ( $net_terms ) { ?>
-					<td><strong><?php esc_html_e('Payment term', 'mondu'); ?>:</strong></td>
-					<td><?php /* translators: %s: Days */ printf(esc_html__('%s Days', 'mondu'), esc_html($net_terms)); ?></td>
+					<tr>
+						<td><strong><?php esc_html_e('Payment term', 'mondu'); ?>:</strong></td>
+						<td><?php /* translators: %s: Days */ printf(esc_html__('%s Days', 'mondu'), esc_html($net_terms)); ?></td>
+					</tr>
 				<?php } ?>
 			</table>
 		</section>

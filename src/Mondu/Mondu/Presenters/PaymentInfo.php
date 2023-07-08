@@ -157,8 +157,10 @@ class PaymentInfo {
 					<span><?php printf(esc_html($bank_account['bic'])); ?></span>
 				</p>
 				<?php if ( $net_terms ) { ?>
-					<span><strong><?php esc_html_e('Payment term', 'mondu'); ?>:</strong></span>
-					<span><?php /* translators: %s: Days */ printf(esc_html__('%s Days', 'mondu'), esc_html($net_terms)); ?></span>
+					<p>
+						<span><strong><?php esc_html_e('Payment term', 'mondu'); ?>:</strong></span>
+						<span><?php /* translators: %s: Days */ printf(esc_html__('%s Days', 'mondu'), esc_html($net_terms)); ?></span>
+					</p>
 				<?php } ?>
 			</section>
 			<?php
@@ -229,7 +231,7 @@ class PaymentInfo {
 		foreach ( $invoice['credit_notes'] as $note ) {
 			?>
 			<li>
-				<?php printf('%s: %s %s (%s: %s %s)', '<strong>#' . esc_html($note['external_reference_id']) . '</strong>', esc_html( $note['gross_amount_cents'] / 100 ), esc_html($invoice['order']['currency']), esc_html__('Tax', 'mondu'), esc_html( $note['tax_cents'] / 100 ), esc_html($invoice['order']['currency'])); ?>
+				<?php printf('%s: %s %s (%s: %s %s) %s', '<strong>#' . esc_html($note['external_reference_id']) . '</strong>', esc_html( $note['gross_amount_cents'] / 100 ), esc_html($invoice['order']['currency']), esc_html__('Tax', 'mondu'), esc_html( $note['tax_cents'] / 100 ), esc_html($invoice['order']['currency']), esc_html( $note['notes'] ? '- ' . $note['notes'] : '' )); ?>
 			</li>
 			<?php
 		}

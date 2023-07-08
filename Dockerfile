@@ -31,3 +31,10 @@ RUN wget https://downloads.wordpress.org/plugin/woocommerce-pdf-invoices-packing
   && cd /usr/src/wordpress/wp-content/plugins \
   && unzip /tmp/woocommerce-pdf-invoices-packing-slips.zip \
   && rm /tmp/woocommerce-pdf-invoices-packing-slips.zip
+
+RUN rm -rf /usr/src/wordpress/wp-content/plugins/wt-woocommerce-sequential-order-numbers
+
+RUN wget https://downloads.wordpress.org/plugin/wt-woocommerce-sequential-order-numbers.1.5.2.zip -O /tmp/wt-woocommerce-sequential-order-numbers.zip \
+  && cd /usr/src/wordpress/wp-content/plugins \
+  && unzip /tmp/wt-woocommerce-sequential-order-numbers.zip \
+  && rm /tmp/wt-woocommerce-sequential-order-numbers.zip
