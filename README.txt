@@ -61,6 +61,7 @@ Check out [Frequently Asked Questions](https://www.mondu.ai/faq) in the Mondu we
 
 * Hosted checkout and lot of fixes
 * Rename plugin and separate changelog from readme
+* Fix hosted checkout issues
 
 = 1.3.4 =
 

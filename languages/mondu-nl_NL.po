@@ -56,9 +56,9 @@ msgid "Send the line items when creating order and invoice."
 msgstr "Stuur de posten bij het aanmaken van de bestelling en de factuur."
 
 #: src/Mondu/Admin/Option/Account.php:60
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:198
-#: src/Mondu/Plugin.php:329
-#: src/Mondu/Plugin.php:380
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:200
+#: src/Mondu/Plugin.php:328
+#: src/Mondu/Plugin.php:379
 msgid "Yes"
 msgstr "Ja"
 
@@ -67,7 +67,7 @@ msgid "Send line items only for orders"
 msgstr "Stuur alleen regelitems voor bestellingen"
 
 #: src/Mondu/Admin/Option/Account.php:62
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:198
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:200
 msgid "No"
 msgstr "Nee"
 
@@ -113,7 +113,7 @@ msgstr "Er is iets gebeurd aan onze kant."
 #: src/Mondu/Mondu/Controllers/WebhooksController.php:98
 #: src/Mondu/Mondu/Controllers/WebhooksController.php:117
 #: src/Mondu/Mondu/Controllers/WebhooksController.php:136
-#: src/Mondu/Mondu/Controllers/WebhooksController.php:156
+#: src/Mondu/Mondu/Controllers/WebhooksController.php:159
 #: src/Mondu/Mondu/Controllers/WebhooksController.php:178
 #: src/Mondu/Mondu/Controllers/WebhooksController.php:196
 #: src/Mondu/Mondu/Controllers/WebhooksController.php:214
@@ -132,7 +132,7 @@ msgstr "Mondu-bestelling is geautoriseerd."
 msgid "Mondu order is on confirmed state."
 msgstr "Mondu-bestelling is bevestigd."
 
-#: src/Mondu/Mondu/Controllers/WebhooksController.php:165
+#: src/Mondu/Mondu/Controllers/WebhooksController.php:168
 msgid "Mondu order is on declined state."
 msgstr "Mondu-bestelling is geweigerd."
 
@@ -189,7 +189,7 @@ msgid "Error placing an order. Please try again."
 msgstr "Fout bij het plaatsen van een bestelling. Probeer het opnieuw."
 
 #: src/Mondu/Mondu/Presenters/PaymentInfo.php:80
-#: src/Mondu/Plugin.php:303
+#: src/Mondu/Plugin.php:302
 msgid "Order state"
 msgstr "Order status"
 
@@ -225,123 +225,123 @@ msgstr "IBAN"
 msgid "BIC"
 msgstr "BIC"
 
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:160
-#: views/pdf/mondu-invoice-section.php:56
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:161
+#: views/pdf/mondu-invoice-section.php:57
 msgid "Payment term"
 msgstr "Betalingstermijn"
 
 #. translators: %s: Days
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:161
-#: views/pdf/mondu-invoice-section.php:57
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:162
+#: views/pdf/mondu-invoice-section.php:58
 msgid "%s Days"
 msgstr "%s Dagen"
 
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:185
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:187
 msgid "Invoice state"
 msgstr "Factuurstatus"
 
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:189
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:191
 #: views/pdf/mondu-invoice-section.php:53
 msgid "Invoice number"
 msgstr "Factuurnummer"
 
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:193
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:195
 msgid "Total"
 msgstr "Totaal"
 
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:197
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:199
 msgid "Paid out"
 msgstr "Uitbetaald"
 
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:213
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:215
 msgid "Cancel Invoice"
 msgstr "Factuur annuleren"
 
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:226
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:228
 msgid "Credit Notes"
 msgstr "Creditnota's"
 
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:232
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:234
 msgid "Tax"
 msgstr "Belasting"
 
-#: src/Mondu/Plugin.php:165
+#: src/Mondu/Plugin.php:164
 msgid "Since this order will be paid via Mondu you will not be able to change the addresses."
 msgstr "Omdat deze bestelling via Mondu wordt betaald kunt u de adressen niet meer aanpassen."
 
-#: src/Mondu/Plugin.php:198
+#: src/Mondu/Plugin.php:197
 msgid "View Mondu settings"
 msgstr "Bekijk Mondu instellingen"
 
-#: src/Mondu/Plugin.php:218
+#: src/Mondu/Plugin.php:217
 msgid "View Mondu documentation"
 msgstr "Bekijk Mondu documentatie"
 
-#: src/Mondu/Plugin.php:218
+#: src/Mondu/Plugin.php:217
 msgid "Docs"
 msgstr "Documenten"
 
-#: src/Mondu/Plugin.php:219
+#: src/Mondu/Plugin.php:218
 msgid "https://mondu.ai/introduction-to-paying-with-mondu"
 msgstr "https://mondu.ai/nl/introduction-to-paying-with-mondu"
 
-#: src/Mondu/Plugin.php:219
+#: src/Mondu/Plugin.php:218
 msgid "View introduction to paying with Mondu"
 msgstr "Bekijk introductie van betalen met Mondu"
 
-#: src/Mondu/Plugin.php:219
+#: src/Mondu/Plugin.php:218
 msgid "Mondu introduction"
 msgstr "Mondu introductie"
 
-#: src/Mondu/Plugin.php:220
+#: src/Mondu/Plugin.php:219
 msgid "https://mondu.ai/faq"
 msgstr "https://mondu.ai/nl/faq"
 
-#: src/Mondu/Plugin.php:220
+#: src/Mondu/Plugin.php:219
 msgid "View FAQ"
 msgstr "Bekijk FAQ"
 
-#: src/Mondu/Plugin.php:220
+#: src/Mondu/Plugin.php:219
 msgid "FAQ"
 msgstr "FAQ"
 
 #. translators: %s: Company
-#: src/Mondu/Plugin.php:239
+#: src/Mondu/Plugin.php:238
 msgid "%s is a required field for Mondu payments."
 msgstr "%s is een verplicht veld voor Mondu-betalingen."
 
 #. translators: %s: Company
-#: src/Mondu/Plugin.php:239
+#: src/Mondu/Plugin.php:238
 msgid "Company"
 msgstr "Bedrijfsnaam"
 
 #. translators: %s: Billing country
-#: src/Mondu/Plugin.php:244
+#: src/Mondu/Plugin.php:243
 msgid "%s not available for Mondu Payments."
 msgstr "%s is niet beschikbaar voor Mondu-betalingen."
 
 #. translators: %s: Billing country
-#: src/Mondu/Plugin.php:244
+#: src/Mondu/Plugin.php:243
 msgid "Billing country"
 msgstr "Factureringsland"
 
-#: src/Mondu/Plugin.php:304
-#: src/Mondu/Plugin.php:354
-#: src/Mondu/Plugin.php:407
+#: src/Mondu/Plugin.php:303
+#: src/Mondu/Plugin.php:353
+#: src/Mondu/Plugin.php:406
 msgid "Canceled"
 msgstr "Geannuleerd"
 
-#: src/Mondu/Plugin.php:328
-#: src/Mondu/Plugin.php:379
+#: src/Mondu/Plugin.php:327
+#: src/Mondu/Plugin.php:378
 msgid "Mondu Invoice paid"
 msgstr "Mondu Factuur betaald"
 
-#: src/Mondu/Plugin.php:353
-#: src/Mondu/Plugin.php:406
+#: src/Mondu/Plugin.php:352
+#: src/Mondu/Plugin.php:405
 msgid "Mondu Invoice state"
 msgstr "Mondu Factuur status"
 
-#: src/Mondu/Plugin.php:421
+#: src/Mondu/Plugin.php:420
 msgid "Mondu requires WooCommerce to be activated."
 msgstr "Mondu vereist dat WooCommerce wordt geactiveerd."
 
@@ -386,11 +386,11 @@ msgid "Purpose"
 msgstr "Betalingsreferentie"
 
 #. translators: %s: Company
-#: views/pdf/mondu-invoice-section.php:70
+#: views/pdf/mondu-invoice-section.php:72
 msgid "This invoice was created in accordance with the general terms and conditions of <strong>%s</strong> and <strong>Mondu GmbH</strong> for the purchase on account payment model.<br/><br/>Since you have chosen the payment method to purchase on account with payment via SEPA direct debit through Mondu, the invoice amount will be debited from your bank account on the due date.<br/><br/>Before the amount is debited from your account, you will receive notice of the direct debit. Kindly make sure you have sufficient funds in your account."
 msgstr "Deze factuur is opgesteld in overeenstemming met de algemene voorwaarden van <strong>%s</strong> en <strong>Mondu GmbH</strong> voor het betaalmodel aankoop op rekening.<br/><br/>Aangezien u heeft gekozen voor de betaalmethode aankoop op rekening met de betaling via SEPA automatische incasso via Mondu, zal het factuurbedrag op de vervaldatum van uw bankrekening worden afgeschreven.<br/><br/>Voordat het bedrag van uw rekening wordt afgeschreven, ontvangt u bericht over de automatische incasso. Zorg ervoor dat u voldoende saldo op uw rekening heeft staan."
 
 #. translators: %s: Company
-#: views/pdf/mondu-invoice-section.php:85
+#: views/pdf/mondu-invoice-section.php:87
 msgid "This invoice was created in accordance with the general terms and conditions of <strong>%s</strong> and <strong>Mondu GmbH</strong> for the instalment payment model.<br/><br/>Since you have chosen the instalment payment method via SEPA direct debit through Mondu, the individual installments will be debited from your bank account on the due date.<br/><br/>Before the amounts are debited from your account, you will receive notice regarding the direct debit. Kindly make sure you have sufficient funds in your account. In the event of changes to your order, the instalment plan will be adjusted to reflect the new order total."
 msgstr "Deze factuur is gemaakt in overeenstemming met de algemene voorwaarden van <strong>%s</strong> en <strong>Mondu GmbH</strong> voor het termijnbetaling betalingsmodel.<br/><br/>Aangezien u heeft gekozen voor de termijn betalingsmethode via SEPA automatische incasso via Mondu, worden de individuele bedragen voor elke betalingstermijnen op de vervaldatum van uw bankrekening afgeschreven.<br/><br/>Voordat de bedragen van uw rekening worden afgeschreven, ontvangt u bericht over de automatische incasso. Zorg ervoor dat u voldoende geld op uw rekening heeft staan. Voor het geval dat er wijzigingen in uw bestelling plaats vindt, wordt het afbetalingsplan aangepast aan het nieuwe orderbedrag."
