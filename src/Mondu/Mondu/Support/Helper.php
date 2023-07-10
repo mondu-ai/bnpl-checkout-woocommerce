@@ -121,7 +121,13 @@ class Helper {
 		$args    = [
 			'post_type'   => 'shop_order',
 			'post_status' => 'any',
-			'meta_query'  => [ [ 'key' => '_order_number', 'value' => $order_number, 'compare' => '=', ] ]
+			'meta_query'  => [
+				[
+					'key' => '_order_number',
+					'value' => $order_number,
+					'compare' => '=',
+				],
+			],
 		];
 		$query   = new WP_Query( $args );
 		if ( !empty( $query->posts ) ) {
