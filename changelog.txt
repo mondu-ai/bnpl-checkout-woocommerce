@@ -1,5 +1,9 @@
 == Changelog ==
 
+= 2.0.1 =
+
+* Fix sandbox or production setting name
+
 = 2.0.0 =
 
 * Hosted checkout and lot of fixes
