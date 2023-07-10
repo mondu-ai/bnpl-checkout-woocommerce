@@ -143,15 +143,13 @@ class Helper {
 	public static function is_production() {
 		$global_settings = get_option( Plugin::OPTION_NAME );
 
-		$is_production = false;
 		if ( is_array( $global_settings )
-			&& isset( $global_settings['field_sandbox_or_production'] )
-			&& 'production' === $global_settings['field_sandbox_or_production']
+			&& isset( $global_settings['sandbox_or_production'] )
+			&& 'production' === $global_settings['sandbox_or_production']
 		) {
-			$is_production = true;
+			return true;
 		}
-
-		return $is_production;
+		return false;
 	}
 
 	public static function log( array $message, $level = 'DEBUG' ) {
