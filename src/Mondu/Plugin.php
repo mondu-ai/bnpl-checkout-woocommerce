@@ -233,7 +233,7 @@ class Plugin {
 			return;
 		}
 
-		if ( !Helper::not_null_or_empty($fields['billing_company']) ) {
+		if ( !Helper::not_null_or_empty($fields['billing_company']) && !Helper::not_null_or_empty($fields['shipping_company']) ) {
 			/* translators: %s: Company */
 			$errors->add('validation', sprintf(__('%s is a required field for Mondu payments.', 'mondu'), '<strong>' . __('Company', 'mondu') . '</strong>'));
 		}

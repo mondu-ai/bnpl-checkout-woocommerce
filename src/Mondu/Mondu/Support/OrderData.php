@@ -113,12 +113,11 @@ class OrderData {
 	 * @return array
 	 */
 	public static function order_data_from_wc_order( WC_Order $order ) {
-		$billing_first_name   = $order->get_billing_first_name();
-		$billing_last_name    = $order->get_billing_last_name();
-		$billing_company_name = $order->get_billing_company();
-		$billing_email        = $order->get_billing_email();
-		$billing_phone        = $order->get_billing_phone();
-		$customer_id          = $order->get_customer_id();
+		$billing_first_name = $order->get_billing_first_name();
+		$billing_last_name  = $order->get_billing_last_name();
+		$billing_email      = $order->get_billing_email();
+		$billing_phone      = $order->get_billing_phone();
+		$customer_id        = $order->get_customer_id();
 
 		$billing_address_line1 = $order->get_billing_address_1();
 		$billing_address_line2 = $order->get_billing_address_2();
@@ -137,7 +136,7 @@ class OrderData {
 			'buyer'                 => [
 				'first_name'            => isset($billing_first_name) && Helper::not_null_or_empty($billing_first_name) ? $billing_first_name : null,
 				'last_name'             => isset($billing_last_name) && Helper::not_null_or_empty($billing_last_name) ? $billing_last_name : null,
-				'company_name'          => isset($billing_company_name) && Helper::not_null_or_empty($billing_company_name) ? $billing_company_name : null,
+				'company_name'          => self::get_company_name_from_wc_order( $order ),
 				'email'                 => isset($billing_email) && Helper::not_null_or_empty($billing_email) ? $billing_email : null,
 				'phone'                 => isset($billing_phone) && Helper::not_null_or_empty($billing_phone) ? $billing_phone : null,
 				'external_reference_id' => isset($customer_id) && Helper::not_null_or_empty($customer_id) ? (string) $customer_id : null,
@@ -273,5 +272,24 @@ class OrderData {
 		];
 
 		return $amount;
+	}
+
+	/**
+	 * Get company name from WC_Order
+	 *
+	 * @param WC_Order $order
+	 * @return string|null
+	 */
+	public static function get_company_name_from_wc_order( WC_Order $order ) {
+		$billing_company_name = $order->get_billing_company();
+		$shipping_company_name = $order->get_shipping_company();
+
+		if ( isset( $billing_company_name ) && Helper::not_null_or_empty( $billing_company_name ) ) {
+			return $billing_company_name;
+		} else if ( isset( $shipping_company_name ) && Helper::not_null_or_empty( $shipping_company_name ) ) {
+			return $shipping_company_name;
+		} else {
+			return null;
+		}
 	}
 }
