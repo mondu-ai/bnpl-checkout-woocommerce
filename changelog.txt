@@ -1,5 +1,9 @@
 == Changelog ==
 
+= 2.0.2 =
+
+* Use company shipping address as a fallback when company billing address is null
+
 = 2.0.1 =
 
 * Fix sandbox or production setting name
