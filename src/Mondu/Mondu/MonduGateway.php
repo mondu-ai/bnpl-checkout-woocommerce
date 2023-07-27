@@ -127,6 +127,10 @@ class MonduGateway extends WC_Payment_Gateway {
 			return;
 		}
 
+		$order->update_status('wc-processing', __('Processing', 'woocommerce'));
+		// Remove cart.
+		WC()->cart->empty_cart();
+
 		return [
 			'result'   => 'success',
 			'redirect' => $mondu_order['hosted_checkout_url'],
