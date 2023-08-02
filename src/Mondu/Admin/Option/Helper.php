@@ -44,6 +44,5 @@ abstract class Helper {
 		?>
 		</select>
 		<?php
-
 	}
 }

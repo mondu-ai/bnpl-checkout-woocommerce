@@ -14,7 +14,7 @@
 	<?php endif; ?>
 	<?php if ( isset($credentials_validated) && false !== $credentials_validated ) : ?>
 		<p> ✅ <?php esc_html_e('Credentials validated', 'mondu'); ?>:
-		<?php echo esc_html(date_i18n(get_option('date_format'), $credentials_validated)); ?>
+			<?php echo esc_html(date_i18n(get_option('date_format'), $credentials_validated)); ?>
 		</p>
 	<?php endif; ?>
 	<form method='post'>
@@ -42,12 +42,18 @@
 	<form action='<?php echo esc_html(get_option('siteurl')); ?>/wp-admin/admin-post.php?action=download_logs' method='post'>
 		<input type='hidden' name='action' value='download_logs' />
 		<input type='hidden' name='security' value='<?php echo esc_html(wp_create_nonce( 'mondu-download-logs' )); ?>' />
-		<tr>
-		<th scope="row"><label for="date"><?php esc_html_e('Log date', 'mondu'); ?>:</label></th>
-		<td>
-			<input type='date' id='date' name='date' value="<?php echo esc_html(gmdate('Y-m-d')); ?>" required />
-		</td>
-		</tr>
+		<table class="form-table" role="presentation">
+			<tbody>
+				<tr>
+					<th scope="row">
+						<label for="date"><?php esc_html_e('Log date', 'mondu'); ?>:</label>
+					</th>
+					<td>
+						<input type='date' id='date' name='date' value="<?php echo esc_html(gmdate('Y-m-d')); ?>" required />
+					</td>
+				</tr>
+			</tbody>
+		</table>
 		<?php submit_button(__('Download Logs', 'mondu')); ?>
 	</form>
 </div>

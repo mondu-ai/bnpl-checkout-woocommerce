@@ -42,7 +42,6 @@ class Account extends Helper {
 				'tip'       => __('API Token provided by Mondu.', 'mondu'),
 			]
 		);
-
 		add_settings_field('send_line_items',
 			__('Send line items', 'mondu'),
 			[ $this, 'field_send_line_items' ],
@@ -55,14 +54,6 @@ class Account extends Helper {
 		);
 	}
 
-	public function field_send_line_items( $args = [] ) {
-		$this->selectField(Plugin::OPTION_NAME, 'send_line_items', [
-			'yes'   => __('Yes', 'mondu'),
-			'order' => __('Send line items only for orders', 'mondu'),
-			'no'    => __('No', 'mondu'),
-		], $args['tip']);
-	}
-
 	public function field_sandbox_or_production( $args = [] ) {
 		$this->selectField(Plugin::OPTION_NAME, 'sandbox_or_production', [
 			'sandbox'    => __('Sandbox', 'mondu'),
@@ -72,6 +63,14 @@ class Account extends Helper {
 
 	public function field_api_token( $args = [] ) {
 		$this->textField(Plugin::OPTION_NAME, 'api_token', $args['tip']);
+	}
+
+	public function field_send_line_items( $args = [] ) {
+		$this->selectField(Plugin::OPTION_NAME, 'send_line_items', [
+			'yes'   => __('Yes', 'mondu'),
+			'order' => __('Send line items only for orders', 'mondu'),
+			'no'    => __('No', 'mondu'),
+		], $args['tip']);
 	}
 
 	public function render( $validation_error = null, $webhooks_error = null ) {

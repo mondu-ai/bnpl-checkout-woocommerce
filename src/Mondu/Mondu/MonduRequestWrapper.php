@@ -192,12 +192,12 @@ class MonduRequestWrapper {
 			return;
 		}
 
-		$response = $this->wrap_with_mondu_log_event( 'confirm_order', [ $mondu_order_id, [] ] );
+		$response = $this->wrap_with_mondu_log_event( 'confirm_order', [ $mondu_order_id ] );
 		return $response['order'];
 	}
 
 	/**
-	 * Update Order If fields were changed
+	 * Update Order if fields were changed
 	 *
 	 * @param $order
 	 * @return void
@@ -290,7 +290,12 @@ class MonduRequestWrapper {
 	 * @throws ResponseException
 	 */
 	public function register_webhook( $topic ) {
-		$response = $this->wrap_with_mondu_log_event( 'register_webhook', [ $topic ] );
+		$params = [
+			'topic'   => $topic,
+			'address' => MONDU_WEBHOOKS_URL . '/?rest_route=/mondu/v1/webhooks/index',
+		];
+
+		$response = $this->wrap_with_mondu_log_event( 'register_webhook', [ $params ]);
 
 		return isset($response['webhooks']) ? $response['webhooks'] : null;
 	}
@@ -343,6 +348,15 @@ class MonduRequestWrapper {
 		$this->api->log_plugin_event($params);
 	}
 
+	/**
+	 * Wrap the call to the Mondu API with a try/catch block and log if an error occurs
+	 *
+	 * @param string $action
+	 * @param array $params
+	 * @return mixed
+	 * @throws ResponseException
+	 * @throws Exception
+	 */
 	private function wrap_with_mondu_log_event( $action, array $params = [] ) {
 		try {
 			return call_user_func_array( [ $this->api, $action ], $params);

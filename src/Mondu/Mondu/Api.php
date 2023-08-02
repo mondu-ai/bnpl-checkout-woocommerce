@@ -89,13 +89,12 @@ class Api {
 	 * Confirm order
 	 *
 	 * @param $mondu_uuid
-	 * @param array $params
 	 * @return mixed
 	 * @throws MonduException
 	 * @throws ResponseException
 	 */
-	public function confirm_order( $mondu_uuid, array $params ) {
-		$result = $this->post(sprintf('/orders/%s/confirm', $mondu_uuid), $params);
+	public function confirm_order( $mondu_uuid ) {
+		$result = $this->post(sprintf('/orders/%s/confirm', $mondu_uuid));
 		return json_decode($result['body'], true);
 	}
 
@@ -153,17 +152,12 @@ class Api {
 	/**
 	 * Register Webhook
 	 *
-	 * @param string $topic
+	 * @param array $params
 	 * @return mixed
 	 * @throws MonduException
 	 * @throws ResponseException
 	 */
-	public function register_webhook( $topic ) {
-		$params = [
-			'topic'   => $topic,
-			'address' => MONDU_WEBHOOKS_URL . '/?rest_route=/mondu/v1/webhooks/index',
-		];
-
+	public function register_webhook( $params ) {
 		$result = $this->post('/webhooks', $params);
 		return json_decode($result['body'], true);
 	}
