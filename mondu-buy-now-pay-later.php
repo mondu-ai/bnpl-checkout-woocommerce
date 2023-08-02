@@ -41,7 +41,7 @@ function mondu_env( $name, $default_value ) {
 }
 mondu_env( 'MONDU_SANDBOX_URL', 'https://api.demo.mondu.ai/api/v1' );
 mondu_env( 'MONDU_PRODUCTION_URL', 'https://api.mondu.ai/api/v1' );
-mondu_env( 'MONDU_WEBHOOKS_URL', get_site_url() );
+mondu_env( 'MONDU_WEBHOOKS_URL', get_home_url() );
 
 require_once 'src/autoload.php';
 add_action('plugins_loaded', [ new \Mondu\Plugin(), 'init' ]);

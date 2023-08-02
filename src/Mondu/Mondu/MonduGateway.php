@@ -119,7 +119,7 @@ class MonduGateway extends WC_Payment_Gateway {
 	 */
 	public function process_payment( $order_id ) {
 		$order       = wc_get_order($order_id);
-		$success_url = get_site_url() . '/?rest_route=/mondu/v1/orders/confirm&external_reference_id=' . $order->get_order_number() . '&return_url=' . urlencode( $this->get_return_url( $order ) ) ;
+		$success_url = get_home_url() . '/?rest_route=/mondu/v1/orders/confirm&external_reference_id=' . $order->get_order_number() . '&return_url=' . urlencode( $this->get_return_url( $order ) ) ;
 		$mondu_order = $this->mondu_request_wrapper->create_order( $order, $success_url );
 
 		if ( !$mondu_order ) {
