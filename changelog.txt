@@ -1,5 +1,11 @@
 == Changelog ==
 
+= 2.0.3 =
+
+* Use home_url instead of site_url
+* Empty cart on order confirm
+* Rollback changes on invoice external reference id
+
 = 2.0.2 =
 
 * Use company shipping address as a fallback when company billing address is null

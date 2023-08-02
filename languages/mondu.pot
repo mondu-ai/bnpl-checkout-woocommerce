@@ -2,14 +2,14 @@
 # This file is distributed under the GPLv3.
 msgid ""
 msgstr ""
-"Project-Id-Version: Mondu Buy Now Pay Later 2.0.2\n"
+"Project-Id-Version: Mondu Buy Now Pay Later 2.0.3\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/mondu-buy-now-pay-later\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2023-07-17T12:18:00+00:00\n"
+"POT-Creation-Date: 2023-08-02T18:27:41+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.8.1\n"
 "X-Domain: mondu\n"
@@ -50,36 +50,36 @@ msgstr ""
 msgid "API Token provided by Mondu."
 msgstr ""
 
-#: src/Mondu/Admin/Option/Account.php:47
+#: src/Mondu/Admin/Option/Account.php:46
 msgid "Send line items"
 msgstr ""
 
-#: src/Mondu/Admin/Option/Account.php:53
+#: src/Mondu/Admin/Option/Account.php:52
 msgid "Send the line items when creating order and invoice."
 msgstr ""
 
+#: src/Mondu/Admin/Option/Account.php:59
+msgid "Sandbox"
+msgstr ""
+
 #: src/Mondu/Admin/Option/Account.php:60
+msgid "Production"
+msgstr ""
+
+#: src/Mondu/Admin/Option/Account.php:70
 #: src/Mondu/Mondu/Presenters/PaymentInfo.php:200
 #: src/Mondu/Plugin.php:328
 #: src/Mondu/Plugin.php:379
 msgid "Yes"
 msgstr ""
 
-#: src/Mondu/Admin/Option/Account.php:61
+#: src/Mondu/Admin/Option/Account.php:71
 msgid "Send line items only for orders"
 msgstr ""
 
-#: src/Mondu/Admin/Option/Account.php:62
+#: src/Mondu/Admin/Option/Account.php:72
 #: src/Mondu/Mondu/Presenters/PaymentInfo.php:200
 msgid "No"
-msgstr ""
-
-#: src/Mondu/Admin/Option/Account.php:68
-msgid "Sandbox"
-msgstr ""
-
-#: src/Mondu/Admin/Option/Account.php:69
-msgid "Production"
 msgstr ""
 
 #: src/Mondu/Admin/Order.php:42
@@ -101,7 +101,7 @@ msgstr ""
 msgid "Missing Credentials"
 msgstr ""
 
-#: src/Mondu/Mondu/Api.php:304
+#: src/Mondu/Mondu/Api.php:298
 msgid "Unexpected API response format."
 msgstr ""
 
@@ -367,11 +367,11 @@ msgid "Webhooks registered"
 msgstr ""
 
 #: views/admin/options.php:41
-#: views/admin/options.php:51
+#: views/admin/options.php:57
 msgid "Download Logs"
 msgstr ""
 
-#: views/admin/options.php:46
+#: views/admin/options.php:49
 msgid "Log date"
 msgstr ""
 

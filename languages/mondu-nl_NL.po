@@ -47,37 +47,37 @@ msgstr "API Token"
 msgid "API Token provided by Mondu."
 msgstr "API Token verstrekt door Mondu."
 
-#: src/Mondu/Admin/Option/Account.php:47
+#: src/Mondu/Admin/Option/Account.php:46
 msgid "Send line items"
 msgstr "Regel items verzenden"
 
-#: src/Mondu/Admin/Option/Account.php:53
+#: src/Mondu/Admin/Option/Account.php:52
 msgid "Send the line items when creating order and invoice."
 msgstr "Stuur de posten bij het aanmaken van de bestelling en de factuur."
 
+#: src/Mondu/Admin/Option/Account.php:59
+msgid "Sandbox"
+msgstr "Sandbox"
+
 #: src/Mondu/Admin/Option/Account.php:60
+msgid "Production"
+msgstr "Productie"
+
+#: src/Mondu/Admin/Option/Account.php:70
 #: src/Mondu/Mondu/Presenters/PaymentInfo.php:200
 #: src/Mondu/Plugin.php:328
 #: src/Mondu/Plugin.php:379
 msgid "Yes"
 msgstr "Ja"
 
-#: src/Mondu/Admin/Option/Account.php:61
+#: src/Mondu/Admin/Option/Account.php:71
 msgid "Send line items only for orders"
 msgstr "Stuur alleen regelitems voor bestellingen"
 
-#: src/Mondu/Admin/Option/Account.php:62
+#: src/Mondu/Admin/Option/Account.php:72
 #: src/Mondu/Mondu/Presenters/PaymentInfo.php:200
 msgid "No"
 msgstr "Nee"
-
-#: src/Mondu/Admin/Option/Account.php:68
-msgid "Sandbox"
-msgstr "Sandbox"
-
-#: src/Mondu/Admin/Option/Account.php:69
-msgid "Production"
-msgstr "Productie"
 
 #: src/Mondu/Admin/Order.php:42
 msgid "Mondu Order Information"
@@ -98,7 +98,7 @@ msgstr "Mondu-instellingen"
 msgid "Missing Credentials"
 msgstr "Ontbrekende Credentials"
 
-#: src/Mondu/Mondu/Api.php:304
+#: src/Mondu/Mondu/Api.php:298
 msgid "Unexpected API response format."
 msgstr "Onverwachte API respons format."
 
@@ -364,11 +364,11 @@ msgid "Webhooks registered"
 msgstr "Webhooks geregistreerd"
 
 #: views/admin/options.php:41
-#: views/admin/options.php:51
+#: views/admin/options.php:57
 msgid "Download Logs"
 msgstr "Download Logs"
 
-#: views/admin/options.php:46
+#: views/admin/options.php:49
 msgid "Log date"
 msgstr "Log datum"
 
