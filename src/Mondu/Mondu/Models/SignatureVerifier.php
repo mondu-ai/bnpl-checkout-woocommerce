@@ -20,7 +20,7 @@ class SignatureVerifier {
 	}
 
 	public function create_hmac( $payload ) {
-		return hash_hmac('sha256', wp_json_encode($payload, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_FORCE_OBJECT), $this->secret);
+		return hash_hmac('sha256', wp_json_encode($payload, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_FORCE_OBJECT | JSON_HEX_AMP), $this->secret);
 	}
 
 
