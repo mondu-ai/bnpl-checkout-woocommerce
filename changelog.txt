@@ -1,5 +1,9 @@
 == Changelog ==
 
+= 2.0.4 =
+
+* Ensure that ampersand is escaped in the webhooks signature verifier
+
 = 2.0.3 =
 
 * Use home_url instead of site_url
