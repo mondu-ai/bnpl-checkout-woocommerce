@@ -395,6 +395,16 @@ msgstr "Cette facture a été cédée conformément aux conditions générales d
 msgid "Purpose"
 msgstr "Objectif"
 
+#: views/pdf/mondu-invoice-section.php:84
+#: views/pdf/mondu-invoice-section.php:101
+msgid "SEPA direct debit"
+msgstr "prélèvement SEPA"
+
+#: views/pdf/mondu-invoice-section.php:84
+#: views/pdf/mondu-invoice-section.php:101
+msgid "direct debit"
+msgstr "prélèvement"
+
 #. translators: %1$s: Company %2$s: direct debit
 #: views/pdf/mondu-invoice-section.php:90
 msgid "This invoice was created in accordance with the general terms and conditions of <strong>%1$s</strong> and <strong>Mondu GmbH</strong> for the purchase on account payment model.<br/><br/>Since you have chosen the payment method to purchase on account with payment via %2$s through Mondu, the invoice amount will be debited from your bank account on the due date.<br/><br/>Before the amount is debited from your account, you will receive notice of the direct debit. Kindly make sure you have sufficient funds in your account."

@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2023-09-04T09:33:00+00:00\n"
+"POT-Creation-Date: 2023-09-04T11:36:15+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.8.1\n"
 "X-Domain: mondu\n"
@@ -396,6 +396,16 @@ msgstr ""
 
 #: views/pdf/mondu-invoice-section.php:68
 msgid "Purpose"
+msgstr ""
+
+#: views/pdf/mondu-invoice-section.php:84
+#: views/pdf/mondu-invoice-section.php:101
+msgid "SEPA direct debit"
+msgstr ""
+
+#: views/pdf/mondu-invoice-section.php:84
+#: views/pdf/mondu-invoice-section.php:101
+msgid "direct debit"
 msgstr ""
 
 #. translators: %1$s: Company %2$s: direct debit
