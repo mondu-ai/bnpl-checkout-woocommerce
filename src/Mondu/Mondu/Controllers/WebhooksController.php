@@ -31,19 +31,18 @@ class WebhooksController extends WP_REST_Controller {
 	}
 
 	public function index( WP_REST_Request $request ) {
+		$verifier          = new SignatureVerifier();
+		$params            = $request->get_json_params();
+		$signature_payload = $request->get_header('X-MONDU-SIGNATURE');
+		$signature         = $verifier->create_hmac($params);
+		$topic             = isset($params['topic']) ? $params['topic'] : null;
+
+		Helper::log([
+			'webhook_topic' => $topic,
+			'params'        => $params,
+		]);
+
 		try {
-			$verifier = new SignatureVerifier();
-
-			$params            = $request->get_json_params();
-			$signature_payload = $request->get_header('X-MONDU-SIGNATURE');
-			$signature         = $verifier->create_hmac($params);
-			$topic             = isset($params['topic']) ? $params['topic'] : null;
-
-			Helper::log([
-				'webhook_topic' => $topic,
-				'params'        => $params,
-			]);
-
 			if ( $signature !== $signature_payload ) {
 				throw new MonduException(__('Signature mismatch.', 'mondu'));
 			}
@@ -78,11 +77,11 @@ class WebhooksController extends WP_REST_Controller {
 			$res_body   = $result[0];
 			$res_status = $result[1];
 		} catch ( MonduException $e ) {
-			$this->mondu_request_wrapper->log_plugin_event($e, 'webhooks');
+			$this->mondu_request_wrapper->log_plugin_event($e, 'webhooks', array_merge($params, [ 'signature' => $signature ]));
 			$res_body   = [ 'message' => $e->getMessage() ];
 			$res_status = 400;
 		} catch ( \Exception $e ) {
-			$this->mondu_request_wrapper->log_plugin_event($e, 'webhooks');
+			$this->mondu_request_wrapper->log_plugin_event($e, 'webhooks', $params);
 			$res_body   = [ 'message' => __('Something happened on our end.', 'mondu') ];
 			$res_status = 200;
 		}
