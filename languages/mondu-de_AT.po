@@ -64,7 +64,7 @@ msgid "Production"
 msgstr "Production"
 
 #: src/Mondu/Admin/Option/Account.php:70
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:200
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:216
 #: src/Mondu/Plugin.php:328
 #: src/Mondu/Plugin.php:379
 msgid "Yes"
@@ -75,7 +75,7 @@ msgid "Send line items only for orders"
 msgstr "Senden Sie nur Einzelposten für Bestellungen"
 
 #: src/Mondu/Admin/Option/Account.php:72
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:200
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:216
 msgid "No"
 msgstr "Nein"
 
@@ -215,53 +215,63 @@ msgstr "Kontoinhaber"
 msgid "Bank"
 msgstr "Bankinstitut"
 
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:152
-#: views/pdf/mondu-invoice-section.php:44
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:153
+#: views/pdf/mondu-invoice-section.php:45
 msgid "IBAN"
 msgstr "IBAN"
 
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:156
-#: views/pdf/mondu-invoice-section.php:48
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:159
+#: views/pdf/mondu-invoice-section.php:51
 msgid "BIC"
 msgstr "BIC"
 
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:161
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:165
 #: views/pdf/mondu-invoice-section.php:57
+msgid "Account number"
+msgstr "Kontonummer"
+
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:171
+#: views/pdf/mondu-invoice-section.php:63
+msgid "Sort code"
+msgstr "Bankleitzahl"
+
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:177
+#: views/pdf/mondu-invoice-section.php:73
 msgid "Payment term"
 msgstr "Zahlungsziel"
 
 #. translators: %s: Days
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:162
-#: views/pdf/mondu-invoice-section.php:58
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:178
+#: views/pdf/mondu-invoice-section.php:74
 msgid "%s Days"
 msgstr "%s Tage"
 
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:187
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:203
 msgid "Invoice state"
 msgstr "Rechnungsstatus"
 
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:191
-#: views/pdf/mondu-invoice-section.php:53
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:207
+#: views/pdf/mondu-invoice-section.php:69
 msgid "Invoice number"
 msgstr "Rechnungsnummer"
 
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:195
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:211
 msgid "Total"
 msgstr "Gesamt"
 
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:199
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:215
 msgid "Paid out"
 msgstr "Ausgezahlt"
 
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:215
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:231
 msgid "Cancel Invoice"
 msgstr "Rechnung stornieren"
 
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:228
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:244
 msgid "Credit Notes"
 msgstr "Gutschriften"
 
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:234
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:250
 msgid "Tax"
 msgstr "Steuer"
 
@@ -381,16 +391,16 @@ msgstr "Hinweise zur Verarbeitung Ihrer personenbezogenen Daten durch die <stron
 msgid "This invoice was created in accordance with the general terms and conditions of <strong>%s</strong> and <strong>Mondu GmbH</strong> for the purchase on account payment model. Please pay debt-discharging to the following account:"
 msgstr "Diese Rechnung wurde abgetreten gemäß den Allgemeinen Bedingungen von <strong>%s</strong> und <strong>Mondu GmbH</strong> zum Modell Kauf auf Rechnung. Wir bitten um schuldbefreiende Zahlung auf folgendes Konto:"
 
-#: views/pdf/mondu-invoice-section.php:52
+#: views/pdf/mondu-invoice-section.php:68
 msgid "Purpose"
 msgstr "Verwendungszweck"
 
-#. translators: %s: Company
-#: views/pdf/mondu-invoice-section.php:72
-msgid "This invoice was created in accordance with the general terms and conditions of <strong>%s</strong> and <strong>Mondu GmbH</strong> for the purchase on account payment model.<br/><br/>Since you have chosen the payment method to purchase on account with payment via SEPA direct debit through Mondu, the invoice amount will be debited from your bank account on the due date.<br/><br/>Before the amount is debited from your account, you will receive notice of the direct debit. Kindly make sure you have sufficient funds in your account."
-msgstr "Diese Rechnung wurde abgetreten gemäß den Allgemeinen Bedingungen von <strong>%s</strong> und <strong>Mondu GmbH</strong> zum Modell Kauf auf Rechnung.<br/><br/> Da Sie die Zahlart Rechnungskauf mit Begleichung via SEPA-Lastschrift über Mondu gewählt haben, wird die Rechnungssumme am Fälligkeitstag von Ihrem Bankkonto abgebucht.<br/><br/> Bevor der Betrag von Ihrem Konto abgebucht wird, erhalten Sie eine Lastschriftankündigung. Bitte achten Sie auf eine ausreichende Kontodeckung."
+#. translators: %1$s: Company %2$s: direct debit
+#: views/pdf/mondu-invoice-section.php:90
+msgid "This invoice was created in accordance with the general terms and conditions of <strong>%1$s</strong> and <strong>Mondu GmbH</strong> for the purchase on account payment model.<br/><br/>Since you have chosen the payment method to purchase on account with payment via %2$s through Mondu, the invoice amount will be debited from your bank account on the due date.<br/><br/>Before the amount is debited from your account, you will receive notice of the direct debit. Kindly make sure you have sufficient funds in your account."
+msgstr "Diese Rechnung wurde abgetreten gemäß den Allgemeinen Bedingungen von <strong>%1$s</strong> und <strong>Mondu GmbH</strong> zum Modell Kauf auf Rechnung.<br/><br/> Da Sie die Zahlart Rechnungskauf mit Begleichung via %2$s über Mondu gewählt haben, wird die Rechnungssumme am Fälligkeitstag von Ihrem Bankkonto abgebucht.<br/><br/> Bevor der Betrag von Ihrem Konto abgebucht wird, erhalten Sie eine Lastschriftankündigung. Bitte achten Sie auf eine ausreichende Kontodeckung."
 
-#. translators: %s: Company
-#: views/pdf/mondu-invoice-section.php:87
-msgid "This invoice was created in accordance with the general terms and conditions of <strong>%s</strong> and <strong>Mondu GmbH</strong> for the instalment payment model.<br/><br/>Since you have chosen the instalment payment method via SEPA direct debit through Mondu, the individual installments will be debited from your bank account on the due date.<br/><br/>Before the amounts are debited from your account, you will receive notice regarding the direct debit. Kindly make sure you have sufficient funds in your account. In the event of changes to your order, the instalment plan will be adjusted to reflect the new order total."
-msgstr "Diese Rechnung wurde gemäß den Allgemeinen Bedingungen von <strong>%s</strong> und <strong>Mondu GmbH</strong> zum Zahlungsmodell Ratenkauf abgetreten.<br/><br/>Da Sie die Zahlart Ratenkauf mit Begleichung via SEPA-Lastschrift über Mondu gewählt haben, werden die einzelnen Raten an ihrem jeweiligen Fälligkeitstag von Ihrem Bankkonto abgebucht.<br/><br/>Bevor die Beträge von Ihrem Konto abgebucht werden, erhalten Sie bezüglich der Lastschrift eine Vorankündigung. Bitte achten Sie auf eine ausreichende Kontodeckung. Im Falle von Änderungen an Ihrer Bestellung wird der Ratenplan an die neue Bestellsumme angepasst."
+#. translators: %1$s: Company %2$s: direct debit
+#: views/pdf/mondu-invoice-section.php:107
+msgid "This invoice was created in accordance with the general terms and conditions of <strong>%1$s</strong> and <strong>Mondu GmbH</strong> for the instalment payment model.<br/><br/>Since you have chosen the instalment payment method via %2$s through Mondu, the individual installments will be debited from your bank account on the due date.<br/><br/>Before the amounts are debited from your account, you will receive notice regarding the direct debit. Kindly make sure you have sufficient funds in your account. In the event of changes to your order, the instalment plan will be adjusted to reflect the new order total."
+msgstr "Diese Rechnung wurde gemäß den Allgemeinen Bedingungen von <strong>%1$s</strong> und <strong>Mondu GmbH</strong> zum Zahlungsmodell Ratenkauf abgetreten.<br/><br/>Da Sie die Zahlart Ratenkauf mit Begleichung via %2$s über Mondu gewählt haben, werden die einzelnen Raten an ihrem jeweiligen Fälligkeitstag von Ihrem Bankkonto abgebucht.<br/><br/>Bevor die Beträge von Ihrem Konto abgebucht werden, erhalten Sie bezüglich der Lastschrift eine Vorankündigung. Bitte achten Sie auf eine ausreichende Kontodeckung. Im Falle von Änderungen an Ihrer Bestellung wird der Ratenplan an die neue Bestellsumme angepasst."

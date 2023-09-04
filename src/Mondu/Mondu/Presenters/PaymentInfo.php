@@ -148,14 +148,30 @@ class PaymentInfo {
 					<span><strong><?php esc_html_e('Bank', 'mondu'); ?>:</strong></span>
 					<span><?php printf(esc_html($bank_account['bank'])); ?></span>
 				</p>
-				<p>
-					<span><strong><?php esc_html_e('IBAN', 'mondu'); ?>:</strong></span>
-					<span><?php printf(esc_html($bank_account['iban'])); ?></span>
-				</p>
-				<p>
-					<span><strong><?php esc_html_e('BIC', 'mondu'); ?>:</strong></span>
-					<span><?php printf(esc_html($bank_account['bic'])); ?></span>
-				</p>
+				<?php if ( $bank_account['iban'] ) { ?>
+					<p>
+						<span><strong><?php esc_html_e('IBAN', 'mondu'); ?>:</strong></span>
+						<span><?php printf(esc_html($bank_account['iban'])); ?></span>
+					</p>
+				<?php } ?>
+				<?php if ( $bank_account['bic'] ) { ?>
+					<p>
+						<span><strong><?php esc_html_e('BIC', 'mondu'); ?>:</strong></span>
+						<span><?php printf(esc_html($bank_account['bic'])); ?></span>
+					</p>
+				<?php } ?>
+				<?php if ( $bank_account['account_number'] ) { ?>
+					<p>
+						<span><strong><?php esc_html_e('Account number', 'mondu'); ?>:</strong></span>
+						<span><?php printf(esc_html($bank_account['account_number'])); ?></span>
+					</p>
+				<?php } ?>
+				<?php if ( $bank_account['sort_code'] ) { ?>
+					<p>
+						<span><strong><?php esc_html_e('Sort code', 'mondu'); ?>:</strong></span>
+						<span><?php printf(esc_html($bank_account['sort_code'])); ?></span>
+					</p>
+				<?php } ?>
 				<?php if ( $net_terms ) { ?>
 					<p>
 						<span><strong><?php esc_html_e('Payment term', 'mondu'); ?>:</strong></span>
