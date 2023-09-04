@@ -1,5 +1,9 @@
 == Changelog ==
 
+= 2.0.5 =
+
+* Adapt UK standards
+
 = 2.0.4 =
 
 * Ensure that ampersand is escaped in the webhooks signature verifier
