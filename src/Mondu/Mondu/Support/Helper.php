@@ -3,9 +3,7 @@
 namespace Mondu\Mondu\Support;
 
 use Mondu\Plugin;
-use WC_Logger_Interface;
 use WC_Order;
-use WP_Query;
 
 class Helper {
 	/**
@@ -118,20 +116,39 @@ class Helper {
 			return $order;
 		}
 
-		$args    = [
-			'post_type'   => 'shop_order',
-			'post_status' => 'any',
-			'meta_query'  => [
+		$orders = wc_get_orders([
+			'return'     => 'ids',
+			'limit'      => 1,
+			'meta_query' => [
 				[
-					'key' => '_order_number',
-					'value' => $order_number,
-					'compare' => '=',
+					'key'        => '_order_number',
+					'value'      => $order_number,
+					'comparison' => '='
 				],
 			],
-		];
-		$query   = new WP_Query( $args );
-		if ( !empty( $query->posts ) ) {
-			return wc_get_order( $query->posts[0]->ID );
+		]);
+
+		$order_id = $orders ? current($orders) : null;
+
+		$order = wc_get_order( $order_id );
+		if ( $order ) {
+			return $order;
+		}
+
+		$orders = get_posts( [
+			'numberposts' => 1,
+			'meta_key'    => '_order_number',
+			'meta_value'  => $order_number,
+			'post_type'   => 'shop_order',
+			'post_status' => 'any',
+			'fields'      => 'ids',
+		] );
+
+		$order_id = $orders ? current($orders) : null;
+
+		$order = wc_get_order( $order_id );
+		if ( $order ) {
+			return $order;
 		}
 	}
 

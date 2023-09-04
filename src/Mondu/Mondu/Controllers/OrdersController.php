@@ -39,11 +39,11 @@ class OrdersController extends WP_REST_Controller {
 		$order          = Helper::get_order_from_order_number( $order_number );
 
 		try {
-			$this->mondu_request_wrapper->confirm_order($order->get_id(), $mondu_order_id);
-
 			if ( isset( WC()->cart ) ) {
 				WC()->cart->empty_cart();
 			}
+
+			$this->mondu_request_wrapper->confirm_order($order->get_id(), $mondu_order_id);
 		} catch ( \Exception $e ) {
 			Helper::log([
 				'error_confirming_order' => $params,
