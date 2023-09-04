@@ -43,6 +43,10 @@ class OrdersController extends WP_REST_Controller {
 				WC()->cart->empty_cart();
 			}
 
+			if ( $order->get_status() == 'pending' ) {
+				$order->update_status('wc-on-hold', __('On hold', 'woocommerce'));
+			}
+
 			$this->mondu_request_wrapper->confirm_order($order->get_id(), $mondu_order_id);
 		} catch ( \Exception $e ) {
 			Helper::log([

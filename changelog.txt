@@ -3,6 +3,7 @@
 = 2.1.0 =
 
 * Extend getting order by order number
+* Update order to on-hold when call Mondu confirm
 
 = 2.0.5 =
 

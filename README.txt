@@ -60,6 +60,7 @@ Check out [Frequently Asked Questions](https://www.mondu.ai/faq) in the Mondu we
 = 2.1.0 =
 
 * Extend getting order by order number
+* Update order to on-hold when call Mondu confirm
 
 = 2.0.5 =
 
