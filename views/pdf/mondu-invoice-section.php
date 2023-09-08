@@ -40,29 +40,32 @@ if ( 'mondu_invoice' === $payment_method ) {
 					<td><strong><?php esc_html_e('Bank', 'mondu'); ?>:</strong></td>
 					<td><?php printf(esc_html($bank_account['bank'])); ?></td>
 				</tr>
-				<?php if ( $bank_account['iban'] ) { ?>
-					<tr>
-						<td><strong><?php esc_html_e('IBAN', 'mondu'); ?>:</strong></td>
-						<td><?php printf(esc_html($bank_account['iban'])); ?></td>
-					</tr>
-				<?php } ?>
-				<?php if ( $bank_account['bic'] ) { ?>
-					<tr>
-						<td><strong><?php esc_html_e('BIC', 'mondu'); ?>:</strong></td>
-						<td><?php printf(esc_html($bank_account['bic'])); ?></td>
-					</tr>
-				<?php } ?>
-				<?php if ( $bank_account['account_number'] ) { ?>
-					<tr>
-						<td><strong><?php esc_html_e('Account number', 'mondu'); ?>:</strong></td>
-						<td><?php printf(esc_html($bank_account['account_number'])); ?></td>
-					</tr>
-				<?php } ?>
-				<?php if ( $bank_account['sort_code'] ) { ?>
-					<tr>
-						<td><strong><?php esc_html_e('Sort code', 'mondu'); ?>:</strong></td>
-						<td><?php printf(esc_html($bank_account['sort_code'])); ?></td>
-					</tr>
+				<?php if ( $mondu_uk_buyer ) { ?>
+					<?php if ( $bank_account['account_number'] ) { ?>
+						<tr>
+							<td><strong><?php esc_html_e('Account number', 'mondu'); ?>:</strong></td>
+							<td><?php printf(esc_html($bank_account['account_number'])); ?></td>
+						</tr>
+					<?php } ?>
+					<?php if ( $bank_account['sort_code'] ) { ?>
+						<tr>
+							<td><strong><?php esc_html_e('Sort code', 'mondu'); ?>:</strong></td>
+							<td><?php printf(esc_html($bank_account['sort_code'])); ?></td>
+						</tr>
+					<?php } ?>
+				<?php } else { ?>
+					<?php if ( $bank_account['iban'] ) { ?>
+						<tr>
+							<td><strong><?php esc_html_e('IBAN', 'mondu'); ?>:</strong></td>
+							<td><?php printf(esc_html($bank_account['iban'])); ?></td>
+						</tr>
+					<?php } ?>
+					<?php if ( $bank_account['bic'] ) { ?>
+						<tr>
+							<td><strong><?php esc_html_e('BIC', 'mondu'); ?>:</strong></td>
+							<td><?php printf(esc_html($bank_account['bic'])); ?></td>
+						</tr>
+					<?php } ?>
 				<?php } ?>
 				<tr>
 					<td><strong><?php esc_html_e('Purpose', 'mondu'); ?>:</strong></td>
@@ -81,7 +84,7 @@ if ( 'mondu_invoice' === $payment_method ) {
 }
 
 if ( 'mondu_direct_debit' === $payment_method ) {
-	$payment_name = $bank_account['iban'] ? __('SEPA direct debit', 'mondu') : __('direct debit', 'mondu');
+	$payment_name = $mondu_uk_buyer ? __('direct debit', 'mondu') : __('SEPA direct debit', 'mondu');
 	?>
 	<section>
 		<p>
