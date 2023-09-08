@@ -123,7 +123,7 @@ class Helper {
 				[
 					'key'        => '_order_number',
 					'value'      => $order_number,
-					'comparison' => '='
+					'comparison' => '=',
 				],
 			],
 		]);

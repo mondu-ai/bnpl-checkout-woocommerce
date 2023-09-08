@@ -143,7 +143,7 @@ class WebhooksController extends WP_REST_Controller {
 
 		$order->add_order_note( esc_html( sprintf( __( 'Mondu order is on confirmed state.', 'mondu' ) ) ), false );
 
-		if ( in_array( $order->get_status(), [ 'pending', 'on-hold' ] )) {
+		if ( in_array( $order->get_status(), [ 'pending', 'on-hold' ] ) ) {
 			$order->update_status('wc-processing', __('Processing', 'woocommerce'));
 		}
 

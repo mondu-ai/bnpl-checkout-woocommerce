@@ -259,7 +259,12 @@ class MonduRequestWrapper {
 
 		$mondu_invoice_id = get_post_meta($order->get_id(), Plugin::INVOICE_ID_KEY, true);
 		if ( !$mondu_invoice_id ) {
-			Helper::log([ 'skipping_credit_note_creation' => [ 'order' => $order_id, 'refund' => $refund_id ] ]);
+			Helper::log([
+				'skipping_credit_note_creation' => [
+					'order' => $order_id,
+					'refund' => $refund_id,
+				],
+			]);
 			return;
 		}
 
