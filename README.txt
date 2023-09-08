@@ -61,6 +61,7 @@ Check out [Frequently Asked Questions](https://www.mondu.ai/faq) in the Mondu we
 
 * Extend getting order by order number
 * Update order to on-hold when call Mondu confirm
+* Fix EU and UK info showing when UK buyer
 
 = 2.0.5 =
 

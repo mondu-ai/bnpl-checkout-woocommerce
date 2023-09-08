@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2023-09-04T11:36:15+00:00\n"
+"POT-Creation-Date: 2023-09-08T08:33:52+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.8.1\n"
 "X-Domain: mondu\n"
@@ -67,7 +67,7 @@ msgid "Production"
 msgstr ""
 
 #: src/Mondu/Admin/Option/Account.php:70
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:216
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:220
 #: src/Mondu/Plugin.php:328
 #: src/Mondu/Plugin.php:379
 msgid "Yes"
@@ -78,7 +78,7 @@ msgid "Send line items only for orders"
 msgstr ""
 
 #: src/Mondu/Admin/Option/Account.php:72
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:216
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:220
 msgid "No"
 msgstr ""
 
@@ -105,53 +105,53 @@ msgstr ""
 msgid "Unexpected API response format."
 msgstr ""
 
-#: src/Mondu/Mondu/Controllers/WebhooksController.php:48
+#: src/Mondu/Mondu/Controllers/WebhooksController.php:47
 msgid "Signature mismatch."
 msgstr ""
 
-#: src/Mondu/Mondu/Controllers/WebhooksController.php:86
+#: src/Mondu/Mondu/Controllers/WebhooksController.php:85
 msgid "Something happened on our end."
 msgstr ""
 
-#: src/Mondu/Mondu/Controllers/WebhooksController.php:98
-#: src/Mondu/Mondu/Controllers/WebhooksController.php:117
-#: src/Mondu/Mondu/Controllers/WebhooksController.php:136
-#: src/Mondu/Mondu/Controllers/WebhooksController.php:159
-#: src/Mondu/Mondu/Controllers/WebhooksController.php:178
-#: src/Mondu/Mondu/Controllers/WebhooksController.php:196
-#: src/Mondu/Mondu/Controllers/WebhooksController.php:214
+#: src/Mondu/Mondu/Controllers/WebhooksController.php:97
+#: src/Mondu/Mondu/Controllers/WebhooksController.php:116
+#: src/Mondu/Mondu/Controllers/WebhooksController.php:135
+#: src/Mondu/Mondu/Controllers/WebhooksController.php:158
+#: src/Mondu/Mondu/Controllers/WebhooksController.php:177
+#: src/Mondu/Mondu/Controllers/WebhooksController.php:195
+#: src/Mondu/Mondu/Controllers/WebhooksController.php:213
 msgid "Required params missing."
 msgstr ""
 
-#: src/Mondu/Mondu/Controllers/WebhooksController.php:107
+#: src/Mondu/Mondu/Controllers/WebhooksController.php:106
 msgid "Mondu order is on pending state."
 msgstr ""
 
-#: src/Mondu/Mondu/Controllers/WebhooksController.php:126
+#: src/Mondu/Mondu/Controllers/WebhooksController.php:125
 msgid "Mondu order is on authorized state."
 msgstr ""
 
-#: src/Mondu/Mondu/Controllers/WebhooksController.php:145
+#: src/Mondu/Mondu/Controllers/WebhooksController.php:144
 msgid "Mondu order is on confirmed state."
 msgstr ""
 
-#: src/Mondu/Mondu/Controllers/WebhooksController.php:168
+#: src/Mondu/Mondu/Controllers/WebhooksController.php:167
 msgid "Mondu order is on declined state."
 msgstr ""
 
-#: src/Mondu/Mondu/Controllers/WebhooksController.php:187
+#: src/Mondu/Mondu/Controllers/WebhooksController.php:186
 msgid "Mondu invoice is on created state."
 msgstr ""
 
-#: src/Mondu/Mondu/Controllers/WebhooksController.php:205
+#: src/Mondu/Mondu/Controllers/WebhooksController.php:204
 msgid "Mondu invoice is on complete state."
 msgstr ""
 
-#: src/Mondu/Mondu/Controllers/WebhooksController.php:223
+#: src/Mondu/Mondu/Controllers/WebhooksController.php:222
 msgid "Mondu invoice is on canceled state."
 msgstr ""
 
-#: src/Mondu/Mondu/Controllers/WebhooksController.php:241
+#: src/Mondu/Mondu/Controllers/WebhooksController.php:240
 msgid "Not Found"
 msgstr ""
 
@@ -208,73 +208,73 @@ msgstr ""
 msgid "Corrupt Mondu order!"
 msgstr ""
 
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:144
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:145
 #: views/pdf/mondu-invoice-section.php:36
 msgid "Account holder"
 msgstr ""
 
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:148
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:149
 #: views/pdf/mondu-invoice-section.php:40
 msgid "Bank"
 msgstr ""
 
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:153
-#: views/pdf/mondu-invoice-section.php:45
-msgid "IBAN"
-msgstr ""
-
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:159
-#: views/pdf/mondu-invoice-section.php:51
-msgid "BIC"
-msgstr ""
-
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:165
-#: views/pdf/mondu-invoice-section.php:57
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:155
+#: views/pdf/mondu-invoice-section.php:46
 msgid "Account number"
 msgstr ""
 
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:171
-#: views/pdf/mondu-invoice-section.php:63
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:161
+#: views/pdf/mondu-invoice-section.php:52
 msgid "Sort code"
 msgstr ""
 
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:177
-#: views/pdf/mondu-invoice-section.php:73
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:168
+#: views/pdf/mondu-invoice-section.php:59
+msgid "IBAN"
+msgstr ""
+
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:174
+#: views/pdf/mondu-invoice-section.php:65
+msgid "BIC"
+msgstr ""
+
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:181
+#: views/pdf/mondu-invoice-section.php:76
 msgid "Payment term"
 msgstr ""
 
 #. translators: %s: Days
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:178
-#: views/pdf/mondu-invoice-section.php:74
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:182
+#: views/pdf/mondu-invoice-section.php:77
 msgid "%s Days"
 msgstr ""
 
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:203
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:207
 msgid "Invoice state"
 msgstr ""
 
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:207
-#: views/pdf/mondu-invoice-section.php:69
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:211
+#: views/pdf/mondu-invoice-section.php:72
 msgid "Invoice number"
 msgstr ""
 
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:211
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:215
 msgid "Total"
 msgstr ""
 
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:215
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:219
 msgid "Paid out"
 msgstr ""
 
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:231
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:235
 msgid "Cancel Invoice"
 msgstr ""
 
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:244
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:248
 msgid "Credit Notes"
 msgstr ""
 
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:250
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:254
 msgid "Tax"
 msgstr ""
 
@@ -394,26 +394,26 @@ msgstr ""
 msgid "This invoice was created in accordance with the general terms and conditions of <strong>%s</strong> and <strong>Mondu GmbH</strong> for the purchase on account payment model. Please pay debt-discharging to the following account:"
 msgstr ""
 
-#: views/pdf/mondu-invoice-section.php:68
+#: views/pdf/mondu-invoice-section.php:71
 msgid "Purpose"
 msgstr ""
 
-#: views/pdf/mondu-invoice-section.php:84
-#: views/pdf/mondu-invoice-section.php:101
-msgid "SEPA direct debit"
-msgstr ""
-
-#: views/pdf/mondu-invoice-section.php:84
-#: views/pdf/mondu-invoice-section.php:101
+#: views/pdf/mondu-invoice-section.php:87
+#: views/pdf/mondu-invoice-section.php:104
 msgid "direct debit"
 msgstr ""
 
+#: views/pdf/mondu-invoice-section.php:87
+#: views/pdf/mondu-invoice-section.php:104
+msgid "SEPA direct debit"
+msgstr ""
+
 #. translators: %1$s: Company %2$s: direct debit
-#: views/pdf/mondu-invoice-section.php:90
+#: views/pdf/mondu-invoice-section.php:93
 msgid "This invoice was created in accordance with the general terms and conditions of <strong>%1$s</strong> and <strong>Mondu GmbH</strong> for the purchase on account payment model.<br/><br/>Since you have chosen the payment method to purchase on account with payment via %2$s through Mondu, the invoice amount will be debited from your bank account on the due date.<br/><br/>Before the amount is debited from your account, you will receive notice of the direct debit. Kindly make sure you have sufficient funds in your account."
 msgstr ""
 
 #. translators: %1$s: Company %2$s: direct debit
-#: views/pdf/mondu-invoice-section.php:107
+#: views/pdf/mondu-invoice-section.php:110
 msgid "This invoice was created in accordance with the general terms and conditions of <strong>%1$s</strong> and <strong>Mondu GmbH</strong> for the instalment payment model.<br/><br/>Since you have chosen the instalment payment method via %2$s through Mondu, the individual installments will be debited from your bank account on the due date.<br/><br/>Before the amounts are debited from your account, you will receive notice regarding the direct debit. Kindly make sure you have sufficient funds in your account. In the event of changes to your order, the instalment plan will be adjusted to reflect the new order total."
 msgstr ""
