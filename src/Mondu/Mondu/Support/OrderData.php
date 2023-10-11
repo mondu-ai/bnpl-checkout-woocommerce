@@ -19,14 +19,19 @@ class OrderData {
 		$data = self::order_data_from_wc_order( $order );
 
 		if ( is_wc_endpoint_url('order-pay') ) {
-			$non_successful_url = $order->get_checkout_payment_url();
+			$decline_url = $order->get_checkout_payment_url();
+			$cancel_url = $order->get_checkout_payment_url();
 		} else {
-			$non_successful_url = wc_get_checkout_url();
+			$decline_url = wc_get_checkout_url();
+			$cancel_url = $order->get_cancel_order_url_raw( wc_get_checkout_url() );
 		}
 
+		$success_url = get_home_url() . '/?rest_route=/mondu/v1/orders/confirm&external_reference_id=' . $order->get_order_number() . '&return_url=' . urlencode( $success_url );
+		$decline_url = get_home_url() . '/?rest_route=/mondu/v1/orders/decline&external_reference_id=' . $order->get_order_number() . '&return_url=' . urlencode( $decline_url );
+
 		$data['success_url']  = $success_url;
-		$data['cancel_url']   = $non_successful_url;
-		$data['declined_url'] = $non_successful_url;
+		$data['cancel_url']   = $cancel_url;
+		$data['declined_url'] = $decline_url;
 		$data['state_flow']   = 'authorization_flow';
 		$data['language']     = Helper::get_language();
 

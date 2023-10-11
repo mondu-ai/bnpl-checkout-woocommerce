@@ -29,6 +29,13 @@ class OrdersController extends WP_REST_Controller {
 				'permission_callback' => '__return_true',
 			],
 		]);
+		register_rest_route($this->namespace, '/decline', [
+			[
+				'methods'             => 'GET',
+				'callback'            => [ $this, 'decline' ],
+				'permission_callback' => '__return_true',
+			],
+		]);
 	}
 
 	public function confirm( WP_REST_Request $request ) {
@@ -43,7 +50,7 @@ class OrdersController extends WP_REST_Controller {
 				WC()->cart->empty_cart();
 			}
 
-			if ( $order->get_status() == 'pending' ) {
+			if ( in_array( $order->get_status(), [ 'pending', 'failed' ] ) ) {
 				$order->update_status('wc-on-hold', __('On hold', 'woocommerce'));
 			}
 
@@ -52,6 +59,22 @@ class OrdersController extends WP_REST_Controller {
 			Helper::log([
 				'error_confirming_order' => $params,
 			]);
+		}
+
+		wp_safe_redirect( $return_url );
+		exit;
+	}
+
+	public function decline( WP_REST_Request $request ) {
+		$params         = $request->get_params();
+		$order_number   = $params['external_reference_id'];
+		$return_url     = urldecode( $params['return_url'] );
+		$order          = Helper::get_order_from_order_number( $order_number );
+
+		$order->add_order_note( esc_html( sprintf( __( 'Order was declined by Mondu.', 'mondu' ) ) ), false );
+
+		if ( $order->get_status() == 'pending' ) {
+			$order->update_status('wc-failed', __('Failed', 'woocommerce'));
 		}
 
 		wp_safe_redirect( $return_url );

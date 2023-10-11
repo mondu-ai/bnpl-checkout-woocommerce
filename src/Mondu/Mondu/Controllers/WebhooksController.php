@@ -164,9 +164,6 @@ class WebhooksController extends WP_REST_Controller {
 			return $this->return_not_found();
 		}
 
-		$order->add_order_note( esc_html( sprintf( __( 'Mondu order is on declined state.', 'mondu' ) ) ), false );
-		$order->update_status('wc-failed', __('Failed', 'woocommerce'));
-
 		return $this->return_success();
 	}
 
