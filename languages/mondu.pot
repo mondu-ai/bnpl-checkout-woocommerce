@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2023-09-08T08:33:52+00:00\n"
+"POT-Creation-Date: 2023-10-12T08:58:46+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.8.1\n"
 "X-Domain: mondu\n"
@@ -88,7 +88,7 @@ msgstr ""
 
 #: src/Mondu/Admin/Order.php:64
 #: src/Mondu/Admin/Order.php:92
-#: src/Mondu/Admin/Settings.php:132
+#: src/Mondu/Admin/Settings.php:133
 msgid "Bad Request."
 msgstr ""
 
@@ -105,6 +105,10 @@ msgstr ""
 msgid "Unexpected API response format."
 msgstr ""
 
+#: src/Mondu/Mondu/Controllers/OrdersController.php:74
+msgid "Order was declined by Mondu."
+msgstr ""
+
 #: src/Mondu/Mondu/Controllers/WebhooksController.php:47
 msgid "Signature mismatch."
 msgstr ""
@@ -117,9 +121,9 @@ msgstr ""
 #: src/Mondu/Mondu/Controllers/WebhooksController.php:116
 #: src/Mondu/Mondu/Controllers/WebhooksController.php:135
 #: src/Mondu/Mondu/Controllers/WebhooksController.php:158
-#: src/Mondu/Mondu/Controllers/WebhooksController.php:177
-#: src/Mondu/Mondu/Controllers/WebhooksController.php:195
-#: src/Mondu/Mondu/Controllers/WebhooksController.php:213
+#: src/Mondu/Mondu/Controllers/WebhooksController.php:174
+#: src/Mondu/Mondu/Controllers/WebhooksController.php:192
+#: src/Mondu/Mondu/Controllers/WebhooksController.php:210
 msgid "Required params missing."
 msgstr ""
 
@@ -135,23 +139,19 @@ msgstr ""
 msgid "Mondu order is on confirmed state."
 msgstr ""
 
-#: src/Mondu/Mondu/Controllers/WebhooksController.php:167
-msgid "Mondu order is on declined state."
-msgstr ""
-
-#: src/Mondu/Mondu/Controllers/WebhooksController.php:186
+#: src/Mondu/Mondu/Controllers/WebhooksController.php:183
 msgid "Mondu invoice is on created state."
 msgstr ""
 
-#: src/Mondu/Mondu/Controllers/WebhooksController.php:204
+#: src/Mondu/Mondu/Controllers/WebhooksController.php:201
 msgid "Mondu invoice is on complete state."
 msgstr ""
 
-#: src/Mondu/Mondu/Controllers/WebhooksController.php:222
+#: src/Mondu/Mondu/Controllers/WebhooksController.php:219
 msgid "Mondu invoice is on canceled state."
 msgstr ""
 
-#: src/Mondu/Mondu/Controllers/WebhooksController.php:240
+#: src/Mondu/Mondu/Controllers/WebhooksController.php:237
 msgid "Not Found"
 msgstr ""
 

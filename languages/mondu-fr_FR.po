@@ -85,7 +85,7 @@ msgstr "Informations Commande Mondu"
 
 #: src/Mondu/Admin/Order.php:64
 #: src/Mondu/Admin/Order.php:92
-#: src/Mondu/Admin/Settings.php:132
+#: src/Mondu/Admin/Settings.php:133
 msgid "Bad Request."
 msgstr "Mauvaise requête."
 
@@ -102,6 +102,10 @@ msgstr "Références Manquantes"
 msgid "Unexpected API response format."
 msgstr "Format de la réponse API inattendu."
 
+#: src/Mondu/Mondu/Controllers/OrdersController.php:74
+msgid "Order was declined by Mondu."
+msgstr "Commande refusée par Mondu."
+
 #: src/Mondu/Mondu/Controllers/WebhooksController.php:47
 msgid "Signature mismatch."
 msgstr "La signature ne correspond pas."
@@ -114,9 +118,9 @@ msgstr "Quelque chose s'est passé de notre côté."
 #: src/Mondu/Mondu/Controllers/WebhooksController.php:116
 #: src/Mondu/Mondu/Controllers/WebhooksController.php:135
 #: src/Mondu/Mondu/Controllers/WebhooksController.php:158
-#: src/Mondu/Mondu/Controllers/WebhooksController.php:177
-#: src/Mondu/Mondu/Controllers/WebhooksController.php:195
-#: src/Mondu/Mondu/Controllers/WebhooksController.php:213
+#: src/Mondu/Mondu/Controllers/WebhooksController.php:174
+#: src/Mondu/Mondu/Controllers/WebhooksController.php:192
+#: src/Mondu/Mondu/Controllers/WebhooksController.php:210
 msgid "Required params missing."
 msgstr "Paramètres requis manquants."
 
@@ -132,23 +136,19 @@ msgstr "La commande Mondu est en cours d'autorisation."
 msgid "Mondu order is on confirmed state."
 msgstr "La commande Mondu est dans l'état confirmé."
 
-#: src/Mondu/Mondu/Controllers/WebhooksController.php:167
-msgid "Mondu order is on declined state."
-msgstr "La commande Mondu est dans l'état refusé."
-
-#: src/Mondu/Mondu/Controllers/WebhooksController.php:186
+#: src/Mondu/Mondu/Controllers/WebhooksController.php:183
 msgid "Mondu invoice is on created state."
 msgstr "La facture Mondu est à l'état créé."
 
-#: src/Mondu/Mondu/Controllers/WebhooksController.php:204
+#: src/Mondu/Mondu/Controllers/WebhooksController.php:201
 msgid "Mondu invoice is on complete state."
 msgstr "La facture Mondu est à l'état complet."
 
-#: src/Mondu/Mondu/Controllers/WebhooksController.php:222
+#: src/Mondu/Mondu/Controllers/WebhooksController.php:219
 msgid "Mondu invoice is on canceled state."
 msgstr "La facture Mondu est dans l'état annulé."
 
-#: src/Mondu/Mondu/Controllers/WebhooksController.php:240
+#: src/Mondu/Mondu/Controllers/WebhooksController.php:237
 msgid "Not Found"
 msgstr "Aucun résultat"
 
