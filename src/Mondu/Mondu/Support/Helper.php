@@ -116,39 +116,65 @@ class Helper {
 			return $order;
 		}
 
-		$orders = wc_get_orders([
-			'return'     => 'ids',
-			'limit'      => 1,
-			'meta_query' => [
-				[
-					'key'        => '_order_number',
-					'value'      => $order_number,
-					'comparison' => '=',
-				],
-			],
-		]);
+		$search_key = '_order_number';
+		$search_term = $order_number;
 
-		$order_id = $orders ? current($orders) : null;
-
-		$order = wc_get_order( $order_id );
-		if ( $order ) {
-			return $order;
+		if ( is_plugin_active( 'custom-order-numbers-for-woocommerce/custom-order-numbers-for-woocommerce.php' ) ) {
+			$search_key = '_alg_wc_full_custom_order_number';
 		}
 
-		$orders = get_posts( [
-			'numberposts' => 1,
-			'meta_key'    => '_order_number',
-			'meta_value'  => $order_number,
-			'post_type'   => 'shop_order',
-			'post_status' => 'any',
-			'fields'      => 'ids',
-		] );
+		if ( is_plugin_active( 'wp-lister-amazon/wp-lister-amazon.php' ) ) {
+			$search_key = '_wpla_amazon_order_id';
+		}
 
-		$order_id = $orders ? current($orders) : null;
+		if ( is_plugin_active( 'yith-woocommerce-sequential-order-number-premium/init.php' ) ) {
+			$search_key = '_ywson_custom_number_order_complete';
+		}
 
-		$order = wc_get_order( $order_id );
-		if ( $order ) {
-			return $order;
+		if ( is_plugin_active( 'woocommerce-jetpack/woocommerce-jetpack.php' ) || is_plugin_active( 'booster-plus-for-woocommerce/booster-plus-for-woocommerce.php' ) ) {
+			$wcj_order_numbers_enabled = get_option( 'wcj_order_numbers_enabled' );
+
+			// Get prefix and suffix options
+			$prefix = do_shortcode( get_option( 'wcj_order_number_prefix', '' ) );
+			$prefix .= date_i18n( get_option( 'wcj_order_number_date_prefix', '' ) );
+			$suffix = do_shortcode( get_option( 'wcj_order_number_suffix', '' ) );
+			$suffix .= date_i18n( get_option( 'wcj_order_number_date_suffix', '' ) );
+
+			// Ignore suffix and prefix from search input
+			$search_no_suffix            = preg_replace( "/\A{$prefix}/i", '', $order_number );
+			$search_no_suffix_and_prefix = preg_replace( "/{$suffix}\z/i", '', $search_no_suffix );
+			$final_search                = empty( $search_no_suffix_and_prefix ) ? $order_number : $search_no_suffix_and_prefix;
+
+			if ( 'yes' == $wcj_order_numbers_enabled ) {
+				if ( 'no' == get_option( 'wcj_order_number_sequential_enabled' ) ) {
+					$order_id = $final_search;
+				} else {
+					$search_key = '_wcj_order_number';
+					$search_term = $final_search;
+				}
+			}
+		}
+
+		if ( !isset( $order_id ) ) {
+			$orders = get_posts(
+				array(
+					'numberposts' => 1,
+					'meta_key'    => $search_key,
+					'meta_value'  => $search_term,
+					'post_type'   => 'shop_order',
+					'post_status' => 'any',
+					'fields'      => 'ids',
+				)
+			);
+			if ( !empty( $orders ) ) {
+				list( $order_id ) = $orders;
+			}
+		}
+		if ( $order_id ) {
+			$order = wc_get_order( $order_id );
+			if ( $order ) {
+				return $order;
+			}
 		}
 	}
 
