@@ -106,6 +106,7 @@ class Helper {
 
 	/**
 	 * Get order from order number
+	 * Tries to get it using the meta key _order_number otherwise gets it according to the plugin
 	 *
 	 * @param WC_Order $order
 	 * @return string
