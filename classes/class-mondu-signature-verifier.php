@@ -1,12 +1,14 @@
 <?php
 
-namespace Mondu\Mondu\Models;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 class SignatureVerifier {
 	private $secret;
 
 	public function __construct() {
-		$this->secret = get_option('_mondu_webhook_secret');
+		$this->secret = get_option( '_mondu_webhook_secret' );
 	}
 
 	public function get_secret() {
@@ -20,7 +22,7 @@ class SignatureVerifier {
 	}
 
 	public function create_hmac( $payload ) {
-		return hash_hmac('sha256', wp_json_encode($payload, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_FORCE_OBJECT | JSON_HEX_AMP), $this->secret);
+		return hash_hmac( 'sha256', wp_json_encode( $payload, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_FORCE_OBJECT | JSON_HEX_AMP ), $this->secret );
 	}
 
 

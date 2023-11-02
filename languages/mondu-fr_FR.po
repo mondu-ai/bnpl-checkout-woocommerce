@@ -15,10 +15,6 @@ msgstr ""
 msgid "Mondu Buy Now Pay Later"
 msgstr "Mondu Buy Now Pay Later"
 
-#. Plugin URI of the plugin
-msgid "https://github.com/mondu-ai/bnpl-checkout-woocommerce/releases"
-msgstr "https://github.com/mondu-ai/bnpl-checkout-woocommerce/releases"
-
 #. Description of the plugin
 msgid "Mondu provides B2B E-commerce and B2B marketplaces with an online payment solution to buy now and pay later."
 msgstr "Mondu fournit aux sites de commerce électronique B2B et aux places de marché B2B une solution de paiement en ligne permettant à leurs clients de payer avec leurs méthodes de paiement préférées et des conditions de paiement flexibles."

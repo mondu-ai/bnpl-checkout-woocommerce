@@ -12,7 +12,7 @@ Mondu provides B2B E-commerce and B2B marketplaces with an online payment soluti
 
 == Description ==
 
-Mondu provides B2B E-commerce and B2B marketplaces with an online payment solution to enable their customers to pay with their preferred payment methods and flexible payment terms.
+[Mondu](https://mondu.ai/) provides B2B E-commerce and B2B marketplaces with an online payment solution to enable their customers to pay with their preferred payment methods and flexible payment terms.
 
 == Features ==
 
@@ -24,16 +24,34 @@ Mondu provides B2B E-commerce and B2B marketplaces with an online payment soluti
 
 == Installation ==
 
-1. In your admin panel, go to Plugins -> Add New and click on the 'Upload Plugin' button.
-2. Select the mondu-buy-now-pay-later-<VERSION>.zip file downloaded from our Github page: https://github.com/mondu-ai/bnpl-checkout-woocommerce/releases and click on the 'Install Now' button.
-3. Click on the 'Activate Plugin' button to use the plugin right away.
-4. Navigate to the new menu Mondu in your admin panel.
-5. Insert the API Token provided by Mondu and the other settings.
-6. Save the changes, validate the credentials and register the webhooks.
-7. Navigate to WooCommerce -> Settings in your admin panel.
-8. Open the Payments tab and enable the Mondu payment methods.
-9. Save the changes.
-10. Read more about the configuration process in the [installation guide](https://docs.mondu.ai/docs/woocommerce-installation-guide).
+= Automatic installation =
+
+Automatic installation is the easiest option as WordPress handles the file transfers itself via browser.
+
+1. Go to the `Plugins > Add` menu in the WordPress administration area.
+2. Look for `Mondu Buy Now Pay Later` (use search form).
+3. Click on Install to install the plugin.
+4. Click on the `Activate Plugin` button to use the plugin right away.
+
+= Manual installation =
+
+The manual installation method involves downloading our plugin and uploading it to your web server via your favorite FTP application.
+
+1. Download the plugin from our [Github page](https://github.com/mondu-ai/bnpl-checkout-woocommerce/releases).
+2. Upload and unzip the zip file to the `/wp-content/plugins/` in a way that you have `/wp-content/plugins/mondu-buy-now-pay-later` folder.
+1. Go to the `Plugins` menu in the WordPress administration area.
+4. Click on the `Activate Plugin` button to use the plugin right away.
+
+== Configuration ==
+
+1. Ensure the `WooCommerce` and the `Mondu Buy Now Pay Later` plugins are activated.
+2. Navigate to the new `Mondu` menu in the WordPress administration area.
+3. Insert the API Token provided by Mondu and the other settings.
+4. Save the changes, validate the credentials and register the webhooks.
+5. Navigate to WooCommerce -> Settings in the WordPress administration area.
+6. Open the Payments tab and enable the Mondu payment methods.
+7. Save the changes.
+8. Read more about the configuration process in the [installation guide](https://docs.mondu.ai/docs/woocommerce-installation-guide).
 
 == Frequently Asked Questions ==
 
