@@ -1,5 +1,9 @@
 == Changelog ==
 
+= 2.1.2 =
+
+* Support more plugins modifying order number
+
 = 2.1.1 =
 
 * Fix cancel and decline hosted checkout params

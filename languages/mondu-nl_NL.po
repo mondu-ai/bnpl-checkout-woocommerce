@@ -85,7 +85,7 @@ msgstr "Mondu Order Informatie"
 
 #: src/Mondu/Admin/Order.php:64
 #: src/Mondu/Admin/Order.php:92
-#: src/Mondu/Admin/Settings.php:133
+#: src/Mondu/Admin/Settings.php:132
 msgid "Bad Request."
 msgstr "Slecht verzoek."
 
