@@ -27,7 +27,7 @@ echo "Removing old zip file"
 rm -f "mondu-buy-now-pay-later-$version.zip"
 mkdir -p mondu-buy-now-pay-later
 echo "Generating zip file"
-rsync -r --exclude "*.DS_Store" --exclude "exporter.sh" --exclude "Dockerfile" --exclude "docker-compose.yml" --exclude ".gitignore" --exclude ".git" --exclude ".github" --exclude "composer.json" --exclude "composer.lock" --exclude "vendor" --exclude "pbs-rules-set.xml" --exclude "mondu-buy-now-pay-later" . mondu-buy-now-pay-later
+rsync -r --exclude "*.DS_Store" --exclude "releaser.sh" --exclude "Dockerfile" --exclude "docker-compose.yml" --exclude ".gitignore" --exclude ".git" --exclude ".github" --exclude "composer.json" --exclude "composer.lock" --exclude "vendor" --exclude "pbs-rules-set.xml" --exclude "mondu-buy-now-pay-later" . mondu-buy-now-pay-later
 zip -r -D "mondu-buy-now-pay-later-$version.zip" mondu-buy-now-pay-later/*
 rm -r mondu-buy-now-pay-later
 echo "Done"
