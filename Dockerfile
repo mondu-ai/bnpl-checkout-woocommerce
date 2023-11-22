@@ -1,6 +1,7 @@
-FROM wordpress:6.3.1
-ENV WOOCOMMERCE_VERSION 8.0.3
-ENV WOOCOMMERCE_PDF_INVOICES_VERSION 3.6.3
+FROM wordpress:6.4.1
+ENV WOOCOMMERCE_VERSION 8.3.1
+ENV WOOCOMMERCE_PDF_INVOICES_VERSION 3.7.2
+ENV SEQUENCIAL_ORDER_NUMBERS_VERSION 1.5.6
 
 RUN apt update
 RUN apt -y install wget
@@ -34,7 +35,7 @@ RUN wget https://downloads.wordpress.org/plugin/woocommerce-pdf-invoices-packing
 
 RUN rm -rf /usr/src/wordpress/wp-content/plugins/wt-woocommerce-sequential-order-numbers
 
-RUN wget https://downloads.wordpress.org/plugin/wt-woocommerce-sequential-order-numbers.1.5.2.zip -O /tmp/wt-woocommerce-sequential-order-numbers.zip \
+RUN wget https://downloads.wordpress.org/plugin/wt-woocommerce-sequential-order-numbers.${SEQUENCIAL_ORDER_NUMBERS_VERSION}.zip -O /tmp/wt-woocommerce-sequential-order-numbers.zip \
   && cd /usr/src/wordpress/wp-content/plugins \
   && unzip /tmp/wt-woocommerce-sequential-order-numbers.zip \
   && rm /tmp/wt-woocommerce-sequential-order-numbers.zip
