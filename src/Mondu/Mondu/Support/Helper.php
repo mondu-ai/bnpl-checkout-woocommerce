@@ -4,6 +4,7 @@ namespace Mondu\Mondu\Support;
 
 use Mondu\Plugin;
 use WC_Order;
+use WP_Query;
 
 class Helper {
 	/**
@@ -146,36 +147,82 @@ class Helper {
 			$search_no_suffix_and_prefix = preg_replace( "/{$suffix}\z/i", '', $search_no_suffix );
 			$final_search                = empty( $search_no_suffix_and_prefix ) ? $order_number : $search_no_suffix_and_prefix;
 
+			$search_term_fallback = substr( $final_search, strlen( $prefix ) );
+			$search_term_fallback = ltrim( $search_term_fallback, 0 );
+
+			if ( strlen( $suffix ) > 0 ) {
+				$search_term_fallback = substr( $search_term_fallback, 0, -strlen( $suffix ) );
+			}
+
 			if ( 'yes' == $wcj_order_numbers_enabled ) {
 				if ( 'no' == get_option( 'wcj_order_number_sequential_enabled' ) ) {
 					$order_id = $final_search;
 				} else {
-					$search_key = '_wcj_order_number';
+					$search_key  = '_wcj_order_number';
 					$search_term = $final_search;
 				}
 			}
 		}
 
 		if ( !isset( $order_id ) ) {
-			$orders = get_posts(
-				array(
-					'numberposts' => 1,
-					'meta_key'    => $search_key,
-					'meta_value'  => $search_term,
-					'post_type'   => 'shop_order',
-					'post_status' => 'any',
-					'fields'      => 'ids',
+			$args  = array(
+				'numberposts'            => 1,
+				'post_type'              => 'shop_order',
+				'fields'                 => 'ids',
+				'post_status'            => 'any',
+				'update_post_meta_cache' => false,
+				'update_post_term_cache' => false,
+				'meta_query'             => array(
+					array(
+						'key'     => $search_key,
+						'value'   => $search_term,
+						'compare' => '=',
+					),
 				)
 			);
-			if ( !empty( $orders ) ) {
-				list( $order_id ) = $orders;
+			$query = new WP_Query( $args );
+
+			if ( !empty( $query->posts ) ) {
+				$order_id = $query->posts[ 0 ];
+			} elseif ( isset( $search_term_fallback ) ) {
+				$args  = array(
+					'numberposts'            => 1,
+					'post_type'              => 'shop_order',
+					'fields'                 => 'ids',
+					'post_status'            => 'any',
+					'update_post_meta_cache' => false,
+					'update_post_term_cache' => false,
+					'meta_query'             => array(
+						array(
+							'key'     => $search_key,
+							'value'   => $search_term_fallback,
+							'compare' => '=',
+						),
+					)
+				);
+				$query = new WP_Query( $args );
+
+				if ( !empty( $query->posts ) ) {
+					$order_id = $query->posts[ 0 ];
+				}
 			}
 		}
-		if ( $order_id ) {
+
+		if ( isset( $order_id ) ) {
 			$order = wc_get_order( $order_id );
+
 			if ( $order ) {
 				return $order;
 			}
+		} else {
+			Helper::log([
+				'message'              => 'Error trying to fetch the order',
+				'order_id_isset'       => isset( $order_id ),
+				'order_number'         => $order_number,
+				'search_key'           => $search_key,
+				'search_term'          => $search_term,
+				'search_term_fallback' => isset( $search_term_fallback ),
+			]);
 		}
 	}
 
