@@ -6,6 +6,7 @@ use Mondu\Admin\Settings;
 use Mondu\Mondu\GatewayInvoice;
 use Mondu\Mondu\GatewayDirectDebit;
 use Mondu\Mondu\GatewayInstallment;
+use Mondu\Mondu\GatewayInstallmentByInvoice;
 use Mondu\Mondu\MonduRequestWrapper;
 use Mondu\Mondu\Controllers\OrdersController;
 use Mondu\Mondu\Controllers\WebhooksController;
@@ -21,9 +22,10 @@ class Plugin {
 	const INVOICE_ID_KEY  = '_mondu_invoice_id';
 	const OPTION_NAME     = 'mondu_account';
 	const PAYMENT_METHODS = [
-		'invoice'      => 'mondu_invoice',
-		'direct_debit' => 'mondu_direct_debit',
-		'installment'  => 'mondu_installment',
+		'invoice'                 => 'mondu_invoice',
+		'direct_debit'            => 'mondu_direct_debit',
+		'installment'             => 'mondu_installment',
+		'installment_by_invoice'  => 'mondu_installment_by_invoice',
 	];
 	const AVAILABLE_COUNTRIES = [ 'DE', 'AT', 'NL', 'FR', 'BE', 'GB' ];
 
@@ -79,7 +81,8 @@ class Plugin {
 		add_filter('woocommerce_payment_gateways', [ GatewayInvoice::class, 'add' ]);
 		add_filter('woocommerce_payment_gateways', [ GatewayDirectDebit::class, 'add' ]);
 		add_filter('woocommerce_payment_gateways', [ GatewayInstallment::class, 'add' ]);
-		add_filter('woocommerce_available_payment_gateways', [ $this, 'remove_mondu_outside_germany' ]);
+		add_filter('woocommerce_payment_gateways', [ GatewayInstallmentByInvoice::class, 'add' ]);
+		add_filter('woocommerce_available_payment_gateways', [ $this, 'remove_gateway_if_country_unavailable' ]);
 
 		/*
 		 * Show action links on the plugin screen.
@@ -164,7 +167,7 @@ class Plugin {
 		echo '<p>' . esc_html__('Since this order will be paid via Mondu you will not be able to change the addresses.', 'mondu') . '</p>';
 	}
 
-	public function remove_mondu_outside_germany( $available_gateways ) {
+	public function remove_gateway_if_country_unavailable( $available_gateways ) {
 		if ( is_admin() || !is_checkout() ) {
 			return $available_gateways;
 		}
