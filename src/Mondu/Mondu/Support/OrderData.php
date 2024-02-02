@@ -23,7 +23,7 @@ class OrderData {
 			$cancel_url = $order->get_checkout_payment_url();
 		} else {
 			$decline_url = wc_get_checkout_url();
-			$cancel_url = $order->get_cancel_order_url_raw( wc_get_checkout_url() );
+			$cancel_url = wc_get_checkout_url();
 		}
 
 		$success_url = get_home_url() . '/?rest_route=/mondu/v1/orders/confirm&external_reference_id=' . $order->get_order_number() . '&return_url=' . urlencode( $success_url );
