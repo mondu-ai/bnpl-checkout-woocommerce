@@ -60,6 +60,7 @@ Check out [Frequently Asked Questions](https://www.mondu.ai/faq) in the Mondu we
 = 2.1.4 =
 
 * Fix deprecated setting $instructions on payments
+* Remove cancel API call when the buyer bounces
 
 = 2.1.3 =
 
