@@ -118,9 +118,9 @@ msgstr "Er is iets gebeurd aan onze kant."
 #: src/Mondu/Mondu/Controllers/WebhooksController.php:116
 #: src/Mondu/Mondu/Controllers/WebhooksController.php:135
 #: src/Mondu/Mondu/Controllers/WebhooksController.php:158
-#: src/Mondu/Mondu/Controllers/WebhooksController.php:174
-#: src/Mondu/Mondu/Controllers/WebhooksController.php:192
-#: src/Mondu/Mondu/Controllers/WebhooksController.php:210
+#: src/Mondu/Mondu/Controllers/WebhooksController.php:180
+#: src/Mondu/Mondu/Controllers/WebhooksController.php:198
+#: src/Mondu/Mondu/Controllers/WebhooksController.php:216
 msgid "Required params missing."
 msgstr "Vereiste params ontbreken."
 
@@ -136,28 +136,31 @@ msgstr "Mondu-bestelling is geautoriseerd."
 msgid "Mondu order is on confirmed state."
 msgstr "Mondu-bestelling is bevestigd."
 
-#: src/Mondu/Mondu/Controllers/WebhooksController.php:183
+#: src/Mondu/Mondu/Controllers/WebhooksController.php:167
+msgid "Mondu order is on declined state."
+msgstr "Mondu-bestelling is geweigerd."
+
+#: src/Mondu/Mondu/Controllers/WebhooksController.php:189
 msgid "Mondu invoice is on created state."
 msgstr "Mondu-factuur is aangemaakt."
 
-#: src/Mondu/Mondu/Controllers/WebhooksController.php:201
+#: src/Mondu/Mondu/Controllers/WebhooksController.php:207
 msgid "Mondu invoice is on complete state."
 msgstr "Mondu-factuur is voltooid."
 
-#: src/Mondu/Mondu/Controllers/WebhooksController.php:219
+#: src/Mondu/Mondu/Controllers/WebhooksController.php:225
 msgid "Mondu invoice is on canceled state."
 msgstr "Mondu-factuur is geannuleerd."
 
-#: src/Mondu/Mondu/Controllers/WebhooksController.php:237
+#: src/Mondu/Mondu/Controllers/WebhooksController.php:243
 msgid "Not Found"
 msgstr "Niet gevonden"
 
-#: src/Mondu/Mondu/GatewayDirectDebit.php:11
+#: src/Mondu/Mondu/GatewayDirectDebit.php:12
 msgid "Mondu SEPA Direct Debit"
 msgstr "Mondu SEPA Incasso"
 
-#: src/Mondu/Mondu/GatewayDirectDebit.php:12
-#: src/Mondu/Mondu/GatewayDirectDebit.php:13
+#: src/Mondu/Mondu/GatewayDirectDebit.php:10
 msgid "SEPA - Pay later by direct debit"
 msgstr "SEPA automatische incasso - Later betalen via automatische incasso"
 
@@ -166,34 +169,31 @@ msgstr "SEPA automatische incasso - Later betalen via automatische incasso"
 msgid "Enable %s payment method"
 msgstr "Schakel %s betaalmethode in"
 
-#: src/Mondu/Mondu/GatewayInstallment.php:11
+#: src/Mondu/Mondu/GatewayInstallment.php:12
 msgid "Mondu Installments"
 msgstr "Mondu Termijnbetalingen"
 
-#: src/Mondu/Mondu/GatewayInstallment.php:12
-#: src/Mondu/Mondu/GatewayInstallment.php:13
+#: src/Mondu/Mondu/GatewayInstallment.php:10
 msgid "Split payments - Pay Later in Installments by Direct Debit"
 msgstr "Gesplitste betalingen - Betaal later in termijnen via automatische incasso"
 
-#: src/Mondu/Mondu/GatewayInstallmentByInvoice.php:11
+#: src/Mondu/Mondu/GatewayInstallmentByInvoice.php:12
 msgid "Mondu Installments by Invoice"
 msgstr "Mondu Termijnen per Factuur"
 
-#: src/Mondu/Mondu/GatewayInstallmentByInvoice.php:12
-#: src/Mondu/Mondu/GatewayInstallmentByInvoice.php:13
+#: src/Mondu/Mondu/GatewayInstallmentByInvoice.php:10
 msgid "Split payments - Pay Later in Installments by Bank Transfer"
 msgstr "Gesplitste betalingen - Betaal later in termijnen via bankoverschrijving"
 
-#: src/Mondu/Mondu/GatewayInvoice.php:11
+#: src/Mondu/Mondu/GatewayInvoice.php:12
 msgid "Mondu Invoice"
 msgstr "Mondu Factuurbetaling"
 
-#: src/Mondu/Mondu/GatewayInvoice.php:12
-#: src/Mondu/Mondu/GatewayInvoice.php:13
+#: src/Mondu/Mondu/GatewayInvoice.php:10
 msgid "Invoice - Pay later by bank transfer"
 msgstr "Aankoop op rekening - Betaal later via bankoverschrijving"
 
-#: src/Mondu/Mondu/MonduGateway.php:126
+#: src/Mondu/Mondu/MonduGateway.php:125
 msgid "Error placing an order. Please try again."
 msgstr "Fout bij het plaatsen van een bestelling. Probeer het opnieuw."
 
