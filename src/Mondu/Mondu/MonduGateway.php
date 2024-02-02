@@ -31,8 +31,7 @@ class MonduGateway extends WC_Payment_Gateway {
 		$this->init_form_fields();
 		$this->init_settings();
 
-		$this->instructions = $this->description;
-		$this->enabled      = $this->is_enabled();
+		$this->enabled = $this->is_enabled();
 
 		$this->mondu_request_wrapper = new MonduRequestWrapper();
 
@@ -74,8 +73,8 @@ class MonduGateway extends WC_Payment_Gateway {
 	 * Output for the order received page.
 	 */
 	public function thankyou_page() {
-		if ( $this->instructions ) {
-			echo wp_kses_post(wpautop(wptexturize($this->instructions)));
+		if ( $this->description ) {
+			echo wp_kses_post(wpautop(wptexturize($this->description)));
 		}
 	}
 
@@ -89,8 +88,8 @@ class MonduGateway extends WC_Payment_Gateway {
 			return;
 		}
 
-		if ( $this->instructions && $this->id === $order->get_payment_method() ) {
-			echo wp_kses_post(wpautop(wptexturize($this->instructions)));
+		if ( $this->description && $this->id === $order->get_payment_method() ) {
+			echo wp_kses_post(wpautop(wptexturize($this->description)));
 		}
 	}
 

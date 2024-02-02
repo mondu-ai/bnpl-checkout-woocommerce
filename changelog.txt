@@ -1,5 +1,9 @@
 == Changelog ==
 
+= 2.1.4 =
+
+* Fix deprecated setting $instructions on payments
+
 = 2.1.3 =
 
 * Include Installment by Invoice payment method

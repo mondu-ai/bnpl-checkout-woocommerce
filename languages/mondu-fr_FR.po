@@ -118,9 +118,9 @@ msgstr "Quelque chose s'est passé de notre côté."
 #: src/Mondu/Mondu/Controllers/WebhooksController.php:116
 #: src/Mondu/Mondu/Controllers/WebhooksController.php:135
 #: src/Mondu/Mondu/Controllers/WebhooksController.php:158
-#: src/Mondu/Mondu/Controllers/WebhooksController.php:174
-#: src/Mondu/Mondu/Controllers/WebhooksController.php:192
-#: src/Mondu/Mondu/Controllers/WebhooksController.php:210
+#: src/Mondu/Mondu/Controllers/WebhooksController.php:180
+#: src/Mondu/Mondu/Controllers/WebhooksController.php:198
+#: src/Mondu/Mondu/Controllers/WebhooksController.php:216
 msgid "Required params missing."
 msgstr "Paramètres requis manquants."
 
@@ -136,28 +136,31 @@ msgstr "La commande Mondu est en cours d'autorisation."
 msgid "Mondu order is on confirmed state."
 msgstr "La commande Mondu est dans l'état confirmé."
 
-#: src/Mondu/Mondu/Controllers/WebhooksController.php:183
+#: src/Mondu/Mondu/Controllers/WebhooksController.php:167
+msgid "Mondu order is on declined state."
+msgstr "La commande Mondu est dans l'état refusé."
+
+#: src/Mondu/Mondu/Controllers/WebhooksController.php:189
 msgid "Mondu invoice is on created state."
 msgstr "La facture Mondu est à l'état créé."
 
-#: src/Mondu/Mondu/Controllers/WebhooksController.php:201
+#: src/Mondu/Mondu/Controllers/WebhooksController.php:207
 msgid "Mondu invoice is on complete state."
 msgstr "La facture Mondu est à l'état complet."
 
-#: src/Mondu/Mondu/Controllers/WebhooksController.php:219
+#: src/Mondu/Mondu/Controllers/WebhooksController.php:225
 msgid "Mondu invoice is on canceled state."
 msgstr "La facture Mondu est dans l'état annulé."
 
-#: src/Mondu/Mondu/Controllers/WebhooksController.php:237
+#: src/Mondu/Mondu/Controllers/WebhooksController.php:243
 msgid "Not Found"
 msgstr "Aucun résultat"
 
-#: src/Mondu/Mondu/GatewayDirectDebit.php:11
+#: src/Mondu/Mondu/GatewayDirectDebit.php:12
 msgid "Mondu SEPA Direct Debit"
 msgstr "Mondu Prélèvement SEPA"
 
-#: src/Mondu/Mondu/GatewayDirectDebit.php:12
-#: src/Mondu/Mondu/GatewayDirectDebit.php:13
+#: src/Mondu/Mondu/GatewayDirectDebit.php:10
 msgid "SEPA - Pay later by direct debit"
 msgstr "SEPA - Payer plus tard par prélèvement SEPA"
 
@@ -166,34 +169,31 @@ msgstr "SEPA - Payer plus tard par prélèvement SEPA"
 msgid "Enable %s payment method"
 msgstr "Activer %s mode de paiement"
 
-#: src/Mondu/Mondu/GatewayInstallment.php:11
+#: src/Mondu/Mondu/GatewayInstallment.php:12
 msgid "Mondu Installments"
 msgstr "Mondu Paiements Fractionnés"
 
-#: src/Mondu/Mondu/GatewayInstallment.php:12
-#: src/Mondu/Mondu/GatewayInstallment.php:13
+#: src/Mondu/Mondu/GatewayInstallment.php:10
 msgid "Split payments - Pay Later in Installments by Direct Debit"
 msgstr "Paiements fractionnés - Payer plus tard en plusieurs fois par prélèvement automatique"
 
-#: src/Mondu/Mondu/GatewayInstallmentByInvoice.php:11
+#: src/Mondu/Mondu/GatewayInstallmentByInvoice.php:12
 msgid "Mondu Installments by Invoice"
 msgstr "Mondu Paiements par facture"
 
-#: src/Mondu/Mondu/GatewayInstallmentByInvoice.php:12
-#: src/Mondu/Mondu/GatewayInstallmentByInvoice.php:13
+#: src/Mondu/Mondu/GatewayInstallmentByInvoice.php:10
 msgid "Split payments - Pay Later in Installments by Bank Transfer"
 msgstr "Paiements fractionnés - Payer plus tard en plusieurs fois par virement bancaire"
 
-#: src/Mondu/Mondu/GatewayInvoice.php:11
+#: src/Mondu/Mondu/GatewayInvoice.php:12
 msgid "Mondu Invoice"
 msgstr "Mondu Facture"
 
-#: src/Mondu/Mondu/GatewayInvoice.php:12
-#: src/Mondu/Mondu/GatewayInvoice.php:13
+#: src/Mondu/Mondu/GatewayInvoice.php:10
 msgid "Invoice - Pay later by bank transfer"
 msgstr "Facture - Payez plus tard par virement"
 
-#: src/Mondu/Mondu/MonduGateway.php:126
+#: src/Mondu/Mondu/MonduGateway.php:125
 msgid "Error placing an order. Please try again."
 msgstr "Erreur de commande. Veuillez réessayer."
 
