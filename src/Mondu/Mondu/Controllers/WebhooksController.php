@@ -97,7 +97,7 @@ class WebhooksController extends WP_REST_Controller {
 			throw new MonduException(__('Required params missing.', 'mondu'));
 		}
 
-		$order = Helper::get_order_from_order_number( $woocommerce_order_number );
+		$order = Helper::get_order_from_order_number_or_uuid( $woocommerce_order_number, $mondu_order_id );
 
 		if ( !$order ) {
 			return $this->return_not_found();
@@ -116,7 +116,7 @@ class WebhooksController extends WP_REST_Controller {
 			throw new MonduException(__('Required params missing.', 'mondu'));
 		}
 
-		$order = Helper::get_order_from_order_number( $woocommerce_order_number );
+		$order = Helper::get_order_from_order_number_or_uuid( $woocommerce_order_number, $mondu_order_id );
 
 		if ( !$order ) {
 			return $this->return_not_found();
@@ -135,7 +135,7 @@ class WebhooksController extends WP_REST_Controller {
 			throw new MonduException(__('Required params missing.', 'mondu'));
 		}
 
-		$order = Helper::get_order_from_order_number( $woocommerce_order_number );
+		$order = Helper::get_order_from_order_number_or_uuid( $woocommerce_order_number, $mondu_order_id );
 
 		if ( !$order ) {
 			return $this->return_not_found();
@@ -158,7 +158,7 @@ class WebhooksController extends WP_REST_Controller {
 			throw new MonduException(__('Required params missing.', 'mondu'));
 		}
 
-		$order = Helper::get_order_from_order_number( $woocommerce_order_number );
+		$order = Helper::get_order_from_order_number_or_uuid( $woocommerce_order_number, $mondu_order_id );
 
 		if ( !$order ) {
 			return $this->return_not_found();
@@ -180,7 +180,7 @@ class WebhooksController extends WP_REST_Controller {
 			throw new MonduException(__('Required params missing.', 'mondu'));
 		}
 
-		$order = Helper::get_order_from_order_number( $woocommerce_order_number );
+		$order = Helper::get_order_from_order_number_or_uuid( $woocommerce_order_number );
 
 		if ( !$order ) {
 			return $this->return_not_found();
@@ -198,7 +198,7 @@ class WebhooksController extends WP_REST_Controller {
 			throw new MonduException(__('Required params missing.', 'mondu'));
 		}
 
-		$order = Helper::get_order_from_order_number( $woocommerce_order_number );
+		$order = Helper::get_order_from_order_number_or_uuid( $woocommerce_order_number );
 
 		if ( !$order ) {
 			return $this->return_not_found();
@@ -216,7 +216,7 @@ class WebhooksController extends WP_REST_Controller {
 			throw new MonduException(__('Required params missing.', 'mondu'));
 		}
 
-		$order = Helper::get_order_from_order_number( $woocommerce_order_number );
+		$order = Helper::get_order_from_order_number_or_uuid( $woocommerce_order_number );
 
 		if ( !$order ) {
 			return $this->return_not_found();
