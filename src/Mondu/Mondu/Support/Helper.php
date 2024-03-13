@@ -109,8 +109,8 @@ class Helper {
 	 * Get order from order number
 	 * Tries to get it using the meta key _order_number otherwise gets it according to the plugin
 	 *
-	 * @param WC_Order $order
-	 * @return string
+	 * @param int|string $order_number
+	 * @return false|WC_Order
 	 */
 	public static function get_order_from_order_number( $order_number ) {
 		$order = wc_get_order( $order_number );
@@ -208,13 +208,7 @@ class Helper {
 			}
 		}
 
-		if ( isset( $order_id ) ) {
-			$order = wc_get_order( $order_id );
-
-			if ( $order ) {
-				return $order;
-			}
-		} else {
+		if ( !isset( $order_id ) ) {
 			Helper::log([
 				'message'              => 'Error trying to fetch the order',
 				'order_id_isset'       => isset( $order_id ),
@@ -223,7 +217,70 @@ class Helper {
 				'search_term'          => $search_term,
 				'search_term_fallback' => isset( $search_term_fallback ),
 			]);
+			return false;
 		}
+
+		return wc_get_order( $order_id );
+	}
+
+	/**
+	 * @param $mondu_order_uuid
+	 * @return bool|WC_Order
+	 */
+	public static function get_order_from_mondu_uuid( $mondu_order_uuid ) {
+		$search_key = Plugin::ORDER_ID_KEY;
+		$search_term = $mondu_order_uuid;
+
+		$args  = array(
+			'numberposts'            => 1,
+			'post_type'              => 'shop_order',
+			'fields'                 => 'ids',
+			'post_status'            => 'any',
+			'update_post_meta_cache' => false,
+			'update_post_term_cache' => false,
+			'meta_query'             => array(
+				array(
+					'key'     => $search_key,
+					'value'   => $search_term,
+					'compare' => '=',
+				),
+			)
+		);
+		$query = new WP_Query( $args );
+		$order_id = $query->posts[ 0 ];
+		$order =  wc_get_order( $order_id );
+
+		if ( !$order ) {
+			Helper::log([
+				'message'              => 'Error trying to fetch the order',
+				'order_id_isset'       => isset( $order_id ),
+				'mondu_order_uuid'     => $mondu_order_uuid,
+				'search_key'           => $search_key,
+				'search_term'          => $search_term,
+				'search_term_fallback' => isset( $search_term_fallback ),
+			]);
+		}
+
+		return $order;
+	}
+
+	/**
+	 * @param $order_number
+	 * @param $mondu_order_uuid
+	 * @return bool|WC_Order
+	 */
+	public static function get_order_from_order_number_or_uuid( $order_number = null, $mondu_order_uuid = null) {
+		$order = false;
+
+		if ( $order_number ) {
+			$order = static::get_order_from_order_number( $order_number );
+		}
+
+		if ( !$order && $mondu_order_uuid ) {
+			$order = static::get_order_from_mondu_uuid( $mondu_order_uuid );
+		}
+
+		return $order;
 	}
 
 	/**

@@ -43,9 +43,13 @@ class OrdersController extends WP_REST_Controller {
 		$order_number   = $params['external_reference_id'];
 		$mondu_order_id = $params['order_uuid'];
 		$return_url     = urldecode( $params['return_url'] );
-		$order          = Helper::get_order_from_order_number( $order_number );
+		$order = Helper::get_order_from_order_number_or_uuid( $order_number, $mondu_order_id );
 
 		try {
+			if (!$order) {
+				throw new \Exception(__('Order not found'));
+			}
+
 			if ( isset( WC()->cart ) ) {
 				WC()->cart->empty_cart();
 			}
