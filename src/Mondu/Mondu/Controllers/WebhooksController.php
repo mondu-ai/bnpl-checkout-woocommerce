@@ -35,9 +35,9 @@ class WebhooksController extends WP_REST_Controller {
 		$params            = $request->get_json_params();
 		$topic             = isset($params['topic']) ? $params['topic'] : null;
 
-        $body = $request->get_body();
-        $signature_payload = $request->get_header('X-MONDU-SIGNATURE');
-        $signature = $verifier->create_hmac($body);
+		$body = $request->get_body();
+		$signature_payload = $request->get_header('X-MONDU-SIGNATURE');
+		$signature = $verifier->create_hmac($body);
 
 		Helper::log([
 			'webhook_topic' => $topic,

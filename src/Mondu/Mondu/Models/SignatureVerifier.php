@@ -20,7 +20,7 @@ class SignatureVerifier {
 	}
 
 	public function create_hmac( $payload ) {
-        return hash_hmac('sha256', $payload, $this->secret);
+		return hash_hmac('sha256', $payload, $this->secret);
 	}
 
 
