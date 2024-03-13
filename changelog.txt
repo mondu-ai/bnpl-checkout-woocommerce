@@ -3,6 +3,7 @@
 = 2.1.5 =
 
 * Changed webhook signature validation logic
+* Modified OrdersController confirm endpoint
 
 = 2.1.4 =
 

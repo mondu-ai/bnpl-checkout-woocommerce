@@ -60,6 +60,7 @@ Check out [Frequently Asked Questions](https://www.mondu.ai/faq) in the Mondu we
 = 2.1.5 =
 
 * Changed webhook signature validation logic
+* Modified OrdersController confirm endpoint
 
 = 2.1.4 =
 
