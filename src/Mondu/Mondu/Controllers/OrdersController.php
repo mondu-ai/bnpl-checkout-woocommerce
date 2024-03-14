@@ -46,7 +46,7 @@ class OrdersController extends WP_REST_Controller {
 		$order = Helper::get_order_from_order_number_or_uuid( $order_number, $mondu_order_id );
 
 		try {
-			if (!$order) {
+			if ( !$order ) {
 				throw new \Exception(__('Order not found'));
 			}
 
