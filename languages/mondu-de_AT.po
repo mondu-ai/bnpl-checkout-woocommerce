@@ -12,22 +12,27 @@ msgstr ""
 "Language: de_AT\n"
 
 #. Plugin Name of the plugin
+#: mondu-buy-now-pay-later.php
 msgid "Mondu Buy Now Pay Later"
 msgstr "Mondu Buy Now Pay Later"
 
 #. Plugin URI of the plugin
+#: mondu-buy-now-pay-later.php
 msgid "https://github.com/mondu-ai/bnpl-checkout-woocommerce/releases"
 msgstr "https://github.com/mondu-ai/bnpl-checkout-woocommerce/releases"
 
 #. Description of the plugin
+#: mondu-buy-now-pay-later.php
 msgid "Mondu provides B2B E-commerce and B2B marketplaces with an online payment solution to buy now and pay later."
 msgstr "Mondu bietet B2B-E-Commerce und B2B-Marktplätzen eine Online-Zahlungslösung, die es ihren Kunden ermöglicht, mit ihren bevorzugten Zahlungsmethoden und flexiblen Zahlungsbedingungen zu bezahlen."
 
 #. Author of the plugin
+#: mondu-buy-now-pay-later.php
 msgid "Mondu"
 msgstr "Mondu"
 
 #. Author URI of the plugin
+#: mondu-buy-now-pay-later.php
 msgid "https://mondu.ai"
 msgstr "https://mondu.ai"
 
@@ -102,57 +107,57 @@ msgstr "Fehlende Credentials"
 msgid "Unexpected API response format."
 msgstr "Unerwartetes API-Antwortformat."
 
-#: src/Mondu/Mondu/Controllers/OrdersController.php:74
+#: src/Mondu/Mondu/Controllers/OrdersController.php:78
 msgid "Order was declined by Mondu."
 msgstr "Bestellung wurde von Mondu abgelehnt."
 
-#: src/Mondu/Mondu/Controllers/WebhooksController.php:47
+#: src/Mondu/Mondu/Controllers/WebhooksController.php:49
 msgid "Signature mismatch."
 msgstr "Signatur stimmt nicht überein."
 
-#: src/Mondu/Mondu/Controllers/WebhooksController.php:85
+#: src/Mondu/Mondu/Controllers/WebhooksController.php:87
 msgid "Something happened on our end."
 msgstr "Bei uns ist etwas passiert."
 
-#: src/Mondu/Mondu/Controllers/WebhooksController.php:97
-#: src/Mondu/Mondu/Controllers/WebhooksController.php:116
-#: src/Mondu/Mondu/Controllers/WebhooksController.php:135
-#: src/Mondu/Mondu/Controllers/WebhooksController.php:158
-#: src/Mondu/Mondu/Controllers/WebhooksController.php:180
-#: src/Mondu/Mondu/Controllers/WebhooksController.php:198
-#: src/Mondu/Mondu/Controllers/WebhooksController.php:216
+#: src/Mondu/Mondu/Controllers/WebhooksController.php:99
+#: src/Mondu/Mondu/Controllers/WebhooksController.php:118
+#: src/Mondu/Mondu/Controllers/WebhooksController.php:137
+#: src/Mondu/Mondu/Controllers/WebhooksController.php:160
+#: src/Mondu/Mondu/Controllers/WebhooksController.php:183
+#: src/Mondu/Mondu/Controllers/WebhooksController.php:202
+#: src/Mondu/Mondu/Controllers/WebhooksController.php:221
 msgid "Required params missing."
 msgstr "Erforderliche Parameter fehlen."
 
-#: src/Mondu/Mondu/Controllers/WebhooksController.php:106
+#: src/Mondu/Mondu/Controllers/WebhooksController.php:108
 msgid "Mondu order is on pending state."
 msgstr "Mondu Bestellung ist in manueller Prüfung."
 
-#: src/Mondu/Mondu/Controllers/WebhooksController.php:125
+#: src/Mondu/Mondu/Controllers/WebhooksController.php:127
 msgid "Mondu order is on authorized state."
 msgstr "Mondu Bestellung ist athorisiert."
 
-#: src/Mondu/Mondu/Controllers/WebhooksController.php:144
+#: src/Mondu/Mondu/Controllers/WebhooksController.php:146
 msgid "Mondu order is on confirmed state."
 msgstr "Mondu Bestellung ist bestätigt."
 
-#: src/Mondu/Mondu/Controllers/WebhooksController.php:167
+#: src/Mondu/Mondu/Controllers/WebhooksController.php:169
 msgid "Mondu order is on declined state."
 msgstr "Mondu Bestellung ist abgelehnt."
 
-#: src/Mondu/Mondu/Controllers/WebhooksController.php:189
+#: src/Mondu/Mondu/Controllers/WebhooksController.php:192
 msgid "Mondu invoice is on created state."
 msgstr "Mondu Rechnung ist erstellt."
 
-#: src/Mondu/Mondu/Controllers/WebhooksController.php:207
+#: src/Mondu/Mondu/Controllers/WebhooksController.php:211
 msgid "Mondu invoice is on complete state."
 msgstr "Mondu Rechnung ist vollständig bezahlt."
 
-#: src/Mondu/Mondu/Controllers/WebhooksController.php:225
+#: src/Mondu/Mondu/Controllers/WebhooksController.php:230
 msgid "Mondu invoice is on canceled state."
 msgstr "Mondu Rechnung ist storniert."
 
-#: src/Mondu/Mondu/Controllers/WebhooksController.php:243
+#: src/Mondu/Mondu/Controllers/WebhooksController.php:248
 msgid "Not Found"
 msgstr "Nicht gefunden"
 
