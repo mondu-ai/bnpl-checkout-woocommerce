@@ -1,5 +1,9 @@
 == Changelog ==
 
+= 2.1.7 =
+
+* Bugfixes and improvements
+
 = 2.1.6 =
 
 * Do not call the confirm endpoint if we are not changing the order state

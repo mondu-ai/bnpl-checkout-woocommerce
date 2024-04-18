@@ -124,7 +124,7 @@ class OrderData {
 		$billing_last_name  = $order->get_billing_last_name();
 		$billing_email      = $order->get_billing_email();
 		$billing_phone      = $order->get_billing_phone();
-		$customer_id        = $order->get_customer_id();
+		$customer_id        = $order->get_customer_id() ?: null;
 
 		$billing_address_line1 = $order->get_billing_address_1();
 		$billing_address_line2 = $order->get_billing_address_2();
