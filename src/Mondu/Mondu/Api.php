@@ -1,4 +1,9 @@
 <?php
+/**
+ * Mondu API
+ *
+ * @package Mondu\Mondu
+ */
 
 namespace Mondu\Mondu;
 
@@ -7,303 +12,357 @@ use Mondu\Mondu\Support\Helper;
 use Mondu\Exceptions\MonduException;
 use Mondu\Exceptions\ResponseException;
 
+/**
+ * Class Api
+ */
 class Api {
+	/**
+	 * Global Settings
+	 *
+	 * @var mixed
+	 */
 	private $global_settings;
 
+	/**
+	 * Api constructor.
+	 */
 	public function __construct() {
-		$this->global_settings = get_option(Plugin::OPTION_NAME);
+		$this->global_settings = get_option( Plugin::OPTION_NAME );
 	}
 
+	/**
+	 * Register
+	 *
+	 * @return void
+	 */
 	public function register() {
-		register_setting('mondu', Plugin::OPTION_NAME);
+		register_setting( 'mondu', Plugin::OPTION_NAME );
 	}
 
 	/**
 	 * Create order
 	 *
-	 * @param array $params
+	 * @param array $params Order parameters.
+	 *
 	 * @return mixed
-	 * @throws MonduException
-	 * @throws ResponseException
+	 *
+	 * @throws MonduException Mondu Exception.
+	 * @throws ResponseException Response Exception.
 	 */
 	public function create_order( array $params ) {
-		$result = $this->post('/orders', $params);
-		return json_decode($result['body'], true);
+		$result = $this->post( '/orders', $params );
+		return json_decode( $result['body'], true );
 	}
 
 	/**
 	 * Get Order
 	 *
-	 * @param $mondu_uuid
+	 * @param mixed $mondu_uuid Mondu UUID.
+	 *
 	 * @return mixed
-	 * @throws MonduException
-	 * @throws ResponseException
+	 *
+	 * @throws MonduException Mondu Exception.
+	 * @throws ResponseException Response Exception.
 	 */
 	public function get_order( $mondu_uuid ) {
-		$result = $this->get(sprintf('/orders/%s', $mondu_uuid), null);
-		return json_decode($result['body'], true);
+		$result = $this->get( sprintf( '/orders/%s', $mondu_uuid ) );
+		return json_decode( $result['body'], true );
 	}
 
 	/**
 	 * Adjust Order
 	 *
-	 * @param $mondu_uuid
-	 * @param array $params
+	 * @param mixed $mondu_uuid Mondu UUID.
+	 * @param array $params Order parameters.
+	 *
 	 * @return mixed
-	 * @throws MonduException
-	 * @throws ResponseException
+	 *
+	 * @throws MonduException Mondu Exception.
+	 * @throws ResponseException Response Exception.
 	 */
 	public function adjust_order( $mondu_uuid, array $params ) {
-		$result = $this->post(sprintf('/orders/%s/adjust', $mondu_uuid), $params);
-		return json_decode($result['body'], true);
+		$result = $this->post( sprintf( '/orders/%s/adjust', $mondu_uuid ), $params );
+		return json_decode( $result['body'], true );
 	}
 
 	/**
 	 * Cancel Order
 	 *
-	 * @param $mondu_uuid
+	 * @param mixed $mondu_uuid Mondu UUID.
+	 *
 	 * @return mixed
-	 * @throws MonduException
-	 * @throws ResponseException
+	 *
+	 * @throws MonduException Mondu Exception.
+	 * @throws ResponseException Response Exception.
 	 */
 	public function cancel_order( $mondu_uuid ) {
-		$result = $this->post(sprintf('/orders/%s/cancel', $mondu_uuid));
-		return json_decode($result['body'], true);
+		$result = $this->post( sprintf( '/orders/%s/cancel', $mondu_uuid ) );
+		return json_decode( $result['body'], true );
 	}
 
 	/**
 	 * Ship Order
 	 *
-	 * @param $mondu_uuid
-	 * @param array $params
+	 * @param mixed $mondu_uuid Mondu UUID.
+	 * @param array $params Order parameters.
+	 *
 	 * @return mixed
-	 * @throws MonduException
-	 * @throws ResponseException
+	 *
+	 * @throws MonduException Mondu Exception.
+	 * @throws ResponseException Response Exception.
 	 */
 	public function ship_order( $mondu_uuid, array $params ) {
-		$result = $this->post(sprintf('/orders/%s/invoices', $mondu_uuid), $params);
-		return json_decode($result['body'], true);
+		$result = $this->post( sprintf( '/orders/%s/invoices', $mondu_uuid ), $params );
+		return json_decode( $result['body'], true );
 	}
 
 	/**
 	 * Confirm order
 	 *
-	 * @param $mondu_uuid
+	 * @param mixed $mondu_uuid Mondu UUID.
+	 *
 	 * @return mixed
-	 * @throws MonduException
-	 * @throws ResponseException
+	 *
+	 * @throws MonduException Mondu Exception.
+	 * @throws ResponseException Response Exception.
 	 */
 	public function confirm_order( $mondu_uuid ) {
-		$result = $this->post(sprintf('/orders/%s/confirm', $mondu_uuid));
-		return json_decode($result['body'], true);
+		$result = $this->post( sprintf( '/orders/%s/confirm', $mondu_uuid ) );
+		return json_decode( $result['body'], true );
 	}
 
 	/**
 	 * Get Invoices
 	 *
-	 * @param $mondu_uuid
+	 * @param mixed $mondu_uuid Mondu UUID.
+	 *
 	 * @return mixed
-	 * @throws MonduException
-	 * @throws ResponseException
+	 *
+	 * @throws MonduException Mondu Exception.
+	 * @throws ResponseException Response Exception.
 	 */
 	public function get_invoices( $mondu_uuid ) {
-		$result = $this->get(sprintf('/orders/%s/invoices', $mondu_uuid), null);
-		return json_decode($result['body'], true);
+		$result = $this->get( sprintf( '/orders/%s/invoices', $mondu_uuid ) );
+		return json_decode( $result['body'], true );
 	}
 
 	/**
 	 * Get Invoice
 	 *
-	 * @param $mondu_order_uuid
-	 * @param $mondu_invoice_uuid
+	 * @param mixed $mondu_order_uuid Mondu Order UUID.
+	 * @param mixed $mondu_invoice_uuid Mondu Invoice UUID.
+	 *
 	 * @return mixed
-	 * @throws MonduException
-	 * @throws ResponseException
+	 *
+	 * @throws MonduException Mondu Exception.
+	 * @throws ResponseException Response Exception.
 	 */
 	public function get_invoice( $mondu_order_uuid, $mondu_invoice_uuid ) {
-		$result = $this->get(sprintf('/orders/%s/invoices/%s', $mondu_order_uuid, $mondu_invoice_uuid), null);
-		return json_decode($result['body'], true);
+		$result = $this->get( sprintf( '/orders/%s/invoices/%s', $mondu_order_uuid, $mondu_invoice_uuid ) );
+		return json_decode( $result['body'], true );
 	}
 
 	/**
 	 * Webhook Secret
 	 *
 	 * @return mixed
-	 * @throws MonduException
-	 * @throws ResponseException
+	 *
+	 * @throws MonduException Mondu Exception.
+	 * @throws ResponseException Response Exception.
 	 */
 	public function webhook_secret() {
-		$result = $this->get('/webhooks/keys', null);
-		return json_decode($result['body'], true);
+		$result = $this->get( '/webhooks/keys' );
+		return json_decode( $result['body'], true );
 	}
 
 	/**
 	 * Get Webhooks
 	 *
 	 * @return mixed
-	 * @throws MonduException
-	 * @throws ResponseException
+	 *
+	 * @throws MonduException Mondu Exception.
+	 * @throws ResponseException Response Exception.
 	 */
 	public function get_webhooks() {
-		$result = $this->get('/webhooks', null);
-		return json_decode($result['body'], true);
+		$result = $this->get( '/webhooks' );
+		return json_decode( $result['body'], true );
 	}
 
 	/**
 	 * Register Webhook
 	 *
-	 * @param array $params
+	 * @param array $params Webhook parameters.
+	 *
 	 * @return mixed
-	 * @throws MonduException
-	 * @throws ResponseException
+	 *
+	 * @throws MonduException Mondu Exception.
+	 * @throws ResponseException Response Exception.
 	 */
 	public function register_webhook( $params ) {
-		$result = $this->post('/webhooks', $params);
-		return json_decode($result['body'], true);
+		$result = $this->post( '/webhooks', $params );
+		return json_decode( $result['body'], true );
 	}
 
 	/**
 	 * Cancel Invoice
 	 *
-	 * @param $mondu_uuid
-	 * @param $mondu_invoice_uuid
+	 * @param mixed $mondu_uuid Mondu UUID.
+	 * @param mixed $mondu_invoice_uuid Mondu Invoice UUID.
+	 *
 	 * @return mixed
-	 * @throws MonduException
-	 * @throws ResponseException
+	 *
+	 * @throws MonduException Mondu Exception.
+	 * @throws ResponseException Response Exception.
 	 */
 	public function cancel_invoice( $mondu_uuid, $mondu_invoice_uuid ) {
-		$result = $this->post(sprintf('/orders/%s/invoices/%s/cancel', $mondu_uuid, $mondu_invoice_uuid));
-		return json_decode($result['body'], true);
+		$result = $this->post( sprintf( '/orders/%s/invoices/%s/cancel', $mondu_uuid, $mondu_invoice_uuid ) );
+		return json_decode( $result['body'], true );
 	}
 
 	/**
 	 * Create Credit note
 	 *
-	 * @param $mondu_invoice_uuid
-	 * @param array $credit_note
+	 * @param mixed $mondu_invoice_uuid Mondu Invoice UUID.
+	 * @param array $credit_note Credit note parameters.
+	 *
 	 * @return mixed
-	 * @throws MonduException
-	 * @throws ResponseException
+	 *
+	 * @throws MonduException Mondu Exception.
+	 * @throws ResponseException Response Exception.
 	 */
 	public function create_credit_note( $mondu_invoice_uuid, array $credit_note ) {
-		$result = $this->post(sprintf('/invoices/%s/credit_notes', $mondu_invoice_uuid), $credit_note);
-		return json_decode($result['body'], true);
+		$result = $this->post( sprintf( '/invoices/%s/credit_notes', $mondu_invoice_uuid ), $credit_note );
+		return json_decode( $result['body'], true );
 	}
 
 	/**
 	 * Get Payment Methods
 	 *
 	 * @return mixed
-	 * @throws MonduException
-	 * @throws ResponseException
+	 *
+	 * @throws MonduException Mondu Exception.
+	 * @throws ResponseException Response Exception.
 	 */
 	public function get_payment_methods() {
-		$result = $this->get('/payment_methods', null);
-		return json_decode($result['body'], true);
+		$result = $this->get( '/payment_methods' );
+		return json_decode( $result['body'], true );
 	}
 
 	/**
 	 * Log Plugin Event
 	 *
-	 * @param array $params
+	 * @param array $params Plugin event parameters.
+	 *
 	 * @return void
-	 * @throws MonduException
-	 * @throws ResponseException
+	 *
+	 * @throws MonduException Mondu Exception.
+	 * @throws ResponseException Response Exception.
 	 */
 	public function log_plugin_event( array $params ) {
-		$this->post('/plugin/events', $params);
+		$this->post( '/plugin/events', $params );
 	}
 
 	/**
 	 * Post Request
 	 *
-	 * @param $path
-	 * @param array|null $body
+	 * @param mixed      $path Path.
+	 * @param array|null $body Body.
+	 *
 	 * @return array
-	 * @throws MonduException
-	 * @throws ResponseException
+	 *
+	 * @throws MonduException Mondu Exception.
+	 * @throws ResponseException Response Exception.
 	 */
 	private function post( $path, array $body = null ) {
 		$method = 'POST';
-		return $this->request($path, $method, $body);
+		return $this->request( $path, $method, $body );
 	}
 
 	/**
 	 * Put Request
 	 *
-	 * @param $path
-	 * @param array|null $body
+	 * @param mixed      $path Path.
+	 * @param array|null $body Body.
+	 *
 	 * @return array
-	 * @throws MonduException
-	 * @throws ResponseException
+	 *
+	 * @throws MonduException Mondu Exception.
+	 * @throws ResponseException Response Exception.
 	 */
 	private function put( $path, array $body = null ) {
 		$method = 'PUT';
-		return $this->request($path, $method, $body);
+		return $this->request( $path, $method, $body );
 	}
 
 	/**
 	 * Patch Request
 	 *
-	 * @param $path
-	 * @param array|null $body
+	 * @param mixed      $path Path.
+	 * @param array|null $body Body.
+	 *
 	 * @return array
-	 * @throws MonduException
-	 * @throws ResponseException
+	 *
+	 * @throws MonduException Mondu Exception.
+	 * @throws ResponseException Response Exception.
 	 */
 	private function patch( $path, array $body = null ) {
 		$method = 'PATCH';
-		return $this->request($path, $method, $body);
+		return $this->request( $path, $method, $body );
 	}
 
 	/**
 	 * Get Request
 	 *
-	 * @param $path
-	 * @param $parameters
+	 * @param mixed $path Path.
+	 * @param mixed $parameters Parameters.
+	 *
 	 * @return array
-	 * @throws MonduException
-	 * @throws ResponseException
+	 *
+	 * @throws MonduException Mondu Exception.
+	 * @throws ResponseException Response Exception.
 	 */
 	private function get( $path, $parameters = null ) {
 		if ( null !== $parameters ) {
-			$path .= '&' . http_build_query($parameters);
+			$path .= '&' . http_build_query( $parameters );
 		}
 
 		$method = 'GET';
-		return $this->request($path, $method);
+		return $this->request( $path, $method );
 	}
 
 	/**
 	 * Validate Result
 	 *
-	 * @param $url
-	 * @param $result
+	 * @param mixed $url URL.
+	 * @param mixed $result Result.
+	 *
 	 * @return array
-	 * @throws MonduException
-	 * @throws ResponseException
+	 * @throws MonduException Mondu Exception.
+	 * @throws ResponseException Response Exception.
 	 */
 	private function validate_remote_result( $url, $result ) {
 		if ( $result instanceof \WP_Error ) {
-			throw new MonduException($result->get_error_message(), $result->get_error_code());
+			throw new MonduException( __( $result->get_error_message() ), $result->get_error_code() );
 		} else {
-			Helper::log([
-				'code'     => isset($result['response']['code']) ? $result['response']['code'] : null,
-				'url'      => $url,
-				'response' => isset($result['body']) ? $result['body'] : null,
-			]);
+			Helper::log(
+				array(
+					'code'     => isset( $result['response']['code'] ) ? $result['response']['code'] : null,
+					'url'      => $url,
+					'response' => isset( $result['body'] ) ? $result['body'] : null,
+				)
+			);
 		}
 
-		if ( !is_array($result) || !isset($result['response'], $result['body']) || !isset($result['response']['code'], $result['response']['message']) ) {
-			throw new MonduException(__('Unexpected API response format.', 'mondu'));
+		if ( ! is_array( $result ) || ! isset( $result['response'], $result['body'] ) || ! isset( $result['response']['code'], $result['response']['message'] ) ) {
+			throw new MonduException( __( 'Unexpected API response format.', 'mondu' ) );
 		}
-		if ( strpos($result['response']['code'], '2') !== 0 ) {
+		if ( ! str_starts_with( $result['response']['code'], '2' ) ) {
 			$message = $result['response']['message'];
-			if ( isset($result['body']['errors'], $result['body']['errors']['title']) ) {
+			if ( isset( $result['body']['errors'], $result['body']['errors']['title'] ) ) {
 				$message = $result['body']['errors']['title'];
 			}
 
-			throw new ResponseException($message, $result['response']['code'], json_decode($result['body'], true));
+			throw new ResponseException( __( $message ), $result['response']['code'], json_decode( $result['body'], true ) );
 		}
 
 		return $result;
@@ -312,40 +371,44 @@ class Api {
 	/**
 	 * Send Request
 	 *
-	 * @param $path
-	 * @param $method
-	 * @param $body
+	 * @param mixed $path Path.
+	 * @param mixed $method Method.
+	 * @param mixed $body Body.
+	 *
 	 * @return array
-	 * @throws MonduException
-	 * @throws ResponseException
+	 *
+	 * @throws MonduException Mondu Exception.
+	 * @throws ResponseException Response Exception.
 	 */
 	private function request( $path, $method = 'GET', $body = null ) {
 		$url  = Helper::is_production() ? MONDU_PRODUCTION_URL : MONDU_SANDBOX_URL;
 		$url .= $path;
 
-		$headers = [
+		$headers = array(
 			'Content-Type'     => 'application/json',
 			'Api-Token'        => $this->global_settings['api_token'],
 			'X-Plugin-Name'    => 'woocommerce',
 			'X-Plugin-Version' => MONDU_PLUGIN_VERSION,
-		];
+		);
 
-		$args = [
+		$args = array(
 			'headers' => $headers,
 			'method'  => $method,
 			'timeout' => 30,
-		];
+		);
 
 		if ( null !== $body ) {
-			$args['body'] = wp_json_encode($body);
+			$args['body'] = wp_json_encode( $body );
 		}
 
-		Helper::log([
-			'method' => $method,
-			'url'    => $url,
-			'body'   => isset($args['body']) ? $args['body'] : null,
-		]);
+		Helper::log(
+			array(
+				'method' => $method,
+				'url'    => $url,
+				'body'   => $args['body'] ?? null,
+			)
+		);
 
-		return $this->validate_remote_result($url, wp_remote_request($url, $args));
+		return $this->validate_remote_result( $url, wp_remote_request( $url, $args ) );
 	}
 }
