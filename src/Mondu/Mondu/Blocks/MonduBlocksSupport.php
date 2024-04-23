@@ -48,7 +48,7 @@ final class MonduBlocksSupport extends AbstractPaymentMethodType {
 			true
 		);
 
-		wp_set_script_translations( 'mondu-blocks-integration', 'mondu', '/usr/share/nginx/html/woocommerce82/wp-content/plugins/mondu-buy-now-pay-later/languages');
+		wp_set_script_translations( 'mondu-blocks-integration', 'mondu', MONDU_PLUGIN_PATH. '/languages');
 
 		return [ 'mondu-blocks-integration' ];
 	}
