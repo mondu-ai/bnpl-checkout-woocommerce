@@ -32,8 +32,8 @@ class MonduRequestWrapper {
 		$response    = $this->wrap_with_mondu_log_event( 'create_order', [ $order_data ] );
 		$mondu_order = $response['order'];
 
-        $order->update_meta_data(Plugin::ORDER_ID_KEY, $mondu_order['uuid']);
-        $order->save();
+		$order->update_meta_data(Plugin::ORDER_ID_KEY, $mondu_order['uuid']);
+		$order->save();
 		return $mondu_order;
 	}
 
@@ -50,7 +50,7 @@ class MonduRequestWrapper {
 			return;
 		}
 
-        $mondu_order_id = $order->get_meta(Plugin::ORDER_ID_KEY);
+		$mondu_order_id = $order->get_meta(Plugin::ORDER_ID_KEY);
 		$response       = $this->wrap_with_mondu_log_event( 'get_order', [ $mondu_order_id ] );
 		return isset($response['order']) ? $response['order'] : null;
 	}
@@ -110,7 +110,7 @@ class MonduRequestWrapper {
 		$response       = $this->wrap_with_mondu_log_event( 'ship_order', [ $mondu_order_id, $invoice_data ] );
 		$invoice        = $response['invoice'];
 		$order->update_meta_data(Plugin::INVOICE_ID_KEY, $invoice['uuid']);
-        $order->save();
+		$order->save();
 		return $invoice;
 	}
 

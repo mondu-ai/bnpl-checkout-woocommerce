@@ -33,19 +33,19 @@ class Order {
 	}
 
 	public function add_payment_info_box() {
-        $screen = class_exists( '\Automattic\WooCommerce\Internal\DataStores\Orders\CustomOrdersTableController' ) && wc_get_container()->get( CustomOrdersTableController::class )->custom_orders_table_usage_is_enabled()
-            ? wc_get_page_screen_id( 'shop-order' )
-            : 'shop_order';
+		$screen = class_exists( '\Automattic\WooCommerce\Internal\DataStores\Orders\CustomOrdersTableController' ) && wc_get_container()->get( CustomOrdersTableController::class )->custom_orders_table_usage_is_enabled()
+			? wc_get_page_screen_id( 'shop-order' )
+			: 'shop_order';
 
 		add_meta_box('mondu_payment_info',
 			__('Mondu Order Information', 'mondu'),
 			function ($post_or_order_object) {
-                $order = ( $post_or_order_object instanceof \WP_Post ) ? wc_get_order( $post_or_order_object->ID ) : $post_or_order_object;
+				$order = ( $post_or_order_object instanceof \WP_Post ) ? wc_get_order( $post_or_order_object->ID ) : $post_or_order_object;
 
-                if ( null === $order ) return;
-                if ( !in_array($order->get_payment_method(), Plugin::PAYMENT_METHODS, true) ) return;
+				if ( null === $order ) return;
+				if ( !in_array($order->get_payment_method(), Plugin::PAYMENT_METHODS, true) ) return;
 
-                $this->render_meta_box_content($order);
+				$this->render_meta_box_content($order);
 			},
 			$screen,
 			'normal'

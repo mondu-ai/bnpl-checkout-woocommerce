@@ -3,7 +3,6 @@
 namespace Mondu;
 
 use Automattic\WooCommerce\Blocks\Payments\PaymentMethodRegistry;
-use Automattic\WooCommerce\Utilities\FeaturesUtil;
 use Exception;
 use Mondu\Admin\Settings;
 use Mondu\Mondu\Blocks\MonduBlocksSupport;
@@ -102,16 +101,16 @@ class Plugin {
 		add_action('woocommerce_order_status_changed', [ $this->mondu_request_wrapper, 'order_status_changed' ], 10, 3);
 		add_action('woocommerce_before_order_object_save', [ $this->mondu_request_wrapper, 'update_order_if_changed_some_fields' ], 10, 1);
 		add_action('woocommerce_order_refunded', [ $this->mondu_request_wrapper, 'order_refunded' ], 10, 2);
-        add_action( 'woocommerce_blocks_loaded', function() {
-            if ( class_exists( 'Automattic\WooCommerce\Blocks\Payments\Integrations\AbstractPaymentMethodType' ) ) {
-                add_action(
-                    'woocommerce_blocks_payment_method_type_registration',
-                    function( PaymentMethodRegistry $payment_method_registry ) {
-                        $payment_method_registry->register( new MonduBlocksSupport() );
-                    }
-                );
-            }
-        });
+		add_action( 'woocommerce_blocks_loaded', function() {
+			if ( class_exists( 'Automattic\WooCommerce\Blocks\Payments\Integrations\AbstractPaymentMethodType' ) ) {
+				add_action(
+					'woocommerce_blocks_payment_method_type_registration',
+					function( PaymentMethodRegistry $payment_method_registry ) {
+						$payment_method_registry->register( new MonduBlocksSupport() );
+					}
+				);
+			}
+		});
 
 		add_action('rest_api_init', function () {
 			$orders = new OrdersController();
@@ -173,10 +172,10 @@ class Plugin {
 		}
 
 		wc_enqueue_js("
-            jQuery(document).ready(function() {
-                jQuery('a.edit_address').remove();
-            });
-        ");
+			jQuery(document).ready(function() {
+				jQuery('a.edit_address').remove();
+			});
+		");
 		echo '<p>' . esc_html__('Since this order will be paid via Mondu you will not be able to change the addresses.', 'mondu') . '</p>';
 	}
 
@@ -437,12 +436,6 @@ class Plugin {
 
 		printf('<div class="%1$s"><p>%2$s</p></div>', esc_attr($class), esc_html($message));
 	}
-
-    public function declare_woocommerce_hpos_compatibility() {
-        if ( class_exists( '\Automattic\WooCommerce\Utilities\FeaturesUtil' ) ) {
-            \Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility( 'custom_order_tables', __FILE__, true );
-        }
-    }
 
 	private function is_country_available( $country ) {
 		return in_array($country, self::AVAILABLE_COUNTRIES, true);
