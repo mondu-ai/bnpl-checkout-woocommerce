@@ -31,7 +31,9 @@ class MonduRequestWrapper {
 		$order_data  = OrderData::create_order( $order, $success_url );
 		$response    = $this->wrap_with_mondu_log_event( 'create_order', [ $order_data ] );
 		$mondu_order = $response['order'];
-		update_post_meta( $order->get_id(), Plugin::ORDER_ID_KEY, $mondu_order['uuid'] );
+
+        $order->update_meta_data(Plugin::ORDER_ID_KEY, $mondu_order['uuid']);
+        $order->save();
 		return $mondu_order;
 	}
 
@@ -48,7 +50,7 @@ class MonduRequestWrapper {
 			return;
 		}
 
-		$mondu_order_id = get_post_meta($order_id, Plugin::ORDER_ID_KEY, true);
+        $mondu_order_id = $order->get_meta(Plugin::ORDER_ID_KEY);
 		$response       = $this->wrap_with_mondu_log_event( 'get_order', [ $mondu_order_id ] );
 		return isset($response['order']) ? $response['order'] : null;
 	}
@@ -67,7 +69,7 @@ class MonduRequestWrapper {
 			return;
 		}
 
-		$mondu_order_id = get_post_meta($order_id, Plugin::ORDER_ID_KEY, true);
+		$mondu_order_id = $order->get_meta(Plugin::ORDER_ID_KEY);
 		$response       = $this->wrap_with_mondu_log_event( 'adjust_order', [ $mondu_order_id, $data_to_update ] );
 		return $response['order'];
 	}
@@ -85,7 +87,7 @@ class MonduRequestWrapper {
 			return;
 		}
 
-		$mondu_order_id = get_post_meta($order_id, Plugin::ORDER_ID_KEY, true);
+		$mondu_order_id = $order->get_meta(Plugin::ORDER_ID_KEY);
 		$response       = $this->wrap_with_mondu_log_event( 'cancel_order', [ $mondu_order_id ] );
 		return $response['order'];
 	}
@@ -103,11 +105,12 @@ class MonduRequestWrapper {
 			return;
 		}
 
-		$mondu_order_id = get_post_meta($order_id, Plugin::ORDER_ID_KEY, true);
+		$mondu_order_id = $order->get_meta(Plugin::ORDER_ID_KEY);
 		$invoice_data   = OrderData::invoice_data_from_wc_order($order);
 		$response       = $this->wrap_with_mondu_log_event( 'ship_order', [ $mondu_order_id, $invoice_data ] );
 		$invoice        = $response['invoice'];
-		update_post_meta($order_id, Plugin::INVOICE_ID_KEY, $invoice['uuid']);
+		$order->update_meta_data(Plugin::INVOICE_ID_KEY, $invoice['uuid']);
+        $order->save();
 		return $invoice;
 	}
 
@@ -124,7 +127,7 @@ class MonduRequestWrapper {
 			return;
 		}
 
-		$mondu_order_id = get_post_meta($order_id, Plugin::ORDER_ID_KEY, true);
+		$mondu_order_id = $order->get_meta(Plugin::ORDER_ID_KEY);
 		$response       = $this->wrap_with_mondu_log_event( 'get_invoices', [ $mondu_order_id ] );
 		return $response['invoices'];
 	}
@@ -142,8 +145,8 @@ class MonduRequestWrapper {
 			return;
 		}
 
-		$mondu_order_id   = get_post_meta($order_id, Plugin::ORDER_ID_KEY, true);
-		$mondu_invoice_id = get_post_meta($order_id, Plugin::INVOICE_ID_KEY, true);
+		$mondu_order_id   = $order->get_meta(Plugin::ORDER_ID_KEY);
+		$mondu_invoice_id = $order->get_meta(Plugin::INVOICE_ID_KEY);
 		$response         = $this->wrap_with_mondu_log_event( 'get_invoice', [ $mondu_order_id, $mondu_invoice_id ] );
 		return $response['invoice'];
 	}
@@ -257,7 +260,7 @@ class MonduRequestWrapper {
 			return;
 		}
 
-		$mondu_invoice_id = get_post_meta($order->get_id(), Plugin::INVOICE_ID_KEY, true);
+		$mondu_invoice_id = $order->get_meta(Plugin::INVOICE_ID_KEY);
 		if ( !$mondu_invoice_id ) {
 			Helper::log([
 				'skipping_credit_note_creation' => [

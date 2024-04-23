@@ -3,7 +3,7 @@
  * Plugin Name: Mondu Buy Now Pay Later
  * Plugin URI: https://github.com/mondu-ai/bnpl-checkout-woocommerce/releases
  * Description: Mondu provides B2B E-commerce and B2B marketplaces with an online payment solution to buy now and pay later.
- * Version: 2.1.7
+ * Version: 2.2.0
  * Author: Mondu
  * Author URI: https://mondu.ai
  *
@@ -13,19 +13,21 @@
  * Requires at least: 5.9.0
  * Requires PHP: 7.4
  * WC requires at least: 6.5
- * WC tested up to: 7.8
+ * WC tested up to: 8.7
  *
  * License: GPLv3
  * License URI: https://www.gnu.org/licenses/gpl-3.0.html
  *
- * Copyright 2023 Mondu
+ * Copyright 2024 Mondu
  */
+
+use Automattic\WooCommerce\Utilities\FeaturesUtil;
 
 if ( !defined( 'ABSPATH' ) ) {
 	die( 'Direct access not allowed' );
 }
 
-define( 'MONDU_PLUGIN_VERSION', '2.1.7' );
+define( 'MONDU_PLUGIN_VERSION', '2.2.0' );
 define( 'MONDU_PLUGIN_FILE', __FILE__ );
 define( 'MONDU_PLUGIN_PATH', __DIR__ );
 define( 'MONDU_PLUGIN_BASENAME', plugin_basename(MONDU_PLUGIN_FILE) );
@@ -59,3 +61,11 @@ function mondu_deactivate() {
 	delete_option( 'woocommerce_mondu_installment_by_invoice_settings' );
 }
 register_deactivation_hook( MONDU_PLUGIN_FILE, 'mondu_deactivate' );
+
+// Here because this needs to happen before plugins_loaded hook
+add_action('before_woocommerce_init', function() {
+    if ( class_exists( FeaturesUtil::class ) ) {
+        FeaturesUtil::declare_compatibility( 'custom_order_tables', __FILE__ );
+        FeaturesUtil::declare_compatibility( 'cart_checkout_blocks', __FILE__ );
+    }
+});

@@ -136,7 +136,7 @@ class OrderData {
 		$order_data = [
 			'payment_method'        => array_flip( Plugin::PAYMENT_METHODS )[ $order->get_payment_method() ],
 			'currency'              => get_woocommerce_currency(),
-			'external_reference_id' => (string) $order->get_order_number(),
+			'external_reference_id' => (string) $order->get_order_number() . '-Test',
 			'gross_amount_cents'    => round( (float) $order->get_total() * 100),
 			'net_price_cents'       => round( (float) $order->get_subtotal() * 100),
 			'tax_cents'             => round( (float) $order->get_total_tax() * 100),

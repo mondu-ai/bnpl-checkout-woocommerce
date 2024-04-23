@@ -2,6 +2,7 @@
 
 namespace Mondu\Admin;
 
+use Automattic\WooCommerce\Internal\DataStores\Orders\CustomOrdersTableController;
 use Mondu\Exceptions\MonduException;
 use Mondu\Exceptions\ResponseException;
 use Mondu\Mondu\MonduRequestWrapper;
@@ -32,18 +33,21 @@ class Order {
 	}
 
 	public function add_payment_info_box() {
-		$order = $this->check_and_get_wc_order();
-
-		if ( null === $order ) {
-			return;
-		}
+        $screen = class_exists( '\Automattic\WooCommerce\Internal\DataStores\Orders\CustomOrdersTableController' ) && wc_get_container()->get( CustomOrdersTableController::class )->custom_orders_table_usage_is_enabled()
+            ? wc_get_page_screen_id( 'shop-order' )
+            : 'shop_order';
 
 		add_meta_box('mondu_payment_info',
 			__('Mondu Order Information', 'mondu'),
-			function () use ( $order ) {
-				$this->render_meta_box_content($order);
+			function ($post_or_order_object) {
+                $order = ( $post_or_order_object instanceof \WP_Post ) ? wc_get_order( $post_or_order_object->ID ) : $post_or_order_object;
+
+                if ( null === $order ) return;
+                if ( !in_array($order->get_payment_method(), Plugin::PAYMENT_METHODS, true) ) return;
+
+                $this->render_meta_box_content($order);
 			},
-			'shop_order',
+			$screen,
 			'normal'
 		);
 	}
@@ -112,25 +116,5 @@ class Order {
 				'message' => $e->getMessage(),
 			]);
 		}
-	}
-
-	private function check_and_get_wc_order() {
-		global $post;
-
-		if ( !$post instanceof \WP_Post ) {
-			return null;
-		}
-
-		if ( 'shop_order' !== $post->post_type ) {
-			return null;
-		}
-
-		$order = new WC_Order($post->ID);
-
-		if ( !in_array($order->get_payment_method(), Plugin::PAYMENT_METHODS, true) ) {
-			return null;
-		}
-
-		return $order;
 	}
 }

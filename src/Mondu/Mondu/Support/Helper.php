@@ -5,6 +5,7 @@ namespace Mondu\Mondu\Support;
 use Mondu\Plugin;
 use WC_Order;
 use WP_Query;
+use Automattic\WooCommerce\Utilities\OrderUtil;
 
 class Helper {
 	/**
@@ -269,19 +270,58 @@ class Helper {
 	 * @param $mondu_order_uuid
 	 * @return bool|WC_Order
 	 */
-	public static function get_order_from_order_number_or_uuid( $order_number = null, $mondu_order_uuid = null) {
-		$order = false;
+	public static function get_order_from_order_number_or_uuid( $order_number = null, $mondu_order_uuid = null ) {
+        if ( OrderUtil::custom_orders_table_usage_is_enabled() ) {
+            // HPOS usage is enabled.
+            return self::get_order_hpos($order_number, $mondu_order_uuid);
+        } else {
+            // Traditional CPT-based orders are in use.
+            return self::get_order_cpt($order_number, $mondu_order_uuid);
+        }
+    }
 
-		if ( $order_number ) {
-			$order = static::get_order_from_order_number( $order_number );
-		}
+    /**
+     * @param $order_number
+     * @param $mondu_order_uuid
+     * @return bool|WC_Order
+     */
+    private static function get_order_hpos($order_number, $mondu_order_uuid) {
+        $order = wc_get_order($order_number);
 
-		if ( !$order && $mondu_order_uuid ) {
-			$order = static::get_order_from_mondu_uuid( $mondu_order_uuid );
-		}
+        if ( $order ) {
+            return $order;
+        }
 
-		return $order;
-	}
+        $orders = wc_get_orders([
+            'meta_key' => Plugin::ORDER_ID_KEY,
+            'meta_value' => $mondu_order_uuid
+        ]);
+
+        if ( !empty($orders) ) {
+            return $orders[0];
+        }
+
+        return false;
+    }
+
+    /**
+     * @param $order_number
+     * @param $mondu_order_uuid
+     * @return bool|WC_Order
+     */
+    private static function get_order_cpt( $order_number = null, $mondu_order_uuid = null ) {
+        $order = false;
+
+        if ( $order_number ) {
+            $order = static::get_order_from_order_number( $order_number );
+        }
+
+        if ( !$order && $mondu_order_uuid ) {
+            $order = static::get_order_from_mondu_uuid( $mondu_order_uuid );
+        }
+
+        return $order;
+    }
 
 	/**
 	 * Is Production
