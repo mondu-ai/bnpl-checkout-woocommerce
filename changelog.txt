@@ -1,5 +1,9 @@
 == Changelog ==
 
+= 3.0.0 =
+
+* Change plugin structure based on the WordPress standards
+
 = 2.1.7 =
 
 * Bugfixes and improvements
