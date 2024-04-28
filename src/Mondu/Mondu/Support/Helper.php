@@ -1,25 +1,17 @@
 <?php
-/**
- * Helper
- *
- * @package Mondu\Mondu\Support
- */
 
 namespace Mondu\Mondu\Support;
 
 use Mondu\Plugin;
 use WC_Order;
 use WP_Query;
+use Automattic\WooCommerce\Utilities\OrderUtil;
 
-/**
- * Helper
- */
 class Helper {
 	/**
 	 * Not Null or Empty
 	 *
-	 * @param mixed $value Value to check.
-	 *
+	 * @param $value
 	 * @return bool
 	 */
 	public static function not_null_or_empty( $value ) {
@@ -29,22 +21,21 @@ class Helper {
 	/**
 	 * Create invoice url
 	 *
-	 * @param WC_Order $order Order.
-	 *
+	 * @param WC_Order $order
 	 * @return mixed|void
 	 */
 	public static function create_invoice_url( WC_Order $order ) {
-		if ( has_action( 'generate_wpo_wcpdf' ) ) {
+		if ( has_action('generate_wpo_wcpdf') ) {
 			$invoice_url = add_query_arg(
 				'_wpnonce',
 				wp_create_nonce( 'generate_wpo_wcpdf' ),
 				add_query_arg(
-					array(
+					[
 						'action'        => 'generate_wpo_wcpdf',
 						'document_type' => 'invoice',
 						'order_ids'     => $order->get_id(),
 						'my-account'    => true,
-					),
+					],
 					admin_url( 'admin-ajax.php' )
 				)
 			);
@@ -63,8 +54,7 @@ class Helper {
 	/**
 	 * Get invoice WCPDF document
 	 *
-	 * @param WC_Order $order Order.
-	 *
+	 * @param WC_Order $order
 	 * @return mixed
 	 */
 	public static function get_invoice( WC_Order $order ) {
@@ -78,8 +68,7 @@ class Helper {
 	/**
 	 * Get invoice number
 	 *
-	 * @param WC_Order $order Order.
-	 *
+	 * @param WC_Order $order
 	 * @return string
 	 */
 	public static function get_invoice_number( WC_Order $order ) {
@@ -113,16 +102,15 @@ class Helper {
 		 *
 		 * @since 2.0.0
 		 */
-		$language = apply_filters( 'mondu_order_locale', get_locale() );
-		return substr( $language, 0, 2 );
+		$language = apply_filters('mondu_order_locale', get_locale());
+		return substr($language, 0, 2);
 	}
 
 	/**
 	 * Get order from order number
 	 * Tries to get it using the meta key _order_number otherwise gets it according to the plugin
 	 *
-	 * @param int|string $order_number Order number.
-	 *
+	 * @param int|string $order_number
 	 * @return false|WC_Order
 	 */
 	public static function get_order_from_order_number( $order_number ) {
@@ -131,7 +119,7 @@ class Helper {
 			return $order;
 		}
 
-		$search_key  = '_order_number';
+		$search_key = '_order_number';
 		$search_term = $order_number;
 
 		if ( is_plugin_active( 'custom-order-numbers-for-woocommerce/custom-order-numbers-for-woocommerce.php' ) ) {
@@ -149,13 +137,13 @@ class Helper {
 		if ( is_plugin_active( 'woocommerce-jetpack/woocommerce-jetpack.php' ) || is_plugin_active( 'booster-plus-for-woocommerce/booster-plus-for-woocommerce.php' ) ) {
 			$wcj_order_numbers_enabled = get_option( 'wcj_order_numbers_enabled' );
 
-			// Get prefix and suffix options.
-			$prefix  = do_shortcode( get_option( 'wcj_order_number_prefix', '' ) );
+			// Get prefix and suffix options
+			$prefix = do_shortcode( get_option( 'wcj_order_number_prefix', '' ) );
 			$prefix .= date_i18n( get_option( 'wcj_order_number_date_prefix', '' ) );
-			$suffix  = do_shortcode( get_option( 'wcj_order_number_suffix', '' ) );
+			$suffix = do_shortcode( get_option( 'wcj_order_number_suffix', '' ) );
 			$suffix .= date_i18n( get_option( 'wcj_order_number_date_suffix', '' ) );
 
-			// Ignore suffix and prefix from search input.
+			// Ignore suffix and prefix from search input
 			$search_no_suffix            = preg_replace( "/\A{$prefix}/i", '', $order_number );
 			$search_no_suffix_and_prefix = preg_replace( "/{$suffix}\z/i", '', $search_no_suffix );
 			$final_search                = empty( $search_no_suffix_and_prefix ) ? $order_number : $search_no_suffix_and_prefix;
@@ -167,8 +155,8 @@ class Helper {
 				$search_term_fallback = substr( $search_term_fallback, 0, -strlen( $suffix ) );
 			}
 
-			if ( 'yes' === $wcj_order_numbers_enabled ) {
-				if ( 'no' === get_option( 'wcj_order_number_sequential_enabled' ) ) {
+			if ( 'yes' == $wcj_order_numbers_enabled ) {
+				if ( 'no' == get_option( 'wcj_order_number_sequential_enabled' ) ) {
 					$order_id = $final_search;
 				} else {
 					$search_key  = '_wcj_order_number';
@@ -177,7 +165,7 @@ class Helper {
 			}
 		}
 
-		if ( ! isset( $order_id ) ) {
+		if ( !isset( $order_id ) ) {
 			$args  = array(
 				'numberposts'            => 1,
 				'post_type'              => 'shop_order',
@@ -191,12 +179,12 @@ class Helper {
 						'value'   => $search_term,
 						'compare' => '=',
 					),
-				),
+				)
 			);
 			$query = new WP_Query( $args );
 
-			if ( ! empty( $query->posts ) ) {
-				$order_id = $query->posts[0];
+			if ( !empty( $query->posts ) ) {
+				$order_id = $query->posts[ 0 ];
 			} elseif ( isset( $search_term_fallback ) ) {
 				$args  = array(
 					'numberposts'            => 1,
@@ -211,27 +199,25 @@ class Helper {
 							'value'   => $search_term_fallback,
 							'compare' => '=',
 						),
-					),
+					)
 				);
 				$query = new WP_Query( $args );
 
-				if ( ! empty( $query->posts ) ) {
-					$order_id = $query->posts[0];
+				if ( !empty( $query->posts ) ) {
+					$order_id = $query->posts[ 0 ];
 				}
 			}
 		}
 
-		if ( ! isset( $order_id ) ) {
-			self::log(
-				array(
-					'message'              => 'Error trying to fetch the order',
-					'order_id_isset'       => isset( $order_id ),
-					'order_number'         => $order_number,
-					'search_key'           => $search_key,
-					'search_term'          => $search_term,
-					'search_term_fallback' => isset( $search_term_fallback ),
-				)
-			);
+		if ( !isset( $order_id ) ) {
+			Helper::log([
+				'message'              => 'Error trying to fetch the order',
+				'order_id_isset'       => isset( $order_id ),
+				'order_number'         => $order_number,
+				'search_key'           => $search_key,
+				'search_term'          => $search_term,
+				'search_term_fallback' => isset( $search_term_fallback ),
+			]);
 			return false;
 		}
 
@@ -239,17 +225,14 @@ class Helper {
 	}
 
 	/**
-	 * Get order from Mondu order UUID.
-	 *
-	 * @param mixed $mondu_order_uuid Mondu order UUID.
-	 *
+	 * @param $mondu_order_uuid
 	 * @return bool|WC_Order
 	 */
 	public static function get_order_from_mondu_uuid( $mondu_order_uuid ) {
-		$search_key  = Plugin::ORDER_ID_KEY;
+		$search_key = Plugin::ORDER_ID_KEY;
 		$search_term = $mondu_order_uuid;
 
-		$args     = array(
+		$args  = array(
 			'numberposts'            => 1,
 			'post_type'              => 'shop_order',
 			'fields'                 => 'ids',
@@ -262,44 +245,78 @@ class Helper {
 					'value'   => $search_term,
 					'compare' => '=',
 				),
-			),
+			)
 		);
-		$query    = new WP_Query( $args );
-		$order_id = $query->posts[0];
-		$order    = wc_get_order( $order_id );
+		$query = new WP_Query( $args );
+		$order_id = $query->posts[ 0 ];
+		$order =  wc_get_order( $order_id );
 
-		if ( ! $order ) {
-			self::log(
-				array(
-					'message'              => 'Error trying to fetch the order',
-					'order_id_isset'       => isset( $order_id ),
-					'mondu_order_uuid'     => $mondu_order_uuid,
-					'search_key'           => $search_key,
-					'search_term'          => $search_term,
-					'search_term_fallback' => isset( $search_term_fallback ),
-				)
-			);
+		if ( !$order ) {
+			Helper::log([
+				'message'              => 'Error trying to fetch the order',
+				'order_id_isset'       => isset( $order_id ),
+				'mondu_order_uuid'     => $mondu_order_uuid,
+				'search_key'           => $search_key,
+				'search_term'          => $search_term,
+				'search_term_fallback' => isset( $search_term_fallback ),
+			]);
 		}
 
 		return $order;
 	}
 
 	/**
-	 * Get order from order number or mondu order UUID.
-	 *
-	 * @param mixed $order_number Order number.
-	 * @param mixed $mondu_order_uuid Mondu order UUID.
-	 *
+	 * @param $order_number
+	 * @param $mondu_order_uuid
 	 * @return bool|WC_Order
 	 */
 	public static function get_order_from_order_number_or_uuid( $order_number = null, $mondu_order_uuid = null ) {
+		if ( OrderUtil::custom_orders_table_usage_is_enabled() ) {
+			// HPOS usage is enabled.
+			return self::get_order_hpos($order_number, $mondu_order_uuid);
+		} else {
+			// Traditional CPT-based orders are in use.
+			return self::get_order_cpt($order_number, $mondu_order_uuid);
+		}
+	}
+
+	/**
+	 * @param $order_number
+	 * @param $mondu_order_uuid
+	 * @return bool|WC_Order
+	 */
+	private static function get_order_hpos($order_number, $mondu_order_uuid) {
+		$order = wc_get_order($order_number);
+
+		if ( $order ) {
+			return $order;
+		}
+
+		$orders = wc_get_orders([
+			'meta_key' => Plugin::ORDER_ID_KEY,
+			'meta_value' => $mondu_order_uuid
+		]);
+
+		if ( !empty($orders) ) {
+			return $orders[0];
+		}
+
+		return false;
+	}
+
+	/**
+	 * @param $order_number
+	 * @param $mondu_order_uuid
+	 * @return bool|WC_Order
+	 */
+	private static function get_order_cpt( $order_number = null, $mondu_order_uuid = null ) {
 		$order = false;
 
 		if ( $order_number ) {
 			$order = static::get_order_from_order_number( $order_number );
 		}
 
-		if ( ! $order && $mondu_order_uuid ) {
+		if ( !$order && $mondu_order_uuid ) {
 			$order = static::get_order_from_mondu_uuid( $mondu_order_uuid );
 		}
 
@@ -323,14 +340,8 @@ class Helper {
 		return false;
 	}
 
-	/**
-	 * Log
-	 *
-	 * @param array  $message Message.
-	 * @param string $level Level.
-	 */
 	public static function log( array $message, $level = 'DEBUG' ) {
 		$logger = wc_get_logger();
-		$logger->log( $level, wc_print_r( $message, true ), array( 'source' => 'mondu' ) );
+		$logger->log( $level, wc_print_r($message, true), [ 'source' => 'mondu' ] );
 	}
 }
