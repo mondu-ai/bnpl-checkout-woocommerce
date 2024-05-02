@@ -1,8 +1,5 @@
 <?php
 
-use Mondu\Exceptions\MonduException;
-use Mondu\Exceptions\ResponseException;
-
 if ( ! defined('ABSPATH' ) ) {
 	exit;
 }

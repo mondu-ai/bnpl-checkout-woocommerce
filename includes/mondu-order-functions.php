@@ -596,10 +596,10 @@ function get_order_from_mondu_uuid( $mondu_order_uuid ) {
 function get_order_from_order_number_or_uuid( $order_number = null, $mondu_order_uuid = null) {
     if ( Automattic\WooCommerce\Utilities\OrderUtil::custom_orders_table_usage_is_enabled() ) {
         // HPOS usage is enabled.
-        return self::get_order_hpos($order_number, $mondu_order_uuid);
+        return get_order_hpos($order_number, $mondu_order_uuid);
     } else {
         // Traditional CPT-based orders are in use.
-        return self::get_order_cpt($order_number, $mondu_order_uuid);
+        return get_order_cpt($order_number, $mondu_order_uuid);
     }
 }
 

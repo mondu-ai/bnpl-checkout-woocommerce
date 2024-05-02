@@ -187,29 +187,13 @@ if ( ! class_exists( 'Mondu' ) ) {
             return array_merge( $links, $row_meta );
         }
 
-        // TODO: remove?
-        // private function init_composer() {
-        // 	$autoloader = MONDU_PLUGIN_PATH . '/vendor/autoload.php';
-
-        // 	if ( ! is_readable( $autoloader ) ) {
-        // 		self::missing_autoloader();
-        // 		return false;
-        // 	}
-
-        // 	$autoloader_result = require $autoloader;
-        // 	if ( ! $autoloader_result ) {
-        // 		return false;
-        // 	}
-
-        // 	return $autoloader_result;
-        // }
-
         private function include_files() {
             include_once MONDU_PLUGIN_PATH . '/includes/mondu-constants.php';
             include_once MONDU_PLUGIN_PATH . '/includes/mondu-functions.php';
             include_once MONDU_PLUGIN_PATH . '/includes/mondu-order-functions.php';
 
             include_once MONDU_PLUGIN_PATH . '/classes/exceptions/class-mondu-exception.php';
+            include_once MONDU_PLUGIN_PATH . '/classes/exceptions/class-mondu-response-exception.php';
             include_once MONDU_PLUGIN_PATH . '/classes/exceptions/class-mondu-response-exception.php';
 
             include_once MONDU_PLUGIN_PATH . '/classes/controllers/class-mondu-api.php';
@@ -225,6 +209,8 @@ if ( ! class_exists( 'Mondu' ) ) {
             include_once MONDU_PLUGIN_PATH . '/classes/class-mondu-checkout.php';
             include_once MONDU_PLUGIN_PATH . '/classes/class-mondu-request-wrapper.php';
             include_once MONDU_PLUGIN_PATH . '/classes/class-mondu-signature-verifier.php';
+            include_once MONDU_PLUGIN_PATH . '/classes/class-mondu-gateway-installment-by-invoice.php';
+            include_once MONDU_PLUGIN_PATH . '/classes/class-mondu-block-support.php';
 
             include_once MONDU_PLUGIN_PATH . '/src/Mondu/Plugin.php';
 

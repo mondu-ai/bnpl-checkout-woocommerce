@@ -17,17 +17,17 @@ class MonduRequestWrapper {
             if ( class_exists( 'Automattic\WooCommerce\Blocks\Payments\Integrations\AbstractPaymentMethodType' ) ) {
                 add_action(
                     'woocommerce_blocks_payment_method_type_registration',
-                    function( PaymentMethodRegistry $payment_method_registry ) {
-                        $payment_method_registry->register( new MonduBlocksSupport() );
+                    function( \Automattic\WooCommerce\Blocks\Payments\PaymentMethodRegistry $payment_method_registry ) {
+                        $payment_method_registry->register( new MonduBlockSupport());
                     }
                 );
             }
         });
 
         add_action('rest_api_init', function () {
-            $orders = new OrdersController();
+            $orders = new MonduOrdersController();
             $orders->register_routes();
-            $webhooks = new WebhooksController();
+            $webhooks = new MonduWebhooksController();
             $webhooks->register_routes();
         });
 	}

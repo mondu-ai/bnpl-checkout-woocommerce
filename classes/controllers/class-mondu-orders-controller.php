@@ -3,7 +3,7 @@
 if ( ! class_exists( 'MonduOrdersController' ) ) {
     class MonduOrdersController extends WP_REST_Controller
     {
-        public function __construct()
+        public function register_routes()
         {
             $namespace = 'mondu/v1/orders';
 

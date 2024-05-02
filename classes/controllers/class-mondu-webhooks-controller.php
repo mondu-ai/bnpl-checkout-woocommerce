@@ -1,11 +1,11 @@
 <?php
 if ( ! class_exists( 'MonduWebhooksController' ) ) {
     class MonduWebhooksController extends WP_REST_Controller {
-        public function __construct() {
-            $amespace = 'mondu/v1/webhooks';
+        public function register_routes() {
+            $namespace = 'mondu/v1/webhooks';
 
             register_rest_route(
-                $amespace,
+                $namespace,
                 '/index',
                 array(
                     array(
