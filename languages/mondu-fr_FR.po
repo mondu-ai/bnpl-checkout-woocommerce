@@ -70,8 +70,8 @@ msgstr "Production"
 
 #: src/Mondu/Admin/Option/Account.php:70
 #: src/Mondu/Mondu/Presenters/PaymentInfo.php:220
-#: src/Mondu/Plugin.php:331
-#: src/Mondu/Plugin.php:382
+#: src/Mondu/Plugin.php:344
+#: src/Mondu/Plugin.php:395
 msgid "Yes"
 msgstr "Oui"
 
@@ -84,12 +84,12 @@ msgstr "Envoyer la liste des articles uniquement pour les commandes"
 msgid "No"
 msgstr "Non"
 
-#: src/Mondu/Admin/Order.php:42
+#: src/Mondu/Admin/Order.php:41
 msgid "Mondu Order Information"
 msgstr "Informations Commande Mondu"
 
-#: src/Mondu/Admin/Order.php:64
-#: src/Mondu/Admin/Order.php:92
+#: src/Mondu/Admin/Order.php:68
+#: src/Mondu/Admin/Order.php:96
 #: src/Mondu/Admin/Settings.php:132
 msgid "Bad Request."
 msgstr "Mauvaise requête."
@@ -162,10 +162,12 @@ msgid "Not Found"
 msgstr "Aucun résultat"
 
 #: src/Mondu/Mondu/GatewayDirectDebit.php:12
+#: assets/src/js/mondublocks.js:15
 msgid "Mondu SEPA Direct Debit"
 msgstr "Mondu Prélèvement SEPA"
 
 #: src/Mondu/Mondu/GatewayDirectDebit.php:10
+#: assets/src/js/mondublocks.js:19
 msgid "SEPA - Pay later by direct debit"
 msgstr "SEPA - Payer plus tard par prélèvement SEPA"
 
@@ -175,35 +177,41 @@ msgid "Enable %s payment method"
 msgstr "Activer %s mode de paiement"
 
 #: src/Mondu/Mondu/GatewayInstallment.php:12
+#: assets/src/js/mondublocks.js:16
 msgid "Mondu Installments"
 msgstr "Mondu Paiements Fractionnés"
 
 #: src/Mondu/Mondu/GatewayInstallment.php:10
+#: assets/src/js/mondublocks.js:20
 msgid "Split payments - Pay Later in Installments by Direct Debit"
 msgstr "Paiements fractionnés - Payer plus tard en plusieurs fois par prélèvement automatique"
 
 #: src/Mondu/Mondu/GatewayInstallmentByInvoice.php:12
+#: assets/src/js/mondublocks.js:17
 msgid "Mondu Installments by Invoice"
 msgstr "Mondu Paiements par facture"
 
 #: src/Mondu/Mondu/GatewayInstallmentByInvoice.php:10
+#: assets/src/js/mondublocks.js:21
 msgid "Split payments - Pay Later in Installments by Bank Transfer"
 msgstr "Paiements fractionnés - Payer plus tard en plusieurs fois par virement bancaire"
 
 #: src/Mondu/Mondu/GatewayInvoice.php:12
+#: assets/src/js/mondublocks.js:14
 msgid "Mondu Invoice"
 msgstr "Mondu Facture"
 
 #: src/Mondu/Mondu/GatewayInvoice.php:10
+#: assets/src/js/mondublocks.js:18
 msgid "Invoice - Pay later by bank transfer"
 msgstr "Facture - Payez plus tard par virement"
 
-#: src/Mondu/Mondu/MonduGateway.php:125
+#: src/Mondu/Mondu/MonduGateway.php:127
 msgid "Error placing an order. Please try again."
 msgstr "Erreur de commande. Veuillez réessayer."
 
 #: src/Mondu/Mondu/Presenters/PaymentInfo.php:80
-#: src/Mondu/Plugin.php:305
+#: src/Mondu/Plugin.php:318
 msgid "Order state"
 msgstr "Statut de la commande"
 
@@ -298,83 +306,83 @@ msgstr "Notes de crédit"
 msgid "Tax"
 msgstr "Taxe"
 
-#: src/Mondu/Plugin.php:167
+#: src/Mondu/Plugin.php:180
 msgid "Since this order will be paid via Mondu you will not be able to change the addresses."
 msgstr "Comme cette commande sera payée via Mondu, vous ne pourrez pas modifier les adresses."
 
-#: src/Mondu/Plugin.php:200
+#: src/Mondu/Plugin.php:213
 msgid "View Mondu settings"
 msgstr "Voir les paramètres de Mondu"
 
-#: src/Mondu/Plugin.php:220
+#: src/Mondu/Plugin.php:233
 msgid "View Mondu documentation"
 msgstr "Voir la documentation de Mondu"
 
-#: src/Mondu/Plugin.php:220
+#: src/Mondu/Plugin.php:233
 msgid "Docs"
 msgstr "Docs"
 
-#: src/Mondu/Plugin.php:221
+#: src/Mondu/Plugin.php:234
 msgid "https://mondu.ai/introduction-to-paying-with-mondu"
 msgstr "https://mondu.ai/fr/introduction-to-paying-with-mondu"
 
-#: src/Mondu/Plugin.php:221
+#: src/Mondu/Plugin.php:234
 msgid "View introduction to paying with Mondu"
 msgstr "Voir l'introduction de comment payer avec Mondu"
 
-#: src/Mondu/Plugin.php:221
+#: src/Mondu/Plugin.php:234
 msgid "Mondu introduction"
 msgstr "Introduction à Mondu"
 
-#: src/Mondu/Plugin.php:222
+#: src/Mondu/Plugin.php:235
 msgid "https://mondu.ai/faq"
 msgstr "https://mondu.ai/fr/faq"
 
-#: src/Mondu/Plugin.php:222
+#: src/Mondu/Plugin.php:235
 msgid "View FAQ"
 msgstr "Voir FAQ"
 
-#: src/Mondu/Plugin.php:222
+#: src/Mondu/Plugin.php:235
 msgid "FAQ"
 msgstr "FAQ"
 
 #. translators: %s: Company
-#: src/Mondu/Plugin.php:241
+#: src/Mondu/Plugin.php:254
 msgid "%s is a required field for Mondu payments."
 msgstr "Le champ %s est obligatoire pour les paiements Mondu."
 
 #. translators: %s: Company
-#: src/Mondu/Plugin.php:241
+#: src/Mondu/Plugin.php:254
 msgid "Company"
 msgstr "Entreprise"
 
 #. translators: %s: Billing country
-#: src/Mondu/Plugin.php:246
+#: src/Mondu/Plugin.php:259
 msgid "%s not available for Mondu Payments."
 msgstr "Ce %s n'est pas encore disponible pour la facturation avec les paiements Mondu."
 
 #. translators: %s: Billing country
-#: src/Mondu/Plugin.php:246
+#: src/Mondu/Plugin.php:259
 msgid "Billing country"
 msgstr "Pays"
 
-#: src/Mondu/Plugin.php:306
-#: src/Mondu/Plugin.php:356
-#: src/Mondu/Plugin.php:409
+#: src/Mondu/Plugin.php:319
+#: src/Mondu/Plugin.php:369
+#: src/Mondu/Plugin.php:422
 msgid "Canceled"
 msgstr "Annulé"
 
-#: src/Mondu/Plugin.php:330
-#: src/Mondu/Plugin.php:381
+#: src/Mondu/Plugin.php:343
+#: src/Mondu/Plugin.php:394
 msgid "Mondu Invoice paid"
 msgstr "Mondu Facture payée"
 
-#: src/Mondu/Plugin.php:355
-#: src/Mondu/Plugin.php:408
+#: src/Mondu/Plugin.php:368
+#: src/Mondu/Plugin.php:421
 msgid "Mondu Invoice state"
 msgstr "Statut de la facture Mondu"
 
-#: src/Mondu/Plugin.php:423
+#: src/Mondu/Plugin.php:436
 msgid "Mondu requires WooCommerce to be activated."
 msgstr "Mondu nécessite l'activation de WooCommerce."
 
@@ -406,6 +414,7 @@ msgid "Log date"
 msgstr "Date du log"
 
 #: views/checkout/payment-form.php:4
+#: assets/src/js/mondublocks.js:38
 msgid "Information on the processing of your personal data by <strong>Mondu GmbH</strong> can be found <a href=\"https://mondu.ai/gdpr-notification-for-buyers\" target=\"_blank\">here</a>."
 msgstr "Des informations sur la façon dont Mondu GmbH traite vos données personnelles peuvent être trouvées <a href=\"https://mondu.ai/fr/gdpr-notification-for-buyers\" target=\"_blank\">ici</a>."
 
