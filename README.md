@@ -23,11 +23,12 @@ wp i18n --allow-root make-pot . languages/mondu.pot
 wp i18n --allow-root update-po languages/mondu.pot languages/
 ```
 
-- Include the translated strings in the `languages/*.po` files.
+- Include the translated strings in the `languages/*.po` and `languages/*.json` files.
 - Run the following command to update `.mo` files:
 
 ```
 wp i18n --allow-root make-mo languages
+wp i18n --allow-root make-json languages
 ```
 
 ## Before pushing your changes
