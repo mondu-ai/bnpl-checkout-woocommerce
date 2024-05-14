@@ -99,6 +99,24 @@ class PaymentInfo {
 					<?php
 				}
 				?>
+                <?php
+                if ( in_array($this->order_data['state'], [ 'authorized' ], true) &&
+                    $this->order->get_status() === 'on-hold'
+                ) {
+                    ?>
+                    <?php
+                    $mondu_data = [
+                        'order_id' => $this->order->get_id(),
+                        'order_uuid' => $order_data['uuid'],
+                        'security' => wp_create_nonce('mondu-confirm-order'),
+                    ];
+                    ?>
+                    <button data-mondu='<?php echo( wp_json_encode($mondu_data) ); ?>' id="mondu-confirm-order-button" type="submit" class="button grant_access">
+                        <?php esc_html_e('Confirm Order', 'mondu'); ?>
+                    </button>
+                    <?php
+                }
+                ?>
 			</section>
 			<hr>
 			<?php $this->get_mondu_payment_html(); ?>

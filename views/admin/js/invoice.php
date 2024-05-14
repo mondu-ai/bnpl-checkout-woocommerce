@@ -47,5 +47,29 @@
         });
       }
     })
+
+      $('#mondu-confirm-order-button').on('click', function (e) {
+          e.preventDefault();
+
+          if(confirm("Are you sure you want to confirm the Mondu's order?")) {
+              var attributes = JSON.parse($('#mondu-confirm-order-button')[0].attributes['data-mondu'].value);
+
+              jQuery.ajax({
+                  type: 'POST',
+                  url: ajaxurl,
+                  data: {
+                      action: 'confirm_order',
+                      ...attributes
+                  },
+                  success: function(res) {
+                      if(res.error) {
+                          alert(res.message);
+                      } else {
+                          location.reload();
+                      }
+                  }
+              });
+          }
+      })
   });
 </script>

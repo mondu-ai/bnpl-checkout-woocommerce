@@ -29,6 +29,8 @@ class Order {
 		add_action('wp_ajax_cancel_invoice', [ $this, 'cancel_invoice' ]);
 		add_action('wp_ajax_create_invoice', [ $this, 'create_invoice' ]);
 
+        add_action('wp_ajax_confirm_order', [ $this, 'confirm_order' ]);
+
 		$this->mondu_request_wrapper = new MonduRequestWrapper();
 	}
 
@@ -117,4 +119,39 @@ class Order {
 			]);
 		}
 	}
+
+    public function confirm_order() {
+        $is_nonce_valid = check_ajax_referer( 'mondu-confirm-order', 'security', false );
+        if ( !$is_nonce_valid ) {
+            status_header(400);
+            exit(esc_html__('Bad Request.', 'mondu'));
+        }
+
+        $order_id = isset($_POST['order_id']) ? sanitize_text_field($_POST['order_id']) : '';
+
+        $order = new WC_Order($order_id);
+        if ( null === $order ) {
+            return;
+        }
+
+        $mondu_order_id = isset($_POST['order_uuid']) ? sanitize_text_field($_POST['order_uuid']) : '';
+
+        if ( !$mondu_order_id ) {
+            return;
+        }
+
+        try {
+            $this->mondu_request_wrapper->confirm_order($order_id, $mondu_order_id);
+        } catch ( ResponseException $e ) {
+            wp_send_json([
+                'error'   => true,
+                'message' => $e->getMessage(),
+            ]);
+        } catch ( MonduException $e ) {
+            wp_send_json([
+                'error'   => true,
+                'message' => $e->getMessage(),
+            ]);
+        }
+    }
 }

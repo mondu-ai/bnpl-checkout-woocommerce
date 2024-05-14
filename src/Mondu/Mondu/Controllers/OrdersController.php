@@ -57,7 +57,7 @@ class OrdersController extends WP_REST_Controller {
 			if ( in_array( $order->get_status(), [ 'pending', 'failed' ] ) ) {
 				$order->update_status('wc-on-hold', __('On hold', 'woocommerce'));
 
-				$this->mondu_request_wrapper->confirm_order($order->get_id(), $mondu_order_id, $order_number);
+				$this->mondu_request_wrapper->confirm_order($order->get_id(), $mondu_order_id);
 			}
 		} catch ( \Exception $e ) {
 			Helper::log([
