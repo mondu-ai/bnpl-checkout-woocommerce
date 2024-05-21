@@ -1,5 +1,9 @@
 <?php
-
+/**
+ * Mondu Blocks Support
+ *
+ * @package Mondu
+ */
 namespace Mondu\Mondu\Blocks;
 
 use Automattic\WooCommerce\Blocks\Payments\Integrations\AbstractPaymentMethodType;
@@ -12,6 +16,11 @@ use Mondu\Plugin;
 
 defined( 'ABSPATH' ) || exit;
 
+/**
+ * Mondu Blocks Support
+ *
+ * @package Mondu
+ */
 final class MonduBlocksSupport extends AbstractPaymentMethodType {
 	/**
 	 * @var string
@@ -23,16 +32,24 @@ final class MonduBlocksSupport extends AbstractPaymentMethodType {
 	 */
 	protected $gateways;
 
+    /**
+     * Initialize
+     */
 	public function initialize()
 	{
 		$this->gateways = [
-			new GatewayInvoice(false),
-			new GatewayDirectDebit(false),
-			new GatewayInstallment(false),
-			new GatewayInstallmentByInvoice(false)
+			new GatewayInvoice( false ),
+			new GatewayDirectDebit( false ),
+			new GatewayInstallment( false ),
+			new GatewayInstallmentByInvoice( false )
 		];
 	}
 
+    /**
+     * Get payment method script handles
+     *
+     * @return array
+     */
 	public function get_payment_method_script_handles() {
 		wp_register_script(
 			'mondu-blocks-integration',
@@ -48,13 +65,18 @@ final class MonduBlocksSupport extends AbstractPaymentMethodType {
 			true
 		);
 
-		wp_set_script_translations( 'mondu-blocks-integration', 'mondu', MONDU_PLUGIN_PATH. '/languages');
+		wp_set_script_translations( 'mondu-blocks-integration', 'mondu', MONDU_PLUGIN_PATH. '/languages' );
 
 		return [ 'mondu-blocks-integration' ];
 	}
 
+    /**
+     * Get payment method data
+     *
+     * @return array
+     */
 	public function get_payment_method_data() {
-		$gateways = array_reduce($this->gateways, function($carry, $item) {
+		$gateways = array_reduce($this->gateways, function( $carry, $item ) {
 			$carry[$item->id] = [
 				'title' => $item->get_title(),
 				'description' => $item->description,

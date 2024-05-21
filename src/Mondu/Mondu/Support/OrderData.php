@@ -1,12 +1,20 @@
 <?php
-
+/**
+ * Order Data
+ *
+ * @package Mondu
+ */
 namespace Mondu\Mondu\Support;
 
-use Mondu\Mondu\Support\Helper;
 use Mondu\Plugin;
 use WC_Order;
 use WC_Order_Refund;
 
+/**
+ * Order Data
+ *
+ * @package Mondu
+ */
 class OrderData {
 	/**
 	 * Create Order

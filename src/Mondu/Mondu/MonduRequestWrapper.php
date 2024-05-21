@@ -1,8 +1,11 @@
 <?php
-
+/**
+ * Mondu Request Wrapper
+ *
+ * @package Mondu
+ */
 namespace Mondu\Mondu;
 
-use Mondu\Exceptions\MonduException;
 use Mondu\Exceptions\ResponseException;
 use Mondu\Mondu\Support\Helper;
 use Mondu\Mondu\Support\OrderData;
@@ -10,9 +13,22 @@ use Mondu\Plugin;
 use WC_Order;
 use WC_Order_Refund;
 
+/**
+ * Class MonduRequestWrapper
+ *
+ * @package Mondu
+ */
 class MonduRequestWrapper {
+    /**
+     * Mondu API
+     *
+     * @var Api
+     */
 	private $api;
 
+    /**
+     * MonduRequestWrapper constructor.
+     */
 	public function __construct() {
 		$this->api = new Api();
 	}
@@ -32,7 +48,7 @@ class MonduRequestWrapper {
 		$response    = $this->wrap_with_mondu_log_event( 'create_order', [ $order_data ] );
 		$mondu_order = $response['order'];
 
-		$order->update_meta_data(Plugin::ORDER_ID_KEY, $mondu_order['uuid']);
+		$order->update_meta_data( Plugin::ORDER_ID_KEY, $mondu_order['uuid'] );
 		$order->save();
 		return $mondu_order;
 	}
@@ -45,14 +61,14 @@ class MonduRequestWrapper {
 	 * @throws ResponseException
 	 */
 	public function get_order( $order_id ) {
-		$order = new WC_Order($order_id);
-		if ( !Plugin::order_has_mondu($order) ) {
+		$order = new WC_Order( $order_id );
+		if ( !Plugin::order_has_mondu( $order ) ) {
 			return;
 		}
 
-		$mondu_order_id = $order->get_meta(Plugin::ORDER_ID_KEY);
+		$mondu_order_id = $order->get_meta( Plugin::ORDER_ID_KEY );
 		$response       = $this->wrap_with_mondu_log_event( 'get_order', [ $mondu_order_id ] );
-		return isset($response['order']) ? $response['order'] : null;
+		return isset( $response['order'] ) ? $response['order'] : null;
 	}
 
 	/**
@@ -64,12 +80,12 @@ class MonduRequestWrapper {
 	 * @throws ResponseException
 	 */
 	public function adjust_order( $order_id, $data_to_update ) {
-		$order = new WC_Order($order_id);
-		if ( !Plugin::order_has_mondu($order) ) {
+		$order = new WC_Order( $order_id );
+		if ( !Plugin::order_has_mondu( $order ) ) {
 			return;
 		}
 
-		$mondu_order_id = $order->get_meta(Plugin::ORDER_ID_KEY);
+		$mondu_order_id = $order->get_meta( Plugin::ORDER_ID_KEY );
 		$response       = $this->wrap_with_mondu_log_event( 'adjust_order', [ $mondu_order_id, $data_to_update ] );
 		return $response['order'];
 	}
@@ -82,12 +98,12 @@ class MonduRequestWrapper {
 	 * @throws ResponseException
 	 */
 	public function cancel_order( $order_id ) {
-		$order = new WC_Order($order_id);
-		if ( !Plugin::order_has_mondu($order) ) {
+		$order = new WC_Order( $order_id );
+		if ( !Plugin::order_has_mondu( $order ) ) {
 			return;
 		}
 
-		$mondu_order_id = $order->get_meta(Plugin::ORDER_ID_KEY);
+		$mondu_order_id = $order->get_meta( Plugin::ORDER_ID_KEY );
 		$response       = $this->wrap_with_mondu_log_event( 'cancel_order', [ $mondu_order_id ] );
 		return $response['order'];
 	}
@@ -100,16 +116,16 @@ class MonduRequestWrapper {
 	 * @throws ResponseException
 	 */
 	public function ship_order( $order_id ) {
-		$order = new WC_Order($order_id);
-		if ( !Plugin::order_has_mondu($order) ) {
+		$order = new WC_Order( $order_id );
+		if ( !Plugin::order_has_mondu( $order ) ) {
 			return;
 		}
 
-		$mondu_order_id = $order->get_meta(Plugin::ORDER_ID_KEY);
-		$invoice_data   = OrderData::invoice_data_from_wc_order($order);
+		$mondu_order_id = $order->get_meta( Plugin::ORDER_ID_KEY );
+		$invoice_data   = OrderData::invoice_data_from_wc_order( $order );
 		$response       = $this->wrap_with_mondu_log_event( 'ship_order', [ $mondu_order_id, $invoice_data ] );
 		$invoice        = $response['invoice'];
-		$order->update_meta_data(Plugin::INVOICE_ID_KEY, $invoice['uuid']);
+		$order->update_meta_data( Plugin::INVOICE_ID_KEY, $invoice['uuid'] );
 		$order->save();
 		return $invoice;
 	}
@@ -122,12 +138,12 @@ class MonduRequestWrapper {
 	 * @throws ResponseException
 	 */
 	public function get_invoices( $order_id ) {
-		$order = new WC_Order($order_id);
-		if ( !Plugin::order_has_mondu($order) ) {
+		$order = new WC_Order( $order_id );
+		if ( !Plugin::order_has_mondu( $order ) ) {
 			return;
 		}
 
-		$mondu_order_id = $order->get_meta(Plugin::ORDER_ID_KEY);
+		$mondu_order_id = $order->get_meta( Plugin::ORDER_ID_KEY );
 		$response       = $this->wrap_with_mondu_log_event( 'get_invoices', [ $mondu_order_id ] );
 		return $response['invoices'];
 	}
@@ -140,13 +156,13 @@ class MonduRequestWrapper {
 	 * @throws ResponseException
 	 */
 	public function get_invoice( $order_id ) {
-		$order = new WC_Order($order_id);
-		if ( !Plugin::order_has_mondu($order) ) {
+		$order = new WC_Order( $order_id );
+		if ( !Plugin::order_has_mondu( $order ) ) {
 			return;
 		}
 
-		$mondu_order_id   = $order->get_meta(Plugin::ORDER_ID_KEY);
-		$mondu_invoice_id = $order->get_meta(Plugin::INVOICE_ID_KEY);
+		$mondu_order_id   = $order->get_meta( Plugin::ORDER_ID_KEY );
+		$mondu_invoice_id = $order->get_meta( Plugin::INVOICE_ID_KEY );
 		$response         = $this->wrap_with_mondu_log_event( 'get_invoice', [ $mondu_order_id, $mondu_invoice_id ] );
 		return $response['invoice'];
 	}
@@ -158,7 +174,7 @@ class MonduRequestWrapper {
 	 * @return array
 	 */
 	public function get_merchant_payment_methods() {
-		$merchant_payment_methods = get_transient('mondu_merchant_payment_methods');
+		$merchant_payment_methods = get_transient( 'mondu_merchant_payment_methods' );
 		if ( false === $merchant_payment_methods ) {
 			try {
 				$response = $this->wrap_with_mondu_log_event( 'get_payment_methods' );
@@ -168,30 +184,31 @@ class MonduRequestWrapper {
 				}
 
 				# return only an array with the identifier (invoice, direct_debit, installment, etc)
-				$merchant_payment_methods = array_map(function( $payment_method ) {
+				$merchant_payment_methods = array_map( function( $payment_method ) {
 					return $payment_method['identifier'];
-				}, $response['payment_methods']);
-				set_transient('mondu_merchant_payment_methods', $merchant_payment_methods, 1 * 60);
+				}, $response['payment_methods'] );
+				set_transient( 'mondu_merchant_payment_methods', $merchant_payment_methods, 1 * 60 );
 				return $merchant_payment_methods;
 			} catch ( \Exception $e ) {
-				$merchant_payment_methods = array_keys(Plugin::PAYMENT_METHODS);
-				set_transient('mondu_merchant_payment_methods', $merchant_payment_methods, 10 * 60);
+				$merchant_payment_methods = array_keys( Plugin::PAYMENT_METHODS );
+				set_transient( 'mondu_merchant_payment_methods', $merchant_payment_methods, 10 * 60 );
 				return $merchant_payment_methods;
 			}
 		}
 		return $merchant_payment_methods;
 	}
 
-	/**
-	 * Confirm Order
-	 *
-	 * @param $order_id
-	 * @return void|WC_Order
-	 * @throws ResponseException
-	 */
+    /**
+     * Confirm Order
+     *
+     * @param $order_id
+     * @param $mondu_order_id
+     * @return void|WC_Order
+     * @throws ResponseException
+     */
 	public function confirm_order( $order_id, $mondu_order_id ) {
-		$order = new WC_Order($order_id);
-		if ( !Plugin::order_has_mondu($order) ) {
+		$order = new WC_Order( $order_id );
+		if ( !Plugin::order_has_mondu( $order ) ) {
 			return;
 		}
 
@@ -207,13 +224,13 @@ class MonduRequestWrapper {
 	 * @throws ResponseException
 	 */
 	public function update_order_if_changed_some_fields( $order ) {
-		if ( !Plugin::order_has_mondu($order) ) {
+		if ( !Plugin::order_has_mondu( $order ) ) {
 			return;
 		}
 
-		if ( array_intersect([ 'total', 'discount_total', 'discount_tax', 'cart_tax', 'total_tax', 'shipping_tax', 'shipping_total' ], array_keys($order->get_changes())) ) {
-			$data_to_update = OrderData::order_data_from_wc_order_with_amount($order);
-			$this->adjust_order($order->get_id(), $data_to_update);
+		if ( array_intersect( [ 'total', 'discount_total', 'discount_tax', 'cart_tax', 'total_tax', 'shipping_tax', 'shipping_total' ], array_keys( $order->get_changes() ) ) ) {
+			$data_to_update = OrderData::order_data_from_wc_order_with_amount( $order );
+			$this->adjust_order( $order->get_id(), $data_to_update );
 		}
 	}
 
@@ -227,8 +244,8 @@ class MonduRequestWrapper {
 	 * @throws ResponseException
 	 */
 	public function order_status_changed( $order_id, $from_status, $to_status ) {
-		$order = new WC_Order($order_id);
-		if ( !Plugin::order_has_mondu($order) ) {
+		$order = new WC_Order( $order_id );
+		if ( !Plugin::order_has_mondu( $order ) ) {
 			return;
 		}
 
@@ -239,10 +256,10 @@ class MonduRequestWrapper {
 		]);
 
 		if ( 'cancelled' === $to_status ) {
-			$this->cancel_order($order_id);
+			$this->cancel_order( $order_id );
 		}
 		if ( 'completed' === $to_status ) {
-			$this->ship_order($order_id);
+			$this->ship_order( $order_id );
 		}
 	}
 
@@ -255,12 +272,12 @@ class MonduRequestWrapper {
 	 * @throws ResponseException
 	 */
 	public function order_refunded( $order_id, $refund_id ) {
-		$order = new WC_Order($order_id);
-		if ( !Plugin::order_has_mondu($order) ) {
+		$order = new WC_Order( $order_id );
+		if ( !Plugin::order_has_mondu( $order ) ) {
 			return;
 		}
 
-		$mondu_invoice_id = $order->get_meta(Plugin::INVOICE_ID_KEY);
+		$mondu_invoice_id = $order->get_meta( Plugin::INVOICE_ID_KEY );
 		if ( !$mondu_invoice_id ) {
 			Helper::log([
 				'skipping_credit_note_creation' => [
@@ -271,8 +288,8 @@ class MonduRequestWrapper {
 			return;
 		}
 
-		$refund      = new WC_Order_Refund($refund_id);
-		$credit_note = OrderData::create_credit_note($refund);
+		$refund      = new WC_Order_Refund( $refund_id );
+		$credit_note = OrderData::create_credit_note( $refund );
 
 		$this->wrap_with_mondu_log_event( 'create_credit_note', [ $mondu_invoice_id, $credit_note ] );
 	}
@@ -305,7 +322,7 @@ class MonduRequestWrapper {
 
 		$response = $this->wrap_with_mondu_log_event( 'register_webhook', [ $params ]);
 
-		return isset($response['webhooks']) ? $response['webhooks'] : null;
+		return isset( $response['webhooks'] ) ? $response['webhooks'] : null;
 	}
 
 	/**
@@ -347,13 +364,13 @@ class MonduRequestWrapper {
 			'version'          => MONDU_PLUGIN_VERSION,
 			'language_version' => 'PHP ' . phpversion(),
 			'shop_version'     => $wp_version,
-			'origin_event'     => strtoupper($event),
+			'origin_event'     => strtoupper( $event ),
 			'response_body'    => $body,
 			'response_status'  => (string) $exception->getCode(),
 			'error_message'    => $exception->getMessage(),
 			'error_trace'      => $exception->getTraceAsString(),
 		];
-		$this->api->log_plugin_event($params);
+		$this->api->log_plugin_event( $params );
 	}
 
 	/**

@@ -3,7 +3,7 @@
  * Plugin Name: Mondu Buy Now Pay Later
  * Plugin URI: https://github.com/mondu-ai/bnpl-checkout-woocommerce/releases
  * Description: Mondu provides B2B E-commerce and B2B marketplaces with an online payment solution to buy now and pay later.
- * Version: 2.2.1
+ * Version: 2.2.2
  * Author: Mondu
  * Author URI: https://mondu.ai
  *
@@ -27,7 +27,7 @@ if ( !defined( 'ABSPATH' ) ) {
 	die( 'Direct access not allowed' );
 }
 
-define( 'MONDU_PLUGIN_VERSION', '2.2.1' );
+define( 'MONDU_PLUGIN_VERSION', '2.2.2' );
 define( 'MONDU_PLUGIN_FILE', __FILE__ );
 define( 'MONDU_PLUGIN_PATH', __DIR__ );
 define( 'MONDU_PLUGIN_BASENAME', plugin_basename(MONDU_PLUGIN_FILE) );
@@ -46,7 +46,7 @@ mondu_env( 'MONDU_PRODUCTION_URL', 'https://api.mondu.ai/api/v1' );
 mondu_env( 'MONDU_WEBHOOKS_URL', get_home_url() );
 
 require_once 'src/autoload.php';
-add_action('plugins_loaded', [ new \Mondu\Plugin(), 'init' ]);
+add_action( 'plugins_loaded', [ new \Mondu\Plugin(), 'init' ] );
 
 function mondu_activate() {
 }

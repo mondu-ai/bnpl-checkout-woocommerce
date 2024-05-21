@@ -1,102 +1,133 @@
 <?php
-
+/**
+ * Webhooks Controller
+ *
+ * @package Mondu
+ */
 namespace Mondu\Mondu\Controllers;
 
 use Mondu\Mondu\MonduRequestWrapper;
 use Mondu\Mondu\Models\SignatureVerifier;
 use Mondu\Mondu\Support\Helper;
 use Mondu\Exceptions\MonduException;
-use Mondu\Plugin;
-use WC_Order;
 use WP_REST_Controller;
 use WP_REST_Request;
 use WP_REST_Response;
 
+/**
+ * Webhooks Controller
+ *
+ * @package Mondu
+ */
 class WebhooksController extends WP_REST_Controller {
+    /**
+     * @var MonduRequestWrapper $mondu_request_wrapper
+     */
 	private $mondu_request_wrapper;
 
+    /**
+     * WebhooksController constructor.
+     */
 	public function __construct() {
 		$this->namespace             = 'mondu/v1/webhooks';
 		$this->mondu_request_wrapper = new MonduRequestWrapper();
 	}
 
+    /**
+     * Register routes
+     */
 	public function register_routes() {
-		register_rest_route($this->namespace, '/index', [
+		register_rest_route( $this->namespace, '/index', [
 			[
 				'methods'             => 'POST',
 				'callback'            => [ $this, 'index' ],
 				'permission_callback' => '__return_true',
 			],
-		]);
+		] );
 	}
 
+    /**
+     * Webhooks index
+     *
+     * @param WP_REST_Request $request
+     *
+     * @return WP_REST_Response
+     */
 	public function index( WP_REST_Request $request ) {
 		$verifier          = new SignatureVerifier();
 		$params            = $request->get_json_params();
-		$topic             = isset($params['topic']) ? $params['topic'] : null;
+		$topic             = isset( $params['topic'] ) ? $params['topic'] : null;
 
 		$body = $request->get_body();
-		$signature_payload = $request->get_header('X-MONDU-SIGNATURE');
-		$signature = $verifier->create_hmac($body);
+		$signature_payload = $request->get_header( 'X-MONDU-SIGNATURE' );
+		$signature = $verifier->create_hmac( $body );
 
-		Helper::log([
+		Helper::log( [
 			'webhook_topic' => $topic,
 			'params'        => $params,
-		]);
+		] );
 
 		try {
 			if ( $signature !== $signature_payload ) {
-				throw new MonduException(__('Signature mismatch.', 'mondu'));
+				throw new MonduException( __( 'Signature mismatch.', 'mondu' ) );
 			}
 
 			switch ( $topic ) {
 				case 'order/pending':
-					$result = $this->handle_pending($params);
+					$result = $this->handle_pending( $params );
 					break;
 				case 'order/authorized':
-					$result = $this->handle_authorized($params);
+					$result = $this->handle_authorized( $params );
 					break;
 				case 'order/confirmed':
-					$result = $this->handle_confirmed($params);
+					$result = $this->handle_confirmed( $params );
 					break;
 				case 'order/declined':
-					$result = $this->handle_declined($params);
+					$result = $this->handle_declined( $params );
 					break;
 				case 'invoice/created':
-					$result = $this->handle_invoice_created($params);
+					$result = $this->handle_invoice_created( $params );
 					break;
 				case 'invoice/payment':
-					$result = $this->handle_invoice_payment($params);
+					$result = $this->handle_invoice_payment( $params );
 					break;
 				case 'invoice/canceled':
-					$result = $this->handle_invoice_canceled($params);
+					$result = $this->handle_invoice_canceled( $params );
 					break;
 				default:
-					$result = $this->handle_not_found_topic($params);
+					$result = $this->handle_not_found_topic( $params );
 					break;
 			}
 
 			$res_body   = $result[0];
 			$res_status = $result[1];
 		} catch ( MonduException $e ) {
-			$this->mondu_request_wrapper->log_plugin_event($e, 'webhooks', array_merge($params, [ 'signature' => $signature ]));
+			$this->mondu_request_wrapper->log_plugin_event( $e, 'webhooks', array_merge( $params, [ 'signature' => $signature ] ) );
 			$res_body   = [ 'message' => $e->getMessage() ];
 			$res_status = 400;
 		} catch ( \Exception $e ) {
-			$this->mondu_request_wrapper->log_plugin_event($e, 'webhooks', $params);
-			$res_body   = [ 'message' => __('Something happened on our end.', 'mondu') ];
+			$this->mondu_request_wrapper->log_plugin_event( $e, 'webhooks', $params );
+			$res_body   = [ 'message' => __( 'Something happened on our end.', 'mondu' ) ];
 			$res_status = 200;
 		}
 
-		return new WP_REST_Response($res_body, $res_status);
+		return new WP_REST_Response( $res_body, $res_status );
 	}
 
+    /**
+     * Handle pending
+     *
+     * @param array $params
+     *
+     * @return array
+     * @throws MonduException
+     */
 	private function handle_pending( $params ) {
 		$woocommerce_order_number = $params['external_reference_id'];
 		$mondu_order_id           = $params['order_uuid'];
 
 		if ( !$woocommerce_order_number || !$mondu_order_id ) {
-			throw new MonduException(__('Required params missing.', 'mondu'));
+			throw new MonduException( __( 'Required params missing.', 'mondu' ) );
 		}
 
 		$order = Helper::get_order_from_order_number_or_uuid( $woocommerce_order_number, $mondu_order_id );
@@ -110,12 +141,20 @@ class WebhooksController extends WP_REST_Controller {
 		return $this->return_success();
 	}
 
+    /**
+     * Handle authorized
+     *
+     * @param array $params
+     *
+     * @return array
+     * @throws MonduException
+     */
 	private function handle_authorized( $params ) {
 		$woocommerce_order_number = $params['external_reference_id'];
 		$mondu_order_id           = $params['order_uuid'];
 
 		if ( !$woocommerce_order_number || !$mondu_order_id ) {
-			throw new MonduException(__('Required params missing.', 'mondu'));
+			throw new MonduException( __( 'Required params missing.', 'mondu' ) );
 		}
 
 		$order = Helper::get_order_from_order_number_or_uuid( $woocommerce_order_number, $mondu_order_id );
@@ -129,12 +168,20 @@ class WebhooksController extends WP_REST_Controller {
 		return $this->return_success();
 	}
 
+    /**
+     * Handle confirmed
+     *
+     * @param array $params
+     *
+     * @return array
+     * @throws MonduException
+     */
 	private function handle_confirmed( $params ) {
 		$woocommerce_order_number = $params['external_reference_id'];
 		$mondu_order_id           = $params['order_uuid'];
 
 		if ( !$woocommerce_order_number || !$mondu_order_id ) {
-			throw new MonduException(__('Required params missing.', 'mondu'));
+			throw new MonduException( __( 'Required params missing.', 'mondu' ) );
 		}
 
 		$order = Helper::get_order_from_order_number_or_uuid( $woocommerce_order_number, $mondu_order_id );
@@ -146,18 +193,26 @@ class WebhooksController extends WP_REST_Controller {
 		$order->add_order_note( esc_html( sprintf( __( 'Mondu order is on confirmed state.', 'mondu' ) ) ), false );
 
 		if ( in_array( $order->get_status(), [ 'pending', 'on-hold' ] ) ) {
-			$order->update_status('wc-processing', __('Processing', 'woocommerce'));
+			$order->update_status( 'wc-processing', __( 'Processing', 'woocommerce' ) );
 		}
 
 		return $this->return_success();
 	}
 
+    /**
+     * Handle declined
+     *
+     * @param array $params
+     *
+     * @return array
+     * @throws MonduException
+     */
 	private function handle_declined( $params ) {
 		$woocommerce_order_number = $params['external_reference_id'];
 		$mondu_order_id           = $params['order_uuid'];
 
 		if ( !$woocommerce_order_number || !$mondu_order_id ) {
-			throw new MonduException(__('Required params missing.', 'mondu'));
+			throw new MonduException( __( 'Required params missing.', 'mondu' ) );
 		}
 
 		$order = Helper::get_order_from_order_number_or_uuid( $woocommerce_order_number, $mondu_order_id );
@@ -169,18 +224,26 @@ class WebhooksController extends WP_REST_Controller {
 		$order->add_order_note( esc_html( sprintf( __( 'Mondu order is on declined state.', 'mondu' ) ) ), false );
 
 		if ( $order->get_status() == 'on-hold' ) {
-			$order->update_status('wc-failed', __('Failed', 'woocommerce'));
+			$order->update_status( 'wc-failed', __( 'Failed', 'woocommerce' ) );
 		}
 
 		return $this->return_success();
 	}
 
+    /**
+     * Handle invoice created
+     *
+     * @param array $params
+     *
+     * @return array
+     * @throws MonduException
+     */
 	private function handle_invoice_created( $params ) {
 		$woocommerce_order_number = $params['external_reference_id'];
 		$mondu_order_id           = $params['order_uuid'];
 
 		if ( !$woocommerce_order_number ) {
-			throw new MonduException(__('Required params missing.', 'mondu'));
+			throw new MonduException( __( 'Required params missing.', 'mondu' ) );
 		}
 
 		$order = Helper::get_order_from_order_number_or_uuid( $woocommerce_order_number, $mondu_order_id );
@@ -194,6 +257,14 @@ class WebhooksController extends WP_REST_Controller {
 		return $this->return_success();
 	}
 
+    /**
+     * Handle invoice payment
+     *
+     * @param array $params
+     *
+     * @return array
+     * @throws MonduException
+     */
 	private function handle_invoice_payment( $params ) {
 		$woocommerce_order_number = $params['external_reference_id'];
 		$mondu_order_id           = $params['order_uuid'];
@@ -213,12 +284,20 @@ class WebhooksController extends WP_REST_Controller {
 		return $this->return_success();
 	}
 
+    /**
+     * Handle invoice canceled
+     *
+     * @param array $params
+     *
+     * @return array
+     * @throws MonduException
+     */
 	private function handle_invoice_canceled( $params ) {
 		$woocommerce_order_number = $params['external_reference_id'];
 		$mondu_order_id           = $params['order_uuid'];
 
 		if ( !$woocommerce_order_number ) {
-			throw new MonduException(__('Required params missing.', 'mondu'));
+			throw new MonduException( __( 'Required params missing.', 'mondu' ) );
 		}
 
 		$order = Helper::get_order_from_order_number_or_uuid( $woocommerce_order_number, $mondu_order_id );
@@ -232,18 +311,35 @@ class WebhooksController extends WP_REST_Controller {
 		return $this->return_success();
 	}
 
+    /**
+     * Handle not found topic
+     *
+     * @param array $params
+     *
+     * @return array
+     */
 	private function handle_not_found_topic( $params ) {
-		Helper::log([
+		Helper::log( [
 			'not_found_topic' => $params,
-		]);
+		] );
 
 		return $this->return_success();
 	}
 
+    /**
+     * Return success
+     *
+     * @return array
+     */
 	private function return_success() {
 		return [ [ 'message' => 'Ok' ], 200 ];
 	}
 
+    /**
+     * Return not found
+     *
+     * @return array
+     */
 	private function return_not_found() {
 		return [ [ 'message' => __('Not Found', 'mondu') ], 404 ];
 	}

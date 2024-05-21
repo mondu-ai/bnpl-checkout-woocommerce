@@ -1,5 +1,9 @@
 <?php
-
+/**
+ * Helper class
+ *
+ * @package Mondu
+ */
 namespace Mondu\Mondu\Support;
 
 use Mondu\Plugin;
@@ -7,6 +11,11 @@ use WC_Order;
 use WP_Query;
 use Automattic\WooCommerce\Utilities\OrderUtil;
 
+/**
+ * Class Helper
+ *
+ * @package Mondu\Mondu\Support
+ */
 class Helper {
 	/**
 	 * Not Null or Empty
@@ -102,8 +111,8 @@ class Helper {
 		 *
 		 * @since 2.0.0
 		 */
-		$language = apply_filters('mondu_order_locale', get_locale());
-		return substr($language, 0, 2);
+		$language = apply_filters( 'mondu_order_locale', get_locale() );
+		return substr( $language, 0, 2 );
 	}
 
 	/**
@@ -225,6 +234,8 @@ class Helper {
 	}
 
 	/**
+     * Get order from mondu order uuid
+     *
 	 * @param $mondu_order_uuid
 	 * @return bool|WC_Order
 	 */
@@ -266,6 +277,8 @@ class Helper {
 	}
 
 	/**
+     * Get order from order number
+     *
 	 * @param $order_number
 	 * @param $mondu_order_uuid
 	 * @return bool|WC_Order
@@ -273,20 +286,22 @@ class Helper {
 	public static function get_order_from_order_number_or_uuid( $order_number = null, $mondu_order_uuid = null ) {
 		if ( OrderUtil::custom_orders_table_usage_is_enabled() ) {
 			// HPOS usage is enabled.
-			return self::get_order_hpos($order_number, $mondu_order_uuid);
+			return self::get_order_hpos( $order_number, $mondu_order_uuid );
 		} else {
 			// Traditional CPT-based orders are in use.
-			return self::get_order_cpt($order_number, $mondu_order_uuid);
+			return self::get_order_cpt( $order_number, $mondu_order_uuid );
 		}
 	}
 
 	/**
+     * Get order from order number
+     *
 	 * @param $order_number
 	 * @param $mondu_order_uuid
 	 * @return bool|WC_Order
 	 */
 	private static function get_order_hpos($order_number, $mondu_order_uuid) {
-		$order = wc_get_order($order_number);
+		$order = wc_get_order( $order_number );
 
 		if ( $order ) {
 			return $order;
@@ -297,7 +312,7 @@ class Helper {
 			'meta_value' => $mondu_order_uuid
 		]);
 
-		if ( !empty($orders) ) {
+		if ( !empty( $orders ) ) {
 			return $orders[0];
 		}
 
@@ -305,6 +320,8 @@ class Helper {
 	}
 
 	/**
+     * Get order from order number
+     *
 	 * @param $order_number
 	 * @param $mondu_order_uuid
 	 * @return bool|WC_Order
@@ -337,11 +354,18 @@ class Helper {
 		) {
 			return true;
 		}
+
 		return false;
 	}
 
+    /**
+     * Log
+     *
+     * @param array $message
+     * @param string $level
+     */
 	public static function log( array $message, $level = 'DEBUG' ) {
 		$logger = wc_get_logger();
-		$logger->log( $level, wc_print_r($message, true), [ 'source' => 'mondu' ] );
+		$logger->log( $level, wc_print_r( $message, true ), [ 'source' => 'mondu' ] );
 	}
 }
