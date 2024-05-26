@@ -18,18 +18,18 @@ use WC_Payment_Gateway;
  */
 class MonduGateway extends WC_Payment_Gateway {
 
-    /**
-     * Mondu Global Settings
-     *
-     * @var MonduRequestWrapper
-     */
+	/**
+	 * Mondu Global Settings
+	 *
+	 * @var MonduRequestWrapper
+	 */
 	protected $global_settings;
 
-    /**
-     * Mondu Method Name
-     *
-     * @var MonduRequestWrapper
-     */
+	/**
+	 * Mondu Method Name
+	 *
+	 * @var MonduRequestWrapper
+	 */
 	protected $method_name;
 
 	/**
@@ -39,11 +39,11 @@ class MonduGateway extends WC_Payment_Gateway {
 	 */
 	private $mondu_request_wrapper;
 
-    /**
-     * MonduGateway constructor.
-     *
-     * @param bool $register_hooks
-     */
+	/**
+	 * MonduGateway constructor.
+	 *
+	 * @param bool $register_hooks
+	 */
 	public function __construct( $register_hooks = true ) {
 		$this->global_settings = get_option( Plugin::OPTION_NAME );
 
@@ -54,7 +54,7 @@ class MonduGateway extends WC_Payment_Gateway {
 
 		$this->mondu_request_wrapper = new MonduRequestWrapper();
 
-		if ($register_hooks) {
+		if ( $register_hooks ) {
 			add_action( 'woocommerce_update_options_payment_gateways_' . $this->id, [ $this, 'process_admin_options' ] );
 			add_action( 'woocommerce_thankyou_' . $this->id, [ $this, 'thankyou_page' ] );
 			add_action( 'woocommerce_email_before_order_table', [ $this, 'email_instructions' ], 10, 3 );

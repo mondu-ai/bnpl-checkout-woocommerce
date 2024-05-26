@@ -9,7 +9,7 @@ namespace Mondu\Admin\Option;
 
 use Mondu\Plugin;
 
-if ( ! defined( 'ABSPATH' ) ) {
+if ( !defined( 'ABSPATH' ) ) {
 	die( 'Direct access not allowed' );
 }
 
@@ -17,10 +17,10 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Class Account
  */
 class Account extends Helper {
-    /**
-     * Register the settings
-     */
-    public function register() {
+	/**
+	 * Register the settings
+	 */
+	public function register() {
 		register_setting('mondu', Plugin::OPTION_NAME);
 
 		/**
@@ -44,7 +44,7 @@ class Account extends Helper {
 			]
 		);
 		add_settings_field(
-            'api_token',
+			'api_token',
 			__( 'API Token', 'mondu' ),
 			[ $this, 'field_api_token' ],
 			'mondu-settings-account',
@@ -55,7 +55,7 @@ class Account extends Helper {
 			]
 		);
 		add_settings_field(
-            'send_line_items',
+			'send_line_items',
 			__( 'Send line items', 'mondu' ),
 			[ $this, 'field_send_line_items' ],
 			'mondu-settings-account',
@@ -67,33 +67,33 @@ class Account extends Helper {
 		);
 	}
 
-    /**
-     * Field for sandbox or production
-     *
-     * @param array $args arguments.
-     */
-    public function field_sandbox_or_production( $args = [] ) {
+	/**
+	 * Field for sandbox or production
+	 *
+	 * @param array $args arguments.
+	 */
+	public function field_sandbox_or_production( $args = [] ) {
 		$this->selectField( Plugin::OPTION_NAME, 'sandbox_or_production', [
 			'sandbox'    => __( 'Sandbox', 'mondu' ),
 			'production' => __( 'Production', 'mondu' ),
 		], $args['tip'] );
 	}
 
-    /**
-     * Field for API token
-     *
-     * @param array $args arguments.
-     */
-    public function field_api_token( $args = [] ) {
+	/**
+	 * Field for API token
+	 *
+	 * @param array $args arguments.
+	 */
+	public function field_api_token( $args = [] ) {
 		$this->textField( Plugin::OPTION_NAME, 'api_token', $args['tip'] );
 	}
 
-    /**
-     * Field for send line items
-     *
-     * @param array $args arguments.
-     */
-    public function field_send_line_items( $args = [] ) {
+	/**
+	 * Field for send line items
+	 *
+	 * @param array $args arguments.
+	 */
+	public function field_send_line_items( $args = [] ) {
 		$this->selectField( Plugin::OPTION_NAME, 'send_line_items', [
 			'yes'   => __( 'Yes', 'mondu' ),
 			'order' => __( 'Send line items only for orders', 'mondu' ),
@@ -101,13 +101,13 @@ class Account extends Helper {
 		], $args['tip'] );
 	}
 
-    /**
-     * Render the account options
-     *
-     * @param mixed $validation_error validation error.
-     * @param mixed $webhooks_error webhooks error.
-     */
-    public function render( $validation_error = null, $webhooks_error = null ) {
+	/**
+	 * Render the account options
+	 *
+	 * @param mixed $validation_error validation error.
+	 * @param mixed $webhooks_error webhooks error.
+	 */
+	public function render( $validation_error = null, $webhooks_error = null ) {
 		if ( !current_user_can( 'manage_options' ) ) {
 			wp_die( esc_html__( 'You do not have sufficient permissions to access this page.' ) );
 		}

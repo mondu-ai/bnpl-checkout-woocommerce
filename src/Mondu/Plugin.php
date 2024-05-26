@@ -31,42 +31,42 @@ use WP_Error;
  */
 class Plugin {
 
-    /**
-     * Order ID Key
-     */
-    const ORDER_ID_KEY    = '_mondu_order_id';
+	/**
+	 * Order ID Key
+	 */
+	const ORDER_ID_KEY = '_mondu_order_id';
 
-    /**
-     * Invoice ID Key
-     */
-    const INVOICE_ID_KEY  = '_mondu_invoice_id';
+	/**
+	 * Invoice ID Key
+	 */
+	const INVOICE_ID_KEY = '_mondu_invoice_id';
 
-    /**
-     * Option Name
-     */
-    const OPTION_NAME     = 'mondu_account';
+	/**
+	 * Option Name
+	 */
+	const OPTION_NAME = 'mondu_account';
 
-    /**
-     * Payment Methods
-     */
-    const PAYMENT_METHODS = [
-		'invoice'                 => 'mondu_invoice',
-		'direct_debit'            => 'mondu_direct_debit',
-		'installment'             => 'mondu_installment',
-		'installment_by_invoice'  => 'mondu_installment_by_invoice',
+	/**
+	 * Payment Methods
+	 */
+	const PAYMENT_METHODS = [
+		'invoice'                => 'mondu_invoice',
+		'direct_debit'           => 'mondu_direct_debit',
+		'installment'            => 'mondu_installment',
+		'installment_by_invoice' => 'mondu_installment_by_invoice',
 	];
 
-    /**
-     * Available Countries
-     */
-    const AVAILABLE_COUNTRIES = [ 'DE', 'AT', 'NL', 'FR', 'BE', 'GB' ];
+	/**
+	 * Available Countries
+	 */
+	const AVAILABLE_COUNTRIES = [ 'DE', 'AT', 'NL', 'FR', 'BE', 'GB' ];
 
-    /**
-     * Global Settings
-     *
-     * @var mixed
-     */
-    protected $global_settings;
+	/**
+	 * Global Settings
+	 *
+	 * @var mixed
+	 */
+	protected $global_settings;
 
 	/**
 	 * Mondu Request Wrapper
@@ -81,9 +81,9 @@ class Plugin {
 		$this->mondu_request_wrapper = new MonduRequestWrapper();
 	}
 
-    /**
-     * Initialize the plugin
-     */
+	/**
+	 * Initialize the plugin
+	 */
 	public function init() {
 		if ( !class_exists( 'WooCommerce' ) ) {
 			# This file is required to deactivate the plugin.
@@ -139,11 +139,11 @@ class Plugin {
 		add_action( 'woocommerce_order_status_changed', [ $this->mondu_request_wrapper, 'order_status_changed' ], 10, 3 );
 		add_action( 'woocommerce_before_order_object_save', [ $this->mondu_request_wrapper, 'update_order_if_changed_some_fields' ] );
 		add_action( 'woocommerce_order_refunded', [ $this->mondu_request_wrapper, 'order_refunded' ], 10, 2 );
-		add_action( 'woocommerce_blocks_loaded', function() {
+		add_action( 'woocommerce_blocks_loaded', function () {
 			if ( class_exists( 'Automattic\WooCommerce\Blocks\Payments\Integrations\AbstractPaymentMethodType' ) ) {
 				add_action(
 					'woocommerce_blocks_payment_method_type_registration',
-					function( PaymentMethodRegistry $payment_method_registry ) {
+					function ( PaymentMethodRegistry $payment_method_registry ) {
 						$payment_method_registry->register( new MonduBlocksSupport() );
 					}
 				);
@@ -185,20 +185,20 @@ class Plugin {
 		}
 	}
 
-    /**
-     * Load the plugin text domain for translation.
-     */
+	/**
+	 * Load the plugin text domain for translation.
+	 */
 	public function load_textdomain() {
 		$plugin_rel_path = dirname( plugin_basename( __FILE__ ) ) . '/../../languages/';
 		load_plugin_textdomain( 'mondu', false, $plugin_rel_path );
 	}
 
-    /**
-     * Check if the order has Mondu data
-     *
-     * @param WC_Order $order
-     * @return bool
-     */
+	/**
+	 * Check if the order has Mondu data
+	 *
+	 * @param WC_Order $order
+	 * @return bool
+	 */
 	public static function order_has_mondu( WC_Order $order ) {
 		if ( !in_array($order->get_payment_method(), self::PAYMENT_METHODS, true) ) {
 			return false;
@@ -207,12 +207,12 @@ class Plugin {
 		return true;
 	}
 
-    /**
-     * Change address warning
-     *
-     * @param WC_Order $order
-     * @return bool
-     */
+	/**
+	 * Change address warning
+	 *
+	 * @param WC_Order $order
+	 * @return bool
+	 */
 	public function change_address_warning( WC_Order $order ) {
 		if ( !$this->order_has_mondu($order) ) {
 			return;
@@ -232,12 +232,12 @@ class Plugin {
 		echo '<p>' . esc_html__( 'Since this order will be paid via Mondu you will not be able to change the addresses.', 'mondu' ) . '</p>';
 	}
 
-    /**
-     * Remove gateway if country unavailable
-     *
-     * @param array $available_gateways
-     * @return array
-     */
+	/**
+	 * Remove gateway if country unavailable
+	 *
+	 * @param array $available_gateways
+	 * @return array
+	 */
 	public function remove_gateway_if_country_unavailable( $available_gateways ) {
 		if ( is_admin() || !is_checkout() ) {
 			return $available_gateways;
@@ -484,19 +484,19 @@ class Plugin {
 		}
 	}
 
-    /**
-     * WCPDF add Mondu payment language switch
-     *
-     * @param $locale
-     */
+	/**
+	 * WCPDF add Mondu payment language switch
+	 *
+	 * @param $locale
+	 */
 	public function wcpdf_add_mondu_payment_language_switch( $locale ) {
 		unload_textdomain( 'mondu' );
 		$this->load_textdomain();
 	}
 
-    /**
-     * WooCommerce notice
-     */
+	/**
+	 * WooCommerce notice
+	 */
 	public function woocommerce_notice() {
 		$class   = 'notice notice-error';
 		$message = __( 'Mondu requires WooCommerce to be activated.', 'mondu' );
@@ -504,31 +504,31 @@ class Plugin {
 		printf( '<div class="%1$s"><p>%2$s</p></div>', esc_attr( $class ), esc_html( $message ) );
 	}
 
-    /**
-     * Check if the country is available
-     *
-     * @param $country
-     * @return bool
-     */
+	/**
+	 * Check if the country is available
+	 *
+	 * @param $country
+	 * @return bool
+	 */
 	private function is_country_available( $country ) {
 		return in_array( $country, self::AVAILABLE_COUNTRIES, true );
 	}
 
-    /**
-     * Get the WC Customer object
-     *
-     * @return WC_Customer
-     * @throws Exception
-     */
+	/**
+	 * Get the WC Customer object
+	 *
+	 * @return WC_Customer
+	 * @throws Exception
+	 */
 	private function get_wc_customer() {
 		return isset( WC()->customer ) ? WC()->customer : new WC_Customer( get_current_user_id() );
 	}
 
-    /**
-     * Get the Mondu order locale
-     *
-     * @return mixed
-     */
+	/**
+	 * Get the Mondu order locale
+	 *
+	 * @return mixed
+	 */
 	public function get_mondu_order_locale() {
 		/**
 		 * WPML current language

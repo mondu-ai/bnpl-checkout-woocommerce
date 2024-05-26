@@ -47,11 +47,11 @@ class PaymentInfo {
 	 */
 	private $invoices_data;
 
-    /**
-     * PaymentInfo constructor.
-     *
-     * @param int $order_id Order ID
-     */
+	/**
+	 * PaymentInfo constructor.
+	 *
+	 * @param int $order_id Order ID
+	 */
 	public function __construct( $order_id ) {
 		$this->order                 = new WC_Order($order_id);
 		$this->mondu_request_wrapper = new MonduRequestWrapper();
@@ -59,29 +59,29 @@ class PaymentInfo {
 		$this->invoices_data         = $this->get_invoices();
 	}
 
-    /**
-     * Get Order Data
-     *
-     * @return array
-     */
+	/**
+	 * Get Order Data
+	 *
+	 * @return array
+	 */
 	public function get_order_data() {
 		return $this->order_data;
 	}
 
-    /**
-     * Get Invoices Data
-     *
-     * @return array
-     */
+	/**
+	 * Get Invoices Data
+	 *
+	 * @return array
+	 */
 	public function get_invoices_data() {
 		return $this->invoices_data;
 	}
 
-    /**
-     * Get WCPDF Shop Name
-     *
-     * @return string
-     */
+	/**
+	 * Get WCPDF Shop Name
+	 *
+	 * @return string
+	 */
 	public function get_wcpdf_shop_name() {
 		$wcpdf = \WPO_WCPDF::instance();
 
@@ -128,24 +128,24 @@ class PaymentInfo {
 					<?php
 				}
 				?>
-                <?php
-                if ( in_array( $this->order_data['state'], [ 'authorized' ], true ) &&
-                    $this->order->get_status() === 'on-hold'
-                ) {
-                    ?>
-                    <?php
-                    $mondu_data = [
-                        'order_id' => $this->order->get_id(),
-                        'order_uuid' => $order_data['uuid'],
-                        'security' => wp_create_nonce( 'mondu-confirm-order' ),
-                    ];
-                    ?>
-                    <button data-mondu='<?php echo( wp_json_encode( $mondu_data ) ); ?>' id="mondu-confirm-order-button" type="submit" class="button grant_access">
-                        <?php esc_html_e( 'Confirm Order', 'mondu' ); ?>
-                    </button>
-                    <?php
-                }
-                ?>
+				<?php
+				if ( in_array( $this->order_data['state'], [ 'authorized' ], true ) &&
+					$this->order->get_status() === 'on-hold'
+				) {
+					?>
+					<?php
+					$mondu_data = [
+						'order_id'   => $this->order->get_id(),
+						'order_uuid' => $order_data['uuid'],
+						'security'   => wp_create_nonce( 'mondu-confirm-order' ),
+					];
+					?>
+					<button data-mondu='<?php echo( wp_json_encode( $mondu_data ) ); ?>' id="mondu-confirm-order-button" type="submit" class="button grant_access">
+						<?php esc_html_e( 'Confirm Order', 'mondu' ); ?>
+					</button>
+					<?php
+				}
+				?>
 			</section>
 			<hr>
 			<?php $this->get_mondu_payment_html(); ?>
@@ -176,8 +176,8 @@ class PaymentInfo {
 			return null;
 		}
 
-		$bank_account = $this->order_data['bank_account'];
-		$net_terms = $this->get_mondu_net_term();
+		$bank_account   = $this->order_data['bank_account'];
+		$net_terms      = $this->get_mondu_net_term();
 		$mondu_uk_buyer = $bank_account['account_number'] && $bank_account['sort_code'];
 
 		if ( $bank_account ) {
@@ -234,11 +234,11 @@ class PaymentInfo {
 		}
 	}
 
-    /**
-     * Get Mondu Net Term
-     *
-     * @return int|null
-     */
+	/**
+	 * Get Mondu Net Term
+	 *
+	 * @return int|null
+	 */
 	public function get_mondu_net_term() {
 		if ( !in_array( $this->order->get_payment_method(), Plugin::PAYMENT_METHODS, true ) ) {
 			return null;
@@ -251,11 +251,11 @@ class PaymentInfo {
 		return null;
 	}
 
-    /**
-     * Get Mondu Invoices HTML
-     *
-     * @return void
-     */
+	/**
+	 * Get Mondu Invoices HTML
+	 *
+	 * @return void
+	 */
 	public function get_mondu_invoices_html() {
 		foreach ( $this->invoices_data as $invoice ) {
 			?>
@@ -296,12 +296,12 @@ class PaymentInfo {
 		}
 	}
 
-    /**
-     * Get Mondu Credit Note HTML
-     *
-     * @param array $invoice Invoice
-     * @return void
-     */
+	/**
+	 * Get Mondu Credit Note HTML
+	 *
+	 * @param array $invoice Invoice
+	 * @return void
+	 */
 	public function get_mondu_credit_note_html( $invoice ) {
 		if ( empty( $invoice['credit_notes'] ) ) {
 			return null;
@@ -346,11 +346,11 @@ class PaymentInfo {
 		include $file;
 	}
 
-    /**
-     * Get Invoices
-     *
-     * @return array
-     */
+	/**
+	 * Get Invoices
+	 *
+	 * @return array
+	 */
 	private function get_invoices() {
 		try {
 			return $this->mondu_request_wrapper->get_invoices( $this->order->get_id() );
@@ -359,11 +359,11 @@ class PaymentInfo {
 		}
 	}
 
-    /**
-     * Get Order
-     *
-     * @return array
-     */
+	/**
+	 * Get Order
+	 *
+	 * @return array
+	 */
 	private function get_order() {
 		try {
 			return $this->mondu_request_wrapper->get_order( $this->order->get_id() );

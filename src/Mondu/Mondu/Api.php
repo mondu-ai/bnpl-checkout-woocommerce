@@ -17,23 +17,23 @@ use Mondu\Exceptions\ResponseException;
  * @package Mondu
  */
 class Api {
-    /**
-     * Global settings
-     *
-     * @var array
-     */
+	/**
+	 * Global settings
+	 *
+	 * @var array
+	 */
 	private $global_settings;
 
-    /**
-     * Api constructor.
-     */
+	/**
+	 * Api constructor.
+	 */
 	public function __construct() {
 		$this->global_settings = get_option(Plugin::OPTION_NAME);
 	}
 
-    /**
-     * Register
-     */
+	/**
+	 * Register
+	 */
 	public function register() {
 		register_setting('mondu', Plugin::OPTION_NAME);
 	}

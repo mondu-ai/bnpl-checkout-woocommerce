@@ -128,7 +128,7 @@ class Helper {
 			return $order;
 		}
 
-		$search_key = '_order_number';
+		$search_key  = '_order_number';
 		$search_term = $order_number;
 
 		if ( is_plugin_active( 'custom-order-numbers-for-woocommerce/custom-order-numbers-for-woocommerce.php' ) ) {
@@ -147,9 +147,9 @@ class Helper {
 			$wcj_order_numbers_enabled = get_option( 'wcj_order_numbers_enabled' );
 
 			// Get prefix and suffix options
-			$prefix = do_shortcode( get_option( 'wcj_order_number_prefix', '' ) );
+			$prefix  = do_shortcode( get_option( 'wcj_order_number_prefix', '' ) );
 			$prefix .= date_i18n( get_option( 'wcj_order_number_date_prefix', '' ) );
-			$suffix = do_shortcode( get_option( 'wcj_order_number_suffix', '' ) );
+			$suffix  = do_shortcode( get_option( 'wcj_order_number_suffix', '' ) );
 			$suffix .= date_i18n( get_option( 'wcj_order_number_date_suffix', '' ) );
 
 			// Ignore suffix and prefix from search input
@@ -175,51 +175,51 @@ class Helper {
 		}
 
 		if ( !isset( $order_id ) ) {
-			$args  = array(
+			$args  = [
 				'numberposts'            => 1,
 				'post_type'              => 'shop_order',
 				'fields'                 => 'ids',
 				'post_status'            => 'any',
 				'update_post_meta_cache' => false,
 				'update_post_term_cache' => false,
-				'meta_query'             => array(
-					array(
+				'meta_query'             => [
+					[
 						'key'     => $search_key,
 						'value'   => $search_term,
 						'compare' => '=',
-					),
-				)
-			);
+					],
+				],
+			];
 			$query = new WP_Query( $args );
 
 			if ( !empty( $query->posts ) ) {
-				$order_id = $query->posts[ 0 ];
+				$order_id = $query->posts[0];
 			} elseif ( isset( $search_term_fallback ) ) {
-				$args  = array(
+				$args  = [
 					'numberposts'            => 1,
 					'post_type'              => 'shop_order',
 					'fields'                 => 'ids',
 					'post_status'            => 'any',
 					'update_post_meta_cache' => false,
 					'update_post_term_cache' => false,
-					'meta_query'             => array(
-						array(
+					'meta_query'             => [
+						[
 							'key'     => $search_key,
 							'value'   => $search_term_fallback,
 							'compare' => '=',
-						),
-					)
-				);
+						],
+					],
+				];
 				$query = new WP_Query( $args );
 
 				if ( !empty( $query->posts ) ) {
-					$order_id = $query->posts[ 0 ];
+					$order_id = $query->posts[0];
 				}
 			}
 		}
 
 		if ( !isset( $order_id ) ) {
-			Helper::log([
+			self::log([
 				'message'              => 'Error trying to fetch the order',
 				'order_id_isset'       => isset( $order_id ),
 				'order_number'         => $order_number,
@@ -234,36 +234,36 @@ class Helper {
 	}
 
 	/**
-     * Get order from mondu order uuid
-     *
+	 * Get order from mondu order uuid
+	 *
 	 * @param $mondu_order_uuid
 	 * @return bool|WC_Order
 	 */
 	public static function get_order_from_mondu_uuid( $mondu_order_uuid ) {
-		$search_key = Plugin::ORDER_ID_KEY;
+		$search_key  = Plugin::ORDER_ID_KEY;
 		$search_term = $mondu_order_uuid;
 
-		$args  = array(
+		$args     = [
 			'numberposts'            => 1,
 			'post_type'              => 'shop_order',
 			'fields'                 => 'ids',
 			'post_status'            => 'any',
 			'update_post_meta_cache' => false,
 			'update_post_term_cache' => false,
-			'meta_query'             => array(
-				array(
+			'meta_query'             => [
+				[
 					'key'     => $search_key,
 					'value'   => $search_term,
 					'compare' => '=',
-				),
-			)
-		);
-		$query = new WP_Query( $args );
-		$order_id = $query->posts[ 0 ];
-		$order =  wc_get_order( $order_id );
+				],
+			],
+		];
+		$query    = new WP_Query( $args );
+		$order_id = $query->posts[0];
+		$order    = wc_get_order( $order_id );
 
 		if ( !$order ) {
-			Helper::log([
+			self::log([
 				'message'              => 'Error trying to fetch the order',
 				'order_id_isset'       => isset( $order_id ),
 				'mondu_order_uuid'     => $mondu_order_uuid,
@@ -277,8 +277,8 @@ class Helper {
 	}
 
 	/**
-     * Get order from order number
-     *
+	 * Get order from order number
+	 *
 	 * @param $order_number
 	 * @param $mondu_order_uuid
 	 * @return bool|WC_Order
@@ -294,13 +294,13 @@ class Helper {
 	}
 
 	/**
-     * Get order from order number
-     *
+	 * Get order from order number
+	 *
 	 * @param $order_number
 	 * @param $mondu_order_uuid
 	 * @return bool|WC_Order
 	 */
-	private static function get_order_hpos($order_number, $mondu_order_uuid) {
+	private static function get_order_hpos( $order_number, $mondu_order_uuid ) {
 		$order = wc_get_order( $order_number );
 
 		if ( $order ) {
@@ -308,8 +308,8 @@ class Helper {
 		}
 
 		$orders = wc_get_orders([
-			'meta_key' => Plugin::ORDER_ID_KEY,
-			'meta_value' => $mondu_order_uuid
+			'meta_key'   => Plugin::ORDER_ID_KEY,
+			'meta_value' => $mondu_order_uuid,
 		]);
 
 		if ( !empty( $orders ) ) {
@@ -320,8 +320,8 @@ class Helper {
 	}
 
 	/**
-     * Get order from order number
-     *
+	 * Get order from order number
+	 *
 	 * @param $order_number
 	 * @param $mondu_order_uuid
 	 * @return bool|WC_Order
@@ -358,12 +358,12 @@ class Helper {
 		return false;
 	}
 
-    /**
-     * Log
-     *
-     * @param array $message
-     * @param string $level
-     */
+	/**
+	 * Log
+	 *
+	 * @param array $message
+	 * @param string $level
+	 */
 	public static function log( array $message, $level = 'DEBUG' ) {
 		$logger = wc_get_logger();
 		$logger->log( $level, wc_print_r( $message, true ), [ 'source' => 'mondu' ] );

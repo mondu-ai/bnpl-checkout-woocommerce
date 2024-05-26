@@ -63,7 +63,7 @@ function mondu_deactivate() {
 register_deactivation_hook( MONDU_PLUGIN_FILE, 'mondu_deactivate' );
 
 // Here because this needs to happen before plugins_loaded hook
-add_action('before_woocommerce_init', function() {
+add_action('before_woocommerce_init', function () {
 	if ( class_exists( FeaturesUtil::class ) ) {
 		FeaturesUtil::declare_compatibility( 'custom_order_tables', __FILE__ );
 		FeaturesUtil::declare_compatibility( 'cart_checkout_blocks', __FILE__ );

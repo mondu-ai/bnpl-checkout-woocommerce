@@ -24,17 +24,17 @@ class OrdersController extends WP_REST_Controller {
 	 */
 	private $mondu_request_wrapper;
 
-    /**
-     * Constructor
-     */
+	/**
+	 * Constructor
+	 */
 	public function __construct() {
 		$this->namespace             = 'mondu/v1/orders';
 		$this->mondu_request_wrapper = new MonduRequestWrapper();
 	}
 
 	/**
-     * Register routes
-     */
+	 * Register routes
+	 */
 	public function register_routes() {
 		register_rest_route( $this->namespace, '/confirm', [
 			[
@@ -52,11 +52,11 @@ class OrdersController extends WP_REST_Controller {
 		] );
 	}
 
-    /**
-     * Confirm order
-     *
-     * @param WP_REST_Request $request Request
-     */
+	/**
+	 * Confirm order
+	 *
+	 * @param WP_REST_Request $request Request
+	 */
 	public function confirm( WP_REST_Request $request ) {
 		$params         = $request->get_params();
 		$order_number   = $params['external_reference_id'];
@@ -88,16 +88,16 @@ class OrdersController extends WP_REST_Controller {
 		exit;
 	}
 
-    /**
-     * Decline order
-     *
-     * @param WP_REST_Request $request Request
-     */
+	/**
+	 * Decline order
+	 *
+	 * @param WP_REST_Request $request Request
+	 */
 	public function decline( WP_REST_Request $request ) {
-		$params         = $request->get_params();
-		$order_number   = $params['external_reference_id'];
-		$return_url     = urldecode( $params['return_url'] );
-		$order          = Helper::get_order_from_order_number( $order_number );
+		$params       = $request->get_params();
+		$order_number = $params['external_reference_id'];
+		$return_url   = urldecode( $params['return_url'] );
+		$order        = Helper::get_order_from_order_number( $order_number );
 
 		$order->add_order_note( esc_html( sprintf( __( 'Order was declined by Mondu.', 'mondu' ) ) ), false );
 

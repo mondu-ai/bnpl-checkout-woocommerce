@@ -19,16 +19,16 @@ use WC_Order_Refund;
  * @package Mondu
  */
 class MonduRequestWrapper {
-    /**
-     * Mondu API
-     *
-     * @var Api
-     */
+	/**
+	 * Mondu API
+	 *
+	 * @var Api
+	 */
 	private $api;
 
-    /**
-     * MonduRequestWrapper constructor.
-     */
+	/**
+	 * MonduRequestWrapper constructor.
+	 */
 	public function __construct() {
 		$this->api = new Api();
 	}
@@ -184,7 +184,7 @@ class MonduRequestWrapper {
 				}
 
 				# return only an array with the identifier (invoice, direct_debit, installment, etc)
-				$merchant_payment_methods = array_map( function( $payment_method ) {
+				$merchant_payment_methods = array_map( function ( $payment_method ) {
 					return $payment_method['identifier'];
 				}, $response['payment_methods'] );
 				set_transient( 'mondu_merchant_payment_methods', $merchant_payment_methods, 1 * 60 );
@@ -198,14 +198,14 @@ class MonduRequestWrapper {
 		return $merchant_payment_methods;
 	}
 
-    /**
-     * Confirm Order
-     *
-     * @param $order_id
-     * @param $mondu_order_id
-     * @return void|WC_Order
-     * @throws ResponseException
-     */
+	/**
+	 * Confirm Order
+	 *
+	 * @param $order_id
+	 * @param $mondu_order_id
+	 * @return void|WC_Order
+	 * @throws ResponseException
+	 */
 	public function confirm_order( $order_id, $mondu_order_id ) {
 		$order = new WC_Order( $order_id );
 		if ( !Plugin::order_has_mondu( $order ) ) {
@@ -281,7 +281,7 @@ class MonduRequestWrapper {
 		if ( !$mondu_invoice_id ) {
 			Helper::log([
 				'skipping_credit_note_creation' => [
-					'order' => $order_id,
+					'order'  => $order_id,
 					'refund' => $refund_id,
 				],
 			]);

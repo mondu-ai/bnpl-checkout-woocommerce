@@ -18,28 +18,28 @@ if ( !defined( 'ABSPATH' ) ) {
  * @package Mondu
  */
 abstract class Helper {
-    /**
-     * The global settings.
-     *
-     * @var false|mixed|null
-     */
-    protected $global_settings;
+	/**
+	 * The global settings.
+	 *
+	 * @var false|mixed|null
+	 */
+	protected $global_settings;
 
-    /**
-     * Helper constructor.
-     */
+	/**
+	 * Helper constructor.
+	 */
 	public function __construct() {
 		$this->global_settings = get_option( Plugin::OPTION_NAME );
 	}
 
-    /**
-     * Text field rendering.
-     *
-     * @param $option_name
-     * @param $field_name
-     * @param $tip
-     * @return void
-     */
+	/**
+	 * Text field rendering.
+	 *
+	 * @param $option_name
+	 * @param $field_name
+	 * @param $tip
+	 * @return void
+	 */
 	protected function textField( $option_name, $field_name, $tip = '' ) {
 		$field_id    = $field_name;
 		$field_value = isset( $this->global_settings[ $field_name ] ) ? $this->global_settings[ $field_name ] : '';
@@ -51,15 +51,15 @@ abstract class Helper {
 		<?php
 	}
 
-    /**
-     * Select field rendering.
-     *
-     * @param $option_name
-     * @param $field_name
-     * @param $options
-     * @param $tip
-     * @return void
-     */
+	/**
+	 * Select field rendering.
+	 *
+	 * @param $option_name
+	 * @param $field_name
+	 * @param $options
+	 * @param $tip
+	 * @return void
+	 */
 	protected function selectField( $option_name, $field_name, $options, $tip ) {
 		$field_id    = $field_name;
 		$field_value = isset( $this->global_settings[ $field_name ] ) ? $this->global_settings[ $field_name ] : '';

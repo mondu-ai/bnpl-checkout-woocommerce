@@ -23,11 +23,11 @@ if ( !defined( 'ABSPATH' ) ) {
  * @package Mondu
  */
 class Settings {
-    /**
-     * Global settings.
-     *
-     * @var false|mixed|null
-     */
+	/**
+	 * Global settings.
+	 *
+	 * @var false|mixed|null
+	 */
 	private $global_settings;
 
 	/**
@@ -44,20 +44,20 @@ class Settings {
 	 */
 	private $account_options;
 
-    /**
-     * Settings constructor.
-     */
+	/**
+	 * Settings constructor.
+	 */
 	public function __construct() {
 		$this->global_settings = get_option( Plugin::OPTION_NAME );
 
 		$this->mondu_request_wrapper = new MonduRequestWrapper();
 	}
 
-    /**
-     * Initialize.
-     *
-     * @return void
-     */
+	/**
+	 * Initialize.
+	 *
+	 * @return void
+	 */
 	public function init() {
 		add_action( 'admin_menu', [ $this, 'plugin_menu' ] );
 		add_action( 'admin_init', [ $this, 'register_options' ] );
@@ -65,11 +65,11 @@ class Settings {
 		add_filter( 'woocommerce_screen_ids', [ $this, 'set_wc_screen_ids' ] );
 	}
 
-    /**
-     * Plugin menu.
-     *
-     * @return void
-     */
+	/**
+	 * Plugin menu.
+	 *
+	 * @return void
+	 */
 	public function plugin_menu() {
 		$mondu_icon = 'data:image/svg+xml;base64,' . base64_encode( file_get_contents( 'https://checkout.mondu.ai/logo.svg' ) );
 
@@ -84,32 +84,32 @@ class Settings {
 		);
 	}
 
-    /**
-     * Register options.
-     *
-     * @return void
-     */
+	/**
+	 * Register options.
+	 *
+	 * @return void
+	 */
 	public function register_options() {
 		$this->account_options = new Account();
 		$this->account_options->register();
 	}
 
-    /**
-     * Set WC screen ids.
-     *
-     * @param $screen
-     * @return mixed
-     */
+	/**
+	 * Set WC screen ids.
+	 *
+	 * @param $screen
+	 * @return mixed
+	 */
 	public function set_wc_screen_ids( $screen ) {
 		$screen[] = 'toplevel_page_mondu-settings-account';
 		return $screen;
 	}
 
-    /**
-     * Render account options.
-     *
-     * @return void
-     */
+	/**
+	 * Render account options.
+	 *
+	 * @return void
+	 */
 	public function render_account_options() {
 		$validation_error = null;
 		$webhooks_error   = null;
@@ -145,29 +145,29 @@ class Settings {
 		$this->account_options->render( $validation_error, $webhooks_error );
 	}
 
-    /**
-     * Return missing credentials.
-     *
-     * @return bool
-     */
+	/**
+	 * Return missing credentials.
+	 *
+	 * @return bool
+	 */
 	private function missing_credentials() {
 		return (
-            !isset( $this->global_settings ) ||
-            !is_array( $this->global_settings ) ||
-            !isset( $this->global_settings['api_token'] ) ||
-            '' === $this->global_settings['api_token']
+			!isset( $this->global_settings ) ||
+			!is_array( $this->global_settings ) ||
+			!isset( $this->global_settings['api_token'] ) ||
+			'' === $this->global_settings['api_token']
 		);
 	}
 
-    /**
-     * Register webhooks if not registered.
-     *
-     * @return void
-     * @throws ResponseException
-     */
+	/**
+	 * Register webhooks if not registered.
+	 *
+	 * @return void
+	 * @throws ResponseException
+	 */
 	private function register_webhooks_if_not_registered() {
 		$webhooks          = $this->mondu_request_wrapper->get_webhooks();
-		$registered_topics = array_map( function( $webhook ) {
+		$registered_topics = array_map( function ( $webhook ) {
 			return $webhook['topic'];
 		}, $webhooks );
 
@@ -179,11 +179,11 @@ class Settings {
 		}
 	}
 
-    /**
-     * Download Mondu logs.
-     *
-     * @return void
-     */
+	/**
+	 * Download Mondu logs.
+	 *
+	 * @return void
+	 */
 	public function download_mondu_logs() {
 		$is_nonce_valid = check_ajax_referer( 'mondu-download-logs', 'security', false );
 		if ( !$is_nonce_valid ) {
@@ -214,12 +214,12 @@ class Settings {
 		die();
 	}
 
-    /**
-     * Get file.
-     *
-     * @param $date
-     * @return false|string
-     */
+	/**
+	 * Get file.
+	 *
+	 * @param $date
+	 * @return false|string
+	 */
 	private function get_file( $date ) {
 		$base_dir = WP_CONTENT_DIR . '/uploads/wc-logs/';
 		$dir      = opendir( $base_dir );
