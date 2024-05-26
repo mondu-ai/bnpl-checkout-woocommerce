@@ -73,7 +73,7 @@ class OrdersController extends WP_REST_Controller {
 				WC()->cart->empty_cart();
 			}
 
-			if ( in_array( $order->get_status(), [ 'pending', 'failed' ] ) ) {
+			if ( in_array( $order->get_status(), [ 'pending', 'failed' ], true ) ) {
 				$order->update_status( 'wc-on-hold', __('On hold', 'woocommerce' ) );
 
 				$this->mondu_request_wrapper->confirm_order( $order->get_id(), $mondu_order_id );
@@ -101,7 +101,7 @@ class OrdersController extends WP_REST_Controller {
 
 		$order->add_order_note( esc_html( sprintf( __( 'Order was declined by Mondu.', 'mondu' ) ) ), false );
 
-		if ( $order->get_status() == 'pending' ) {
+		if ( $order->get_status() === 'pending' ) {
 			$order->update_status('wc-failed', __('Failed', 'woocommerce'));
 		}
 

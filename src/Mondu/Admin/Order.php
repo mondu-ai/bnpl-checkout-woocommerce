@@ -85,7 +85,7 @@ return;
 	 * @return void
 	 */
 	public function invoice_buttons_js() {
-		require_once MONDU_VIEW_PATH . '/admin/js/invoice.php';
+		require_once MONDU_VIEW_PATH . '/admin/js/invoice.html';
 	}
 
 	/**

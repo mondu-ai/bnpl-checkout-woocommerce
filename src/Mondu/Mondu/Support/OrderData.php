@@ -34,8 +34,8 @@ class OrderData {
 			$cancel_url  = wc_get_checkout_url();
 		}
 
-		$success_url = get_home_url() . '/?rest_route=/mondu/v1/orders/confirm&external_reference_id=' . $order->get_order_number() . '&return_url=' . urlencode( $success_url );
-		$decline_url = get_home_url() . '/?rest_route=/mondu/v1/orders/decline&external_reference_id=' . $order->get_order_number() . '&return_url=' . urlencode( $decline_url );
+		$success_url = get_home_url() . '/?rest_route=/mondu/v1/orders/confirm&external_reference_id=' . $order->get_order_number() . '&return_url=' . rawurlencode( $success_url );
+		$decline_url = get_home_url() . '/?rest_route=/mondu/v1/orders/decline&external_reference_id=' . $order->get_order_number() . '&return_url=' . rawurlencode( $decline_url );
 
 		$data['success_url']  = $success_url;
 		$data['cancel_url']   = $cancel_url;
@@ -132,7 +132,7 @@ class OrderData {
 		$billing_last_name  = $order->get_billing_last_name();
 		$billing_email      = $order->get_billing_email();
 		$billing_phone      = $order->get_billing_phone();
-		$customer_id        = $order->get_customer_id() ?: null;
+		$customer_id        = $order->get_customer_id() ?: null; //phpcs:ignore Universal.Operators.DisallowShortTernary.Found
 
 		$billing_address_line1 = $order->get_billing_address_1();
 		$billing_address_line2 = $order->get_billing_address_2();

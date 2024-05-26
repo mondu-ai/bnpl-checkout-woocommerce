@@ -164,8 +164,8 @@ class Helper {
 				$search_term_fallback = substr( $search_term_fallback, 0, -strlen( $suffix ) );
 			}
 
-			if ( 'yes' == $wcj_order_numbers_enabled ) {
-				if ( 'no' == get_option( 'wcj_order_number_sequential_enabled' ) ) {
+			if ( 'yes' === $wcj_order_numbers_enabled ) {
+				if ( 'no' === get_option( 'wcj_order_number_sequential_enabled' ) ) {
 					$order_id = $final_search;
 				} else {
 					$search_key  = '_wcj_order_number';
@@ -182,7 +182,7 @@ class Helper {
 				'post_status'            => 'any',
 				'update_post_meta_cache' => false,
 				'update_post_term_cache' => false,
-				'meta_query'             => [
+				'meta_query'             => [ //phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query
 					[
 						'key'     => $search_key,
 						'value'   => $search_term,
@@ -202,7 +202,7 @@ class Helper {
 					'post_status'            => 'any',
 					'update_post_meta_cache' => false,
 					'update_post_term_cache' => false,
-					'meta_query'             => [
+					'meta_query'             => [ //phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query
 						[
 							'key'     => $search_key,
 							'value'   => $search_term_fallback,
@@ -250,7 +250,7 @@ class Helper {
 			'post_status'            => 'any',
 			'update_post_meta_cache' => false,
 			'update_post_term_cache' => false,
-			'meta_query'             => [
+			'meta_query'             => [ //phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query
 				[
 					'key'     => $search_key,
 					'value'   => $search_term,
@@ -308,8 +308,8 @@ class Helper {
 		}
 
 		$orders = wc_get_orders([
-			'meta_key'   => Plugin::ORDER_ID_KEY,
-			'meta_value' => $mondu_order_uuid,
+			'meta_key'   => Plugin::ORDER_ID_KEY, // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key
+			'meta_value' => $mondu_order_uuid, // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_value
 		]);
 
 		if ( !empty( $orders ) ) {

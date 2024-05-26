@@ -6,6 +6,7 @@
  */
 namespace Mondu\Mondu;
 
+use Exception;
 use Mondu\Exceptions\ResponseException;
 use Mondu\Mondu\Support\Helper;
 use Mondu\Mondu\Support\OrderData;
@@ -189,7 +190,7 @@ class MonduRequestWrapper {
 				}, $response['payment_methods'] );
 				set_transient( 'mondu_merchant_payment_methods', $merchant_payment_methods, 1 * 60 );
 				return $merchant_payment_methods;
-			} catch ( \Exception $e ) {
+			} catch ( Exception $e ) {
 				$merchant_payment_methods = array_keys( Plugin::PAYMENT_METHODS );
 				set_transient( 'mondu_merchant_payment_methods', $merchant_payment_methods, 10 * 60 );
 				return $merchant_payment_methods;
@@ -352,12 +353,12 @@ class MonduRequestWrapper {
 	/**
 	 * Log Plugin event
 	 *
-	 * @param \Exception $exception
+	 * @param Exception $exception
 	 * @param string $event
 	 * @param $body
 	 * @return void
 	 */
-	public function log_plugin_event( \Exception $exception, $event, $body = null ) {
+	public function log_plugin_event( Exception $exception, $event, $body = null ) {
 		global $wp_version;
 		$params = [
 			'plugin'           => 'woocommerce',
@@ -388,7 +389,7 @@ class MonduRequestWrapper {
 		} catch ( ResponseException $e ) {
 			$this->log_plugin_event( $e, $action, $e->getBody() );
 			throw $e;
-		} catch ( \Exception $e ) {
+		} catch ( Exception $e ) {
 			$this->log_plugin_event( $e, $action );
 			throw $e;
 		}

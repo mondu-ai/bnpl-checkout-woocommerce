@@ -12,6 +12,7 @@ use Mondu\Admin\Option\Account;
 use Mondu\Exceptions\MonduException;
 use Mondu\Exceptions\CredentialsNotSetException;
 use Mondu\Mondu\MonduRequestWrapper;
+use WP_Filesystem_Base;
 
 if ( !defined( 'ABSPATH' ) ) {
 	die( 'Direct access not allowed' );
@@ -71,7 +72,12 @@ class Settings {
 	 * @return void
 	 */
 	public function plugin_menu() {
-		$mondu_icon = 'data:image/svg+xml;base64,' . base64_encode( file_get_contents( 'https://checkout.mondu.ai/logo.svg' ) );
+		$response = wp_remote_get('https://checkout.mondu.ai/logo.svg');
+
+		$mondu_icon = '';
+		if ( is_array( $response ) && !is_wp_error( $response ) ) {
+			$mondu_icon = 'data:image/svg+xml;base64,' . base64_encode($response['body']); //phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_encode
+		}
 
 		add_menu_page(
 			__( 'Mondu Settings', 'mondu' ),
@@ -185,6 +191,12 @@ class Settings {
 	 * @return void
 	 */
 	public function download_mondu_logs() {
+		/**
+		 * @var WP_Filesystem_Base $wp_filesystem
+		 */
+		global $wp_filesystem;
+		WP_Filesystem();
+
 		$is_nonce_valid = check_ajax_referer( 'mondu-download-logs', 'security', false );
 		if ( !$is_nonce_valid ) {
 			status_header( 400 );
@@ -208,10 +220,8 @@ class Settings {
 
 		header( 'Content-Type: text/plain' );
 		header( 'Content-Disposition: attachment; filename="' . $filename . '";' );
-
-		readfile( $file );
-
-		die();
+		echo $wp_filesystem->get_contents($file); //phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+		die;
 	}
 
 	/**
@@ -224,7 +234,7 @@ class Settings {
 		$base_dir = WP_CONTENT_DIR . '/uploads/wc-logs/';
 		$dir      = opendir( $base_dir );
 		if ( $dir ) {
-			while ( $file = readdir( $dir ) ) {
+			while ( $file = readdir( $dir ) ) { //phpcs:ignore Generic.CodeAnalysis.AssignmentInCondition.FoundInWhileCondition
 				if ( str_starts_with( $file, 'mondu-' . $date ) && str_ends_with( $file, '.log' ) ) {
 					return $base_dir . $file;
 				}

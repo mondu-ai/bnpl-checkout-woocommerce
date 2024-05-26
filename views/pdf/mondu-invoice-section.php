@@ -11,6 +11,22 @@ if ( !isset($wcpdf_shop_name) ) {
 	$wcpdf_shop_name = '';
 }
 
+if ( !isset($bank_account) ) {
+	$bank_account = '';
+}
+
+if ( !isset($mondu_uk_buyer) ) {
+	$mondu_uk_buyer = '';
+}
+
+if ( !isset($net_terms) ) {
+	$net_terms = '';
+}
+
+if ( !isset($invoice_number) ) {
+	$invoice_number = '';
+}
+
 if ( 'mondu_invoice' === $payment_method ) {
 	?>
 	<section>

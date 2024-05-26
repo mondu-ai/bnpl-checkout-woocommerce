@@ -489,7 +489,7 @@ class Plugin {
 	 *
 	 * @param $locale
 	 */
-	public function wcpdf_add_mondu_payment_language_switch( $locale ) {
+	public function wcpdf_add_mondu_payment_language_switch() {
 		unload_textdomain( 'mondu' );
 		$this->load_textdomain();
 	}
