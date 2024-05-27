@@ -220,7 +220,7 @@ class Settings {
 
 		header( 'Content-Type: text/plain' );
 		header( 'Content-Disposition: attachment; filename="' . $filename . '";' );
-		echo $wp_filesystem->get_contents($file); //phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+		echo wp_kses_post(str_replace('>', '', $wp_filesystem->get_contents($file)));
 		die;
 	}
 
