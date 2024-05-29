@@ -1,12 +1,20 @@
 <?php
-
+/**
+ * Order Data
+ *
+ * @package Mondu
+ */
 namespace Mondu\Mondu\Support;
 
-use Mondu\Mondu\Support\Helper;
 use Mondu\Plugin;
 use WC_Order;
 use WC_Order_Refund;
 
+/**
+ * Order Data
+ *
+ * @package Mondu
+ */
 class OrderData {
 	/**
 	 * Create Order
@@ -20,14 +28,14 @@ class OrderData {
 
 		if ( is_wc_endpoint_url('order-pay') ) {
 			$decline_url = $order->get_checkout_payment_url();
-			$cancel_url = $order->get_checkout_payment_url();
+			$cancel_url  = $order->get_checkout_payment_url();
 		} else {
 			$decline_url = wc_get_checkout_url();
-			$cancel_url = wc_get_checkout_url();
+			$cancel_url  = wc_get_checkout_url();
 		}
 
-		$success_url = get_home_url() . '/?rest_route=/mondu/v1/orders/confirm&external_reference_id=' . $order->get_order_number() . '&return_url=' . urlencode( $success_url );
-		$decline_url = get_home_url() . '/?rest_route=/mondu/v1/orders/decline&external_reference_id=' . $order->get_order_number() . '&return_url=' . urlencode( $decline_url );
+		$success_url = get_home_url() . '/?rest_route=/mondu/v1/orders/confirm&external_reference_id=' . $order->get_order_number() . '&return_url=' . rawurlencode( $success_url );
+		$decline_url = get_home_url() . '/?rest_route=/mondu/v1/orders/decline&external_reference_id=' . $order->get_order_number() . '&return_url=' . rawurlencode( $decline_url );
 
 		$data['success_url']  = $success_url;
 		$data['cancel_url']   = $cancel_url;
@@ -124,7 +132,7 @@ class OrderData {
 		$billing_last_name  = $order->get_billing_last_name();
 		$billing_email      = $order->get_billing_email();
 		$billing_phone      = $order->get_billing_phone();
-		$customer_id        = $order->get_customer_id() ?: null;
+		$customer_id        = $order->get_customer_id() ?: null; //phpcs:ignore Universal.Operators.DisallowShortTernary.Found
 
 		$billing_address_line1 = $order->get_billing_address_1();
 		$billing_address_line2 = $order->get_billing_address_2();
@@ -288,12 +296,12 @@ class OrderData {
 	 * @return string|null
 	 */
 	public static function get_company_name_from_wc_order( WC_Order $order ) {
-		$billing_company_name = $order->get_billing_company();
+		$billing_company_name  = $order->get_billing_company();
 		$shipping_company_name = $order->get_shipping_company();
 
 		if ( isset( $billing_company_name ) && Helper::not_null_or_empty( $billing_company_name ) ) {
 			return $billing_company_name;
-		} else if ( isset( $shipping_company_name ) && Helper::not_null_or_empty( $shipping_company_name ) ) {
+		} elseif ( isset( $shipping_company_name ) && Helper::not_null_or_empty( $shipping_company_name ) ) {
 			return $shipping_company_name;
 		} else {
 			return null;

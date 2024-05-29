@@ -25,12 +25,15 @@
 		<exclude name="WordPress.Security.ValidatedSanitizedInput.MissingUnslash" />
 		<exclude name="WordPress.WP.I18n.NonSingularStringLiteralText" />
 		<exclude name="WordPress.WhiteSpace.OperatorSpacing.NoSpaceAfter" />
+		<exclude name="Generic.Arrays.DisallowShortArraySyntax"/>
+		<exclude name="Generic.Commenting.DocComment.MissingShort"/>
+		<exclude name="Universal.Arrays.DisallowShortArraySyntax"/>
+		<exclude name="WordPress.Security.EscapeOutput.ExceptionNotEscaped"/>
 	</rule>
 
 	<rule ref="WooCommerce-Core">
 		<exclude name="Core.Commenting.CommentTags.AuthorTag" />
 		<exclude name="WordPress.PHP.DontExtract" />
-		<exclude name="Generic.Arrays.DisallowShortArraySyntax" />
 		<exclude name="Generic.WhiteSpace.ScopeIndent.Incorrect" />
 	</rule>
 
@@ -45,6 +48,8 @@
 			<property name="indent" value="4" />
 		</properties>
 	</rule>
+
+	<rule ref="Generic.Arrays.DisallowLongArraySyntax"/>
 
 	<rule ref="PHPCompatibility">
 		<exclude-pattern>tests/</exclude-pattern>

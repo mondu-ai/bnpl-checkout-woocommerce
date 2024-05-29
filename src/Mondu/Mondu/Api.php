@@ -1,5 +1,9 @@
 <?php
-
+/**
+ * Mondu API
+ *
+ * @package Mondu
+ */
 namespace Mondu\Mondu;
 
 use Mondu\Plugin;
@@ -7,13 +11,29 @@ use Mondu\Mondu\Support\Helper;
 use Mondu\Exceptions\MonduException;
 use Mondu\Exceptions\ResponseException;
 
+/**
+ * Class Api
+ *
+ * @package Mondu
+ */
 class Api {
+	/**
+	 * Global settings
+	 *
+	 * @var array
+	 */
 	private $global_settings;
 
+	/**
+	 * Api constructor.
+	 */
 	public function __construct() {
 		$this->global_settings = get_option(Plugin::OPTION_NAME);
 	}
 
+	/**
+	 * Register
+	 */
 	public function register() {
 		register_setting('mondu', Plugin::OPTION_NAME);
 	}

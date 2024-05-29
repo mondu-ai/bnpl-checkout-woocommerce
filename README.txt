@@ -2,8 +2,8 @@
 Contributors: mondu-ai, arthurmmoreira, tikohov20
 Tags: mondu, woocommerce, e-commerce, ecommerce, store, sales, sell, woo, woo commerce, shop, cart, shopping cart, sell online, checkout, payment, payments, bnpl, b2b
 Requires at least: 5.9.0
-Tested up to: 6.2.2
-Stable tag: 2.1.7
+Tested up to: 6.5.3
+Stable tag: 3.0.0
 Requires PHP: 7.4
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html

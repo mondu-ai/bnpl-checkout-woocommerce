@@ -4,7 +4,7 @@
  * PSR-4 Autoloader from http://www.php-fig.org/psr/psr-4/examples/
  */
 
-spl_autoload_register(static function ( $class ) {
+spl_autoload_register(static function ( $class ) { //phpcs:ignore
 	// project-specific namespace prefix
 	$prefix = 'Mondu';
 
