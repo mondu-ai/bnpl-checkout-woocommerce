@@ -7,9 +7,11 @@
 namespace Mondu\Mondu;
 
 use Mondu\Exceptions\ResponseException;
+use Mondu\Mondu\Support\OrderData;
 use Mondu\Plugin;
 use WC_Order;
 use WC_Payment_Gateway;
+use WP_Error;
 
 /**
  * Mondu Gateway
@@ -59,6 +61,12 @@ class MonduGateway extends WC_Payment_Gateway {
 			add_action( 'woocommerce_thankyou_' . $this->id, [ $this, 'thankyou_page' ] );
 			add_action( 'woocommerce_email_before_order_table', [ $this, 'email_instructions' ], 10, 3 );
 		}
+
+
+		$this->supports = [
+			'refunds',
+			'products',
+		];
 	}
 
 	/**
@@ -151,6 +159,60 @@ class MonduGateway extends WC_Payment_Gateway {
 			'result'   => 'success',
 			'redirect' => $mondu_order['hosted_checkout_url'],
 		];
+	}
+
+	/**
+	 * @param WC_Order $order
+	 * @return bool
+	 */
+	public function can_refund_order( $order ) {
+		$can_refund_parent = parent::can_refund_order( $order );
+
+		if ( !$can_refund_parent ) {
+			return false;
+		}
+
+		return (bool) $order->get_meta( Plugin::INVOICE_ID_KEY );
+	}
+
+	/**
+	 * @param $order_id
+	 * @param $amount
+	 * @param $reason
+	 * @return bool|WP_Error
+	 */
+	public function process_refund( $order_id, $amount = null, $reason = '' ) {
+		$order = wc_get_order( $order_id );
+
+		if ( !$order instanceof WC_Order ) {
+			return false;
+		}
+
+		$mondu_invoice_id = $order->get_meta( Plugin::INVOICE_ID_KEY );
+
+		if ( !$mondu_invoice_id ) {
+			return false;
+		}
+		
+		$order_refunds = $order->get_refunds();
+		/** @noinspection PhpIssetCanBeReplacedWithCoalesceInspection */
+		$refund = isset($order_refunds[0]) ? $order_refunds[0] : null;
+
+		if ( !$refund ) {
+			return false;
+		}
+
+		try {
+			$result = $this->mondu_request_wrapper->create_credit_note($mondu_invoice_id, OrderData::create_credit_note($refund));
+		} catch ( ResponseException $e ) {
+			return new WP_Error('error', $e->getMessage() );
+		}
+
+		if ( isset($result['credit_note']) ) {
+			return true;
+		}
+
+		return false;
 	}
 
 	/**
