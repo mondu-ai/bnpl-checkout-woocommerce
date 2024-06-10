@@ -138,7 +138,6 @@ class Plugin {
 		 */
 		add_action( 'woocommerce_order_status_changed', [ $this->mondu_request_wrapper, 'order_status_changed' ], 10, 3 );
 		add_action( 'woocommerce_before_order_object_save', [ $this->mondu_request_wrapper, 'update_order_if_changed_some_fields' ] );
-		add_action( 'woocommerce_order_refunded', [ $this->mondu_request_wrapper, 'order_refunded' ], 10, 2 );
 		add_action( 'woocommerce_blocks_loaded', function () {
 			if ( class_exists( 'Automattic\WooCommerce\Blocks\Payments\Integrations\AbstractPaymentMethodType' ) ) {
 				add_action(

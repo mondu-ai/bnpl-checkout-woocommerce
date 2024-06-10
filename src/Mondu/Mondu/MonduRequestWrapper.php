@@ -267,32 +267,13 @@ class MonduRequestWrapper {
 	/**
 	 * Handle Order Refunded
 	 *
-	 * @param $order_id
-	 * @param $refund_id
-	 * @return void
+	 * @param $mondu_invoice_id
+	 * @param $credit_note
+	 * @return array-key|void
 	 * @throws ResponseException
 	 */
-	public function order_refunded( $order_id, $refund_id ) {
-		$order = new WC_Order( $order_id );
-		if ( !Plugin::order_has_mondu( $order ) ) {
-			return;
-		}
-
-		$mondu_invoice_id = $order->get_meta( Plugin::INVOICE_ID_KEY );
-		if ( !$mondu_invoice_id ) {
-			Helper::log([
-				'skipping_credit_note_creation' => [
-					'order'  => $order_id,
-					'refund' => $refund_id,
-				],
-			]);
-			return;
-		}
-
-		$refund      = new WC_Order_Refund( $refund_id );
-		$credit_note = OrderData::create_credit_note( $refund );
-
-		$this->wrap_with_mondu_log_event( 'create_credit_note', [ $mondu_invoice_id, $credit_note ] );
+	public function create_credit_note( $mondu_invoice_id, $credit_note ) {
+		return $this->wrap_with_mondu_log_event( 'create_credit_note', [ $mondu_invoice_id, $credit_note ] );
 	}
 
 
