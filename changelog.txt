@@ -1,5 +1,21 @@
 == Changelog ==
 
+= 3.0.2 =
+
+* Added filters for buyer_fee_cents and whole order_data
+
+= 3.0.1 =
+
+* Reworked Credit Note flow
+
+= 3.0.0 =
+
+* Improve plugin code standards
+
+= 2.2.0 =
+
+* Compatibility for high performance order storage and cart checkout blocks
+
 = 2.1.7 =
 
 * Bugfixes and improvements
