@@ -141,13 +141,6 @@ class OrderData {
 		$billing_zip_code      = $order->get_billing_postcode();
 		$billing_country_code  = $order->get_billing_country();
 
-		/**
-		 * @since 3.0.2
-		 *
-		 * Can be used to include any additional costs that are not included by default.
-		 */
-		$buyer_fee_cents = apply_filters('mondu_buyer_fee_cents', 0, $order);
-
 		$order_data = [
 			'payment_method'        => array_flip( Plugin::PAYMENT_METHODS )[ $order->get_payment_method() ],
 			'currency'              => get_woocommerce_currency(),
@@ -155,7 +148,6 @@ class OrderData {
 			'gross_amount_cents'    => round( (float) $order->get_total() * 100),
 			'net_price_cents'       => round( (float) $order->get_subtotal() * 100),
 			'tax_cents'             => round( (float) $order->get_total_tax() * 100),
-			'buyer_fee_cents'       => $buyer_fee_cents,
 			'buyer'                 => [
 				'first_name'            => isset($billing_first_name) && Helper::not_null_or_empty($billing_first_name) ? $billing_first_name : null,
 				'last_name'             => isset($billing_last_name) && Helper::not_null_or_empty($billing_last_name) ? $billing_last_name : null,
