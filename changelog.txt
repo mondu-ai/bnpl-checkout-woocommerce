@@ -1,5 +1,9 @@
 == Changelog ==
 
+= 3.0.3 =
+
+* Bugfix - buyer_fee_cents should be on lines level
+
 = 3.0.2 =
 
 * Added filters for buyer_fee_cents and whole order_data
