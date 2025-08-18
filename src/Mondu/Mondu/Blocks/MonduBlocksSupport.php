@@ -86,8 +86,7 @@ final class MonduBlocksSupport extends AbstractPaymentMethodType {
 		}, []);
 
 		return [
-			'gateways'            => $gateways,
-			'available_countries' => Plugin::AVAILABLE_COUNTRIES,
+			'gateways'        => $gateways
 		];
 	}
 }

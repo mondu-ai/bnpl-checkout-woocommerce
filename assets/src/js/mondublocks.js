@@ -6,7 +6,7 @@
 	const { registerPaymentMethodExtensionCallbacks } = window.wc.wcBlocksRegistry;
 	const settings                                    = window.wc.wcSettings.getSetting( 'mondu_blocks_data', {} );
 
-	settings.available_countries = settings.available_countries || [];
+	settings.available_countries = [];
 	settings.gateways            = settings.gateways || {};
 
 	// This is not used anywhere, it's added for automatic translation generation with wp cli command
@@ -57,7 +57,7 @@
 	registerPaymentMethodExtensionCallbacks('mondu',
 		Object.keys(settings.gateways).reduce((previousValue, currentValue) => {
 			previousValue[currentValue] = function (arg) {
-				return settings.available_countries.includes(arg.billingAddress.country)
+				return true;
 			}
 
 			return previousValue;
