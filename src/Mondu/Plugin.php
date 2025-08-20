@@ -57,11 +57,6 @@ class Plugin {
 	];
 
 	/**
-	 * Available Countries
-	 */
-	const AVAILABLE_COUNTRIES = [ 'DE', 'AT', 'NL', 'FR', 'BE', 'GB' ];
-
-	/**
 	 * Global Settings
 	 *
 	 * @var mixed
@@ -246,9 +241,7 @@ class Plugin {
 
 		foreach ( self::PAYMENT_METHODS as $payment_method => $woo_payment_method ) {
 			$customer = $this->get_wc_customer();
-			if ( !$this->is_country_available( $customer->get_billing_country() )
-				|| !in_array( $payment_method, $mondu_payments, true )
-			) {
+			if (!in_array( $payment_method, $mondu_payments, true )) {
 				if ( isset( $available_gateways[ self::PAYMENT_METHODS[ $payment_method ] ] ) ) {
 					unset( $available_gateways[ self::PAYMENT_METHODS[ $payment_method ] ] );
 				}
@@ -309,11 +302,6 @@ class Plugin {
 		if ( !Helper::not_null_or_empty($fields['billing_company']) && !Helper::not_null_or_empty($fields['shipping_company']) ) {
 			/* translators: %s: Company */
 			$errors->add('validation', sprintf(__('%s is a required field for Mondu payments.', 'mondu'), '<strong>' . __('Company', 'mondu') . '</strong>'));
-		}
-
-		if ( !$this->is_country_available($fields['billing_country']) ) {
-			/* translators: %s: Billing country */
-			$errors->add('validation', sprintf(__('%s not available for Mondu Payments.', 'mondu'), '<strong>' . __('Billing country', 'mondu') . '</strong>'));
 		}
 	}
 
@@ -501,16 +489,6 @@ class Plugin {
 		$message = __( 'Mondu requires WooCommerce to be activated.', 'mondu' );
 
 		printf( '<div class="%1$s"><p>%2$s</p></div>', esc_attr( $class ), esc_html( $message ) );
-	}
-
-	/**
-	 * Check if the country is available
-	 *
-	 * @param $country
-	 * @return bool
-	 */
-	private function is_country_available( $country ) {
-		return in_array( $country, self::AVAILABLE_COUNTRIES, true );
 	}
 
 	/**
