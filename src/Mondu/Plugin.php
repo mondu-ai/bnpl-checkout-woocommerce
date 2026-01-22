@@ -331,15 +331,22 @@ class Plugin {
 	 *
 	 * @param $template_type
 	 * @param $order
-	 * @throws Exception
 	 */
 	public function wcpdf_add_mondu_payment_info_to_pdf( $template_type, $order ) {
 		if ( !$this->wcpdf_mondu_template_type( $template_type ) || !$this->order_has_mondu( $order ) ) {
 			return;
 		}
 
-		$payment_info = new PaymentInfo( $order->get_id() );
-		echo esc_html( $payment_info->get_mondu_wcpdf_section_html() );
+		try {
+			$payment_info = new PaymentInfo( $order->get_id() );
+			$payment_info->get_mondu_wcpdf_section_html();
+		} catch ( \Exception $e ) {
+			Support\Helper::log([
+				'message'  => 'Error adding Mondu payment info to PDF',
+				'order_id' => $order->get_id(),
+				'error'    => $e->getMessage(),
+			], 'ERROR');
+		}
 	}
 
 	/**

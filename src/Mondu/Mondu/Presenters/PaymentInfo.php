@@ -83,11 +83,37 @@ class PaymentInfo {
 	 * @return string
 	 */
 	public function get_wcpdf_shop_name() {
-		$wcpdf = \WPO_WCPDF::instance();
+		if ( ! class_exists( '\WPO_WCPDF' ) ) {
+			return get_bloginfo( 'name' );
+		}
 
-		return $wcpdf->documents->documents['\WPO\WC\PDF_Invoices\Documents\Invoice']->get_shop_name() !== null ?
-			$wcpdf->documents->documents['\WPO\WC\PDF_Invoices\Documents\Invoice']->get_shop_name() :
-			get_bloginfo( 'name' );
+		try {
+			$wcpdf = \WPO_WCPDF::instance();
+
+			if ( ! isset( $wcpdf->documents ) || ! isset( $wcpdf->documents->documents ) ) {
+				return get_bloginfo( 'name' );
+			}
+
+			$invoice_keys = [
+				'\WPO\WC\PDF_Invoices\Documents\Invoice',
+				'WPO\WC\PDF_Invoices\Documents\Invoice',
+				'\WPO\IPS\Documents\Invoice',
+				'invoice',
+			];
+
+			foreach ( $invoice_keys as $key ) {
+				if ( isset( $wcpdf->documents->documents[ $key ] ) ) {
+					$shop_name = $wcpdf->documents->documents[ $key ]->get_shop_name();
+					if ( $shop_name !== null ) {
+						return $shop_name;
+					}
+				}
+			}
+
+			return get_bloginfo( 'name' );
+		} catch ( Exception $e ) {
+			return get_bloginfo( 'name' );
+		}
 	}
 
 	/**
@@ -258,33 +284,34 @@ class PaymentInfo {
 	 */
 	public function get_mondu_invoices_html() {
 		foreach ( $this->invoices_data as $invoice ) {
+			$currency = isset( $invoice['order']['currency'] ) ? $invoice['order']['currency'] : $this->order->get_currency();
 			?>
 			<hr>
 			<p>
 				<span><strong><?php esc_html_e( 'Invoice state', 'mondu' ); ?>:</strong></span>
-				<?php printf( esc_html( $invoice['state'] ) ); ?>
+				<?php printf( esc_html( isset( $invoice['state'] ) ? $invoice['state'] : '' ) ); ?>
 			</p>
 			<p>
 				<span><strong><?php esc_html_e( 'Invoice number', 'mondu' ); ?>:</strong></span>
-				<?php printf( esc_html( $invoice['invoice_number'] ) ); ?>
+				<?php printf( esc_html( isset( $invoice['invoice_number'] ) ? $invoice['invoice_number'] : '' ) ); ?>
 			</p>
 			<p>
 				<span><strong><?php esc_html_e( 'Total', 'mondu' ); ?>:</strong></span>
-				<?php printf( '%s %s', esc_html( (string) $invoice['gross_amount_cents'] / 100 ), esc_html($invoice['order']['currency'] ) ); ?>
+				<?php printf( '%s %s', esc_html( (string) ( isset( $invoice['gross_amount_cents'] ) ? $invoice['gross_amount_cents'] / 100 : 0 ) ), esc_html( $currency ) ); ?>
 			</p>
 			<p>
 				<span><strong><?php esc_html_e( 'Paid out', 'mondu' ); ?>:</strong></span>
-				<?php printf( esc_html( $invoice['paid_out'] ? __( 'Yes', 'mondu' ) : __( 'No', 'mondu') ) ); ?>
+				<?php printf( esc_html( ( isset( $invoice['paid_out'] ) && $invoice['paid_out'] ) ? __( 'Yes', 'mondu' ) : __( 'No', 'mondu') ) ); ?>
 			</p>
 			<?php
-			$this->get_mondu_credit_note_html( $invoice );
-			if ( 'canceled' !== $invoice['state'] ) {
+			$this->get_mondu_credit_note_html( $invoice, $currency );
+			if ( isset( $invoice['state'] ) && 'canceled' !== $invoice['state'] ) {
 				?>
 				<?php
 					$mondu_data = [
 						'order_id'       => $this->order->get_id(),
-						'invoice_id'     => $invoice['uuid'],
-						'mondu_order_id' => $this->order_data['uuid'],
+						'invoice_id'     => isset( $invoice['uuid'] ) ? $invoice['uuid'] : '',
+						'mondu_order_id' => isset( $this->order_data['uuid'] ) ? $this->order_data['uuid'] : '',
 						'security'       => wp_create_nonce( 'mondu-cancel-invoice' ),
 					];
 					?>
@@ -299,12 +326,17 @@ class PaymentInfo {
 	/**
 	 * Get Mondu Credit Note HTML
 	 *
-	 * @param array $invoice Invoice
+	 * @param array  $invoice  Invoice
+	 * @param string $currency Currency code
 	 * @return void
 	 */
-	public function get_mondu_credit_note_html( $invoice ) {
+	public function get_mondu_credit_note_html( $invoice, $currency = null ) {
 		if ( empty( $invoice['credit_notes'] ) ) {
 			return null;
+		}
+
+		if ( $currency === null ) {
+			$currency = isset( $invoice['order']['currency'] ) ? $invoice['order']['currency'] : $this->order->get_currency();
 		}
 
 		?>
@@ -312,9 +344,13 @@ class PaymentInfo {
 		<?php
 
 		foreach ( $invoice['credit_notes'] as $note ) {
+			$external_ref = isset( $note['external_reference_id'] ) ? $note['external_reference_id'] : '';
+			$gross_amount = isset( $note['gross_amount_cents'] ) ? $note['gross_amount_cents'] / 100 : 0;
+			$tax_amount   = isset( $note['tax_cents'] ) ? $note['tax_cents'] / 100 : 0;
+			$notes_text   = isset( $note['notes'] ) && $note['notes'] ? '- ' . esc_html( $note['notes'] ) : '';
 			?>
 			<li>
-				<?php printf( '%s: %s %s (%s: %s %s) %s', '<strong>#' . esc_html( $note['external_reference_id'] ) . '</strong>', esc_html( $note['gross_amount_cents'] / 100 ), esc_html( $invoice['order']['currency'] ), esc_html__( 'Tax', 'mondu' ), esc_html( $note['tax_cents'] / 100 ), esc_html( $invoice['order']['currency'] ), $note['notes'] ? '- ' . esc_html( $note['notes'] ) : '' ); ?>
+				<?php printf( '%s: %s %s (%s: %s %s) %s', '<strong>#' . esc_html( $external_ref ) . '</strong>', esc_html( $gross_amount ), esc_html( $currency ), esc_html__( 'Tax', 'mondu' ), esc_html( $tax_amount ), esc_html( $currency ), $notes_text ); ?>
 			</li>
 			<?php
 		}
@@ -335,15 +371,28 @@ class PaymentInfo {
 			return null;
 		}
 
-		// These variables are used in the file that is included
-		$wcpdf_shop_name = $this->get_wcpdf_shop_name();
-		$payment_method  = $this->order->get_payment_method();
-		$bank_account    = $this->order_data['bank_account'];
-		$invoice_number  = Helper::get_invoice_number( $this->order );
-		$net_terms       = $this->get_mondu_net_term();
-		$mondu_uk_buyer  = $bank_account['account_number'] && $bank_account['sort_code'];
+		if ( empty( $this->order_data ) || !isset( $this->order_data['bank_account'] ) ) {
+			return null;
+		}
 
-		include $file;
+		try {
+			$wcpdf_shop_name = $this->get_wcpdf_shop_name();
+			$payment_method  = $this->order->get_payment_method();
+			$bank_account    = $this->order_data['bank_account'];
+			$invoice_number  = Helper::get_invoice_number( $this->order );
+			$net_terms       = $this->get_mondu_net_term();
+			$mondu_uk_buyer  = isset( $bank_account['account_number'] ) && isset( $bank_account['sort_code'] ) 
+				&& $bank_account['account_number'] && $bank_account['sort_code'];
+
+			include $file;
+		} catch ( Exception $e ) {
+			Helper::log([
+				'message'  => 'Error generating WCPDF section',
+				'order_id' => $this->order->get_id(),
+				'error'    => $e->getMessage(),
+			], 'ERROR');
+			return null;
+		}
 	}
 
 	/**

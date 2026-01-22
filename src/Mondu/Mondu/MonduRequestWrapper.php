@@ -222,16 +222,33 @@ class MonduRequestWrapper {
 	 *
 	 * @param $order
 	 * @return void
-	 * @throws ResponseException
 	 */
 	public function update_order_if_changed_some_fields( $order ) {
 		if ( !Plugin::order_has_mondu( $order ) ) {
 			return;
 		}
 
+		$mondu_order_id = $order->get_meta( Plugin::ORDER_ID_KEY );
+		if ( empty( $mondu_order_id ) ) {
+			return;
+		}
+
+		if ( $order->get_status() === 'checkout-draft' ) {
+			return;
+		}
+
 		if ( array_intersect( [ 'total', 'discount_total', 'discount_tax', 'cart_tax', 'total_tax', 'shipping_tax', 'shipping_total' ], array_keys( $order->get_changes() ) ) ) {
 			$data_to_update = OrderData::order_data_from_wc_order_with_amount( $order );
-			$this->adjust_order( $order->get_id(), $data_to_update );
+			try {
+				$this->adjust_order( $order->get_id(), $data_to_update );
+			} catch ( ResponseException $e ) {
+				Helper::log([
+					'message'        => 'adjust_order failed (non-fatal)',
+					'order_id'       => $order->get_id(),
+					'mondu_order_id' => $mondu_order_id,
+					'error'          => $e->getMessage(),
+				], 'WARNING');
+			}
 		}
 	}
 

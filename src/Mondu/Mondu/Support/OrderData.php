@@ -141,11 +141,21 @@ class OrderData {
 		$billing_zip_code      = $order->get_billing_postcode();
 		$billing_country_code  = $order->get_billing_country();
 
+		$gross_amount = (float) $order->get_total();
+		
+		if ( $gross_amount === 0.0 && count( $order->get_items() ) > 0 ) {
+			$gross_amount = (float) $order->get_subtotal() 
+				+ (float) $order->get_total_tax() 
+				+ (float) $order->get_shipping_total() 
+				+ (float) $order->get_shipping_tax()
+				- (float) $order->get_discount_total();
+		}
+
 		$order_data = [
 			'payment_method'        => array_flip( Plugin::PAYMENT_METHODS )[ $order->get_payment_method() ],
 			'currency'              => get_woocommerce_currency(),
 			'external_reference_id' => (string) $order->get_order_number(),
-			'gross_amount_cents'    => round( (float) $order->get_total() * 100),
+			'gross_amount_cents'    => round( $gross_amount * 100),
 			'net_price_cents'       => round( (float) $order->get_subtotal() * 100),
 			'tax_cents'             => round( (float) $order->get_total_tax() * 100),
 			'buyer'                 => [
@@ -291,8 +301,18 @@ class OrderData {
 			$tax_cents       += (float) $item->get_total_tax() * 100;
 		}
 
+		$gross_amount = (float) $order->get_total();
+		
+		if ( $gross_amount === 0.0 && count( $order->get_items() ) > 0 ) {
+			$gross_amount = (float) $order->get_subtotal() 
+				+ (float) $order->get_total_tax() 
+				+ (float) $order->get_shipping_total() 
+				+ (float) $order->get_shipping_tax()
+				- (float) $order->get_discount_total();
+		}
+
 		$amount = [
-			'gross_amount_cents' => round( (float) $order->get_total() * 100),
+			'gross_amount_cents' => round( $gross_amount * 100),
 			'net_price_cents'    => round($net_price_cents),
 			'tax_cents'          => round($tax_cents),
 		];
