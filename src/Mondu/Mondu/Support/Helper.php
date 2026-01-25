@@ -34,29 +34,34 @@ class Helper {
 	 * @return mixed|void
 	 */
 	public static function create_invoice_url( WC_Order $order ) {
-		if ( has_action('generate_wpo_wcpdf') ) {
-			$invoice_url = add_query_arg(
-				'_wpnonce',
-				wp_create_nonce( 'generate_wpo_wcpdf' ),
-				add_query_arg(
-					[
-						'action'        => 'generate_wpo_wcpdf',
-						'document_type' => 'invoice',
-						'order_ids'     => $order->get_id(),
-						'my-account'    => true,
-					],
-					admin_url( 'admin-ajax.php' )
-				)
-			);
-		} else {
-			$invoice_url = $order->get_view_order_url();
+		if ( class_exists( '\WPO_WCPDF' ) && function_exists( 'WPO_WCPDF' ) ) {
+			try {
+				$wcpdf = \WPO_WCPDF();
+				
+				$access_type = 'logged_in';
+				if ( isset( $wcpdf->endpoint ) && method_exists( $wcpdf->endpoint, 'get_document_link_access_type' ) ) {
+					$access_type = $wcpdf->endpoint->get_document_link_access_type();
+				}
+				
+				if ( 'full' === $access_type ) {
+					$invoice_url = add_query_arg(
+						[
+							'action'        => 'generate_wpo_wcpdf',
+							'document_type' => 'invoice',
+							'order_ids'     => $order->get_id(),
+							'access_key'    => $order->get_order_key(),
+						],
+						admin_url( 'admin-ajax.php' )
+					);
+					
+					return apply_filters( 'mondu_invoice_url', $invoice_url );
+				}
+			} catch ( \Exception $e ) {
+			}
 		}
+		
+		$invoice_url = $order->get_view_order_url();
 
-		/**
-		 * Invoice Url Sent to Mondu API
-		 *
-		 * @since 1.3.2
-		 */
 		return apply_filters( 'mondu_invoice_url', $invoice_url );
 	}
 

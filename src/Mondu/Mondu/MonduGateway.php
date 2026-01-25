@@ -20,6 +20,24 @@ use WP_Error;
  */
 class MonduGateway extends WC_Payment_Gateway {
 
+	private const PAYMENT_METHOD_IMAGES = [
+		'mondu_invoice'                => 'invoice_white_rectangle.png',
+		'mondu_direct_debit'           => 'sepa_white_rectangle.png',
+		'mondu_installment'            => 'installments_white_rectangle.png',
+		'mondu_installment_by_invoice' => 'installments_white_rectangle.png',
+		'mondu_pay_now'                => 'instant_pay_white_rectangle.png',
+	];
+
+	private const PAYMENT_METHOD_ADMIN_IMAGES = [
+		'mondu_invoice'                => 'Invoice_purple_square.svg',
+		'mondu_direct_debit'           => 'SEPA_purple_square.png',
+		'mondu_installment'            => 'Installments_purple_square.svg',
+		'mondu_installment_by_invoice' => 'Installments_purple_square.svg',
+		'mondu_pay_now'                => 'Instant Pay_purple_square.svg',
+	];
+
+	private const SUPPORTED_LOCALES = [ 'de', 'en', 'nl' ];
+
 	/**
 	 * Mondu Global Settings
 	 *
@@ -67,6 +85,8 @@ class MonduGateway extends WC_Payment_Gateway {
 			'refunds',
 			'products',
 		];
+
+		$this->icon = $this->get_admin_icon_url();
 	}
 
 	/**
@@ -128,14 +148,66 @@ class MonduGateway extends WC_Payment_Gateway {
 	 * @return string
 	 */
 	public function get_icon() {
-		$icon_html = '<img src="https://checkout.mondu.ai/logo.svg" alt="' . $this->method_title . '" width="100" />';
+		$icon_url = $this->get_payment_method_icon_url();
+		$icon_html = '<img src="' . esc_url( $icon_url ) . '" alt="' . esc_attr( $this->method_title ) . '" style="max-height: 40px; position: relative; top: 5px;" />';
 
-		/**
-		 * Mondu payment icon
-		 *
-		 * @since 1.3.2
-		 */
 		return apply_filters( 'woocommerce_gateway_icon', $icon_html, $this->id );
+	}
+
+	/**
+	 * Get payment method icon URL based on locale.
+	 *
+	 * @return string
+	 */
+	public function get_payment_method_icon_url() {
+		$locale = $this->get_icon_locale();
+		$image_name = isset( self::PAYMENT_METHOD_IMAGES[ $this->id ] ) 
+			? self::PAYMENT_METHOD_IMAGES[ $this->id ] 
+			: 'invoice_white_rectangle.png';
+
+		$icon_path = MONDU_PLUGIN_PATH . '/assets/src/images/payment-methods/' . $locale . '/' . $image_name;
+		
+		if ( file_exists( $icon_path ) ) {
+			return MONDU_PUBLIC_PATH . 'assets/src/images/payment-methods/' . $locale . '/' . $image_name;
+		}
+
+		return 'https://checkout.mondu.ai/logo.svg';
+	}
+
+	/**
+	 * Get admin icon URL (square icons for admin panel).
+	 *
+	 * @return string
+	 */
+	public function get_admin_icon_url() {
+		$locale = $this->get_icon_locale();
+		$image_name = isset( self::PAYMENT_METHOD_ADMIN_IMAGES[ $this->id ] )
+			? self::PAYMENT_METHOD_ADMIN_IMAGES[ $this->id ]
+			: 'Mondu_white_square.svg';
+
+		$icon_path = MONDU_PLUGIN_PATH . '/assets/src/images/payment-methods/' . $locale . '/' . $image_name;
+
+		if ( file_exists( $icon_path ) ) {
+			return MONDU_PUBLIC_PATH . 'assets/src/images/payment-methods/' . $locale . '/' . rawurlencode( $image_name );
+		}
+
+		return $this->get_payment_method_icon_url();
+	}
+
+	/**
+	 * Get locale for icon (de, en, nl).
+	 *
+	 * @return string
+	 */
+	private function get_icon_locale() {
+		$wp_locale = get_locale();
+		$lang = substr( $wp_locale, 0, 2 );
+
+		if ( in_array( $lang, self::SUPPORTED_LOCALES, true ) ) {
+			return $lang;
+		}
+
+		return 'en';
 	}
 
 	/**

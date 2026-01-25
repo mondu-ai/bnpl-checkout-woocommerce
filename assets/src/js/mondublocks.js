@@ -10,39 +10,30 @@
 
 	// This is not used anywhere, it's added for automatic translation generation with wp cli command
 	const translations = [
-		__('Mondu Invoice', 'mondu'),
-		__('Mondu SEPA Direct Debit', 'mondu'),
-		__('Mondu Installments', 'mondu'),
-		__('Mondu Installments by Invoice', 'mondu'),
-		__('Invoice - Pay later by bank transfer', 'mondu'),
-		__('SEPA - Pay later by direct debit', 'mondu'),
-		__('Split payments - Pay Later in Installments by Direct Debit', 'mondu'),
-		__('Split payments - Pay Later in Installments by Bank Transfer', 'mondu')
+		__('Business instalments (3, 6, 12)', 'mondu'),
+		__('SEPA direct debit (30 days)', 'mondu'),
+		__('Installments (3, 6, 12 months)', 'mondu'),
+		__('Invoice (30 days)', 'mondu'),
+        __('Instant Pay', 'mondu')
 	];
 
-	function Label(text) {
-		return createElement('div', {}, Logo(), __(text, 'mondu'))
+	function Label(text, iconUrl) {
+		return createElement('div', {}, Logo(iconUrl), __(text, 'mondu'))
 	}
+
 	function Content(text) {
-		return createElement('div', {}, __(text, 'mondu'), createElement('br', {}), DataProcessingNotice())
+		return createElement('div', {}, __(text, 'mondu'))
 	}
 
-	function Logo() {
-		return createElement('img', { src: 'https://checkout.mondu.ai/logo.svg', style: { display: 'inline', height: '1rem', marginRight: '0.5rem'} })
-	}
-
-	function DataProcessingNotice() {
-		return createElement('span', {
-			dangerouslySetInnerHTML: {
-				__html: __('Information on the processing of your personal data by <strong>Mondu GmbH</strong> can be found <a href="https://mondu.ai/gdpr-notification-for-buyers" target="_blank">here</a>.', 'mondu')
-			}
-		});
+	function Logo(iconUrl) {
+		const src = iconUrl || 'https://checkout.mondu.ai/logo.svg';
+		return createElement('img', { src: src, style: { display: 'inline', maxHeight: '40px', marginRight: '0.5rem', position: 'relative', top: '5px'} })
 	}
 
 	function createGatewayBlock(gatewayName, gatewayInfo) {
 		return {
 			name: gatewayName,
-			label: Label(gatewayInfo.title),
+			label: Label(gatewayInfo.title, gatewayInfo.icon),
 			content: Content(gatewayInfo.description),
 			edit: Content(gatewayInfo.description),
 			canMakePayment: () => true,

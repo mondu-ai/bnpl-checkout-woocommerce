@@ -16,6 +16,7 @@ use Mondu\Mondu\Controllers\WebhooksController;
 use Mondu\Mondu\GatewayDirectDebit;
 use Mondu\Mondu\GatewayInstallment;
 use Mondu\Mondu\GatewayInstallmentByInvoice;
+use Mondu\Mondu\GatewayInstantPay;
 use Mondu\Mondu\GatewayInvoice;
 use Mondu\Mondu\MonduRequestWrapper;
 use Mondu\Mondu\Presenters\PaymentInfo;
@@ -54,6 +55,7 @@ class Plugin {
 		'direct_debit'           => 'mondu_direct_debit',
 		'installment'            => 'mondu_installment',
 		'installment_by_invoice' => 'mondu_installment_by_invoice',
+		'pay_now'                => 'mondu_pay_now',
 	];
 
 	/**
@@ -100,6 +102,8 @@ class Plugin {
 
 			$order = new Admin\Order();
 			$order->init();
+
+			add_action( 'admin_head', [ $this, 'add_admin_payment_icon_styles' ] );
 		}
 
 		/*
@@ -117,6 +121,7 @@ class Plugin {
 		add_filter( 'woocommerce_payment_gateways', [ GatewayDirectDebit::class, 'add' ] );
 		add_filter( 'woocommerce_payment_gateways', [ GatewayInstallment::class, 'add' ] );
 		add_filter( 'woocommerce_payment_gateways', [ GatewayInstallmentByInvoice::class, 'add' ] );
+		add_filter( 'woocommerce_payment_gateways', [ GatewayInstantPay::class, 'add' ] );
 		add_filter( 'woocommerce_available_payment_gateways', [ $this, 'remove_gateway_if_country_unavailable' ] );
 
 		/*
@@ -188,6 +193,24 @@ class Plugin {
 	}
 
 	/**
+	 * Add admin styles for payment method icons.
+	 */
+	public function add_admin_payment_icon_styles() {
+		?>
+		<style>
+			.wc_gateways img[src*="payment-methods"],
+			.woocommerce table.wc_gateways img[src*="payment-methods"],
+			table.wc_gateways td img[src*="payment-methods"],
+			img.payment-icon[src*="payment-methods"] {
+				max-height: 50px !important;
+				height: 50px !important;
+				width: auto !important;
+			}
+		</style>
+		<?php
+	}
+
+	/**
 	 * Check if the order has Mondu data
 	 *
 	 * @param WC_Order $order
@@ -218,20 +241,23 @@ class Plugin {
 			return;
 		}
 
-		wc_enqueue_js("
-			jQuery(document).ready(function() {
-				jQuery('a.edit_address').remove();
+		?>
+		<script>
+			document.addEventListener('DOMContentLoaded', function() {
+				document.querySelectorAll('a.edit_address').forEach(function(el) { el.remove(); });
 			});
-		");
-		echo '<p>' . esc_html__( 'Since this order will be paid via Mondu you will not be able to change the addresses.', 'mondu' ) . '</p>';
+		</script>
+		<p><?php esc_html_e( 'Since this order will be paid via Mondu you will not be able to change the addresses.', 'mondu' ); ?></p>
+		<?php
 	}
 
-	/**
-	 * Remove gateway if country unavailable
-	 *
-	 * @param array $available_gateways
-	 * @return array
-	 */
+    /**
+     * Remove gateway if country unavailable
+     *
+     * @param array $available_gateways
+     * @return array
+     * @throws Exception
+     */
 	public function remove_gateway_if_country_unavailable( $available_gateways ) {
 		if ( is_admin() || !is_checkout() ) {
 			return $available_gateways;

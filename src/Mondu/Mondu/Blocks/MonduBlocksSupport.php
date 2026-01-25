@@ -10,6 +10,7 @@ use Automattic\WooCommerce\Blocks\Payments\Integrations\AbstractPaymentMethodTyp
 use Mondu\Mondu\GatewayDirectDebit;
 use Mondu\Mondu\GatewayInstallment;
 use Mondu\Mondu\GatewayInstallmentByInvoice;
+use Mondu\Mondu\GatewayInstantPay;
 use Mondu\Mondu\GatewayInvoice;
 use Mondu\Mondu\MonduGateway;
 use Mondu\Plugin;
@@ -41,6 +42,7 @@ final class MonduBlocksSupport extends AbstractPaymentMethodType {
 			new GatewayDirectDebit( false ),
 			new GatewayInstallment( false ),
 			new GatewayInstallmentByInvoice( false ),
+			new GatewayInstantPay( false ),
 		];
 	}
 
@@ -81,6 +83,7 @@ final class MonduBlocksSupport extends AbstractPaymentMethodType {
 				'description' => $item->description,
 				'supports'    => $item->supports,
 				'enabled'     => $item->enabled,
+				'icon'        => $item->get_payment_method_icon_url(),
 			];
 			return $carry;
 		}, []);
