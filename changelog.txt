@@ -1,5 +1,15 @@
 == Changelog ==
 
+= 3.1.0 =
+
+* Added new payment method: Instant Pay (Pay Now)
+* Added payment method icons on checkout (rectangle images per locale)
+* Added payment method icons in admin panel (square images)
+* Fixed order total calculation for WooCommerce Store API / HPOS compatibility
+* Fixed PDF invoice link generation - now uses WCPDF "Full" access mode with order_key
+* Replaced deprecated wc_enqueue_js with vanilla JavaScript
+* Updated translations for all supported languages (DE, AT, FR, NL)
+
 = 3.0.3 =
 
 * Bugfix - buyer_fee_cents should be on lines level
