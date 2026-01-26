@@ -35,11 +35,6 @@ if ( 'mondu_invoice' === $payment_method ) {
                 printf(wp_kses(__('Please be informed that the invoice amount has been assigned in accordance with the General Terms and Conditions of <strong>%s</strong> for the Invoice with Payment Term Model to Mondu Financial Services B.V. (first assignment), and Mondu Capital S.à r.l., acting on behalf of Compartment 4 (second assignment). <br/>We request payment in full to the following account:', 'mondu'), [
                         'strong' => [],
                 ]), esc_html($wcpdf_shop_name));
-
-				/* translators: %s: Company */
-				printf(wp_kses(__('Please be informed that the invoice amount has been assigned in accordance with the General Terms and Conditions of <strong>%s</strong> for the Invoice with Payment Term Model to Mondu Financial Services B.V. (first assignment), and Mondu Capital S.à r.l., acting on behalf of Compartment 4 (second assignment).', 'mondu'), [
-					'strong' => [],
-				]), esc_html($wcpdf_shop_name));
 			?>
 		</p>
 	</section>

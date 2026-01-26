@@ -72,11 +72,12 @@ class Helper {
 	 * @return mixed
 	 */
 	public static function get_invoice( WC_Order $order ) {
-		if ( function_exists( 'wcpdf_get_invoice' ) ) {
+		if ( function_exists( 'wcpdf_get_document' ) ) {
+			return wcpdf_get_document( 'invoice', $order, false );
+		} elseif ( function_exists( 'wcpdf_get_invoice' ) ) {
 			return wcpdf_get_invoice( $order, false );
-		} else {
-			return $order;
 		}
+		return $order;
 	}
 
 	/**
@@ -86,16 +87,30 @@ class Helper {
 	 * @return string
 	 */
 	public static function get_invoice_number( WC_Order $order ) {
-		if ( function_exists( 'wcpdf_get_invoice' ) ) {
-			$document = wcpdf_get_invoice( $order, false );
-			if ( $document->get_number() ) {
+		$invoice_number = $order->get_order_number();
+		$source = 'order_number';
+
+		if ( function_exists( 'wcpdf_get_document' ) ) {
+			$document = wcpdf_get_document( 'invoice', $order, false );
+			if ( $document && $document->get_number() ) {
 				$invoice_number = $document->get_number()->get_formatted();
-			} else {
-				$invoice_number = $order->get_order_number();
+				$source = 'wcpdf_document';
 			}
-		} else {
-			$invoice_number = $order->get_order_number();
+		} elseif ( function_exists( 'wcpdf_get_invoice' ) ) {
+			$document = wcpdf_get_invoice( $order, false );
+			if ( $document && $document->get_number() ) {
+				$invoice_number = $document->get_number()->get_formatted();
+				$source = 'wcpdf_invoice_legacy';
+			}
 		}
+
+		self::log([
+			'message' => 'get_invoice_number called',
+			'order_id' => $order->get_id(),
+			'order_number' => $order->get_order_number(),
+			'invoice_number' => $invoice_number,
+			'source' => $source,
+		]);
 
 		/**
 		 * Reference ID for invoice
