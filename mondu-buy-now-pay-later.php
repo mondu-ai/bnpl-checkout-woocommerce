@@ -49,6 +49,9 @@ require_once 'src/autoload.php';
 add_action( 'plugins_loaded', [ new \Mondu\Plugin(), 'init' ] );
 
 function mondu_activate() {
+	if ( class_exists( '\Mondu\Plugin' ) ) {
+		\Mondu\Plugin::set_mondu_gateway_title_defaults();
+	}
 }
 register_activation_hook( MONDU_PLUGIN_FILE, 'mondu_activate' );
 

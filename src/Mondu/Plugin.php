@@ -96,6 +96,8 @@ class Plugin {
 			return;
 		}
 
+		self::ensure_mondu_gateway_title_defaults();
+
 		if ( is_admin() ) {
 			$settings = new Settings();
 			$settings->init();
@@ -182,6 +184,96 @@ class Plugin {
 		if ( class_exists('BM') ) {
 			add_filter( 'bm_filter_price', '__return_false' );
 		}
+	}
+
+	/**
+	 * Ensure Mondu gateways have per-locale title defaults saved in options.
+	 *
+	 * This is idempotent: it only fills missing/empty values and never overwrites
+	 * admin-defined titles.
+	 *
+	 * @return void
+	 */
+	public static function ensure_mondu_gateway_title_defaults() {
+		$version_key = '_mondu_gateway_title_defaults_version';
+		$done_for    = get_option( $version_key );
+
+		if ( defined( 'MONDU_PLUGIN_VERSION' ) && $done_for === MONDU_PLUGIN_VERSION ) {
+			return;
+		}
+
+		self::set_mondu_gateway_title_defaults();
+
+		if ( defined( 'MONDU_PLUGIN_VERSION' ) ) {
+			update_option( $version_key, MONDU_PLUGIN_VERSION, false );
+		}
+	}
+
+	/**
+	 * Fill per-locale title defaults into Woo gateway settings.
+	 *
+	 * @return void
+	 */
+	public static function set_mondu_gateway_title_defaults() {
+		$defaults_by_gateway = [
+			self::PAYMENT_METHODS['pay_now'] => [
+				'en' => 'Instant Pay',
+				'de' => 'Echtzeitüberweisung',
+				'fr' => 'Virement instantané',
+				'nl' => 'Instant Pay',
+			],
+			self::PAYMENT_METHODS['direct_debit'] => [
+				'en' => 'SEPA direct debit',
+				'de' => 'SEPA-Lastschrift',
+				'fr' => 'prélèvement SEPA',
+				'nl' => 'SEPA automatische incasso',
+			],
+			self::PAYMENT_METHODS['installment'] => [
+				'en' => 'Installments (3, 6, 12 months)',
+				'de' => 'Ratenkauf (3, 6, 12 Monaten)',
+				'fr' => 'Paiement échelonnés (3, 6, 12 mois)',
+				'nl' => 'Betaling in termijnen (3, 6, 12 maanden)',
+			],
+			self::PAYMENT_METHODS['invoice'] => [
+				'en' => 'Invoice (30 days)',
+				'de' => 'Rechnungskauf (30 Tage)',
+				'fr' => 'Facture (30 jours)',
+				'nl' => 'Factuur (30 dagen)',
+			],
+			self::PAYMENT_METHODS['installment_by_invoice'] => [
+				'en' => 'Business instalments (3, 6, 12)',
+				'de' => 'Ratenkauf (3, 6, 12 Monaten) UK',
+				'fr' => 'Paiement échelonnés (3, 6, 12 mois) UK',
+				'nl' => 'Betaling in termijnen (3, 6, 12 maanden) UK',
+			],
+		];
+
+		foreach ( $defaults_by_gateway as $gateway_id => $titles ) {
+			self::fill_gateway_title_defaults( $gateway_id, $titles );
+		}
+	}
+
+	/**
+	 * @param string $gateway_id
+	 * @param array{en:string,de:string,fr:string,nl:string} $titles
+	 * @return void
+	 */
+	private static function fill_gateway_title_defaults( $gateway_id, array $titles ) {
+		$option_key = 'woocommerce_' . $gateway_id . '_settings';
+		$settings   = get_option( $option_key, [] );
+
+		if ( !is_array( $settings ) ) {
+			$settings = [];
+		}
+
+		foreach ( [ 'en', 'de', 'fr', 'nl' ] as $lang ) {
+			$field_key = 'title_' . $lang;
+			if ( !isset( $settings[ $field_key ] ) || $settings[ $field_key ] === '' ) {
+				$settings[ $field_key ] = $titles[ $lang ];
+			}
+		}
+
+		update_option( $option_key, $settings, false );
 	}
 
 	/**

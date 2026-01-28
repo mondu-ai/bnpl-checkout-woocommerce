@@ -26,17 +26,28 @@ if ( !isset($net_terms) ) {
 if ( !isset($invoice_number) ) {
 	$invoice_number = '';
 }
+?>
 
+<br />
+
+<?php
 if ( 'mondu_invoice' === $payment_method ) {
 	?>
 	<section>
 		<p>
 			<?php
-                printf(wp_kses(__('Please be informed that the invoice amount has been assigned in accordance with the General Terms and Conditions of <strong>%s</strong> for the Invoice with Payment Term Model to Mondu Financial Services B.V. (first assignment), and Mondu Capital S.à r.l., acting on behalf of Compartment 4 (second assignment). <br/>We request payment in full to the following account:', 'mondu'), [
+                printf(wp_kses(__('Please be informed that the invoice amount has been assigned in accordance with the General Terms and Conditions of <strong>%s</strong> for the Invoice with Payment Term Model to Mondu Financial Services B.V. (first assignment), and Mondu Capital S.à r.l., acting on behalf of Compartment 4 (second assignment).', 'mondu'), [
                         'strong' => [],
                 ]), esc_html($wcpdf_shop_name));
 			?>
 		</p>
+
+        <p>
+            <?php
+            printf(__('We request payment in full to the following account:', 'mondu'));
+            ?>
+        </p>
+
 	</section>
 	<?php if ( $bank_account ) { ?>
 		<br />
@@ -113,7 +124,7 @@ if ( 'mondu_direct_debit' === $payment_method ) {
 		<p>
 			<?php
 				/* translators: %1$s: direct debit */
-				printf(esc_html__('Since you have selected the Mondu payment method Invoice Purchase by SEPA Direct Debit, the invoice amount will be debited from your bank account on the due date.', 'mondu'));
+				esc_html_e('Since you have selected the Mondu payment method Invoice Purchase by SEPA Direct Debit, the invoice amount will be debited from your bank account on the due date.', 'mondu');
 			?>
 		</p>
 		<p>
@@ -138,7 +149,7 @@ if ( 'mondu_installment' === $payment_method ) {
 		<p>
 			<?php
 				/* translators: %1$s: direct debit */
-				printf(esc_html__('Since you have selected the Mondu payment method Installment Purchase by SEPA Direct Debit, the individual installments will be debited from your bank account on their respective due date.', 'mondu'));
+				esc_html_e('Since you have selected the Mondu payment method Installment Purchase by SEPA Direct Debit, the individual installments will be debited from your bank account on their respective due date.', 'mondu');
 			?>
 		</p>
 		<p>
@@ -178,7 +189,7 @@ if ( 'mondu_installment_by_invoice' === $payment_method ) {
 			?>
 		</p>
 		<p>
-			<?php printf(esc_html__('Since you have chosen the Mondu\'s installment payment method via bank transfer, the individual installments will need to be paid via bank transfer before the due date.', 'mondu')); ?>
+			<?php esc_html_e('Since you have chosen the Mondu\'s installment payment method via bank transfer, the individual installments will need to be paid via bank transfer before the due date.', 'mondu'); ?>
 		</p>
 		<p>
 			<?php esc_html_e('Before the installment is due, you will receive a notice regarding the upcoming payment. Kindly make sure that you make the payment before the due date of each installment. In the event of changes to your order, the installment plan will be adjusted to reflect the new order total.', 'mondu'); ?>

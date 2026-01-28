@@ -72,6 +72,10 @@ class MonduGateway extends WC_Payment_Gateway {
 
 		$this->enabled = $this->is_enabled();
 
+		$this->description        = $this->get_localized_description_from_settings();
+		$this->method_description = $this->description;
+		$this->method_title       = (string) $this->title;
+
 		$this->mondu_request_wrapper = new MonduRequestWrapper();
 
 		if ( $register_hooks ) {
@@ -94,6 +98,46 @@ class MonduGateway extends WC_Payment_Gateway {
 	 */
 	public function init_form_fields() {
 		$this->form_fields = GatewayFields::fields( $this->title );
+	}
+
+	/**
+	 * Gateway title depending on current page locale.
+	 *
+	 * Uses per-locale admin setting for the current language.
+	 *
+	 * @return string
+	 */
+	public function get_title() {
+		$lang = $this->get_request_language();
+		$key  = 'title_' . $lang;
+		return trim( (string) $this->get_option( $key, '' ) );
+	}
+
+	/**
+	 * Get localized description from gateway settings.
+	 *
+	 * @return string
+	 */
+	private function get_localized_description_from_settings() {
+		$lang = $this->get_request_language();
+		$key  = 'description_' . $lang;
+		return (string) $this->get_option( $key, '' );
+	}
+
+	/**
+	 * Determine current 2-letter language code.
+	 *
+	 * @return string One of: en, de, fr, nl
+	 */
+	private function get_request_language() {
+		$locale = function_exists( 'determine_locale' ) ? determine_locale() : get_locale();
+		$lang   = strtolower( substr( (string) $locale, 0, 2 ) );
+
+		if ( in_array( $lang, [ 'en', 'de', 'fr', 'nl' ], true ) ) {
+			return $lang;
+		}
+
+		return 'en';
 	}
 
 	/**

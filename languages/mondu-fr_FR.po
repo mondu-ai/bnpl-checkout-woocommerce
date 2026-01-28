@@ -394,14 +394,16 @@ msgid ""
 "with the General Terms and Conditions of <strong>%s</strong> for the Invoice "
 "with Payment Term Model to Mondu Financial Services B.V. (first assignment), "
 "and Mondu Capital S.à r.l., acting on behalf of Compartment 4 (second "
-"assignment). <br/>We request payment in full to the following account:"
+"assignment)."
 msgstr ""
 "Nous vous informons que le montant de la facture a été cédé conformément aux "
 "conditions générales du <strong>%s</strong> pour le Modèle de Facture avec "
 "Modalités de Paiement à Mondu Financial Services B.V. (première cession) et "
 "Mondu Capital S.à r.l., agissant pour le compte du compartiment 4 (deuxième "
-"cession). <br/>Nous vous demandons d'effectuer le paiement intégral sur le "
-"compte suivant:"
+"cession)."
+
+msgid "We request payment in full to the following account:"
+msgstr "Nous vous demandons d'effectuer le paiement intégral sur le compte suivant:"
 
 #. translators: %s: Company
 #: views/pdf/mondu-invoice-section.php:40

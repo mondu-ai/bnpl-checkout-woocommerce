@@ -526,9 +526,9 @@ msgid ""
 "transfer, the individual installments will need to be paid via bank transfer "
 "before the due date."
 msgstr ""
-"Da Sie die Zahlart Ratenkauf mit Begleichung via %1$s über Mondu gewählt "
-"haben, werden die einzelnen Raten an ihrem jeweiligen Fälligkeitstag von "
-"Ihrem Bankkonto abgebucht."
+"Da Sie die Zahlart Ratenkauf über Mondu mit Überweisung gewählt haben, "
+"müssen die einzelnen Raten vor dem Fälligkeitsdatum per Überweisung "
+"beglichen werden."
 
 #: views/pdf/mondu-invoice-section.php:175
 msgid ""

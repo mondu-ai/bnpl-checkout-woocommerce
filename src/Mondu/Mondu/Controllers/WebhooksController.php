@@ -85,6 +85,9 @@ class WebhooksController extends WP_REST_Controller {
 				case 'order/declined':
 					$result = $this->handle_declined( $params );
 					break;
+				case 'order/canceled':
+					$result = $this->handle_canceled( $params );
+					break;
 				case 'invoice/created':
 					$result = $this->handle_invoice_created( $params );
 					break;
@@ -209,9 +212,9 @@ class WebhooksController extends WP_REST_Controller {
 	 */
 	private function handle_declined( $params ) {
 		$woocommerce_order_number = $params['external_reference_id'];
-		$mondu_order_id           = $params['order_uuid'];
+		$mondu_order_id           = isset( $params['order_uuid'] ) ? $params['order_uuid'] : null;
 
-		if ( !$woocommerce_order_number || !$mondu_order_id ) {
+		if ( !$woocommerce_order_number ) {
 			throw new MonduException( __( 'Required params missing.', 'mondu' ) );
 		}
 
@@ -223,8 +226,39 @@ class WebhooksController extends WP_REST_Controller {
 
 		$order->add_order_note( esc_html( sprintf( __( 'Mondu order is on declined state.', 'mondu' ) ) ), false );
 
-		if ( $order->get_status() === 'on-hold' ) {
+		if ( in_array( $order->get_status(), [ 'pending', 'on-hold' ], true ) ) {
 			$order->update_status( 'wc-failed', __( 'Failed', 'woocommerce' ) );
+		}
+
+		return $this->return_success();
+	}
+
+	/**
+	 * Handle canceled
+	 *
+	 * @param array $params
+	 *
+	 * @return array
+	 * @throws MonduException
+	 */
+	private function handle_canceled( $params ) {
+		$woocommerce_order_number = $params['external_reference_id'];
+		$mondu_order_id           = isset( $params['order_uuid'] ) ? $params['order_uuid'] : null;
+
+		if ( !$woocommerce_order_number ) {
+			throw new MonduException( __( 'Required params missing.', 'mondu' ) );
+		}
+
+		$order = Helper::get_order_from_order_number_or_uuid( $woocommerce_order_number, $mondu_order_id );
+
+		if ( !$order ) {
+			return $this->return_not_found();
+		}
+
+		$order->add_order_note( esc_html( sprintf( __( 'Mondu order is on canceled state.', 'mondu' ) ) ), false );
+
+		if ( in_array( $order->get_status(), [ 'pending', 'on-hold' ], true ) ) {
+			$order->update_status( 'wc-cancelled', __( 'Cancelled', 'woocommerce' ) );
 		}
 
 		return $this->return_success();

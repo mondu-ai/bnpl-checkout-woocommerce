@@ -402,21 +402,13 @@ msgstr ""
 "abgetreten ist. <br/>Wir bitten um Zahlung in voller Höhe auf das folgende "
 "Konto:"
 
+msgid "We request payment in full to the following account:"
+msgstr "Wir bitten um Zahlung in voller Höhe auf das folgende Konto:"
+
 #. translators: %s: Company
 #: views/pdf/mondu-invoice-section.php:40
-msgid ""
-"Please be informed that the invoice amount has been assigned in accordance "
-"with the General Terms and Conditions of <strong>%s</strong> for the Invoice "
-"with Payment Term Model to Mondu Financial Services B.V. (first assignment), "
-"and Mondu Capital S.à r.l., acting on behalf of Compartment 4 (second "
-"assignment).\n"
-"\n"
-"\n"
-"\n"
-"This invoice was created in accordance with the terms and conditions of "
-"<strong>%s</strong> modified by <strong>Mondu GmbH</strong> payment terms. "
-"We request payment in full to the following account:"
-msgstr ""
+msgid "Please be informed that the invoice amount has been assigned in accordance with the General Terms and Conditions of <strong>%s</strong> for the Invoice with Payment Term Model to Mondu Financial Services B.V. (first assignment), and Mondu Capital S.à r.l., acting on behalf of Compartment 4 (second assignment)."
+msgstr "Wir weisen darauf hin, dass der Rechnungsbetrag gemäß den Allgemeinen Bedingungen von <strong>%s</strong> zum Modell Rechnung mit Zahlungsziel an die Mondu Financial Services B.V. (erste Abtretung), und die Mondu Capital S.à r.l., handelnd für und im Namen von Compartment 4 (zweite Abtretung) abgetreten ist."
 
 #: views/pdf/mondu-invoice-section.php:95
 #: views/pdf/mondu-invoice-section.php:223
@@ -526,9 +518,9 @@ msgid ""
 "transfer, the individual installments will need to be paid via bank transfer "
 "before the due date."
 msgstr ""
-"Da Sie die Zahlart Ratenkauf mit Begleichung via %1$s über Mondu gewählt "
-"haben, werden die einzelnen Raten an ihrem jeweiligen Fälligkeitstag von "
-"Ihrem Bankkonto abgebucht."
+"Da Sie die Zahlart Ratenkauf über Mondu mit Überweisung gewählt haben, "
+"müssen die einzelnen Raten vor dem Fälligkeitsdatum per Überweisung "
+"beglichen werden."
 
 #: views/pdf/mondu-invoice-section.php:175
 msgid ""

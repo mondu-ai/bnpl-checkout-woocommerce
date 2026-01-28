@@ -392,13 +392,13 @@ msgid ""
 "with the General Terms and Conditions of <strong>%s</strong> for the Invoice "
 "with Payment Term Model to Mondu Financial Services B.V. (first assignment), "
 "and Mondu Capital S.à r.l., acting on behalf of Compartment 4 (second "
-"assignment). <br/>We request payment in full to the following account:"
+"assignment)."
 msgstr ""
 "Please be informed that the invoice amount has been assigned in accordance "
 "with the General Terms and Conditions of <strong>%s</strong> for the Invoice "
 "with Payment Term Model to Mondu Financial Services B.V. (first assignment), "
 "and Mondu Capital S.à r.l., acting on behalf of Compartment 4 (second "
-"assignment). <br/>We request payment in full to the following account:"
+"assignment)."
 
 #. translators: %s: Company
 #: views/pdf/mondu-invoice-section.php:40
@@ -415,6 +415,9 @@ msgid ""
 "<strong>%s</strong> modified by <strong>Mondu GmbH</strong> payment terms. "
 "We request payment in full to the following account:"
 msgstr ""
+
+msgid "We request payment in full to the following account:"
+msgstr "Wij verzoeken om volledige betaling op de volgende rekening:"
 
 #: views/pdf/mondu-invoice-section.php:95
 #: views/pdf/mondu-invoice-section.php:223

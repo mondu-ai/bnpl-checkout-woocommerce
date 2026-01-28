@@ -22,7 +22,7 @@ class Api {
 	 *
 	 * @var array
 	 */
-	private $global_settings;
+	protected $global_settings;
 
 	/**
 	 * Api constructor.
@@ -243,7 +243,7 @@ class Api {
 	 * @throws MonduException
 	 * @throws ResponseException
 	 */
-	private function post( $path, array $body = null ) {
+	protected function post( $path, array $body = null ) {
 		$method = 'POST';
 		return $this->request($path, $method, $body);
 	}
@@ -257,7 +257,7 @@ class Api {
 	 * @throws MonduException
 	 * @throws ResponseException
 	 */
-	private function put( $path, array $body = null ) {
+	protected function put( $path, array $body = null ) {
 		$method = 'PUT';
 		return $this->request($path, $method, $body);
 	}
@@ -271,7 +271,7 @@ class Api {
 	 * @throws MonduException
 	 * @throws ResponseException
 	 */
-	private function patch( $path, array $body = null ) {
+	protected function patch( $path, array $body = null ) {
 		$method = 'PATCH';
 		return $this->request($path, $method, $body);
 	}
@@ -285,7 +285,7 @@ class Api {
 	 * @throws MonduException
 	 * @throws ResponseException
 	 */
-	private function get( $path, $parameters = null ) {
+	protected function get( $path, $parameters = null ) {
 		if ( null !== $parameters ) {
 			$path .= '&' . http_build_query($parameters);
 		}
@@ -303,7 +303,7 @@ class Api {
 	 * @throws MonduException
 	 * @throws ResponseException
 	 */
-	private function validate_remote_result( $url, $result ) {
+	protected function validate_remote_result( $url, $result ) {
 		if ( $result instanceof \WP_Error ) {
 			throw new MonduException($result->get_error_message(), $result->get_error_code());
 		} else {
@@ -339,7 +339,7 @@ class Api {
 	 * @throws MonduException
 	 * @throws ResponseException
 	 */
-	private function request( $path, $method = 'GET', $body = null ) {
+	protected function request( $path, $method = 'GET', $body = null ) {
 		$url  = Helper::is_production() ? MONDU_PRODUCTION_URL : MONDU_SANDBOX_URL;
 		$url .= $path;
 
