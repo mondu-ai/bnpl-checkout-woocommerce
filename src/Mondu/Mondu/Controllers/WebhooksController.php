@@ -86,6 +86,7 @@ class WebhooksController extends WP_REST_Controller {
 					$result = $this->handle_declined( $params );
 					break;
 				case 'order/canceled':
+				case 'order/cancelled':
 					$result = $this->handle_canceled( $params );
 					break;
 				case 'invoice/created':

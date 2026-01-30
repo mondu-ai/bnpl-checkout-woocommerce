@@ -381,7 +381,7 @@ class PaymentInfo {
 			$bank_account    = $this->order_data['bank_account'];
 			$invoice_number  = Helper::get_invoice_number( $this->order );
 			$net_terms       = $this->get_mondu_net_term();
-			$mondu_uk_buyer  = isset( $bank_account['account_number'] ) && isset( $bank_account['sort_code'] ) 
+			$mondu_uk_buyer  = isset( $bank_account['account_number'] ) && isset( $bank_account['sort_code'] )
 				&& $bank_account['account_number'] && $bank_account['sort_code'];
 
 			include $file;

@@ -81,6 +81,23 @@ class Helper {
 	}
 
 	/**
+	 * Delete WCPDF invoice document for the order so the next Mondu invoice gets a new number.
+	 * Call this when a Mondu invoice is canceled so creating a new one uses the next WCPDF number.
+	 *
+	 * @param WC_Order $order
+	 * @return void
+	 */
+	public static function delete_wcpdf_invoice_document( WC_Order $order ) {
+		if ( ! class_exists( '\WPO_WCPDF' ) ) {
+			return;
+		}
+		$document = self::get_invoice( $order );
+		if ( $document && is_object( $document ) && method_exists( $document, 'exists' ) && $document->exists() && method_exists( $document, 'delete' ) ) {
+			$document->delete( $order );
+		}
+	}
+
+	/**
 	 * Get invoice number for Mondu (invoice external_reference_id).
 	 *
 	 * With WCPDF: use WCPDF invoice document number (matches PDF). Order number is never
