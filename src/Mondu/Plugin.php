@@ -106,6 +106,7 @@ class Plugin {
 			$order->init();
 
 			add_action( 'admin_head', [ $this, 'add_admin_payment_icon_styles' ] );
+			add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_gateway_titles_script' ] );
 		}
 
 		/*
@@ -195,6 +196,12 @@ class Plugin {
 	 * @return void
 	 */
 	public static function ensure_mondu_gateway_title_defaults() {
+		$gateway_ids = array_values( self::PAYMENT_METHODS );
+		foreach ( $gateway_ids as $gid ) {
+			self::migrate_gateway_title_translations( $gid );
+			self::migrate_gateway_description_translations( $gid );
+		}
+
 		$version_key = '_mondu_gateway_title_defaults_version';
 		$done_for    = get_option( $version_key );
 
@@ -254,6 +261,82 @@ class Plugin {
 	}
 
 	/**
+	 * Migrate title_en/de/fr/nl to title_translations when present.
+	 *
+	 * @param string $gateway_id
+	 * @return void
+	 */
+	private static function migrate_gateway_title_translations( $gateway_id ) {
+		$option_key = 'woocommerce_' . $gateway_id . '_settings';
+		$settings   = get_option( $option_key, [] );
+
+		if ( ! is_array( $settings ) ) {
+			$settings = [];
+		}
+
+		$rows = isset( $settings['title_translations'] ) && is_array( $settings['title_translations'] ) ? $settings['title_translations'] : [];
+		if ( ! empty( $rows ) ) {
+			return;
+		}
+
+		$legacy = [];
+		foreach ( [ 'en', 'de', 'fr', 'nl' ] as $lang ) {
+			$k = 'title_' . $lang;
+			if ( isset( $settings[ $k ] ) && $settings[ $k ] !== '' ) {
+				$legacy[] = [ 'lang' => $lang, 'title' => (string) $settings[ $k ] ];
+			}
+		}
+
+		if ( empty( $legacy ) ) {
+			return;
+		}
+
+		$settings['title_translations'] = $legacy;
+		foreach ( [ 'title_en', 'title_de', 'title_fr', 'title_nl' ] as $k ) {
+			unset( $settings[ $k ] );
+		}
+		update_option( $option_key, $settings, false );
+	}
+
+	/**
+	 * Migrate description_en/de/fr/nl to description_translations when present.
+	 *
+	 * @param string $gateway_id
+	 * @return void
+	 */
+	private static function migrate_gateway_description_translations( $gateway_id ) {
+		$option_key = 'woocommerce_' . $gateway_id . '_settings';
+		$settings   = get_option( $option_key, [] );
+
+		if ( ! is_array( $settings ) ) {
+			$settings = [];
+		}
+
+		$rows = isset( $settings['description_translations'] ) && is_array( $settings['description_translations'] ) ? $settings['description_translations'] : [];
+		if ( ! empty( $rows ) ) {
+			return;
+		}
+
+		$legacy = [];
+		foreach ( [ 'en', 'de', 'fr', 'nl' ] as $lang ) {
+			$k = 'description_' . $lang;
+			if ( isset( $settings[ $k ] ) && $settings[ $k ] !== '' ) {
+				$legacy[] = [ 'lang' => $lang, 'description' => (string) $settings[ $k ] ];
+			}
+		}
+
+		if ( empty( $legacy ) ) {
+			return;
+		}
+
+		$settings['description_translations'] = $legacy;
+		foreach ( [ 'description_en', 'description_de', 'description_fr', 'description_nl' ] as $key ) {
+			unset( $settings[ $key ] );
+		}
+		update_option( $option_key, $settings, false );
+	}
+
+	/**
 	 * @param string $gateway_id
 	 * @param array{en:string,de:string,fr:string,nl:string} $titles
 	 * @return void
@@ -262,17 +345,24 @@ class Plugin {
 		$option_key = 'woocommerce_' . $gateway_id . '_settings';
 		$settings   = get_option( $option_key, [] );
 
-		if ( !is_array( $settings ) ) {
+		if ( ! is_array( $settings ) ) {
 			$settings = [];
 		}
 
-		foreach ( [ 'en', 'de', 'fr', 'nl' ] as $lang ) {
-			$field_key = 'title_' . $lang;
-			if ( !isset( $settings[ $field_key ] ) || $settings[ $field_key ] === '' ) {
-				$settings[ $field_key ] = $titles[ $lang ];
-			}
+		$rows = isset( $settings['title_translations'] ) && is_array( $settings['title_translations'] ) ? $settings['title_translations'] : [];
+		if ( ! empty( $rows ) ) {
+			return;
 		}
 
+		$default_rows = [];
+		foreach ( [ 'en', 'de', 'fr', 'nl' ] as $lang ) {
+			$default_rows[] = [
+				'lang'  => $lang,
+				'title' => isset( $titles[ $lang ] ) ? $titles[ $lang ] : '',
+			];
+		}
+
+		$settings['title_translations'] = $default_rows;
 		update_option( $option_key, $settings, false );
 	}
 
@@ -282,6 +372,28 @@ class Plugin {
 	public function load_textdomain() {
 		$plugin_rel_path = dirname( plugin_basename( __FILE__ ) ) . '/../../languages/';
 		load_plugin_textdomain( 'mondu', false, $plugin_rel_path );
+	}
+
+	/**
+	 * Enqueue script for repeatable title-translations on gateway settings.
+	 */
+	public function enqueue_gateway_titles_script() {
+		$page = isset( $_GET['page'] ) ? sanitize_text_field( wp_unslash( $_GET['page'] ) ) : '';
+		$tab  = isset( $_GET['tab'] ) ? sanitize_text_field( wp_unslash( $_GET['tab'] ) ) : '';
+		$sec  = isset( $_GET['section'] ) ? sanitize_text_field( wp_unslash( $_GET['section'] ) ) : '';
+
+		if ( $page !== 'wc-settings' || $tab !== 'checkout' || $sec === '' ) {
+			return;
+		}
+		if ( ! in_array( $sec, array_values( self::PAYMENT_METHODS ), true ) ) {
+			return;
+		}
+
+		$handle = 'mondu-admin-gateway-titles';
+		$src    = MONDU_PUBLIC_PATH . 'assets/src/js/admin-gateway-titles.js';
+		$deps   = [];
+		$ver    = defined( 'MONDU_PLUGIN_VERSION' ) ? MONDU_PLUGIN_VERSION : '1.0.0';
+		wp_enqueue_script( $handle, $src, $deps, $ver, true );
 	}
 
 	/**

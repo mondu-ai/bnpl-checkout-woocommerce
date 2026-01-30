@@ -49,6 +49,8 @@ class OrderData {
 	/**
 	 * Invoice Data from WC_Order
 	 *
+	 * external_reference_id: WCPDF invoice number when available (matches PDF), else order number.
+	 *
 	 * @param WC_Order $order
 	 * @return array
 	 */

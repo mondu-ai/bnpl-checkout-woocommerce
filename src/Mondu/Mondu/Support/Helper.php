@@ -81,42 +81,35 @@ class Helper {
 	}
 
 	/**
-	 * Get invoice number
+	 * Get invoice number for Mondu (invoice external_reference_id).
+	 *
+	 * With WCPDF: use invoice document number (matches PDF). Without WCPDF or before
+	 * document exists: use order number (current behavior).
 	 *
 	 * @param WC_Order $order
 	 * @return string
 	 */
 	public static function get_invoice_number( WC_Order $order ) {
-		$invoice_number = $order->get_order_number();
-		$source = 'order_number';
+		$invoice_number = null;
 
-		if ( function_exists( 'wcpdf_get_document' ) ) {
-			$document = wcpdf_get_document( 'invoice', $order, false );
-			if ( $document && $document->get_number() ) {
-				$invoice_number = $document->get_number()->get_formatted();
-				$source = 'wcpdf_document';
-			}
-		} elseif ( function_exists( 'wcpdf_get_invoice' ) ) {
-			$document = wcpdf_get_invoice( $order, false );
-			if ( $document && $document->get_number() ) {
-				$invoice_number = $document->get_number()->get_formatted();
-				$source = 'wcpdf_invoice_legacy';
+		if ( class_exists( '\WPO_WCPDF' ) ) {
+			if ( function_exists( 'wcpdf_get_document' ) ) {
+				$document = wcpdf_get_document( 'invoice', $order, false );
+				if ( $document && $document->get_number() ) {
+					$invoice_number = $document->get_number()->get_formatted();
+				}
+			} elseif ( function_exists( 'wcpdf_get_invoice' ) ) {
+				$document = wcpdf_get_invoice( $order, false );
+				if ( $document && $document->get_number() ) {
+					$invoice_number = $document->get_number()->get_formatted();
+				}
 			}
 		}
 
-		self::log([
-			'message' => 'get_invoice_number called',
-			'order_id' => $order->get_id(),
-			'order_number' => $order->get_order_number(),
-			'invoice_number' => $invoice_number,
-			'source' => $source,
-		]);
+		if ( $invoice_number === null || $invoice_number === '' ) {
+			$invoice_number = (string) $order->get_order_number();
+		}
 
-		/**
-		 * Reference ID for invoice
-		 *
-		 * @since 1.3.2
-		 */
 		return apply_filters( 'mondu_invoice_reference_id', $invoice_number );
 	}
 

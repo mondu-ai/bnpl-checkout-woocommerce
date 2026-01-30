@@ -39,6 +39,42 @@ class MonduGateway extends WC_Payment_Gateway {
 	private const SUPPORTED_LOCALES = [ 'de', 'en', 'nl' ];
 
 	/**
+	 * Languages available for title translations (code => label).
+	 *
+	 * @var array<string, string>
+	 */
+	private static $title_languages = [
+		'en' => 'English',
+		'de' => 'Deutsch',
+		'fr' => 'Français',
+		'nl' => 'Nederlands',
+		'uk' => 'Українська',
+		'pl' => 'Polski',
+		'es' => 'Español',
+		'it' => 'Italiano',
+		'pt' => 'Português',
+		'cs' => 'Čeština',
+		'sk' => 'Slovenčina',
+		'hu' => 'Magyar',
+		'ro' => 'Română',
+		'bg' => 'Български',
+		'hr' => 'Hrvatski',
+		'sl' => 'Slovenščina',
+		'et' => 'Eesti',
+		'lv' => 'Latviešu',
+		'lt' => 'Lietuvių',
+	];
+
+	/**
+	 * Languages for title translations (code => label). Filterable.
+	 *
+	 * @return array<string, string>
+	 */
+	public static function get_title_languages() {
+		return apply_filters( 'mondu_title_translations_languages', self::$title_languages );
+	}
+
+	/**
 	 * Mondu Global Settings
 	 *
 	 * @var MonduRequestWrapper
@@ -101,43 +137,239 @@ class MonduGateway extends WC_Payment_Gateway {
 	}
 
 	/**
+	 * Generate repeatable "language + title" rows HTML.
+	 *
+	 * @param string $key
+	 * @param array  $data
+	 * @return string
+	 */
+	public function generate_mondu_title_translations_html( $key, $data ) {
+		$field_key   = $this->get_field_key( $key );
+		$value       = $this->get_option( $key, [] );
+		$rows        = is_array( $value ) ? $value : [];
+		$languages = self::get_title_languages();
+		$lang_list = [];
+		foreach ( $languages as $code => $label ) {
+			$lang_list[] = [ 'code' => $code, 'label' => $label ];
+		}
+		$lang_json = wp_json_encode( $lang_list );
+		$initial   = wp_json_encode( $rows );
+
+		ob_start();
+		?>
+		<tr valign="top">
+			<th scope="row" class="titledesc">
+				<label for="<?php echo esc_attr( $field_key ); ?>"><?php echo wp_kses_post( $data['title'] ); ?></label>
+				<?php echo $this->get_tooltip_html( $data ); ?>
+			</th>
+			<td class="forminp">
+				<div class="mondu-title-translations" id="mondu-title-translations-<?php echo esc_attr( $this->id ); ?>"
+					data-field-key="<?php echo esc_attr( $field_key ); ?>"
+					data-languages="<?php echo esc_attr( $lang_json ); ?>"
+					data-initial="<?php echo esc_attr( $initial ); ?>">
+					<table class="widefat wc_input_table" cellspacing="0">
+						<thead>
+							<tr>
+								<th><?php esc_html_e( 'Language', 'mondu' ); ?></th>
+								<th><?php esc_html_e( 'Title', 'mondu' ); ?></th>
+								<th class="mondu-tt-remove">&nbsp;</th>
+							</tr>
+						</thead>
+						<tbody class="mondu-tt-rows"></tbody>
+						<tfoot>
+							<tr>
+								<th colspan="3">
+									<button type="button" class="button mondu-tt-add"><?php esc_html_e( 'Add language', 'mondu' ); ?></button>
+								</th>
+							</tr>
+						</tfoot>
+					</table>
+					<input type="hidden" name="<?php echo esc_attr( $field_key ); ?>" class="mondu-tt-input" value="" />
+				</div>
+				<?php echo $this->get_description_html( $data ); ?>
+			</td>
+		</tr>
+		<?php
+		return ob_get_clean();
+	}
+
+	/**
+	 * Generate repeatable "language + description" rows HTML.
+	 *
+	 * @param string $key
+	 * @param array  $data
+	 * @return string
+	 */
+	public function generate_mondu_description_translations_html( $key, $data ) {
+		$field_key = $this->get_field_key( $key );
+		$value     = $this->get_option( $key, [] );
+		$rows      = is_array( $value ) ? $value : [];
+		$languages = self::get_title_languages();
+		$lang_list = [];
+		foreach ( $languages as $code => $label ) {
+			$lang_list[] = [ 'code' => $code, 'label' => $label ];
+		}
+		$lang_json = wp_json_encode( $lang_list );
+		$initial_rows = [];
+		foreach ( $rows as $r ) {
+			$initial_rows[] = [
+				'lang'  => isset( $r['lang'] ) ? $r['lang'] : '',
+				'title' => isset( $r['description'] ) ? $r['description'] : '',
+			];
+		}
+		$initial = wp_json_encode( $initial_rows );
+
+		ob_start();
+		?>
+		<tr valign="top">
+			<th scope="row" class="titledesc">
+				<label for="<?php echo esc_attr( $field_key ); ?>"><?php echo wp_kses_post( $data['title'] ); ?></label>
+				<?php echo $this->get_tooltip_html( $data ); ?>
+			</th>
+			<td class="forminp">
+				<div class="mondu-title-translations" id="mondu-description-translations-<?php echo esc_attr( $this->id ); ?>"
+					data-field-key="<?php echo esc_attr( $field_key ); ?>"
+					data-languages="<?php echo esc_attr( $lang_json ); ?>"
+					data-initial="<?php echo esc_attr( $initial ); ?>">
+					<table class="widefat wc_input_table" cellspacing="0">
+						<thead>
+							<tr>
+								<th><?php esc_html_e( 'Language', 'mondu' ); ?></th>
+								<th><?php esc_html_e( 'Description', 'mondu' ); ?></th>
+								<th class="mondu-tt-remove">&nbsp;</th>
+							</tr>
+						</thead>
+						<tbody class="mondu-tt-rows"></tbody>
+						<tfoot>
+							<tr>
+								<th colspan="3">
+									<button type="button" class="button mondu-tt-add"><?php esc_html_e( 'Add language', 'mondu' ); ?></button>
+								</th>
+							</tr>
+						</tfoot>
+					</table>
+					<input type="hidden" name="<?php echo esc_attr( $field_key ); ?>" class="mondu-tt-input" value="" />
+				</div>
+				<?php echo $this->get_description_html( $data ); ?>
+			</td>
+		</tr>
+		<?php
+		return ob_get_clean();
+	}
+
+	/**
 	 * Gateway title depending on current page locale.
 	 *
-	 * Uses per-locale admin setting for the current language.
+	 * Uses title_translations (language + title rows). Fallback: en, then first.
 	 *
 	 * @return string
 	 */
 	public function get_title() {
-		$lang = $this->get_request_language();
-		$key  = 'title_' . $lang;
-		return trim( (string) $this->get_option( $key, '' ) );
+		$lang   = $this->get_request_language();
+		$rows   = $this->get_option( 'title_translations', [] );
+		if ( ! is_array( $rows ) ) {
+			$rows = [];
+		}
+		$by_lang = [];
+		foreach ( $rows as $r ) {
+			$l = isset( $r['lang'] ) ? $r['lang'] : '';
+			$t = isset( $r['title'] ) ? trim( (string) $r['title'] ) : '';
+			if ( $l !== '' ) {
+				$by_lang[ $l ] = $t;
+			}
+		}
+		if ( isset( $by_lang[ $lang ] ) && $by_lang[ $lang ] !== '' ) {
+			return $by_lang[ $lang ];
+		}
+		if ( isset( $by_lang['en'] ) && $by_lang['en'] !== '' ) {
+			return $by_lang['en'];
+		}
+		$first = reset( $by_lang );
+		return $first !== false ? $first : '';
 	}
 
 	/**
 	 * Get localized description from gateway settings.
 	 *
+	 * Uses description_translations (language + description rows). Fallback: en, then first.
+	 *
 	 * @return string
 	 */
 	private function get_localized_description_from_settings() {
-		$lang = $this->get_request_language();
-		$key  = 'description_' . $lang;
-		return (string) $this->get_option( $key, '' );
+		$lang   = $this->get_request_language();
+		$rows   = $this->get_option( 'description_translations', [] );
+		if ( ! is_array( $rows ) ) {
+			$rows = [];
+		}
+		$by_lang = [];
+		foreach ( $rows as $r ) {
+			$l = isset( $r['lang'] ) ? $r['lang'] : '';
+			$d = isset( $r['description'] ) ? trim( (string) $r['description'] ) : '';
+			if ( $l !== '' ) {
+				$by_lang[ $l ] = $d;
+			}
+		}
+		if ( isset( $by_lang[ $lang ] ) && $by_lang[ $lang ] !== '' ) {
+			return $by_lang[ $lang ];
+		}
+		if ( isset( $by_lang['en'] ) && $by_lang['en'] !== '' ) {
+			return $by_lang['en'];
+		}
+		$first = reset( $by_lang );
+		return $first !== false ? $first : '';
 	}
 
 	/**
 	 * Determine current 2-letter language code.
 	 *
-	 * @return string One of: en, de, fr, nl
+	 * @return string
 	 */
 	private function get_request_language() {
 		$locale = function_exists( 'determine_locale' ) ? determine_locale() : get_locale();
-		$lang   = strtolower( substr( (string) $locale, 0, 2 ) );
+		return strtolower( substr( (string) $locale, 0, 2 ) );
+	}
 
-		if ( in_array( $lang, [ 'en', 'de', 'fr', 'nl' ], true ) ) {
-			return $lang;
+	/**
+	 * Save options; decode title_translations and description_translations JSON into arrays.
+	 */
+	public function process_admin_options() {
+		parent::process_admin_options();
+
+		$opt_key  = 'woocommerce_' . $this->id . '_settings';
+		$settings = get_option( $opt_key, [] );
+		$settings = is_array( $settings ) ? $settings : [];
+
+		$field_key = $this->get_field_key( 'title_translations' );
+		$raw       = isset( $_POST[ $field_key ] ) ? wp_unslash( $_POST[ $field_key ] ) : '';
+		$decoded   = json_decode( $raw, true );
+		if ( is_array( $decoded ) ) {
+			$out = [];
+			foreach ( $decoded as $row ) {
+				$lang  = isset( $row['lang'] ) ? sanitize_text_field( $row['lang'] ) : '';
+				$title = isset( $row['title'] ) ? sanitize_text_field( $row['title'] ) : '';
+				if ( $lang !== '' ) {
+					$out[] = [ 'lang' => $lang, 'title' => $title ];
+				}
+			}
+			$settings['title_translations'] = $out;
 		}
 
-		return 'en';
+		$field_key = $this->get_field_key( 'description_translations' );
+		$raw       = isset( $_POST[ $field_key ] ) ? wp_unslash( $_POST[ $field_key ] ) : '';
+		$decoded   = json_decode( $raw, true );
+		if ( is_array( $decoded ) ) {
+			$out = [];
+			foreach ( $decoded as $row ) {
+				$lang        = isset( $row['lang'] ) ? sanitize_text_field( $row['lang'] ) : '';
+				$description = isset( $row['title'] ) ? sanitize_textarea_field( $row['title'] ) : '';
+				if ( $lang !== '' ) {
+					$out[] = [ 'lang' => $lang, 'description' => $description ];
+				}
+			}
+			$settings['description_translations'] = $out;
+		}
+
+		update_option( $opt_key, $settings, false );
 	}
 
 	/**
