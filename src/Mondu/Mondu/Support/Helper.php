@@ -83,8 +83,9 @@ class Helper {
 	/**
 	 * Get invoice number for Mondu (invoice external_reference_id).
 	 *
-	 * With WCPDF: use invoice document number (matches PDF). Without WCPDF or before
-	 * document exists: use order number (current behavior).
+	 * With WCPDF: use WCPDF invoice document number (matches PDF). Order number is never
+	 * used for invoice external_reference_id when WCPDF is active; if no document exists
+	 * yet, the document is created (init) so the number comes from WCPDF sequence.
 	 *
 	 * @param WC_Order $order
 	 * @return string
@@ -98,10 +99,28 @@ class Helper {
 				if ( $document && $document->get_number() ) {
 					$invoice_number = $document->get_number()->get_formatted();
 				}
+				if ( ( $invoice_number === null || $invoice_number === '' ) && $order->get_meta( '_wcpdf_invoice_number' ) !== '' ) {
+					$invoice_number = (string) $order->get_meta( '_wcpdf_invoice_number' );
+				}
+				if ( $invoice_number === null || $invoice_number === '' ) {
+					$document = wcpdf_get_document( 'invoice', $order, true );
+					if ( $document && $document->get_number() ) {
+						$invoice_number = $document->get_number()->get_formatted();
+					}
+				}
 			} elseif ( function_exists( 'wcpdf_get_invoice' ) ) {
 				$document = wcpdf_get_invoice( $order, false );
 				if ( $document && $document->get_number() ) {
 					$invoice_number = $document->get_number()->get_formatted();
+				}
+				if ( ( $invoice_number === null || $invoice_number === '' ) && $order->get_meta( '_wcpdf_invoice_number' ) !== '' ) {
+					$invoice_number = (string) $order->get_meta( '_wcpdf_invoice_number' );
+				}
+				if ( $invoice_number === null || $invoice_number === '' ) {
+					$document = wcpdf_get_invoice( $order, true );
+					if ( $document && $document->get_number() ) {
+						$invoice_number = $document->get_number()->get_formatted();
+					}
 				}
 			}
 		}
