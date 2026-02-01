@@ -58,11 +58,9 @@ register_activation_hook( MONDU_PLUGIN_FILE, 'mondu_activate' );
 function mondu_deactivate() {
 	delete_option( '_mondu_credentials_validated' );
 	delete_option( '_mondu_webhooks_registered' );
-	delete_option( 'woocommerce_mondu_invoice_settings' );
-	delete_option( 'woocommerce_mondu_direct_debit_settings' );
-	delete_option( 'woocommerce_mondu_installment_settings' );
-	delete_option( 'woocommerce_mondu_installment_by_invoice_settings' );
-	delete_option( 'woocommerce_mondu_instant_pay_settings' );
+	foreach ( \Mondu\Config\PaymentMethodsConfig::get_gateway_ids() as $gateway_id ) {
+		delete_option( 'woocommerce_' . $gateway_id . '_settings' );
+	}
 }
 register_deactivation_hook( MONDU_PLUGIN_FILE, 'mondu_deactivate' );
 

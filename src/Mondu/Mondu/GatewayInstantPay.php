@@ -16,7 +16,7 @@ use Mondu\Plugin;
 class GatewayInstantPay extends MonduGateway {
 	public function __construct( $register_hooks = true ) {
 		$payment_instructions     = __( '', 'mondu' );
-		$this->id                 = Plugin::PAYMENT_METHODS['pay_now'];
+		$this->id                 = Plugin::get_payment_methods()['pay_now'];
 		$this->title              = __( 'Instant Pay', 'mondu' );
 		$this->description        = $payment_instructions;
 		$this->method_description = $payment_instructions;

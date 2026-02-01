@@ -16,7 +16,7 @@ use Mondu\Plugin;
 class GatewayDirectDebit extends MonduGateway {
 	public function __construct( $register_hooks = true ) {
 		$payment_instructions     = __( '', 'mondu' );
-		$this->id                 = Plugin::PAYMENT_METHODS['direct_debit'];
+		$this->id                 = Plugin::get_payment_methods()['direct_debit'];
 		$this->title              = __( 'SEPA direct debit (30 days)', 'mondu' );
 		$this->description        = $payment_instructions;
 		$this->method_description = $payment_instructions;

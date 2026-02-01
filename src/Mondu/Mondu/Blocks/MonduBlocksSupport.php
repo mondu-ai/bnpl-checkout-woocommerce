@@ -7,13 +7,8 @@
 namespace Mondu\Mondu\Blocks;
 
 use Automattic\WooCommerce\Blocks\Payments\Integrations\AbstractPaymentMethodType;
-use Mondu\Mondu\GatewayDirectDebit;
-use Mondu\Mondu\GatewayInstallment;
-use Mondu\Mondu\GatewayInstallmentByInvoice;
-use Mondu\Mondu\GatewayInstantPay;
-use Mondu\Mondu\GatewayInvoice;
+use Mondu\Config\PaymentMethodsConfig;
 use Mondu\Mondu\MonduGateway;
-use Mondu\Plugin;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -37,13 +32,10 @@ final class MonduBlocksSupport extends AbstractPaymentMethodType {
 	 * Initialize
 	 */
 	public function initialize() {
-		$this->gateways = [
-			new GatewayInvoice( false ),
-			new GatewayDirectDebit( false ),
-			new GatewayInstallment( false ),
-			new GatewayInstallmentByInvoice( false ),
-			new GatewayInstantPay( false ),
-		];
+		$this->gateways = [];
+		foreach ( PaymentMethodsConfig::get_gateway_classes() as $gateway_class ) {
+			$this->gateways[] = new $gateway_class( false );
+		}
 	}
 
 	/**

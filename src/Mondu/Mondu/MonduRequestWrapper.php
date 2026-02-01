@@ -191,7 +191,7 @@ class MonduRequestWrapper {
 				set_transient( 'mondu_merchant_payment_methods', $merchant_payment_methods, 1 * 60 );
 				return $merchant_payment_methods;
 			} catch ( Exception $e ) {
-				$merchant_payment_methods = array_keys( Plugin::PAYMENT_METHODS );
+				$merchant_payment_methods = array_keys( Plugin::get_payment_methods() );
 				set_transient( 'mondu_merchant_payment_methods', $merchant_payment_methods, 10 * 60 );
 				return $merchant_payment_methods;
 			}

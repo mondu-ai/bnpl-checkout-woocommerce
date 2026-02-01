@@ -207,59 +207,62 @@ class WebhooksController extends WP_REST_Controller {
 	 * Handle declined
 	 *
 	 * @param array $params
-	 *
 	 * @return array
 	 * @throws MonduException
 	 */
 	private function handle_declined( $params ) {
-		$woocommerce_order_number = $params['external_reference_id'];
-		$mondu_order_id           = isset( $params['order_uuid'] ) ? $params['order_uuid'] : null;
-
-		if ( !$woocommerce_order_number ) {
-			throw new MonduException( __( 'Required params missing.', 'mondu' ) );
-		}
-
-		$order = Helper::get_order_from_order_number_or_uuid( $woocommerce_order_number, $mondu_order_id );
-
-		if ( !$order ) {
-			return $this->return_not_found();
-		}
-
-		$order->add_order_note( esc_html( sprintf( __( 'Mondu order is on declined state.', 'mondu' ) ) ), false );
-
-		if ( in_array( $order->get_status(), [ 'pending', 'on-hold' ], true ) ) {
-			$order->update_status( 'wc-failed', __( 'Failed', 'woocommerce' ) );
-		}
-
-		return $this->return_success();
+		return $this->handle_order_state_change(
+			$params,
+			__( 'Mondu order is on declined state.', 'mondu' ),
+			'wc-failed',
+			__( 'Failed', 'woocommerce' )
+		);
 	}
 
 	/**
 	 * Handle canceled
 	 *
 	 * @param array $params
-	 *
 	 * @return array
 	 * @throws MonduException
 	 */
 	private function handle_canceled( $params ) {
+		return $this->handle_order_state_change(
+			$params,
+			__( 'Mondu order is on canceled state.', 'mondu' ),
+			'wc-cancelled',
+			__( 'Cancelled', 'woocommerce' )
+		);
+	}
+
+	/**
+	 * Common logic for declined/canceled: resolve order, add note, update status.
+	 *
+	 * @param array  $params        Webhook params.
+	 * @param string $note_message  Order note message.
+	 * @param string $target_status WooCommerce status (e.g. wc-failed, wc-cancelled).
+	 * @param string $status_label  Label for the new status.
+	 * @return array
+	 * @throws MonduException
+	 */
+	private function handle_order_state_change( $params, $note_message, $target_status, $status_label ) {
 		$woocommerce_order_number = $params['external_reference_id'];
 		$mondu_order_id           = isset( $params['order_uuid'] ) ? $params['order_uuid'] : null;
 
-		if ( !$woocommerce_order_number ) {
+		if ( ! $woocommerce_order_number ) {
 			throw new MonduException( __( 'Required params missing.', 'mondu' ) );
 		}
 
 		$order = Helper::get_order_from_order_number_or_uuid( $woocommerce_order_number, $mondu_order_id );
 
-		if ( !$order ) {
+		if ( ! $order ) {
 			return $this->return_not_found();
 		}
 
-		$order->add_order_note( esc_html( sprintf( __( 'Mondu order is on canceled state.', 'mondu' ) ) ), false );
+		$order->add_order_note( esc_html( $note_message ), false );
 
 		if ( in_array( $order->get_status(), [ 'pending', 'on-hold' ], true ) ) {
-			$order->update_status( 'wc-cancelled', __( 'Cancelled', 'woocommerce' ) );
+			$order->update_status( $target_status, $status_label );
 		}
 
 		return $this->return_success();

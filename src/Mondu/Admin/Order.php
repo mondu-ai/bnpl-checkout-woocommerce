@@ -7,6 +7,7 @@
 namespace Mondu\Admin;
 
 use Automattic\WooCommerce\Internal\DataStores\Orders\CustomOrdersTableController;
+use Mondu\Config\PaymentMethodsConfig;
 use Mondu\Exceptions\MonduException;
 use Mondu\Exceptions\ResponseException;
 use Mondu\Mondu\MonduRequestWrapper;
@@ -69,7 +70,7 @@ class Order {
 				if ( null === $order ) {
 					return;
 				}
-				if ( !in_array( $order->get_payment_method(), Plugin::PAYMENT_METHODS, true ) ) {
+				if ( !in_array( $order->get_payment_method(), PaymentMethodsConfig::get_gateway_ids(), true ) ) {
 					return;
 				}
 

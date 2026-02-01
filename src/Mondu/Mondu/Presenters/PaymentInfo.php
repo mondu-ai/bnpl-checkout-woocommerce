@@ -6,6 +6,7 @@
  */
 namespace Mondu\Mondu\Presenters;
 
+use Mondu\Config\PaymentMethodsConfig;
 use Mondu\Exceptions\ResponseException;
 use Mondu\Mondu\Support\Helper;
 use Mondu\Mondu\MonduRequestWrapper;
@@ -123,7 +124,7 @@ class PaymentInfo {
 	 * @throws Exception
 	 */
 	public function get_mondu_section_html() {
-		if ( !in_array( $this->order->get_payment_method(), Plugin::PAYMENT_METHODS, true ) ) {
+		if ( !in_array( $this->order->get_payment_method(), PaymentMethodsConfig::get_gateway_ids(), true ) ) {
 			return null;
 		}
 
@@ -194,7 +195,7 @@ class PaymentInfo {
 	 * @return false|string|null
 	 */
 	public function get_mondu_payment_html() {
-		if ( !in_array( $this->order->get_payment_method(), Plugin::PAYMENT_METHODS, true ) ) {
+		if ( !in_array( $this->order->get_payment_method(), PaymentMethodsConfig::get_gateway_ids(), true ) ) {
 			return null;
 		}
 
@@ -266,7 +267,7 @@ class PaymentInfo {
 	 * @return int|null
 	 */
 	public function get_mondu_net_term() {
-		if ( !in_array( $this->order->get_payment_method(), Plugin::PAYMENT_METHODS, true ) ) {
+		if ( !in_array( $this->order->get_payment_method(), PaymentMethodsConfig::get_gateway_ids(), true ) ) {
 			return null;
 		}
 
@@ -362,7 +363,7 @@ class PaymentInfo {
 	 * @return false|string|null
 	 */
 	public function get_mondu_wcpdf_section_html() {
-		if ( !in_array( $this->order->get_payment_method(), Plugin::PAYMENT_METHODS, true ) ) {
+		if ( !in_array( $this->order->get_payment_method(), PaymentMethodsConfig::get_gateway_ids(), true ) ) {
 			return null;
 		}
 

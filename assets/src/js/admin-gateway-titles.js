@@ -13,19 +13,19 @@
 	}
 
 	function escapeHtml(s) {
-		return (s || '').replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+		return (s || '').replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/'/g, '&#39;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 	}
 
-	function rowHtml(languages, selectedLang, title) {
+	function rowHtml(languages, selectedLang, text) {
 		var opts = languages.map(function (l) {
 			var sel = l.code === selectedLang ? ' selected="selected"' : '';
 			return '<option value="' + escapeHtml(l.code || '') + '"' + sel + '>' + escapeHtml(l.label || '') + '</option>';
 		}).join('');
-		var titleVal = escapeHtml(title);
+		var textVal = escapeHtml(text);
 		return (
 			'<tr class="mondu-tt-row">' +
 			'<td><select class="mondu-tt-lang">' + opts + '</select></td>' +
-			'<td><input type="text" class="mondu-tt-title" value="' + titleVal + '" /></td>' +
+			'<td><input type="text" class="mondu-tt-text" value="' + textVal + '" /></td>' +
 			'<td class="mondu-tt-remove"><button type="button" class="button mondu-tt-remove-btn">&times;</button></td>' +
 			'</tr>'
 		);
@@ -35,10 +35,10 @@
 		var rows = [];
 		container.querySelectorAll('.mondu-tt-row').forEach(function (tr) {
 			var langSel = tr.querySelector('.mondu-tt-lang');
-			var titleInp = tr.querySelector('.mondu-tt-title');
+			var textInp = tr.querySelector('.mondu-tt-text');
 			var lang = langSel ? langSel.value : '';
-			var title = titleInp ? titleInp.value : '';
-			rows.push({ lang: lang, title: title });
+			var text = textInp ? textInp.value : '';
+			rows.push({ lang: lang, text: text });
 		});
 		return rows;
 	}
@@ -60,7 +60,7 @@
 		if (!tbody || !addBtn) return;
 
 		initial.forEach(function (r) {
-			var html = rowHtml(languages, r.lang, r.title);
+			var html = rowHtml(languages, r.lang, r.text);
 			tbody.insertAdjacentHTML('beforeend', html);
 		});
 
