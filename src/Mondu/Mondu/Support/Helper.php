@@ -34,29 +34,34 @@ class Helper {
 	 * @return mixed|void
 	 */
 	public static function create_invoice_url( WC_Order $order ) {
-		if ( has_action('generate_wpo_wcpdf') ) {
-			$invoice_url = add_query_arg(
-				'_wpnonce',
-				wp_create_nonce( 'generate_wpo_wcpdf' ),
-				add_query_arg(
-					[
-						'action'        => 'generate_wpo_wcpdf',
-						'document_type' => 'invoice',
-						'order_ids'     => $order->get_id(),
-						'my-account'    => true,
-					],
-					admin_url( 'admin-ajax.php' )
-				)
-			);
-		} else {
-			$invoice_url = $order->get_view_order_url();
+		if ( class_exists( '\WPO_WCPDF' ) && function_exists( 'WPO_WCPDF' ) ) {
+			try {
+				$wcpdf = \WPO_WCPDF();
+				
+				$access_type = 'logged_in';
+				if ( isset( $wcpdf->endpoint ) && method_exists( $wcpdf->endpoint, 'get_document_link_access_type' ) ) {
+					$access_type = $wcpdf->endpoint->get_document_link_access_type();
+				}
+				
+				if ( 'full' === $access_type ) {
+					$invoice_url = add_query_arg(
+						[
+							'action'        => 'generate_wpo_wcpdf',
+							'document_type' => 'invoice',
+							'order_ids'     => $order->get_id(),
+							'access_key'    => $order->get_order_key(),
+						],
+						admin_url( 'admin-ajax.php' )
+					);
+					
+					return apply_filters( 'mondu_invoice_url', $invoice_url );
+				}
+			} catch ( \Exception $e ) {
+			}
 		}
+		
+		$invoice_url = $order->get_view_order_url();
 
-		/**
-		 * Invoice Url Sent to Mondu API
-		 *
-		 * @since 1.3.2
-		 */
 		return apply_filters( 'mondu_invoice_url', $invoice_url );
 	}
 
@@ -67,36 +72,80 @@ class Helper {
 	 * @return mixed
 	 */
 	public static function get_invoice( WC_Order $order ) {
-		if ( function_exists( 'wcpdf_get_invoice' ) ) {
+		if ( function_exists( 'wcpdf_get_document' ) ) {
+			return wcpdf_get_document( 'invoice', $order, false );
+		} elseif ( function_exists( 'wcpdf_get_invoice' ) ) {
 			return wcpdf_get_invoice( $order, false );
-		} else {
-			return $order;
+		}
+		return $order;
+	}
+
+	/**
+	 * Delete WCPDF invoice document for the order so the next Mondu invoice gets a new number.
+	 * Call this when a Mondu invoice is canceled so creating a new one uses the next WCPDF number.
+	 *
+	 * @param WC_Order $order
+	 * @return void
+	 */
+	public static function delete_wcpdf_invoice_document( WC_Order $order ) {
+		if ( ! class_exists( '\WPO_WCPDF' ) ) {
+			return;
+		}
+		$document = self::get_invoice( $order );
+		if ( $document && is_object( $document ) && method_exists( $document, 'exists' ) && $document->exists() && method_exists( $document, 'delete' ) ) {
+			$document->delete( $order );
 		}
 	}
 
 	/**
-	 * Get invoice number
+	 * Get invoice number for Mondu (invoice external_reference_id).
+	 *
+	 * With WCPDF: use WCPDF invoice document number (matches PDF). Order number is never
+	 * used for invoice external_reference_id when WCPDF is active; if no document exists
+	 * yet, the document is created (init) so the number comes from WCPDF sequence.
 	 *
 	 * @param WC_Order $order
 	 * @return string
 	 */
 	public static function get_invoice_number( WC_Order $order ) {
-		if ( function_exists( 'wcpdf_get_invoice' ) ) {
-			$document = wcpdf_get_invoice( $order, false );
-			if ( $document->get_number() ) {
-				$invoice_number = $document->get_number()->get_formatted();
-			} else {
-				$invoice_number = $order->get_order_number();
+		$invoice_number = null;
+
+		if ( class_exists( '\WPO_WCPDF' ) ) {
+			if ( function_exists( 'wcpdf_get_document' ) ) {
+				$document = wcpdf_get_document( 'invoice', $order, false );
+				if ( $document && $document->get_number() ) {
+					$invoice_number = $document->get_number()->get_formatted();
+				}
+				if ( ( $invoice_number === null || $invoice_number === '' ) && $order->get_meta( '_wcpdf_invoice_number' ) !== '' ) {
+					$invoice_number = (string) $order->get_meta( '_wcpdf_invoice_number' );
+				}
+				if ( $invoice_number === null || $invoice_number === '' ) {
+					$document = wcpdf_get_document( 'invoice', $order, true );
+					if ( $document && $document->get_number() ) {
+						$invoice_number = $document->get_number()->get_formatted();
+					}
+				}
+			} elseif ( function_exists( 'wcpdf_get_invoice' ) ) {
+				$document = wcpdf_get_invoice( $order, false );
+				if ( $document && $document->get_number() ) {
+					$invoice_number = $document->get_number()->get_formatted();
+				}
+				if ( ( $invoice_number === null || $invoice_number === '' ) && $order->get_meta( '_wcpdf_invoice_number' ) !== '' ) {
+					$invoice_number = (string) $order->get_meta( '_wcpdf_invoice_number' );
+				}
+				if ( $invoice_number === null || $invoice_number === '' ) {
+					$document = wcpdf_get_invoice( $order, true );
+					if ( $document && $document->get_number() ) {
+						$invoice_number = $document->get_number()->get_formatted();
+					}
+				}
 			}
-		} else {
-			$invoice_number = $order->get_order_number();
 		}
 
-		/**
-		 * Reference ID for invoice
-		 *
-		 * @since 1.3.2
-		 */
+		if ( $invoice_number === null || $invoice_number === '' ) {
+			$invoice_number = (string) $order->get_order_number();
+		}
+
 		return apply_filters( 'mondu_invoice_reference_id', $invoice_number );
 	}
 

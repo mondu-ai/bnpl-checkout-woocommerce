@@ -1,393 +1,359 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Mondu Buy Now Pay Later 1.3.3\n"
-"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/Mondu Buy Now Pay Later\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/mondu\n"
+"POT-Creation-Date: 2026-01-24T12:46:46+00:00\n"
+"PO-Revision-Date: 2022-11-01T18:21:49+00:00\n"
 "Last-Translator: \n"
 "Language-Team: \n"
+"Language: de_AT\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2022-11-01T18:21:49+00:00\n"
-"PO-Revision-Date: 2022-11-01T18:21:49+00:00\n"
-"Language: de_AT\n"
 
 #. Plugin Name of the plugin
-#: mondu-buy-now-pay-later.php
 msgid "Mondu Buy Now Pay Later"
 msgstr "Mondu Buy Now Pay Later"
 
 #. Plugin URI of the plugin
-#: mondu-buy-now-pay-later.php
 msgid "https://github.com/mondu-ai/bnpl-checkout-woocommerce/releases"
 msgstr "https://github.com/mondu-ai/bnpl-checkout-woocommerce/releases"
 
 #. Description of the plugin
-#: mondu-buy-now-pay-later.php
-msgid "Mondu provides B2B E-commerce and B2B marketplaces with an online payment solution to buy now and pay later."
-msgstr "Mondu bietet B2B-E-Commerce und B2B-Marktplätzen eine Online-Zahlungslösung, die es ihren Kunden ermöglicht, mit ihren bevorzugten Zahlungsmethoden und flexiblen Zahlungsbedingungen zu bezahlen."
+msgid ""
+"Mondu provides B2B E-commerce and B2B marketplaces with an online payment "
+"solution to buy now and pay later."
+msgstr ""
+"Mondu bietet B2B-E-Commerce und B2B-Marktplätzen eine Online-Zahlungslösung, "
+"die es ihren Kunden ermöglicht, mit ihren bevorzugten Zahlungsmethoden und "
+"flexiblen Zahlungsbedingungen zu bezahlen."
 
 #. Author of the plugin
-#: mondu-buy-now-pay-later.php
 msgid "Mondu"
 msgstr "Mondu"
 
 #. Author URI of the plugin
-#: mondu-buy-now-pay-later.php
 msgid "https://mondu.ai"
 msgstr "https://mondu.ai"
 
-#: src/Mondu/Admin/Option/Account.php:26
+#: src/Mondu/Admin/Option/Account.php:37
 msgid "Sandbox or production"
 msgstr "Sandbox oder Production"
 
-#: src/Mondu/Admin/Option/Account.php:32
+#: src/Mondu/Admin/Option/Account.php:43
 msgid "Mondu's environment to use."
 msgstr "Mondu's Umgebung zu benutzen."
 
-#: src/Mondu/Admin/Option/Account.php:36
+#: src/Mondu/Admin/Option/Account.php:48
 msgid "API Token"
 msgstr "API Token"
 
-#: src/Mondu/Admin/Option/Account.php:42
+#: src/Mondu/Admin/Option/Account.php:54
 msgid "API Token provided by Mondu."
 msgstr "API-Token, bereitgestellt von Mondu."
 
-#: src/Mondu/Admin/Option/Account.php:46
+#: src/Mondu/Admin/Option/Account.php:59
 msgid "Send line items"
 msgstr "Einzelposten senden"
 
-#: src/Mondu/Admin/Option/Account.php:52
+#: src/Mondu/Admin/Option/Account.php:65
 msgid "Send the line items when creating order and invoice."
-msgstr "Versenden Sie die Einzelposten bei der Erstellung von Auftrag und Rechnung."
+msgstr ""
+"Versenden Sie die Einzelposten bei der Erstellung von Auftrag und Rechnung."
 
-#: src/Mondu/Admin/Option/Account.php:59
+#: src/Mondu/Admin/Option/Account.php:77
 msgid "Sandbox"
 msgstr "Sandbox"
 
-#: src/Mondu/Admin/Option/Account.php:60
+#: src/Mondu/Admin/Option/Account.php:78
 msgid "Production"
 msgstr "Production"
 
-#: src/Mondu/Admin/Option/Account.php:70
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:220
-#: src/Mondu/Plugin.php:344
-#: src/Mondu/Plugin.php:395
+#: src/Mondu/Admin/Option/Account.php:98
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:308 src/Mondu/Plugin.php:398
+#: src/Mondu/Plugin.php:449
 msgid "Yes"
 msgstr "Ja"
 
-#: src/Mondu/Admin/Option/Account.php:71
+#: src/Mondu/Admin/Option/Account.php:99
 msgid "Send line items only for orders"
 msgstr "Senden Sie nur Einzelposten für Bestellungen"
 
-#: src/Mondu/Admin/Option/Account.php:72
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:220
+#: src/Mondu/Admin/Option/Account.php:100
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:308
 msgid "No"
 msgstr "Nein"
 
-#: src/Mondu/Admin/Order.php:41
+#: src/Mondu/Admin/Order.php:64
 msgid "Mondu Order Information"
 msgstr "Mondu Bestellinformationen"
 
-#: src/Mondu/Admin/Order.php:68
-#: src/Mondu/Admin/Order.php:96
-#: src/Mondu/Admin/Settings.php:132
+#: src/Mondu/Admin/Order.php:113 src/Mondu/Admin/Order.php:146
+#: src/Mondu/Admin/Order.php:180 src/Mondu/Admin/Settings.php:203
 msgid "Bad Request."
 msgstr "Schlechte Anfrage."
 
-#: src/Mondu/Admin/Settings.php:50
-#: views/admin/options.php:2
+#: src/Mondu/Admin/Settings.php:83 views/admin/options.php:2
 msgid "Mondu Settings"
 msgstr "Mondu Einstellungen"
 
-#: src/Mondu/Admin/Settings.php:77
+#: src/Mondu/Admin/Settings.php:126
 msgid "Missing Credentials"
 msgstr "Fehlende Credentials"
 
-#: src/Mondu/Mondu/Api.php:298
+#: src/Mondu/Mondu/Api.php:318
 msgid "Unexpected API response format."
 msgstr "Unerwartetes API-Antwortformat."
 
-#: src/Mondu/Mondu/Controllers/OrdersController.php:78
+#: src/Mondu/Mondu/Controllers/OrdersController.php:102
 msgid "Order was declined by Mondu."
 msgstr "Bestellung wurde von Mondu abgelehnt."
 
-#: src/Mondu/Mondu/Controllers/WebhooksController.php:49
+#: src/Mondu/Mondu/Controllers/WebhooksController.php:72
 msgid "Signature mismatch."
 msgstr "Signatur stimmt nicht überein."
 
-#: src/Mondu/Mondu/Controllers/WebhooksController.php:87
+#: src/Mondu/Mondu/Controllers/WebhooksController.php:110
 msgid "Something happened on our end."
 msgstr "Bei uns ist etwas passiert."
 
-#: src/Mondu/Mondu/Controllers/WebhooksController.php:99
-#: src/Mondu/Mondu/Controllers/WebhooksController.php:118
-#: src/Mondu/Mondu/Controllers/WebhooksController.php:137
-#: src/Mondu/Mondu/Controllers/WebhooksController.php:160
-#: src/Mondu/Mondu/Controllers/WebhooksController.php:183
-#: src/Mondu/Mondu/Controllers/WebhooksController.php:202
-#: src/Mondu/Mondu/Controllers/WebhooksController.php:221
+#: src/Mondu/Mondu/Controllers/WebhooksController.php:130
+#: src/Mondu/Mondu/Controllers/WebhooksController.php:157
+#: src/Mondu/Mondu/Controllers/WebhooksController.php:184
+#: src/Mondu/Mondu/Controllers/WebhooksController.php:215
+#: src/Mondu/Mondu/Controllers/WebhooksController.php:246
+#: src/Mondu/Mondu/Controllers/WebhooksController.php:273
+#: src/Mondu/Mondu/Controllers/WebhooksController.php:300
 msgid "Required params missing."
 msgstr "Erforderliche Parameter fehlen."
 
-#: src/Mondu/Mondu/Controllers/WebhooksController.php:108
+#: src/Mondu/Mondu/Controllers/WebhooksController.php:139
 msgid "Mondu order is on pending state."
 msgstr "Mondu Bestellung ist in manueller Prüfung."
 
-#: src/Mondu/Mondu/Controllers/WebhooksController.php:127
+#: src/Mondu/Mondu/Controllers/WebhooksController.php:166
 msgid "Mondu order is on authorized state."
 msgstr "Mondu Bestellung ist athorisiert."
 
-#: src/Mondu/Mondu/Controllers/WebhooksController.php:146
+#: src/Mondu/Mondu/Controllers/WebhooksController.php:193
 msgid "Mondu order is on confirmed state."
 msgstr "Mondu Bestellung ist bestätigt."
 
-#: src/Mondu/Mondu/Controllers/WebhooksController.php:169
+#: src/Mondu/Mondu/Controllers/WebhooksController.php:224
 msgid "Mondu order is on declined state."
 msgstr "Mondu Bestellung ist abgelehnt."
 
-#: src/Mondu/Mondu/Controllers/WebhooksController.php:192
+#: src/Mondu/Mondu/Controllers/WebhooksController.php:255
 msgid "Mondu invoice is on created state."
 msgstr "Mondu Rechnung ist erstellt."
 
-#: src/Mondu/Mondu/Controllers/WebhooksController.php:211
+#: src/Mondu/Mondu/Controllers/WebhooksController.php:282
 msgid "Mondu invoice is on complete state."
 msgstr "Mondu Rechnung ist vollständig bezahlt."
 
-#: src/Mondu/Mondu/Controllers/WebhooksController.php:230
+#: src/Mondu/Mondu/Controllers/WebhooksController.php:309
 msgid "Mondu invoice is on canceled state."
 msgstr "Mondu Rechnung ist storniert."
 
-#: src/Mondu/Mondu/Controllers/WebhooksController.php:248
+#: src/Mondu/Mondu/Controllers/WebhooksController.php:344
 msgid "Not Found"
 msgstr "Nicht gefunden"
 
-#: src/Mondu/Mondu/GatewayDirectDebit.php:12
-#: assets/src/js/mondublocks.js:15
-msgid "Mondu SEPA Direct Debit"
-msgstr "Mondu SEPA-Lastschrift"
-
-#: src/Mondu/Mondu/GatewayDirectDebit.php:10
-#: assets/src/js/mondublocks.js:19
-msgid "SEPA - Pay later by direct debit"
-msgstr "SEPA-Lastschrift - Später per Lastschrift bezahlen"
+#: src/Mondu/Mondu/GatewayDirectDebit.php:20 assets/src/js/mondublocks.js:14
+msgid "SEPA direct debit (30 days)"
+msgstr "SEPA-Lastschrift (30 Tage)"
 
 #. translators: %s: Payment Method
-#: src/Mondu/Mondu/GatewayFields.php:15
+#: src/Mondu/Mondu/GatewayFields.php:24
 msgid "Enable %s payment method"
 msgstr "Aktivieren Sie %s Zahlungsart"
 
-#: src/Mondu/Mondu/GatewayInstallment.php:12
-#: assets/src/js/mondublocks.js:16
-msgid "Mondu Installments"
-msgstr "Mondu Ratenkauf"
+#: src/Mondu/Mondu/GatewayInstallment.php:20 assets/src/js/mondublocks.js:15
+msgid "Installments (3, 6, 12 months)"
+msgstr "Ratenkauf (3, 6, 12 Monaten)"
 
-#: src/Mondu/Mondu/GatewayInstallment.php:10
-#: assets/src/js/mondublocks.js:20
-msgid "Split payments - Pay Later in Installments by Direct Debit"
-msgstr "Gesplittete Zahlungen - Ratenkauf per Lastschriftverfahren"
+#: src/Mondu/Mondu/GatewayInstallmentByInvoice.php:20
+#: assets/src/js/mondublocks.js:13
+msgid "Business instalments (3, 6, 12)"
+msgstr "Ratenkauf (3, 6, 12 Monaten) UK"
 
-#: src/Mondu/Mondu/GatewayInstallmentByInvoice.php:12
-#: assets/src/js/mondublocks.js:17
-msgid "Mondu Installments by Invoice"
-msgstr "Mondu Ratenkauf per Rechnung"
+#: src/Mondu/Mondu/GatewayInvoice.php:20 assets/src/js/mondublocks.js:16
+msgid "Invoice (30 days)"
+msgstr "Rechnungskauf (30 Tage)"
 
-#: src/Mondu/Mondu/GatewayInstallmentByInvoice.php:10
-#: assets/src/js/mondublocks.js:21
-msgid "Split payments - Pay Later in Installments by Bank Transfer"
-msgstr "Gesplittete Zahlungen - Ratenkauf per Banküberweisung"
-
-#: src/Mondu/Mondu/GatewayInvoice.php:12
-#: assets/src/js/mondublocks.js:14
-msgid "Mondu Invoice"
-msgstr "Mondu Rechnungskauf"
-
-#: src/Mondu/Mondu/GatewayInvoice.php:10
-#: assets/src/js/mondublocks.js:18
-msgid "Invoice - Pay later by bank transfer"
-msgstr "Rechnungskauf - Später per Banküberweisung bezahlen"
-
-#: src/Mondu/Mondu/MonduGateway.php:127
+#: src/Mondu/Mondu/MonduGateway.php:195
 msgid "Error placing an order. Please try again."
 msgstr "Fehler beim Aufgeben einer Bestellung. Bitte versuchen Sie es erneut."
 
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:80
-#: src/Mondu/Plugin.php:318
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:138 src/Mondu/Plugin.php:372
 msgid "Order state"
 msgstr "Bestellstatus"
 
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:84
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:142
 msgid "Mondu ID"
 msgstr "Mondu-ID"
 
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:97
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:155
 msgid "Create Invoice"
 msgstr "Rechnung erstellen"
 
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:111
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:173
+msgid "Confirm Order"
+msgstr ""
+
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:187
 msgid "Corrupt Mondu order!"
 msgstr "Fehlerhafte Mondu Bestellung!"
 
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:145
-#: views/pdf/mondu-invoice-section.php:36
-#: views/pdf/mondu-invoice-section.php:164
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:221
+#: views/pdf/mondu-invoice-section.php:60
+#: views/pdf/mondu-invoice-section.php:188
 msgid "Account holder"
 msgstr "Kontoinhaber"
 
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:149
-#: views/pdf/mondu-invoice-section.php:40
-#: views/pdf/mondu-invoice-section.php:168
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:225
+#: views/pdf/mondu-invoice-section.php:64
+#: views/pdf/mondu-invoice-section.php:192
 msgid "Bank"
 msgstr "Bankinstitut"
 
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:155
-#: views/pdf/mondu-invoice-section.php:46
-#: views/pdf/mondu-invoice-section.php:174
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:231
+#: views/pdf/mondu-invoice-section.php:70
+#: views/pdf/mondu-invoice-section.php:198
 msgid "Account number"
 msgstr "Kontonummer"
 
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:161
-#: views/pdf/mondu-invoice-section.php:52
-#: views/pdf/mondu-invoice-section.php:180
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:237
+#: views/pdf/mondu-invoice-section.php:76
+#: views/pdf/mondu-invoice-section.php:204
 msgid "Sort code"
 msgstr "Bankleitzahl"
 
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:168
-#: views/pdf/mondu-invoice-section.php:59
-#: views/pdf/mondu-invoice-section.php:187
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:244
+#: views/pdf/mondu-invoice-section.php:83
+#: views/pdf/mondu-invoice-section.php:211
 msgid "IBAN"
 msgstr "IBAN"
 
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:174
-#: views/pdf/mondu-invoice-section.php:65
-#: views/pdf/mondu-invoice-section.php:193
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:250
+#: views/pdf/mondu-invoice-section.php:89
+#: views/pdf/mondu-invoice-section.php:217
 msgid "BIC"
 msgstr "BIC"
 
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:181
-#: views/pdf/mondu-invoice-section.php:76
-#: views/pdf/mondu-invoice-section.php:204
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:257
+#: views/pdf/mondu-invoice-section.php:100
+#: views/pdf/mondu-invoice-section.php:228
 msgid "Payment term"
 msgstr "Zahlungsziel"
 
 #. translators: %s: Days
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:182
-#: views/pdf/mondu-invoice-section.php:77
-#: views/pdf/mondu-invoice-section.php:205
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:258
+#: views/pdf/mondu-invoice-section.php:101
+#: views/pdf/mondu-invoice-section.php:229
 msgid "%s Days"
 msgstr "%s Tage"
 
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:207
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:295
 msgid "Invoice state"
 msgstr "Rechnungsstatus"
 
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:211
-#: views/pdf/mondu-invoice-section.php:72
-#: views/pdf/mondu-invoice-section.php:200
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:299
+#: views/pdf/mondu-invoice-section.php:224
 msgid "Invoice number"
 msgstr "Rechnungsnummer"
 
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:215
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:303
 msgid "Total"
 msgstr "Gesamt"
 
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:219
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:307
 msgid "Paid out"
 msgstr "Ausgezahlt"
 
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:235
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:323
 msgid "Cancel Invoice"
 msgstr "Rechnung stornieren"
 
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:248
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:348
 msgid "Credit Notes"
 msgstr "Gutschriften"
 
-#: src/Mondu/Mondu/Presenters/PaymentInfo.php:254
+#: src/Mondu/Mondu/Presenters/PaymentInfo.php:358
 msgid "Tax"
 msgstr "Steuer"
 
-#: src/Mondu/Plugin.php:180
-msgid "Since this order will be paid via Mondu you will not be able to change the addresses."
-msgstr "Da diese Bestellung über Mondu bezahlt wird, können Sie die Adressen nicht ändern."
+#: src/Mondu/Plugin.php:226
+msgid ""
+"Since this order will be paid via Mondu you will not be able to change the "
+"addresses."
+msgstr ""
+"Da diese Bestellung über Mondu bezahlt wird, können Sie die Adressen nicht "
+"ändern."
 
-#: src/Mondu/Plugin.php:213
+#: src/Mondu/Plugin.php:263
 msgid "View Mondu settings"
 msgstr "Mondu-Einstellungen anzeigen"
 
-#: src/Mondu/Plugin.php:233
+#: src/Mondu/Plugin.php:283
 msgid "View Mondu documentation"
 msgstr "Mondu-Dokumentation anzeigen"
 
-#: src/Mondu/Plugin.php:233
+#: src/Mondu/Plugin.php:283
 msgid "Docs"
 msgstr "Dokumente"
 
-#: src/Mondu/Plugin.php:234
+#: src/Mondu/Plugin.php:284
 msgid "https://mondu.ai/introduction-to-paying-with-mondu"
 msgstr "https://mondu.ai/at/introduction-to-paying-with-mondu"
 
-#: src/Mondu/Plugin.php:234
+#: src/Mondu/Plugin.php:284
 msgid "View introduction to paying with Mondu"
 msgstr "Einführung in das Bezahlen mit Mondu ansehen"
 
-#: src/Mondu/Plugin.php:234
+#: src/Mondu/Plugin.php:284
 msgid "Mondu introduction"
 msgstr "Mondu Einführung"
 
-#: src/Mondu/Plugin.php:235
+#: src/Mondu/Plugin.php:285
 msgid "https://mondu.ai/faq"
 msgstr "https://mondu.ai/at/faq"
 
-#: src/Mondu/Plugin.php:235
+#: src/Mondu/Plugin.php:285
 msgid "View FAQ"
 msgstr "FAQ anzeigen"
 
-#: src/Mondu/Plugin.php:235
+#: src/Mondu/Plugin.php:285
 msgid "FAQ"
 msgstr "FAQ"
 
 #. translators: %s: Company
-#: src/Mondu/Plugin.php:254
+#: src/Mondu/Plugin.php:304
 msgid "%s is a required field for Mondu payments."
 msgstr "%s ist ein Pflichtfeld für Mondu-Zahlungen."
 
 #. translators: %s: Company
-#: src/Mondu/Plugin.php:254
+#: src/Mondu/Plugin.php:304
 msgid "Company"
 msgstr "Firma"
 
-#. translators: %s: Billing country
-#: src/Mondu/Plugin.php:259
-msgid "%s not available for Mondu Payments."
-msgstr "%s für Mondu-Zahlungen nicht verfügbar."
-
-#. translators: %s: Billing country
-#: src/Mondu/Plugin.php:259
-msgid "Billing country"
-msgstr "Rechnungsland"
-
-#: src/Mondu/Plugin.php:319
-#: src/Mondu/Plugin.php:369
-#: src/Mondu/Plugin.php:422
+#: src/Mondu/Plugin.php:373 src/Mondu/Plugin.php:423 src/Mondu/Plugin.php:476
 msgid "Canceled"
 msgstr "Storniert"
 
-#: src/Mondu/Plugin.php:343
-#: src/Mondu/Plugin.php:394
+#: src/Mondu/Plugin.php:397 src/Mondu/Plugin.php:448
 msgid "Mondu Invoice paid"
 msgstr "Mondu-Rechnung bezahlt"
 
-#: src/Mondu/Plugin.php:368
-#: src/Mondu/Plugin.php:421
+#: src/Mondu/Plugin.php:422 src/Mondu/Plugin.php:475
 msgid "Mondu Invoice state"
 msgstr "Mondu-Rechnungsstatus"
 
-#: src/Mondu/Plugin.php:436
+#: src/Mondu/Plugin.php:498
 msgid "Mondu requires WooCommerce to be activated."
 msgstr "Mondu erfordert die Aktivierung von WooCommerce."
 
-#: views/admin/options.php:11
-#: views/admin/options.php:23
+#: views/admin/options.php:11 views/admin/options.php:23
 msgid "Validate Credentials"
 msgstr "Anmeldeinformationen validieren"
 
@@ -395,8 +361,7 @@ msgstr "Anmeldeinformationen validieren"
 msgid "Credentials validated"
 msgstr "Credentials validiert"
 
-#: views/admin/options.php:26
-#: views/admin/options.php:38
+#: views/admin/options.php:26 views/admin/options.php:38
 msgid "Register Webhooks"
 msgstr "Webhooks registrieren"
 
@@ -404,8 +369,7 @@ msgstr "Webhooks registrieren"
 msgid "Webhooks registered"
 msgstr "Webhooks registriert"
 
-#: views/admin/options.php:41
-#: views/admin/options.php:57
+#: views/admin/options.php:41 views/admin/options.php:57
 msgid "Download Logs"
 msgstr "Protokolle herunterladen"
 
@@ -413,64 +377,174 @@ msgstr "Protokolle herunterladen"
 msgid "Log date"
 msgstr "Log date"
 
-#: views/checkout/payment-form.php:4
-#: assets/src/js/mondublocks.js:38
-msgid "Information on the processing of your personal data by <strong>Mondu GmbH</strong> can be found <a href=\"https://mondu.ai/gdpr-notification-for-buyers\" target=\"_blank\">here</a>."
-msgstr "Hinweise zur Verarbeitung Ihrer personenbezogenen Daten durch die <strong>Mondu GmbH</strong> finden Sie <a href=\"https://mondu.ai/at/gdpr-notification-for-buyers\" target=\"_blank\">hier</a>."
+#: views/checkout/payment-form.php:4 assets/src/js/mondublocks.js:34
+msgid ""
+"Information on the processing of your personal data by <strong>Mondu GmbH</"
+"strong> can be found <a href=\"https://mondu.ai/gdpr-notification-for-"
+"buyers\" target=\"_blank\">here</a>."
+msgstr ""
+"Hinweise zur Verarbeitung Ihrer personenbezogenen Daten durch die "
+"<strong>Mondu GmbH</strong> finden Sie <a href=\"https://mondu.ai/at/gdpr-"
+"notification-for-buyers\" target=\"_blank\">hier</a>."
+
+#: views/pdf/mondu-invoice-section.php:35
+msgid ""
+"Please be informed that the invoice amount has been assigned in accordance "
+"with the General Terms and Conditions of <strong>%s</strong> for the Invoice "
+"with Payment Term Model to Mondu Financial Services B.V. (first assignment), "
+"and Mondu Capital S.à r.l., acting on behalf of Compartment 4 (second "
+"assignment). <br/>We request payment in full to the following account:"
+msgstr ""
+"Wir weisen darauf hin, dass der Rechnungsbetrag gemäß den Allgemeinen "
+"Bedingungen von <strong>%s</strong> zum Modell Rechnung mit Zahlungsziel an "
+"die Mondu Financial Services B.V. (erste Abtretung), und die Mondu Capital "
+"S.à r.l., handelnd für und im Namen von Compartment 4 (zweite Abtretung) "
+"abgetreten ist. <br/>Wir bitten um Zahlung in voller Höhe auf das folgende "
+"Konto:"
 
 #. translators: %s: Company
-#: views/pdf/mondu-invoice-section.php:20
-msgid "This invoice was created in accordance with the terms and conditions of <strong>%s</strong> modified by <strong>Mondu GmbH</strong> payment terms. Please pay to the following account:"
-msgstr "Diese Rechnung wurde abgetreten gemäß den Allgemeinen Bedingungen von <strong>%s</strong> und <strong>Mondu GmbH</strong> zum Modell Kauf auf Rechnung. Wir bitten um schuldbefreiende Zahlung auf folgendes Konto:"
+#: views/pdf/mondu-invoice-section.php:40
+msgid ""
+"Please be informed that the invoice amount has been assigned in accordance "
+"with the General Terms and Conditions of <strong>%s</strong> for the Invoice "
+"with Payment Term Model to Mondu Financial Services B.V. (first assignment), "
+"and Mondu Capital S.à r.l., acting on behalf of Compartment 4 (second "
+"assignment).\n"
+"\n"
+"\n"
+"\n"
+"This invoice was created in accordance with the terms and conditions of "
+"<strong>%s</strong> modified by <strong>Mondu GmbH</strong> payment terms. "
+"We request payment in full to the following account:"
+msgstr ""
 
-#: views/pdf/mondu-invoice-section.php:71
-#: views/pdf/mondu-invoice-section.php:199
+#: views/pdf/mondu-invoice-section.php:95
+#: views/pdf/mondu-invoice-section.php:223
 msgid "Payment reference"
 msgstr "Verwendungszweck"
 
-#: views/pdf/mondu-invoice-section.php:87
-#: views/pdf/mondu-invoice-section.php:112
+#: views/pdf/mondu-invoice-section.php:111
+#: views/pdf/mondu-invoice-section.php:136
 msgid "direct debit"
 msgstr "Lastschrift"
 
-#: views/pdf/mondu-invoice-section.php:87
-#: views/pdf/mondu-invoice-section.php:112
+#: views/pdf/mondu-invoice-section.php:111
+#: views/pdf/mondu-invoice-section.php:136
 msgid "SEPA direct debit"
 msgstr "SEPA-Lastschrift"
 
+msgid "Instant Pay"
+msgstr "Echtzeitüberweisung"
+
+msgid "Please be informed that the invoice amount has been assigned in accordance with the General Terms and Conditions of <strong>%s</strong> for the Mondu Payment Model to Mondu Financial Services B.V. (first assignment), and Mondu Capital S.à r.l. (second assignment)."
+msgstr "Wir weisen darauf hin, dass der Rechnungsbetrag gemäß den Allgemeinen Bedingungen von <strong>%s</strong> zum Mondu Zahlungsmodell an die Mondu Financial Services B.V. (erste Abtretung) und die Mondu Capital S.à r.l. (zweite Abtretung) abgetreten ist."
+
+msgid "The invoice has been paid with Mondu Instant Pay."
+msgstr "Die Rechnung wurde mit Mondu Echtzeitüberweisung bezahlt."
+
 #. translators: %1$s: Company
-#: views/pdf/mondu-invoice-section.php:93
-msgid "This invoice was created in accordance with the general terms and conditions of <strong>%1$s</strong> and <strong>Mondu GmbH</strong> for the purchase on account payment model."
-msgstr "Diese Rechnung wurde abgetreten gemäß den Allgemeinen Bedingungen von <strong>%1$s</strong> und <strong>Mondu GmbH</strong> zum Modell Kauf auf Rechnung."
+#: views/pdf/mondu-invoice-section.php:117
+msgid ""
+"Please be informed that the invoice amount has been assigned in accordance "
+"with the General Terms and Conditions of <strong>%1$s</strong> for the "
+"Invoice with Payment Term Model to Mondu Financial Services B.V. (first "
+"assignment), and Mondu Capital S.à r.l., acting on behalf of Compartment 4 "
+"(second assignment)."
+msgstr ""
+"Wir weisen darauf hin, dass der Rechnungsbetrag gemäß den Allgemeinen "
+"Bedingungen von <strong>%1$s</strong> zum Modell Rechnung mit Zahlungsziel "
+"an die Mondu Financial Services B.V. (erste Abtretung), und die Mondu "
+"Capital S.à r.l., handelnd für und im Namen von Compartment 4 (zweite "
+"Abtretung) abgetreten ist."
 
 #. translators: %1$s: direct debit
-#: views/pdf/mondu-invoice-section.php:101
-msgid "Since you have chosen the payment method to purchase on account with payment via %1$s through Mondu, the invoice amount will be debited from your bank account on the due date."
-msgstr "Da Sie die Zahlart Rechnungskauf mit Begleichung via %1$s über Mondu gewählt haben, wird die Rechnungssumme am Fälligkeitstag von Ihrem Bankkonto abgebucht."
+#: views/pdf/mondu-invoice-section.php:125
+msgid ""
+"Since you have selected the Mondu payment method Invoice Purchase by SEPA "
+"Direct Debit, the invoice amount will be debited from your bank account on "
+"the due date."
+msgstr ""
+"Da Sie die Mondu Zahlart Rechnungskauf per SEPA-Lastschrift gewählt haben, "
+"wird der Rechnungsbetrag am Fälligkeitstag von Ihrem Bankkonto abgebucht."
 
-#: views/pdf/mondu-invoice-section.php:105
-msgid "Before the amount is debited from your account, you will receive notice of the direct debit. Kindly make sure you have sufficient funds in your account."
-msgstr "Bevor der Betrag von Ihrem Konto abgebucht wird, erhalten Sie eine Lastschriftankündigung. Bitte achten Sie auf eine ausreichende Kontodeckung."
+#: views/pdf/mondu-invoice-section.php:129
+msgid ""
+"You will receive a direct debit notification before the amount is debited "
+"from your account. Please ensure that you have sufficient funds in your "
+"account."
+msgstr ""
+"Bevor der Betrag von Ihrem Konto abgebucht wird, erhalten Sie eine "
+"Lastschriftankündigung. Bitte achten Sie auf eine ausreichende Kontodeckung."
 
 #. translators: %1$s: Company
-#: views/pdf/mondu-invoice-section.php:118
 #: views/pdf/mondu-invoice-section.php:142
-msgid "This invoice was created in accordance with the general terms and conditions of <strong>%1$s</strong> and <strong>Mondu GmbH</strong> for the installment payment model."
-msgstr "Diese Rechnung wurde gemäß den Allgemeinen Bedingungen von <strong>%1$s</strong> und <strong>Mondu GmbH</strong> zum Zahlungsmodell Ratenkauf abgetreten."
+msgid ""
+"Please be informed that the invoice amount has been assigned and pledged in "
+"accordance with the General Terms and Conditions of <strong>%1$s</strong> "
+"for the Installment Payment Model to Mondu Financial Services B.V. (first "
+"assignment), and Mondu Capital S.à r.l., acting on behalf of Compartment 4 "
+"(second assignment)."
+msgstr ""
 
 #. translators: %1$s: direct debit
-#: views/pdf/mondu-invoice-section.php:126
-msgid "Since you have chosen the installment payment method via %1$s through Mondu, the individual installments will be debited from your bank account on the due date."
-msgstr "Da Sie die Zahlart Ratenkauf mit Begleichung via %1$s über Mondu gewählt haben, werden die einzelnen Raten an ihrem jeweiligen Fälligkeitstag von Ihrem Bankkonto abgebucht."
+#: views/pdf/mondu-invoice-section.php:150
+msgid ""
+"Since you have selected the Mondu payment method Installment Purchase by "
+"SEPA Direct Debit, the individual installments will be debited from your "
+"bank account on their respective due date."
+msgstr ""
+"Da Sie die Mondu Zahlart Ratenkauf per SEPA-Lastschrift gewählt haben, "
+"werden die einzelnen Raten an ihrem jeweiligen Fälligkeitstag von Ihrem "
+"Bankkonto abgebucht."
 
-#: views/pdf/mondu-invoice-section.php:130
-msgid "Before the amounts are debited from your account, you will receive notice regarding the direct debit. Kindly make sure you have sufficient funds in your account. In the event of changes to your order, the installment plan will be adjusted to reflect the new order total."
-msgstr "Bevor die Beträge von Ihrem Konto abgebucht werden, erhalten Sie bezüglich der Lastschrift eine Vorankündigung. Bitte achten Sie auf eine ausreichende Kontodeckung. Im Falle von Änderungen an Ihrer Bestellung wird der Ratenplan an die neue Bestellsumme angepasst."
+#: views/pdf/mondu-invoice-section.php:154
+msgid ""
+"Before the amounts are debited from your account, you will receive an "
+"advance notice regarding the direct debit. Please ensure that you have "
+"sufficient funds in your account. In the event of changes to your order, the "
+"installment plan will be adjusted to the new order total."
+msgstr ""
+"Bevor die Beträge von Ihrem Konto abgebucht werden, erhalten Sie bezüglich "
+"der Lastschrift eine Vorankündigung. Bitte achten Sie auf eine ausreichende "
+"Kontodeckung. Im Falle von Änderungen an Ihrer Bestellung wird der Ratenplan "
+"an die neue Bestellsumme angepasst."
 
-#: views/pdf/mondu-invoice-section.php:148
-msgid "Since you have chosen the Mondu's installment payment method via bank transfer, the individual installments will need to be paid via bank transfer before the due date."
-msgstr "Da Sie die Zahlart Ratenkauf mit Begleichung via %1$s über Mondu gewählt haben, werden die einzelnen Raten an ihrem jeweiligen Fälligkeitstag von Ihrem Bankkonto abgebucht."
+#. translators: %1$s: Company
+#: views/pdf/mondu-invoice-section.php:166
+msgid ""
+"This invoice was created in accordance with the general terms and conditions "
+"of <strong>%1$s</strong> and <strong>Mondu GmbH</strong> for the installment "
+"payment model."
+msgstr ""
+"Diese Rechnung wurde gemäß den Allgemeinen Bedingungen von <strong>%1$s</"
+"strong> und <strong>Mondu GmbH</strong> zum Zahlungsmodell Ratenkauf "
+"abgetreten."
 
-#: views/pdf/mondu-invoice-section.php:151
-msgid "Before the installment is due, you will receive a notice regarding the upcoming payment. Kindly make sure that you make the payment before the due date of each installment. In the event of changes to your order, the installment plan will be adjusted to reflect the new order total."
-msgstr "Bevor die Beträge von Ihrem Konto abgebucht werden, erhalten Sie bezüglich der Lastschrift eine Vorankündigung. Bitte achten Sie auf eine ausreichende Kontodeckung. Im Falle von Änderungen an Ihrer Bestellung wird der Ratenplan an die neue Bestellsumme angepasst."
+#: views/pdf/mondu-invoice-section.php:172
+msgid ""
+"Since you have chosen the Mondu's installment payment method via bank "
+"transfer, the individual installments will need to be paid via bank transfer "
+"before the due date."
+msgstr ""
+"Da Sie die Zahlart Ratenkauf über Mondu mit Überweisung gewählt haben, "
+"müssen die einzelnen Raten vor dem Fälligkeitsdatum per Überweisung "
+"beglichen werden."
+
+#: views/pdf/mondu-invoice-section.php:175
+msgid ""
+"Before the installment is due, you will receive a notice regarding the "
+"upcoming payment. Kindly make sure that you make the payment before the due "
+"date of each installment. In the event of changes to your order, the "
+"installment plan will be adjusted to reflect the new order total."
+msgstr ""
+"Bevor die Beträge von Ihrem Konto abgebucht werden, erhalten Sie bezüglich "
+"der Lastschrift eine Vorankündigung. Bitte achten Sie auf eine ausreichende "
+"Kontodeckung. Im Falle von Änderungen an Ihrer Bestellung wird der Ratenplan "
+"an die neue Bestellsumme angepasst."
+
+#~ msgid "%s not available for Mondu Payments."
+#~ msgstr "%s für Mondu-Zahlungen nicht verfügbar."
+
+#~ msgid "Billing country"
+#~ msgstr "Rechnungsland"
+

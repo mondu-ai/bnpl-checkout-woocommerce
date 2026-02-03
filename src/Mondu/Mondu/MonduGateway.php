@@ -6,6 +6,8 @@
  */
 namespace Mondu\Mondu;
 
+use Mondu\Config\PaymentMethodsConfig;
+use Mondu\Config\TitleLanguagesConfig;
 use Mondu\Exceptions\ResponseException;
 use Mondu\Mondu\Support\OrderData;
 use Mondu\Plugin;
@@ -19,6 +21,12 @@ use WP_Error;
  * @package Mondu
  */
 class MonduGateway extends WC_Payment_Gateway {
+
+	private const SUPPORTED_LOCALES = [ 'de', 'en', 'nl' ];
+
+	private const DEFAULT_CHECKOUT_ICON = 'invoice_white_rectangle.png';
+
+	private const DEFAULT_ADMIN_ICON = 'Mondu_white_square.svg';
 
 	/**
 	 * Mondu Global Settings
@@ -54,6 +62,10 @@ class MonduGateway extends WC_Payment_Gateway {
 
 		$this->enabled = $this->is_enabled();
 
+		$this->description        = $this->get_localized_description_from_settings();
+		$this->method_description = $this->description;
+		$this->method_title       = (string) $this->title;
+
 		$this->mondu_request_wrapper = new MonduRequestWrapper();
 
 		if ( $register_hooks ) {
@@ -67,6 +79,8 @@ class MonduGateway extends WC_Payment_Gateway {
 			'refunds',
 			'products',
 		];
+
+		$this->icon = $this->get_admin_icon_url();
 	}
 
 	/**
@@ -74,6 +88,148 @@ class MonduGateway extends WC_Payment_Gateway {
 	 */
 	public function init_form_fields() {
 		$this->form_fields = GatewayFields::fields( $this->title );
+	}
+
+	/**
+	 * Generate repeatable "language + title" rows HTML.
+	 *
+	 * @param string $key
+	 * @param array  $data
+	 * @return string
+	 */
+	public function generate_mondu_title_translations_html( $key, $data ) {
+		$renderer = new GatewaySettingsRenderer( $this );
+		return $renderer->generate_title_translations_html( $key, $data );
+	}
+
+	/**
+	 * Generate repeatable "language + description" rows HTML.
+	 *
+	 * @param string $key
+	 * @param array  $data
+	 * @return string
+	 */
+	public function generate_mondu_description_translations_html( $key, $data ) {
+		$renderer = new GatewaySettingsRenderer( $this );
+		return $renderer->generate_description_translations_html( $key, $data );
+	}
+
+	/**
+	 * Gateway title depending on current page locale.
+	 *
+	 * Uses title_translations (language + title rows). Fallback: en, then first.
+	 *
+	 * @return string
+	 */
+	public function get_title() {
+		return $this->get_localized_value_from_translations( 'title_translations', 'title' );
+	}
+
+	/**
+	 * Get localized description from gateway settings.
+	 *
+	 * Uses description_translations (language + description rows). Fallback: en, then first.
+	 *
+	 * @return string
+	 */
+	private function get_localized_description_from_settings() {
+		return $this->get_localized_value_from_translations( 'description_translations', 'description' );
+	}
+
+	/**
+	 * Get localized value from translations rows. Fallback: current lang, en, then first.
+	 *
+	 * @param string $option_key Option key (e.g. 'title_translations', 'description_translations').
+	 * @param string $value_key  Row value key (e.g. 'title', 'description').
+	 * @return string
+	 */
+	private function get_localized_value_from_translations( $option_key, $value_key ) {
+		$lang   = $this->get_request_language();
+		$rows   = $this->get_option( $option_key, [] );
+		$rows   = is_array( $rows ) ? $rows : [];
+		$by_lang = [];
+		foreach ( $rows as $r ) {
+			$l = isset( $r['lang'] ) ? $r['lang'] : '';
+			$v = isset( $r[ $value_key ] ) ? trim( (string) $r[ $value_key ] ) : '';
+			if ( $l !== '' ) {
+				$by_lang[ $l ] = $v;
+			}
+		}
+		if ( isset( $by_lang[ $lang ] ) && $by_lang[ $lang ] !== '' ) {
+			return $by_lang[ $lang ];
+		}
+		if ( isset( $by_lang['en'] ) && $by_lang['en'] !== '' ) {
+			return $by_lang['en'];
+		}
+		$first = reset( $by_lang );
+		return $first !== false ? $first : '';
+	}
+
+	/**
+	 * Determine current 2-letter language code.
+	 *
+	 * @return string
+	 */
+	private function get_request_language() {
+		$locale = function_exists( 'determine_locale' ) ? determine_locale() : get_locale();
+		return strtolower( substr( (string) $locale, 0, 2 ) );
+	}
+
+	/**
+	 * Validate title_translations field: pass through raw JSON (parent stores it; we overwrite in process_admin_options).
+	 *
+	 * @param string $key   Field key.
+	 * @param mixed  $value Posted value.
+	 * @return string
+	 */
+	public function validate_mondu_title_translations_field( $key, $value ) {
+		return is_string( $value ) ? $value : '';
+	}
+
+	/**
+	 * Validate description_translations field: pass through raw JSON (parent stores it; we overwrite in process_admin_options).
+	 *
+	 * @param string $key   Field key.
+	 * @param mixed  $value Posted value.
+	 * @return string
+	 */
+	public function validate_mondu_description_translations_field( $key, $value ) {
+		return is_string( $value ) ? $value : '';
+	}
+
+	/**
+	 * Save options; decode title_translations and description_translations JSON into arrays.
+	 */
+	public function process_admin_options() {
+		parent::process_admin_options();
+
+		$opt_key  = 'woocommerce_' . $this->id . '_settings';
+		$settings = get_option( $opt_key, [] );
+		$settings = is_array( $settings ) ? $settings : [];
+
+		$fields = [
+			[ 'title_translations', 'title', 'sanitize_text_field' ],
+			[ 'description_translations', 'description', 'sanitize_textarea_field' ],
+		];
+		foreach ( $fields as list( $opt_key_field, $store_key, $sanitizer ) ) {
+			$field_key = $this->get_field_key( $opt_key_field );
+			$raw       = isset( $_POST[ $field_key ] ) ? wp_unslash( $_POST[ $field_key ] ) : '';
+			$decoded   = json_decode( $raw, true );
+			if ( ! is_array( $decoded ) ) {
+				continue;
+			}
+			$out = [];
+			foreach ( $decoded as $row ) {
+				$lang  = isset( $row['lang'] ) ? sanitize_text_field( $row['lang'] ) : '';
+				$value = isset( $row['text'] ) ? call_user_func( $sanitizer, $row['text'] ) : '';
+				if ( $lang !== '' ) {
+					$out[] = [ 'lang' => $lang, $store_key => $value ];
+				}
+			}
+			$settings[ $opt_key_field ] = $out;
+		}
+
+		update_option( $opt_key, $settings, false );
 	}
 
 	/**
@@ -128,14 +284,64 @@ class MonduGateway extends WC_Payment_Gateway {
 	 * @return string
 	 */
 	public function get_icon() {
-		$icon_html = '<img src="https://checkout.mondu.ai/logo.svg" alt="' . $this->method_title . '" width="100" />';
+		$icon_url = $this->get_payment_method_icon_url();
+		$icon_html = '<img src="' . esc_url( $icon_url ) . '" alt="' . esc_attr( $this->method_title ) . '" style="max-height: 40px; position: relative; top: 5px;" />';
 
-		/**
-		 * Mondu payment icon
-		 *
-		 * @since 1.3.2
-		 */
 		return apply_filters( 'woocommerce_gateway_icon', $icon_html, $this->id );
+	}
+
+	/**
+	 * Get payment method icon URL based on locale.
+	 *
+	 * @return string
+	 */
+	public function get_payment_method_icon_url() {
+		$icons = PaymentMethodsConfig::get_icons_for_gateway( $this->id );
+		$image_name = $icons ? $icons['checkout'] : self::DEFAULT_CHECKOUT_ICON;
+
+		$locale     = $this->get_icon_locale();
+		$icon_path  = MONDU_PLUGIN_PATH . '/assets/src/images/payment-methods/' . $locale . '/' . $image_name;
+
+		if ( file_exists( $icon_path ) ) {
+			return MONDU_PUBLIC_PATH . 'assets/src/images/payment-methods/' . $locale . '/' . $image_name;
+		}
+
+		return 'https://checkout.mondu.ai/logo.svg';
+	}
+
+	/**
+	 * Get admin icon URL (square icons for admin panel).
+	 *
+	 * @return string
+	 */
+	public function get_admin_icon_url() {
+		$icons = PaymentMethodsConfig::get_icons_for_gateway( $this->id );
+		$image_name = $icons ? $icons['admin'] : self::DEFAULT_ADMIN_ICON;
+
+		$locale    = $this->get_icon_locale();
+		$icon_path = MONDU_PLUGIN_PATH . '/assets/src/images/payment-methods/' . $locale . '/' . $image_name;
+
+		if ( file_exists( $icon_path ) ) {
+			return MONDU_PUBLIC_PATH . 'assets/src/images/payment-methods/' . $locale . '/' . rawurlencode( $image_name );
+		}
+
+		return $this->get_payment_method_icon_url();
+	}
+
+	/**
+	 * Get locale for icon (de, en, nl).
+	 *
+	 * @return string
+	 */
+	private function get_icon_locale() {
+		$wp_locale = get_locale();
+		$lang = substr( $wp_locale, 0, 2 );
+
+		if ( in_array( $lang, self::SUPPORTED_LOCALES, true ) ) {
+			return $lang;
+		}
+
+		return 'en';
 	}
 
 	/**

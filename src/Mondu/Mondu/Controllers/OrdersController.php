@@ -95,14 +95,18 @@ class OrdersController extends WP_REST_Controller {
 	 */
 	public function decline( WP_REST_Request $request ) {
 		$params       = $request->get_params();
-		$order_number = $params['external_reference_id'];
-		$return_url   = urldecode( $params['return_url'] );
-		$order        = Helper::get_order_from_order_number( $order_number );
+		$order_number = $params['external_reference_id'] ?? null;
+		$return_url   = isset( $params['return_url'] ) ? urldecode( $params['return_url'] ) : wc_get_checkout_url();
+		$mondu_order_id = $params['order_uuid'] ?? null;
+		$order        = Helper::get_order_from_order_number_or_uuid( $order_number, $mondu_order_id );
 
-		$order->add_order_note( esc_html( sprintf( __( 'Order was declined by Mondu.', 'mondu' ) ) ), false );
-
-		if ( $order->get_status() === 'pending' ) {
-			$order->update_status('wc-failed', __('Failed', 'woocommerce'));
+		if ( $order ) {
+			$order->add_order_note( esc_html( sprintf( __( 'Order was declined by Mondu.', 'mondu' ) ) ), false );
+			if ( in_array( $order->get_status(), [ 'pending', 'on-hold' ], true ) ) {
+				$order->update_status( 'wc-failed', __( 'Failed', 'woocommerce' ) );
+			}
+		} else {
+			Helper::log( [ 'decline_order_not_found' => $params ] );
 		}
 
 		wp_safe_redirect( $return_url );

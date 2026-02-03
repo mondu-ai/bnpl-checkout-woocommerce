@@ -7,9 +7,11 @@
 namespace Mondu\Admin;
 
 use Automattic\WooCommerce\Internal\DataStores\Orders\CustomOrdersTableController;
+use Mondu\Config\PaymentMethodsConfig;
 use Mondu\Exceptions\MonduException;
 use Mondu\Exceptions\ResponseException;
 use Mondu\Mondu\MonduRequestWrapper;
+use Mondu\Mondu\Support\Helper;
 use Mondu\Mondu\Presenters\PaymentInfo;
 use Mondu\Plugin;
 use WC_Order;
@@ -68,7 +70,7 @@ class Order {
 				if ( null === $order ) {
 					return;
 				}
-				if ( !in_array( $order->get_payment_method(), Plugin::PAYMENT_METHODS, true ) ) {
+				if ( !in_array( $order->get_payment_method(), PaymentMethodsConfig::get_gateway_ids(), true ) ) {
 					return;
 				}
 
@@ -121,6 +123,7 @@ class Order {
 
 		try {
 			$this->mondu_request_wrapper->cancel_invoice( $mondu_order_id, $invoice_id );
+			Helper::delete_wcpdf_invoice_document( $order );
 		} catch ( ResponseException $e ) {
 			wp_send_json([
 				'error'   => true,

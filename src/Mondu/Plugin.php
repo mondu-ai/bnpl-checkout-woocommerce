@@ -10,13 +10,10 @@ namespace Mondu;
 use Automattic\WooCommerce\Blocks\Payments\PaymentMethodRegistry;
 use Exception;
 use Mondu\Admin\Settings;
+use Mondu\Config\PaymentMethodsConfig;
 use Mondu\Mondu\Blocks\MonduBlocksSupport;
 use Mondu\Mondu\Controllers\OrdersController;
 use Mondu\Mondu\Controllers\WebhooksController;
-use Mondu\Mondu\GatewayDirectDebit;
-use Mondu\Mondu\GatewayInstallment;
-use Mondu\Mondu\GatewayInstallmentByInvoice;
-use Mondu\Mondu\GatewayInvoice;
 use Mondu\Mondu\MonduRequestWrapper;
 use Mondu\Mondu\Presenters\PaymentInfo;
 use Mondu\Mondu\Support\Helper;
@@ -47,14 +44,13 @@ class Plugin {
 	const OPTION_NAME = 'mondu_account';
 
 	/**
-	 * Payment Methods
+	 * Payment method key => gateway id. Use get_payment_methods().
+	 *
+	 * @return array<string, string>
 	 */
-	const PAYMENT_METHODS = [
-		'invoice'                => 'mondu_invoice',
-		'direct_debit'           => 'mondu_direct_debit',
-		'installment'            => 'mondu_installment',
-		'installment_by_invoice' => 'mondu_installment_by_invoice',
-	];
+	public static function get_payment_methods() {
+		return PaymentMethodsConfig::get_ids();
+	}
 
 	/**
 	 * Global Settings
@@ -94,12 +90,17 @@ class Plugin {
 			return;
 		}
 
+		self::ensure_mondu_gateway_title_defaults();
+
 		if ( is_admin() ) {
 			$settings = new Settings();
 			$settings->init();
 
 			$order = new Admin\Order();
 			$order->init();
+
+			add_action( 'admin_head', [ $this, 'add_admin_payment_icon_styles' ] );
+			add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_gateway_titles_script' ] );
 		}
 
 		/*
@@ -113,10 +114,9 @@ class Plugin {
 		 * Adds the mondu gateway to the list of gateways
 		 * (And remove it again if we're not in Germany)
 		 */
-		add_filter( 'woocommerce_payment_gateways', [ GatewayInvoice::class, 'add' ] );
-		add_filter( 'woocommerce_payment_gateways', [ GatewayDirectDebit::class, 'add' ] );
-		add_filter( 'woocommerce_payment_gateways', [ GatewayInstallment::class, 'add' ] );
-		add_filter( 'woocommerce_payment_gateways', [ GatewayInstallmentByInvoice::class, 'add' ] );
+		foreach ( PaymentMethodsConfig::get_gateway_classes() as $gateway_class ) {
+			add_filter( 'woocommerce_payment_gateways', [ $gateway_class, 'add' ] );
+		}
 		add_filter( 'woocommerce_available_payment_gateways', [ $this, 'remove_gateway_if_country_unavailable' ] );
 
 		/*
@@ -180,11 +180,180 @@ class Plugin {
 	}
 
 	/**
+	 * Ensure Mondu gateways have per-locale title defaults saved in options.
+	 *
+	 * This is idempotent: it only fills missing/empty values and never overwrites
+	 * admin-defined titles.
+	 *
+	 * @return void
+	 */
+	public static function ensure_mondu_gateway_title_defaults() {
+		foreach ( PaymentMethodsConfig::get_gateway_ids() as $gid ) {
+			self::migrate_gateway_title_translations( $gid );
+			self::migrate_gateway_description_translations( $gid );
+		}
+
+		$version_key = '_mondu_gateway_title_defaults_version';
+		$done_for    = get_option( $version_key );
+
+		if ( defined( 'MONDU_PLUGIN_VERSION' ) && $done_for === MONDU_PLUGIN_VERSION ) {
+			return;
+		}
+
+		self::set_mondu_gateway_title_defaults();
+
+		if ( defined( 'MONDU_PLUGIN_VERSION' ) ) {
+			update_option( $version_key, MONDU_PLUGIN_VERSION, false );
+		}
+	}
+
+	/**
+	 * Fill per-locale title defaults into Woo gateway settings.
+	 *
+	 * @return void
+	 */
+	public static function set_mondu_gateway_title_defaults() {
+		foreach ( PaymentMethodsConfig::get_all() as $config ) {
+			self::fill_gateway_title_defaults( $config['id'], $config['default_titles'] );
+		}
+	}
+
+	/**
+	 * Migrate title_en/de/fr/nl to title_translations when present.
+	 *
+	 * @param string $gateway_id
+	 * @return void
+	 */
+	private static function migrate_gateway_title_translations( $gateway_id ) {
+		self::migrate_legacy_translations( $gateway_id, 'title' );
+	}
+
+	/**
+	 * Migrate description_en/de/fr/nl to description_translations when present.
+	 *
+	 * @param string $gateway_id
+	 * @return void
+	 */
+	private static function migrate_gateway_description_translations( $gateway_id ) {
+		self::migrate_legacy_translations( $gateway_id, 'description' );
+	}
+
+	/**
+	 * Migrate legacy {field}_en/de/fr/nl to {field}_translations.
+	 *
+	 * @param string $gateway_id Gateway ID.
+	 * @param string $field      Field name ('title' or 'description').
+	 * @return void
+	 */
+	private static function migrate_legacy_translations( $gateway_id, $field ) {
+		$option_key = 'woocommerce_' . $gateway_id . '_settings';
+		$settings   = get_option( $option_key, [] );
+
+		if ( ! is_array( $settings ) ) {
+			$settings = [];
+		}
+
+		$translations_key = $field . '_translations';
+		$rows = isset( $settings[ $translations_key ] ) && is_array( $settings[ $translations_key ] ) ? $settings[ $translations_key ] : [];
+		if ( ! empty( $rows ) ) {
+			return;
+		}
+
+		$legacy = [];
+		foreach ( [ 'en', 'de', 'fr', 'nl' ] as $lang ) {
+			$k = $field . '_' . $lang;
+			if ( isset( $settings[ $k ] ) && $settings[ $k ] !== '' ) {
+				$legacy[] = [ 'lang' => $lang, $field => (string) $settings[ $k ] ];
+			}
+		}
+
+		if ( empty( $legacy ) ) {
+			return;
+		}
+
+		$settings[ $translations_key ] = $legacy;
+		foreach ( [ 'en', 'de', 'fr', 'nl' ] as $lang ) {
+			unset( $settings[ $field . '_' . $lang ] );
+		}
+		update_option( $option_key, $settings, false );
+	}
+
+	/**
+	 * @param string $gateway_id
+	 * @param array{en:string,de:string,fr:string,nl:string} $titles
+	 * @return void
+	 */
+	private static function fill_gateway_title_defaults( $gateway_id, array $titles ) {
+		$option_key = 'woocommerce_' . $gateway_id . '_settings';
+		$settings   = get_option( $option_key, [] );
+
+		if ( ! is_array( $settings ) ) {
+			$settings = [];
+		}
+
+		$rows = isset( $settings['title_translations'] ) && is_array( $settings['title_translations'] ) ? $settings['title_translations'] : [];
+		if ( ! empty( $rows ) ) {
+			return;
+		}
+
+		$default_rows = [];
+		foreach ( [ 'en', 'de', 'fr', 'nl' ] as $lang ) {
+			$default_rows[] = [
+				'lang'  => $lang,
+				'title' => isset( $titles[ $lang ] ) ? $titles[ $lang ] : '',
+			];
+		}
+
+		$settings['title_translations'] = $default_rows;
+		update_option( $option_key, $settings, false );
+	}
+
+	/**
 	 * Load the plugin text domain for translation.
 	 */
 	public function load_textdomain() {
 		$plugin_rel_path = dirname( plugin_basename( __FILE__ ) ) . '/../../languages/';
 		load_plugin_textdomain( 'mondu', false, $plugin_rel_path );
+	}
+
+	/**
+	 * Enqueue script for repeatable title-translations on gateway settings.
+	 */
+	public function enqueue_gateway_titles_script() {
+		$page = isset( $_GET['page'] ) ? sanitize_text_field( wp_unslash( $_GET['page'] ) ) : '';
+		$tab  = isset( $_GET['tab'] ) ? sanitize_text_field( wp_unslash( $_GET['tab'] ) ) : '';
+		$sec  = isset( $_GET['section'] ) ? sanitize_text_field( wp_unslash( $_GET['section'] ) ) : '';
+
+		if ( $page !== 'wc-settings' || $tab !== 'checkout' || $sec === '' ) {
+			return;
+		}
+		if ( ! in_array( $sec, PaymentMethodsConfig::get_gateway_ids(), true ) ) {
+			return;
+		}
+
+		$handle = 'mondu-admin-gateway-titles';
+		$src    = MONDU_PUBLIC_PATH . 'assets/src/js/admin-gateway-titles.js';
+		$deps   = [];
+		$ver    = defined( 'MONDU_PLUGIN_VERSION' ) ? MONDU_PLUGIN_VERSION : '1.0.0';
+		wp_enqueue_script( $handle, $src, $deps, $ver, true );
+	}
+
+	/**
+	 * Add admin styles for payment method icons.
+	 */
+	public function add_admin_payment_icon_styles() {
+		?>
+		<style>
+			.wc_gateways img[src*="payment-methods"],
+			.woocommerce table.wc_gateways img[src*="payment-methods"],
+			table.wc_gateways td img[src*="payment-methods"],
+			img.payment-icon[src*="payment-methods"] {
+				max-height: 50px !important;
+				height: 50px !important;
+				width: auto !important;
+			}
+		</style>
+		<?php
 	}
 
 	/**
@@ -194,7 +363,7 @@ class Plugin {
 	 * @return bool
 	 */
 	public static function order_has_mondu( WC_Order $order ) {
-		if ( !in_array($order->get_payment_method(), self::PAYMENT_METHODS, true) ) {
+		if ( ! in_array( $order->get_payment_method(), PaymentMethodsConfig::get_gateway_ids(), true ) ) {
 			return false;
 		}
 
@@ -218,20 +387,23 @@ class Plugin {
 			return;
 		}
 
-		wc_enqueue_js("
-			jQuery(document).ready(function() {
-				jQuery('a.edit_address').remove();
+		?>
+		<script>
+			document.addEventListener('DOMContentLoaded', function() {
+				document.querySelectorAll('a.edit_address').forEach(function(el) { el.remove(); });
 			});
-		");
-		echo '<p>' . esc_html__( 'Since this order will be paid via Mondu you will not be able to change the addresses.', 'mondu' ) . '</p>';
+		</script>
+		<p><?php esc_html_e( 'Since this order will be paid via Mondu you will not be able to change the addresses.', 'mondu' ); ?></p>
+		<?php
 	}
 
-	/**
-	 * Remove gateway if country unavailable
-	 *
-	 * @param array $available_gateways
-	 * @return array
-	 */
+    /**
+     * Remove gateway if country unavailable
+     *
+     * @param array $available_gateways
+     * @return array
+     * @throws Exception
+     */
 	public function remove_gateway_if_country_unavailable( $available_gateways ) {
 		if ( is_admin() || !is_checkout() ) {
 			return $available_gateways;
@@ -239,11 +411,12 @@ class Plugin {
 
 		$mondu_payments = $this->mondu_request_wrapper->get_merchant_payment_methods();
 
-		foreach ( self::PAYMENT_METHODS as $payment_method => $woo_payment_method ) {
+		$payment_methods = self::get_payment_methods();
+		foreach ( $payment_methods as $payment_method => $woo_payment_method ) {
 			$customer = $this->get_wc_customer();
-			if (!in_array( $payment_method, $mondu_payments, true )) {
-				if ( isset( $available_gateways[ self::PAYMENT_METHODS[ $payment_method ] ] ) ) {
-					unset( $available_gateways[ self::PAYMENT_METHODS[ $payment_method ] ] );
+			if ( ! in_array( $payment_method, $mondu_payments, true ) ) {
+				if ( isset( $available_gateways[ $woo_payment_method ] ) ) {
+					unset( $available_gateways[ $woo_payment_method ] );
 				}
 			}
 		}
@@ -295,7 +468,7 @@ class Plugin {
 	 * @param WP_Error $errors
 	 */
 	public function validate_required_fields( array $fields, WP_Error $errors ) {
-		if ( !in_array($fields['payment_method'], self::PAYMENT_METHODS, true) ) {
+		if ( ! in_array( $fields['payment_method'], PaymentMethodsConfig::get_gateway_ids(), true ) ) {
 			return;
 		}
 
@@ -331,15 +504,22 @@ class Plugin {
 	 *
 	 * @param $template_type
 	 * @param $order
-	 * @throws Exception
 	 */
 	public function wcpdf_add_mondu_payment_info_to_pdf( $template_type, $order ) {
 		if ( !$this->wcpdf_mondu_template_type( $template_type ) || !$this->order_has_mondu( $order ) ) {
 			return;
 		}
 
-		$payment_info = new PaymentInfo( $order->get_id() );
-		echo esc_html( $payment_info->get_mondu_wcpdf_section_html() );
+		try {
+			$payment_info = new PaymentInfo( $order->get_id() );
+			$payment_info->get_mondu_wcpdf_section_html();
+		} catch ( \Exception $e ) {
+			Support\Helper::log([
+				'message'  => 'Error adding Mondu payment info to PDF',
+				'order_id' => $order->get_id(),
+				'error'    => $e->getMessage(),
+			], 'ERROR');
+		}
 	}
 
 	/**
