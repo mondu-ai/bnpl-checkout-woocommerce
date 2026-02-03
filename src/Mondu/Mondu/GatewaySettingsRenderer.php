@@ -43,7 +43,7 @@ class GatewaySettingsRenderer {
 	public function generate_title_translations_html( $key, $data ) {
 		$field_key = $this->gateway->get_field_key( $key );
 		$value     = $this->gateway->get_option( $key, [] );
-		$rows      = is_array( $value ) ? $value : [];
+		$rows      = $this->parse_translations_value( $value );
 		$initial   = $this->normalize_rows_for_js( $rows, 'title' );
 		return $this->generate_translations_table_html( $field_key, $data, $initial, 'title-translations', __( 'Title', 'mondu' ) );
 	}
@@ -58,13 +58,34 @@ class GatewaySettingsRenderer {
 	public function generate_description_translations_html( $key, $data ) {
 		$field_key = $this->gateway->get_field_key( $key );
 		$value     = $this->gateway->get_option( $key, [] );
-		$rows      = is_array( $value ) ? $value : [];
+		$rows      = $this->parse_translations_value( $value );
 		$initial   = $this->normalize_rows_for_js( $rows, 'description' );
 		return $this->generate_translations_table_html( $field_key, $data, $initial, 'description-translations', __( 'Description', 'mondu' ) );
 	}
 
 	/**
-	 * Normalize rows to JS format [ lang, text ] from stored format [ lang, $value_key ].
+	 * Parse translations value from option. Handles both array (stored by our process_admin_options)
+	 * and JSON string (may be stored by parent's process_admin_options before our overwrite).
+	 *
+	 * @param mixed $value Raw value from get_option.
+	 * @return array List of [ 'lang' => string, 'title'|'description' => string ].
+	 */
+	private function parse_translations_value( $value ) {
+		if ( is_array( $value ) ) {
+			return $value;
+		}
+		if ( is_string( $value ) && $value !== '' ) {
+			$decoded = json_decode( $value, true );
+			if ( is_array( $decoded ) ) {
+				return $decoded;
+			}
+		}
+		return [];
+	}
+
+	/**
+	 * Normalize rows to JS format [ lang, text ] from stored format.
+	 * Handles both [ lang, title|description ] (our save) and [ lang, text ] (from parent/JS).
 	 *
 	 * @param array  $rows     Stored rows.
 	 * @param string $value_key Key for the value (e.g. 'title', 'description').
@@ -72,9 +93,10 @@ class GatewaySettingsRenderer {
 	 */
 	private function normalize_rows_for_js( array $rows, $value_key ) {
 		return array_map( function ( $r ) use ( $value_key ) {
+			$val = isset( $r[ $value_key ] ) ? $r[ $value_key ] : ( isset( $r['text'] ) ? $r['text'] : '' );
 			return [
 				'lang' => isset( $r['lang'] ) ? $r['lang'] : '',
-				'text' => isset( $r[ $value_key ] ) ? $r[ $value_key ] : '',
+				'text' => $val,
 			];
 		}, $rows );
 	}

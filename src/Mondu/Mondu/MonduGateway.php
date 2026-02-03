@@ -176,6 +176,28 @@ class MonduGateway extends WC_Payment_Gateway {
 	}
 
 	/**
+	 * Validate title_translations field: pass through raw JSON (parent stores it; we overwrite in process_admin_options).
+	 *
+	 * @param string $key   Field key.
+	 * @param mixed  $value Posted value.
+	 * @return string
+	 */
+	public function validate_mondu_title_translations_field( $key, $value ) {
+		return is_string( $value ) ? $value : '';
+	}
+
+	/**
+	 * Validate description_translations field: pass through raw JSON (parent stores it; we overwrite in process_admin_options).
+	 *
+	 * @param string $key   Field key.
+	 * @param mixed  $value Posted value.
+	 * @return string
+	 */
+	public function validate_mondu_description_translations_field( $key, $value ) {
+		return is_string( $value ) ? $value : '';
+	}
+
+	/**
 	 * Save options; decode title_translations and description_translations JSON into arrays.
 	 */
 	public function process_admin_options() {
