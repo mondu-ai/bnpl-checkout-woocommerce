@@ -1,0 +1,83 @@
+name: Code Quality Check
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  code_quality_phpmd:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.1'
+          tools: composer
+
+      - name: Install dependencies
+        run: composer install
+
+      - name: Install PHPMD
+        run: composer require --dev phpmd/phpmd
+
+      - name: Run PHPMD
+        run: ./vendor/bin/phpmd src,views,assets ansi cleancode,codesize,controversial,design,naming,unusedcode
+
+  code_quality_phpstan:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.1'
+          tools: composer
+
+      - name: Install dependencies
+        run: |
+          composer config --no-plugins allow-plugins.phpstan/extension-installer true
+          composer install
+
+      - name: Install PHPStan
+        run: composer require --dev szepeviktor/phpstan-wordpress phpstan/extension-installer
+
+      - name: Run PHPStan
+        run: |
+          vendor/bin/phpstan analyse src --level=max
+          vendor/bin/phpstan analyse views --level=max
+          vendor/bin/phpstan analyse assets --level=max
+
+  code_quality_phpcs:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.1'
+          tools: composer
+
+      - name: Allow dealerdirect plugin
+        run: composer global config --no-plugins allow-plugins.dealerdirect/phpcodesniffer-composer-installer true
+
+      - name: Install PHPCS
+        run: |
+          composer global require "squizlabs/php_codesniffer=*"
+          composer global require "wp-coding-standards/wpcs=*"
+
+      - name: Add composer global bin to PATH
+        run: echo "$HOME/.composer/vendor/bin" >> $GITHUB_PATH
+
+      - name: Run PHPCS
+        run: phpcs --standard=WordPress src views assets
