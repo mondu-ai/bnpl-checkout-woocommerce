@@ -277,6 +277,11 @@ class MonduRequestWrapper {
 			$this->cancel_order( $order_id );
 		}
 		if ( 'completed' === $to_status ) {
+			$mondu_order = $this->get_order( $order_id );
+			if ( $mondu_order && 'authorized' === ( $mondu_order['state'] ?? '' ) ) {
+				$mondu_order_id = $order->get_meta( Plugin::ORDER_ID_KEY );
+				$this->confirm_order( $order_id, $mondu_order_id );
+			}
 			$this->ship_order( $order_id );
 		}
 	}
