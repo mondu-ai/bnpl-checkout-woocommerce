@@ -60,7 +60,7 @@ class OrdersController extends WP_REST_Controller {
 	public function confirm( WP_REST_Request $request ) {
 		$params         = $request->get_params();
 		$mondu_order_id = $params['order_uuid'] ?? null;
-		$return_url     = urldecode( $params['return_url'] );
+		$return_url     = isset( $params['return_url'] ) ? urldecode( $params['return_url'] ) : wc_get_checkout_url();
 		$order          = Helper::get_mondu_order_by_uuid( $mondu_order_id );
 
 		try {
