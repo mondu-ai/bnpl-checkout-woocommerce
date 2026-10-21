@@ -64,17 +64,22 @@ class WebhooksController extends WP_REST_Controller {
 
 		$body              = $request->get_body();
 		$signature_payload = $request->get_header( 'X-MONDU-SIGNATURE' );
-		$signature         = $verifier->create_hmac( $body );
-
-		Helper::log( [
-			'webhook_topic' => $topic,
-			'params'        => $params,
-		] );
+		$verified          = $verifier->verify( $body, $signature_payload );
 
 		try {
-			if ( !$verifier->verify( $body, $signature_payload ) ) {
+			if ( !$verified ) {
+				// The payload is unauthenticated, so only the topic goes to the log.
+				Helper::log( [
+					'webhook_topic' => $topic,
+					'verified'      => false,
+				] );
 				throw new MonduException( __( 'Signature mismatch.', 'mondu' ) );
 			}
+
+			Helper::log( [
+				'webhook_topic' => $topic,
+				'params'        => $params,
+			] );
 
 			switch ( $topic ) {
 				case 'order/pending':
@@ -110,7 +115,9 @@ class WebhooksController extends WP_REST_Controller {
 			$res_body   = $result[0];
 			$res_status = $result[1];
 		} catch ( MonduException $e ) {
-			$this->mondu_request_wrapper->log_plugin_event( $e, 'webhooks', array_merge( $params, [ 'signature' => $signature ] ) );
+			// An unsigned payload is not forwarded: the event request body is logged locally too.
+			$event_body = $verified ? (array) $params : [ 'topic' => $topic ];
+			$this->mondu_request_wrapper->log_plugin_event( $e, 'webhooks', array_merge( $event_body, [ 'signature_verified' => $verified ] ) );
 			$res_body   = [ 'message' => $e->getMessage() ];
 			$res_status = 400;
 		} catch ( \Exception $e ) {
