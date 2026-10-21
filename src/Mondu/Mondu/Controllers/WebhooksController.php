@@ -58,6 +58,10 @@ class WebhooksController extends WP_REST_Controller {
 		$params   = $request->get_json_params();
 		$topic    = isset( $params['topic'] ) ? $params['topic'] : null;
 
+		if ( !$verifier->has_secret() ) {
+			return new WP_REST_Response( [ 'message' => __( 'Webhook secret is not configured.', 'mondu' ) ], 503 );
+		}
+
 		$body              = $request->get_body();
 		$signature_payload = $request->get_header( 'X-MONDU-SIGNATURE' );
 		$signature         = $verifier->create_hmac( $body );
@@ -66,10 +70,6 @@ class WebhooksController extends WP_REST_Controller {
 			'webhook_topic' => $topic,
 			'params'        => $params,
 		] );
-
-		if ( !$verifier->has_secret() ) {
-			return new WP_REST_Response( [ 'message' => __( 'Webhook secret is not configured.', 'mondu' ) ], 503 );
-		}
 
 		try {
 			if ( !$verifier->verify( $body, $signature_payload ) ) {

@@ -12,7 +12,7 @@ namespace Mondu\Mondu\Models;
  * @package Mondu
  */
 class SignatureVerifier {
-	/** @var string $secret */
+	/** @var string|false $secret False until the admin validates the credentials. */
 	private $secret;
 
 	/**
