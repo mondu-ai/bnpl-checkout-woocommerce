@@ -308,7 +308,7 @@ class Helper {
 			],
 		];
 		$query    = new WP_Query( $args );
-		$order_id = $query->posts[0];
+		$order_id = $query->posts[0] ?? null;
 		$order    = wc_get_order( $order_id );
 
 		if ( !$order ) {

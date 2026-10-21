@@ -132,7 +132,7 @@ namespace {
 		$check( "{$storage}: array uuid finds nothing", false, Helper::get_mondu_order_by_uuid( [ 'uuid-101' ] ) );
 		$check( "{$storage}: order paid without Mondu is not returned", false, Helper::get_mondu_order_by_uuid( 'uuid-102' ) );
 		// An order number alone used to be enough to reach an order; a uuid nobody holds must not be.
-		$check( "{$storage}: order number in place of the uuid finds nothing", false, @Helper::get_mondu_order_by_uuid( '103' ) );
+		$check( "{$storage}: order number in place of the uuid finds nothing", false, Helper::get_mondu_order_by_uuid( '103' ) );
 		// The database finds the order, but the uuid is not exactly the stored one.
 		$check( "{$storage}: uuid that only matches case-insensitively is rejected", false, Helper::get_mondu_order_by_uuid( 'UUID-101' ) );
 	}

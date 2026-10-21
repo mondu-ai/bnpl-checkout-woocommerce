@@ -25,7 +25,7 @@ wp i18n --allow-root make-mo languages
 wp i18n --allow-root make-json languages
 ```
 
-There is **no unit test suite** in this repo. Verification is manual against the Dockerized WooCommerce stack plus a Mondu sandbox/mock API.
+There is no PHPUnit suite. `tests/` holds framework-free scripts that stub WordPress and WooCommerce; run each with `php tests/<Name>Test.php` (exit code 0 means all passed). They are excluded from the release zip. Everything else is verified manually against the Dockerized WooCommerce stack plus a Mondu sandbox/mock API.
 
 Note: the compose file points `MONDU_SANDBOX_URL`/`MONDU_PRODUCTION_URL` at `host.docker.internal:3000` and webhooks at `host.docker.internal:8390` — i.e. a local mock API, not Mondu's real sandbox. To hit the real sandbox, unset those env vars (defaults live in `mondu-buy-now-pay-later.php`: `api.demo.mondu.ai` / `api.mondu.ai`).
 
