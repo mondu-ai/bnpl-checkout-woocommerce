@@ -67,8 +67,12 @@ class WebhooksController extends WP_REST_Controller {
 			'params'        => $params,
 		] );
 
+		if ( !$verifier->has_secret() ) {
+			return new WP_REST_Response( [ 'message' => __( 'Webhook secret is not configured.', 'mondu' ) ], 503 );
+		}
+
 		try {
-			if ( $signature !== $signature_payload ) {
+			if ( !$verifier->verify( $body, $signature_payload ) ) {
 				throw new MonduException( __( 'Signature mismatch.', 'mondu' ) );
 			}
 
