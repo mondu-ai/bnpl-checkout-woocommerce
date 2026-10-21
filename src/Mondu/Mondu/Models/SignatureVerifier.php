@@ -12,7 +12,7 @@ namespace Mondu\Mondu\Models;
  * @package Mondu
  */
 class SignatureVerifier {
-	/** @var string $secret */
+	/** @var string|false $secret False until the admin validates the credentials. */
 	private $secret;
 
 	/**
@@ -45,24 +45,44 @@ class SignatureVerifier {
 	}
 
 	/**
+	 * Has secret
+	 *
+	 * The secret is stored only once the admin validates the credentials. Until then
+	 * there is nothing to sign with, and an HMAC keyed with an empty string can be
+	 * computed by anyone from the body alone.
+	 *
+	 * @return bool
+	 */
+	public function has_secret() {
+		return is_string( $this->secret ) && '' !== $this->secret;
+	}
+
+	/**
 	 * Create HMAC
 	 *
 	 * @param string $payload Payload.
 	 *
-	 * @return string
+	 * @return string|null Null when no secret is configured.
 	 */
 	public function create_hmac( $payload ) {
-		return hash_hmac( 'sha256', $payload, $this->secret );
+		if ( !$this->has_secret() ) {
+			return null;
+		}
+
+		return hash_hmac( 'sha256', (string) $payload, $this->secret );
 	}
 
 	/**
 	 * Verify signature
 	 *
-	 * @param $signature
+	 * @param string $payload   Raw request body.
+	 * @param mixed  $signature Signature sent by Mondu.
 	 *
 	 * @return bool
 	 */
-	public function verify( $signature ) {
-		return $this->secret === $signature;
+	public function verify( $payload, $signature ) {
+		$expected = $this->create_hmac( $payload );
+
+		return null !== $expected && is_string( $signature ) && hash_equals( $expected, $signature );
 	}
 }

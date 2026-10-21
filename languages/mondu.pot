@@ -110,6 +110,10 @@ msgstr ""
 msgid "Order was declined by Mondu."
 msgstr ""
 
+#: src/Mondu/Mondu/Controllers/WebhooksController.php:62
+msgid "Webhook secret is not configured."
+msgstr ""
+
 #: src/Mondu/Mondu/Controllers/WebhooksController.php:72
 msgid "Signature mismatch."
 msgstr ""

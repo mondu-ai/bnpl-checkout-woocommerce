@@ -59,10 +59,9 @@ class OrdersController extends WP_REST_Controller {
 	 */
 	public function confirm( WP_REST_Request $request ) {
 		$params         = $request->get_params();
-		$order_number   = $params['external_reference_id'];
-		$mondu_order_id = $params['order_uuid'];
-		$return_url     = urldecode( $params['return_url'] );
-		$order          = Helper::get_order_from_order_number_or_uuid( $order_number, $mondu_order_id );
+		$mondu_order_id = $params['order_uuid'] ?? null;
+		$return_url     = isset( $params['return_url'] ) ? urldecode( $params['return_url'] ) : wc_get_checkout_url();
+		$order          = Helper::get_mondu_order_by_uuid( $mondu_order_id );
 
 		try {
 			if ( !$order ) {
@@ -94,11 +93,10 @@ class OrdersController extends WP_REST_Controller {
 	 * @param WP_REST_Request $request Request
 	 */
 	public function decline( WP_REST_Request $request ) {
-		$params       = $request->get_params();
-		$order_number = $params['external_reference_id'] ?? null;
-		$return_url   = isset( $params['return_url'] ) ? urldecode( $params['return_url'] ) : wc_get_checkout_url();
+		$params         = $request->get_params();
+		$return_url     = isset( $params['return_url'] ) ? urldecode( $params['return_url'] ) : wc_get_checkout_url();
 		$mondu_order_id = $params['order_uuid'] ?? null;
-		$order        = Helper::get_order_from_order_number_or_uuid( $order_number, $mondu_order_id );
+		$order          = Helper::get_mondu_order_by_uuid( $mondu_order_id );
 
 		if ( $order ) {
 			$order->add_order_note( esc_html( sprintf( __( 'Order was declined by Mondu.', 'mondu' ) ) ), false );
