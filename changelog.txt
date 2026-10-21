@@ -1,5 +1,10 @@
 == Changelog ==
 
+= 3.1.1 =
+
+* Security - the confirm and decline redirects only act on the Mondu order whose uuid they carry
+* Security - webhooks are refused while no webhook secret is stored, signatures are compared in constant time
+
 = 3.1.0 =
 
 * Added new payment method: Instant Pay (Pay Now)
