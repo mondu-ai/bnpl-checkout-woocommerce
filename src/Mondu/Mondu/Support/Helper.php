@@ -343,6 +343,36 @@ class Helper {
 	}
 
 	/**
+	 * Get the order a hosted checkout redirect refers to
+	 *
+	 * The redirect endpoints are public and the order number is guessable, so the order is
+	 * resolved by its Mondu order uuid only, and it must be paid with a Mondu gateway and
+	 * carry exactly that uuid.
+	 *
+	 * @param $mondu_order_uuid
+	 * @return bool|WC_Order
+	 */
+	public static function get_mondu_order_by_uuid( $mondu_order_uuid ) {
+		if ( !is_string( $mondu_order_uuid ) || '' === $mondu_order_uuid ) {
+			return false;
+		}
+
+		$order = self::get_order_from_order_number_or_uuid( null, $mondu_order_uuid );
+
+		if ( !$order || !Plugin::order_has_mondu( $order ) ) {
+			return false;
+		}
+
+		$stored_uuid = $order->get_meta( Plugin::ORDER_ID_KEY );
+
+		if ( !is_string( $stored_uuid ) || !hash_equals( $stored_uuid, $mondu_order_uuid ) ) {
+			return false;
+		}
+
+		return $order;
+	}
+
+	/**
 	 * Get order from order number
 	 *
 	 * @param $order_number
